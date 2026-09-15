@@ -64,6 +64,7 @@ class Installer
 
         static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
+        static::setGitHooksPath($rootDir, $io);
 
         if (class_exists(CodeceptionInstaller::class)) {
             CodeceptionInstaller::customizeCodeceptionBinary($event);
@@ -215,6 +216,28 @@ class Installer
             return;
         }
         $io->write('Unable to update Security.salt value.');
+    }
+
+    /**
+     * Point git at the repo's tracked hooks directory, so the version-bump
+     * commit-msg hook (hooks/commit-msg) is active without a manual setup step.
+     *
+     * @param string $dir The application's root directory.
+     * @param \Composer\IO\IOInterface $io IO interface to write to console.
+     * @return void
+     */
+    public static function setGitHooksPath(string $dir, IOInterface $io): void
+    {
+        if (!is_dir($dir . '/.git')) {
+            return;
+        }
+
+        exec('git config core.hooksPath hooks', $output, $exitCode);
+        if ($exitCode === 0) {
+            $io->write('Set git core.hooksPath to `hooks`');
+        } else {
+            $io->write('Unable to set git core.hooksPath.');
+        }
     }
 
     /**
