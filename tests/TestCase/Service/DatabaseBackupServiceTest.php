@@ -51,7 +51,7 @@ class DatabaseBackupServiceTest extends TestCase
         parent::setUp();
 
         $this->backup = new DatabaseBackupService();
-        $this->folder = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'chestcounter_backup_test_' . uniqid();
+        $this->folder = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tbops_backup_test_' . uniqid();
         mkdir($this->folder, 0777, true);
     }
 

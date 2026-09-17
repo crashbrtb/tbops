@@ -69,7 +69,12 @@ $sourceLabels = [
                                         <span class="text-warning"><i class="fas fa-question-circle"></i> <?= __('Name not mapped yet') ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td><code><?= h($tournament->game_type) ?></code></td>
+                                <td>
+                                    <code><?= h($tournament->game_type) ?></code>
+                                    <?php if ($tournament->ranking !== ''): ?>
+                                        <small class="d-block text-muted text-break" title="<?= h($tournament->ranking) ?>"><?= h($tournament->rankingLabel()) ?></small>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <?php if ($tournament->duration_days): ?>
                                         <?= __('{0} day(s)', $tournament->duration_days) ?>

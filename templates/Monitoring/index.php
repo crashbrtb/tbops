@@ -115,7 +115,7 @@ $summaryText = function (?array $summary): string {
 
 $appsScript = <<<'JS'
 /**
- * Chest Counter monitor.
+ * TBOps monitor.
  *
  * 1. Project Settings > Script Properties: add MONITOR_KEY with the key shown
  *    on the Monitoring page.
@@ -181,7 +181,7 @@ function checkHealth() {
     });
     MailApp.sendEmail(
       ALERT_EMAIL,
-      problems.length > 0 ? '[Chest Counter] Problem: ' + problems.join(', ') : '[Chest Counter] All jobs running again',
+      problems.length > 0 ? '[TBOps] Problem: ' + problems.join(', ') : '[TBOps] All jobs running again',
       lines.join('\n\n') + '\n\n' + HEALTH_URL
     );
   }

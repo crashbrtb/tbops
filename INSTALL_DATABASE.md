@@ -1,6 +1,6 @@
 # Database Installation
 
-This document explains how to install the database for the Chest Counter application.
+This document explains how to install the database for the TBOps application.
 
 ## 📋 Overview
 
@@ -18,7 +18,7 @@ The project uses **CakePHP Migrations** to manage the database schema and **Seed
 ### 1. Create the Database
 
 ```bash
-mysql -u root -p -e "CREATE DATABASE chestcounter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p -e "CREATE DATABASE tbops CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
 ### 2. Configure Database Connection
@@ -31,7 +31,7 @@ Edit `config/app_local.php` and set your database credentials:
         'host' => 'localhost',
         'username' => 'your_user',
         'password' => 'your_password',
-        'database' => 'chestcounter',
+        'database' => 'tbops',
     ],
 ],
 ```
@@ -195,7 +195,7 @@ Verify that the user has permissions:
 
 ```sql
 -- Grant permissions (as root)
-GRANT ALL PRIVILEGES ON chestcounter.* TO 'your_user'@'localhost';
+GRANT ALL PRIVILEGES ON tbops.* TO 'your_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
@@ -204,7 +204,7 @@ FLUSH PRIVILEGES;
 Make sure the database was created before running migrations:
 
 ```sql
-CREATE DATABASE chestcounter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE tbops CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 ### Reset Database (Development Only)

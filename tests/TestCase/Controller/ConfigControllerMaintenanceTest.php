@@ -210,7 +210,7 @@ class ConfigControllerMaintenanceTest extends TestCase
     {
         $this->signIn(1);
 
-        $folder = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'chestcounter_backup_page_' . uniqid();
+        $folder = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tbops_backup_page_' . uniqid();
 
         $this->post('/config/maintenance', [
             'section' => 'backup',
