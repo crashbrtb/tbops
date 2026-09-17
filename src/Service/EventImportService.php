@@ -291,13 +291,81 @@ class EventImportService
         return $out;
     }
 
+    /**
+     * Complete earlier drafts with what a new ranking knows about its players.
+     *
+     * A ranking sent while the uploader had no profile for a player carries
+     * "id:<game id>" as the name and links to nobody. Once a ranking arrives
+     * with that player's name, or the members table has learned their game id,
+     * the draft rows get the name and the member.
+     *
+     * @param list<array{position: int, name: string, points: int, game_player_id: int|null, power: int|null}> $rows Validated rows.
+     * @return int Draft rows changed.
+     */
+    public function completeDrafts(array $rows): int
+    {
+        $names = [];
+        foreach ($rows as $row) {
+            if ($row['game_player_id'] !== null && !str_starts_with($row['name'], MemberRosterService::PLACEHOLDER)) {
+                $names[(int)$row['game_player_id']] = $row['name'];
+            }
+        }
+
+        $draftRows = $this->fetchTable('EventImportRows')->find()
+            ->innerJoinWith('EventImports', fn ($q) => $q->where(['EventImports.status' => EventImport::STATUS_DRAFT]))
+            ->where([
+                'EventImportRows.game_player_id IS NOT' => null,
+                'OR' => [
+                    'EventImportRows.member_id IS' => null,
+                    'EventImportRows.raw_name LIKE' => MemberRosterService::PLACEHOLDER . '%',
+                ],
+            ])
+            ->all()
+            ->toList();
+        if ($draftRows === []) {
+            return 0;
+        }
+
+        $members = [];
+        $ids = array_values(array_unique(array_map(fn ($r): int => (int)$r->game_player_id, $draftRows)));
+        foreach ($this->fetchTable('Members')->find()->where(['game_player_id IN' => $ids])->all() as $member) {
+            $members[(int)$member->game_player_id] = $member;
+        }
+
+        $table = $this->fetchTable('EventImportRows');
+        $changed = 0;
+        foreach ($draftRows as $draftRow) {
+            $id = (int)$draftRow->game_player_id;
+            $member = $members[$id] ?? null;
+            if (str_starts_with((string)$draftRow->raw_name, MemberRosterService::PLACEHOLDER)) {
+                $name = $names[$id] ?? $member?->player;
+                if ($name !== null && $name !== '') {
+                    $draftRow->set('raw_name', $name, ['guard' => false]);
+                }
+            }
+            if ($draftRow->member_id === null && $member !== null) {
+                $draftRow->set([
+                    'member_id' => $member->id,
+                    'match_type' => EventImportRow::MATCH_PLAYER_ID,
+                    'eligible' => !$member->administrative_account,
+                ], ['guard' => false]);
+            }
+            if ($draftRow->isDirty()) {
+                $table->saveOrFail($draftRow);
+                $changed++;
+            }
+        }
+
+        return $changed;
+    }
+
     // ----------------------------------------------------------- tournaments
 
     /**
      * Check the part of an upload that identifies the tournament in the game.
      *
      * @param array<string, mixed> $data Decoded request body.
-     * @return array{errors: array<string, string>, tournament: array{result_uid: string, tournament_key: string, name: string|null, ended_at: \Cake\I18n\DateTime|null}}
+     * @return array{errors: array<string, string>, tournament: array{result_uid: string, tournament_key: string, ranking: string, name: string|null, ended_at: \Cake\I18n\DateTime|null}}
      */
     public function validateTournament(array $data): array
     {
@@ -311,6 +379,11 @@ class EventImportService
         $key = is_string($data['tournament_key'] ?? null) ? trim($data['tournament_key']) : '';
         if (!preg_match('/^\d{1,10}(:\d{1,10}){0,2}$/', $key)) {
             $errors['tournament_key'] = __('The tournament type is missing or invalid.');
+        }
+
+        $ranking = GameTournamentsTable::normalizeRanking($data['ranking'] ?? null);
+        if ($ranking === null) {
+            $errors['ranking'] = __('The tournament ranking is invalid.');
         }
 
         $name = is_string($data['name'] ?? null) ? trim($data['name']) : '';
@@ -335,6 +408,7 @@ class EventImportService
             'tournament' => [
                 'result_uid' => $uid,
                 'tournament_key' => $key,
+                'ranking' => $ranking ?? GameTournament::RANKING_DEFAULT,
                 'name' => $name !== '' ? $name : null,
                 'ended_at' => $endedAt,
             ],
@@ -350,7 +424,7 @@ class EventImportService
      * is ready to review without anyone filling in a form. A name sent by the
      * uploader wins over the inherited one.
      *
-     * @param array{result_uid: string, tournament_key: string, name: string|null, ended_at: \Cake\I18n\DateTime|null} $tournament From validateTournament().
+     * @param array{result_uid: string, tournament_key: string, ranking?: string, name: string|null, ended_at: \Cake\I18n\DateTime|null} $tournament From validateTournament().
      * @param int $userId Who sent it.
      * @param string|null $userName Their name, the contact when nothing is inherited.
      * @return array{event: \App\Model\Entity\Event, created: bool, name_source: string, rewards_copied: int}
@@ -370,11 +444,13 @@ class EventImportService
 
         $endsAt = $tournament['ended_at'] ?? DateTime::now();
 
-        // The catalogue knows the tournament by its type: its name (read off the
-        // Journal by the mapper, or set by an administrator) and its duration.
+        // The catalogue knows the tournament by its type and ranking: its name
+        // (read off the Journal by the mapper, or set by an administrator) and
+        // its duration.
         $catalogue = $this->fetchTable('GameTournaments');
         [$type, $variant] = GameTournamentsTable::parseKey($tournament['tournament_key']);
-        $entry = $type !== null ? $catalogue->touchType($type, $variant, $endsAt) : null;
+        $ranking = $tournament['ranking'] ?? GameTournament::RANKING_DEFAULT;
+        $entry = $type !== null ? $catalogue->touchType($type, $variant, $endsAt, $ranking) : null;
         if ($entry !== null && $tournament['name'] !== null) {
             $catalogue->offerName($entry, $tournament['name'], GameTournament::SOURCE_UPLOADER);
         }
@@ -440,7 +516,7 @@ class EventImportService
      * rewards of its most recent event. The uploader uses it to fill in the
      * name before sending.
      *
-     * @return list<array{tournament_key: string, name: string, last_ended_at: string|null, rewards: list<array{item_name: string, quantity: int, rule: string}>}>
+     * @return list<array{game_type: int, ranking: string, tournament_key: string, name: string, last_ended_at: string|null, rewards: list<array{item_name: string, quantity: int, rule: string}>}>
      */
     public function knownTournaments(): array
     {
@@ -449,6 +525,7 @@ class EventImportService
             $previous = $this->previousTournament(null, $entry->id);
             $known[] = [
                 'game_type' => $entry->game_type,
+                'ranking' => $entry->ranking,
                 'tournament_key' => $entry->game_type . ($entry->last_variant !== null ? ':' . $entry->last_variant : ''),
                 'name' => $entry->name,
                 'name_source' => $entry->name_source,
@@ -471,7 +548,8 @@ class EventImportService
      *
      * Matched by catalogue entry, which groups every variant of a type (the
      * game changes the second number of the key from one run to the next), or
-     * by the exact key for events registered before the catalogue existed.
+     * by the exact key for events registered before the catalogue existed. Only
+     * those: two rankings of one tournament share the key, not the entry.
      *
      * @param string|null $key Tournament key.
      * @param int|null $catalogueId Catalogue entry.
@@ -484,7 +562,7 @@ class EventImportService
             $match[] = ['Events.game_tournament_id' => $catalogueId];
         }
         if ($key !== null) {
-            $match[] = ['Events.game_tournament_key' => $key];
+            $match[] = ['Events.game_tournament_key' => $key, 'Events.game_tournament_id IS' => null];
         }
         if (!$match) {
             return null;

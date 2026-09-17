@@ -14,7 +14,12 @@ $this->assign('title', __('Edit Tournament'));
     <div class="score-toolbar">
         <div class="score-title-group">
             <h1 class="score-title"><i class="fas fa-pen text-primary"></i> <?= h($tournament->displayName()) ?></h1>
-            <p class="cycle-subtitle"><?= __('Game id {0}', $tournament->game_type) ?></p>
+            <p class="cycle-subtitle">
+                <?= __('Game id {0}', $tournament->game_type) ?>
+                <?php if ($tournament->ranking !== ''): ?>
+                    &middot; <?= h(__('Ranking {0}', $tournament->rankingLabel())) ?>
+                <?php endif; ?>
+            </p>
         </div>
         <div class="toolbar-actions">
             <?= $this->Html->link(

@@ -25,6 +25,11 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * A player is linked by game id first, then by name when exactly one member
  * without a game id carries it. Two members with the same name and no id are
  * left alone and reported: guessing would tie the wrong history to a player.
+ *
+ * A list with a player known only by an id placeholder ("id:123") that matches
+ * no member is not applied at all: that player may be a member not yet linked
+ * to their game id, and treating the list as the whole clan would deactivate
+ * them.
  */
 class MemberRosterService
 {
@@ -35,18 +40,21 @@ class MemberRosterService
 
     private const MAX_PLAYER_NAME = 45;
 
+    /** How the uploader names a player whose profile it did not get. */
+    public const PLACEHOLDER = 'id:';
+
     /**
      * Apply a ranking to the members table.
      *
      * @param \App\Model\Entity\Event $event The tournament the ranking belongs to.
      * @param list<array{position: int, name: string, points: int, game_player_id: int|null, power: int|null}> $rows Validated rows.
-     * @return array{applied: bool, reason: string|null, created: int, linked: int, renamed: int, power_updated: int, activated: int, deactivated: int, ambiguous: list<string>}
+     * @return array{applied: bool, reason: string|null, created: int, linked: int, renamed: int, power_updated: int, activated: int, deactivated: int, ambiguous: list<string>, unnamed: int}
      */
     public function apply(Event $event, array $rows): array
     {
         $summary = [
             'applied' => false, 'reason' => null, 'created' => 0, 'linked' => 0, 'renamed' => 0,
-            'power_updated' => 0, 'activated' => 0, 'deactivated' => 0, 'ambiguous' => [],
+            'power_updated' => 0, 'activated' => 0, 'deactivated' => 0, 'ambiguous' => [], 'unnamed' => 0,
         ];
 
         $withId = array_values(array_filter($rows, fn (array $r): bool => !empty($r['game_player_id'])));
@@ -76,6 +84,17 @@ class MemberRosterService
             }
         }
 
+        foreach ($withId as $row) {
+            if (str_starts_with(trim($row['name']), self::PLACEHOLDER) && !isset($byId[(int)$row['game_player_id']])) {
+                $summary['unnamed']++;
+            }
+        }
+        if ($summary['unnamed'] > 0) {
+            $summary['reason'] = 'unnamed';
+
+            return $summary;
+        }
+
         $present = [];
         $changed = [];
 
@@ -101,7 +120,7 @@ class MemberRosterService
 
             if ($member === null) {
                 // A name that is only an id placeholder is not worth a member.
-                if (str_starts_with($name, 'id:')) {
+                if (str_starts_with($name, self::PLACEHOLDER)) {
                     continue;
                 }
                 $member = $members->newEntity([
@@ -120,7 +139,7 @@ class MemberRosterService
                 continue;
             }
 
-            if ($name !== '' && !str_starts_with($name, 'id:') && $member->player !== $name) {
+            if ($name !== '' && !str_starts_with($name, self::PLACEHOLDER) && $member->player !== $name) {
                 $member->set('player', $name, ['guard' => false]);
                 $summary['renamed']++;
             }

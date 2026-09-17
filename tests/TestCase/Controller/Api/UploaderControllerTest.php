@@ -491,6 +491,61 @@ class UploaderControllerTest extends TestCase
         $this->assertSame(0, (int)$members->get($left->id)->active);
     }
 
+    public function testARankingWithPlayersKnownOnlyByIdDoesNotDeactivateAnyone(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+        $member = $members->newEntity(['player' => 'Brunilda', 'active' => 1, 'power' => 1]);
+        $members->saveOrFail($member);
+
+        // The uploader got no profiles: every name is a placeholder.
+        $ids = range(301, 320);
+        $upload = $this->tournamentUpload();
+        $upload['rows'] = $this->rosterRows($ids, array_combine($ids, array_map(fn (int $id): string => "id:{$id}", $ids)));
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertResponseCode(201);
+        $summary = $this->body()['members'];
+
+        $this->assertFalse($summary['applied']);
+        $this->assertSame('unnamed', $summary['reason']);
+        $this->assertSame(20, $summary['unnamed']);
+        $this->assertSame(1, (int)$members->get($member->id)->active);
+        $this->assertNull($this->fetchTable('EventImports')->current($this->body()['event_id'])->roster_applied_at);
+    }
+
+    public function testALaterRankingWithNamesCompletesTheDraftsSentWithoutThem(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+
+        $ids = range(401, 420);
+        $unnamed = $this->tournamentUpload(['result_uid' => '11111111-2222-4333-8444-000000000001', 'ended_at' => '2026-09-01T17:00:00Z']);
+        $unnamed['rows'] = $this->rosterRows($ids, array_combine($ids, array_map(fn (int $id): string => "id:{$id}", $ids)));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($unnamed));
+        $this->assertResponseCode(201);
+        $firstEvent = $this->body()['event_id'];
+        $this->assertSame(0, $this->body()['linked']);
+
+        $named = $this->tournamentUpload(['result_uid' => '11111111-2222-4333-8444-000000000002']);
+        $named['rows'] = $this->rosterRows($ids);
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($named));
+        $this->assertResponseCode(201);
+        $this->assertTrue($this->body()['members']['applied']);
+        $this->assertSame(20, $this->body()['drafts_completed']);
+
+        $rows = $this->fetchTable('EventImports')->current($firstEvent)->event_import_rows;
+        $this->assertSame('Player 401', $rows[0]->raw_name);
+        $this->assertSame(
+            $members->find()->where(['game_player_id' => 401])->firstOrFail()->id,
+            $rows[0]->member_id
+        );
+        $this->assertSame('player_id', $rows[0]->match_type);
+    }
+
     public function testChestActivityNoLongerDecidesWhoIsActiveOnceARosterArrived(): void
     {
         $members = $this->fetchTable('Members');
@@ -554,6 +609,65 @@ class UploaderControllerTest extends TestCase
         $this->post('/api/v1/tournament-catalog', json_encode(['entries' => [['tournament_key' => 'x', 'image' => 'bm90IGFuIGltYWdl']]]));
         $this->assertResponseCode(422);
         unset($png);
+    }
+
+    public function testEachRankingOfATournamentHasItsOwnNameAndRewards(): void
+    {
+        $damage = 'clan_members_item_gain_tracking_final_tracker_statistic_entry:omens_damage';
+        $essence = 'clan_points_mining_tournament_clan_statistics_entry';
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournament-catalog', json_encode(['entries' => [
+            ['tournament_key' => '1033:1', 'ranking' => $damage, 'name' => 'score of Remnants of Dread in battles with Dark Omens'],
+            ['tournament_key' => '1033:1', 'ranking' => $essence, 'name' => 'contributions of Omen Essence in the Dark Omens tournament'],
+        ]]));
+        $this->assertResponseOk();
+        [$first, $second] = $this->body()['results'];
+        $this->assertTrue($first['created']);
+        $this->assertTrue($second['created'], 'same type, another ranking: another entry');
+        $this->assertNotSame($first['id'], $second['id']);
+
+        $send = function (string $uid, string $ranking): array {
+            $this->authorize($this->adminToken);
+            $this->post('/api/v1/tournaments', json_encode($this->tournamentUpload([
+                'result_uid' => $uid, 'tournament_key' => '1033:1', 'ranking' => $ranking, 'name' => '',
+            ])));
+            $this->assertResponseCode(201);
+
+            return $this->body();
+        };
+        $damageEvent = $send('dddddddd-0000-4000-8000-000000000001', $damage);
+        $this->assertSame('score of Remnants of Dread in battles with Dark Omens', $damageEvent['event_name']);
+
+        // Rewards set on the damage ranking are not copied to the essence ranking.
+        $rewards = $this->fetchTable('EventRewards');
+        $rewards->saveOrFail($rewards->newEntity([
+            'item_name' => 'Dread chests', 'quantity' => 10, 'rule' => EventReward::RULE_PROPORTIONAL,
+            'min_points' => 0, 'remainder' => EventReward::REMAINDER_KEEP, 'event_id' => $damageEvent['event_id'],
+        ], ['accessibleFields' => ['event_id' => true]]));
+
+        $essenceEvent = $send('dddddddd-0000-4000-8000-000000000002', $essence);
+        $this->assertSame('contributions of Omen Essence in the Dark Omens tournament', $essenceEvent['event_name']);
+        $this->assertSame(0, $essenceEvent['rewards_copied']);
+
+        $this->authorize($this->adminToken);
+        $this->get('/api/v1/tournaments/known');
+        $rankings = array_column($this->body()['tournaments'], 'ranking');
+        sort($rankings);
+        $this->assertSame([$damage, $essence], $rankings);
+
+        // The classic result keeps the empty ranking, whether it is sent or not.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($this->tournamentUpload(['ranking' => 'global_tournament_user_result'])));
+        $this->assertResponseCode(201);
+        $this->assertSame('', $this->fetchTable('GameTournaments')->find()->where(['game_type' => 1024])->firstOrFail()->ranking);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($this->tournamentUpload([
+            'result_uid' => 'dddddddd-0000-4000-8000-000000000003', 'ranking' => 'Not A Ranking!',
+        ])));
+        $this->assertResponseCode(422);
+        $this->assertArrayHasKey('ranking', $this->body()['errors']);
     }
 
     public function testTheApiIgnoresTheBrowserSessionAndNeedsNoCsrfToken(): void

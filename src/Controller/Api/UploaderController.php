@@ -208,6 +208,7 @@ class UploaderController extends Controller
                     $summary = $roster->apply($event, $checked['payload']['rows']);
                     $result = $service->import($event, $checked['payload'], $this->token->user_id, $this->token->id);
                     $roster->markApplied($result['import'], $summary);
+                    $result['completed'] = $service->completeDrafts($checked['payload']['rows']);
 
                     return [$result, $summary];
                 }
@@ -264,6 +265,8 @@ class UploaderController extends Controller
                     $roster = $rosterService->apply($registered['event'], $ranking['payload']['rows']);
                     $result = $service->import($registered['event'], $ranking['payload'], $this->token->user_id, $this->token->id);
                     $rosterService->markApplied($result['import'], $roster);
+                    // After the roster, so rows can also link to members it just created.
+                    $result['completed'] = $service->completeDrafts($ranking['payload']['rows']);
 
                     return [$registered, $result, $roster];
                 }
@@ -327,7 +330,7 @@ class UploaderController extends Controller
      *
      * @param \App\Service\EventImportService $service Service.
      * @param \App\Model\Entity\Event $event Event with rewards.
-     * @param array{import: \App\Model\Entity\EventImport, created: bool} $result From import().
+     * @param array{import: \App\Model\Entity\EventImport, created: bool, completed?: int} $result From import(), with the draft rows completeDrafts() changed.
      * @param array<string, mixed> $extra Fields to add.
      * @param int $status HTTP status.
      * @return \Cake\Http\Response
@@ -351,6 +354,7 @@ class UploaderController extends Controller
             'linked' => $preview['totals']['players'] - $preview['totals']['unmatched'],
             'unlinked' => $preview['totals']['unmatched'],
             'administrative' => $preview['totals']['administrative'],
+            'drafts_completed' => $result['completed'] ?? 0,
             'warnings' => array_column($preview['warnings'], 'text'),
             'review_url' => $this->reviewUrl($event),
         ], $status);

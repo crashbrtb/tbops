@@ -1,11 +1,11 @@
-# Chest Counter & Clan Bank - Total Battle Game
+# TBOps — Total Battle Clan Operations
 
-Chest counter and Clan Silver Bank management system for the Total Battle game, developed in CakePHP 5.
+Clan management system for the Total Battle game, developed in CakePHP 5.
 
-- **Chest Counter:** Collect chests via Python script, send them to MySQL, and display player scores, rankings, and cycle summaries for the clan.
+- **Chest Tracking:** Collect chests via Python script, send them to MySQL, and display player scores, rankings, and cycle summaries for the clan.
 - **Clan Silver Bank:** Complete banking system to manage clan silver, including deposits, withdrawals, player-to-player transfers, banker approval workflows, and transaction statements.
 
-**Repository:** https://github.com/crashbrtb/chestcounter.git
+**Repository:** https://github.com/crashbrtb/tbops.git
 
 ---
 
@@ -49,7 +49,7 @@ cd /var/www/html
 Clone the repository from GitHub:
 
 ```bash
-git clone https://github.com/crashbrtb/chestcounter.git .
+git clone https://github.com/crashbrtb/tbops.git .
 
 ```
 Note: The command above extracts the files to the folder you are in. If you are going to manage multiple clans, you need to create a folder for each clan.
@@ -79,13 +79,13 @@ php composer.phar install --no-dev --optimize-autoloader
 Create a MySQL database and a user with permissions:
 
 ```sql
-CREATE DATABASE chestcounter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'chestcounter_user'@'localhost' IDENTIFIED BY 'secure_password_here';
-GRANT ALL PRIVILEGES ON chestcounter.* TO 'chestcounter_user'@'localhost';
+CREATE DATABASE tbops CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'tbops_user'@'localhost' IDENTIFIED BY 'secure_password_here';
+GRANT ALL PRIVILEGES ON tbops.* TO 'tbops_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-> **Important:** Replace `chestcounter_user` and `secure_password_here` with secure credentials.
+> **Important:** Replace `tbops_user` and `secure_password_here` with secure credentials.
 
 ### 5. Configure the app_local.php File
 
@@ -115,9 +115,9 @@ return [
     'Datasources' => [
         'default' => [
             'host' => 'localhost',
-            'username' => 'chestcounter_user',
+            'username' => 'tbops_user',
             'password' => 'secure_password_here',
-            'database' => 'chestcounter',
+            'database' => 'tbops',
             'encoding' => 'utf8mb4',
         ],
     ],
@@ -250,14 +250,14 @@ Add the suggested schedule — twice a day, in UTC:
 ```cron
 CRON_TZ=UTC
 # 02:15 America/Sao_Paulo = 05:15 UTC
-15 5 * * * cd /var/www/html/chestcounter && /usr/bin/php bin/cake.php daily_maintenance >> /var/www/html/chestcounter/logs/maintenance_cron.log 2>&1
+15 5 * * * cd /var/www/html/tbops && /usr/bin/php bin/cake.php daily_maintenance >> /var/www/html/tbops/logs/maintenance_cron.log 2>&1
 # 14:15 America/Sao_Paulo = 17:15 UTC
-15 17 * * * cd /var/www/html/chestcounter && /usr/bin/php bin/cake.php daily_maintenance >> /var/www/html/chestcounter/logs/maintenance_cron.log 2>&1
+15 17 * * * cd /var/www/html/tbops && /usr/bin/php bin/cake.php daily_maintenance >> /var/www/html/tbops/logs/maintenance_cron.log 2>&1
 # Database backup at the 17:00 UTC game reset (only if you turned it on)
-0 17 * * * cd /var/www/html/chestcounter && /usr/bin/php bin/cake.php database_backup >> /var/www/html/chestcounter/logs/database_backup_cron.log 2>&1
+0 17 * * * cd /var/www/html/tbops && /usr/bin/php bin/cake.php database_backup >> /var/www/html/tbops/logs/database_backup_cron.log 2>&1
 ```
 
-> **Note:** Replace `/var/www/html/chestcounter` with the actual path to your application.
+> **Note:** Replace `/var/www/html/tbops` with the actual path to your application.
 > If your cron does not support `CRON_TZ`, drop that line and write the hours in the server's own timezone.
 
 You can test the command manually in dry-run mode (without modifying the database):
@@ -386,7 +386,7 @@ Always take a database dump (and ideally a copy of `config/app_local.php`)
 before pulling a new version:
 
 ```bash
-mysqldump -u user -p chestcounter > backup_$(date +%Y%m%d).sql
+mysqldump -u user -p tbops > backup_$(date +%Y%m%d).sql
 cp config/app_local.php config/app_local.php.bak
 ```
 
@@ -394,7 +394,7 @@ cp config/app_local.php config/app_local.php.bak
 
 ```bash
 # Go to the installation directory (one per clan, if you manage several)
-cd /var/www/html/chestcounter
+cd /var/www/html/tbops
 
 # Check which branch you are on
 git branch --show-current
@@ -463,8 +463,8 @@ chown -R username:username tmp logs
 For a routine update, the whole sequence is:
 
 ```bash
-cd /var/www/html/chestcounter
-mysqldump -u user -p chestcounter > backup_$(date +%Y%m%d).sql
+cd /var/www/html/tbops
+mysqldump -u user -p tbops > backup_$(date +%Y%m%d).sql
 git pull origin main
 composer install --no-dev --optimize-autoloader
 php bin/cake.php migrations migrate
@@ -741,7 +741,7 @@ A 500 error is one of the most common and can have several causes. Follow this c
    - Check database credentials
 
 4. **Check .htaccess:**
-   - If the application is at the **domain root**, comment or remove the line `RewriteBase /chestcounter/` in `webroot/.htaccess`
+   - If the application is at the **domain root**, comment or remove the line `RewriteBase /tbops/` in `webroot/.htaccess`
    - If it's in a **subdirectory**, adjust the `RewriteBase` to the correct path
 
 
@@ -761,7 +761,7 @@ A 500 error is one of the most common and can have several causes. Follow this c
 ## 📚 Project Structure
 
 ```
-chestcounter/
+tbops/
 ├── bin/                    # Executable scripts
 ├── config/                 # Configuration files
 │   ├── Migrations/         # Database schema migrations
@@ -818,7 +818,7 @@ rm -rf tmp/cache/*
 tail -f logs/error.log
 
 # Backup database
-mysqldump -u user -p chestcounter > backup_$(date +%Y%m%d).sql
+mysqldump -u user -p tbops > backup_$(date +%Y%m%d).sql
 ```
 
 ---

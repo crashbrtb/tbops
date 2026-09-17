@@ -38,7 +38,7 @@ $logo = (function (): string {
 
 $kingdomNumber = $readConfig('kingdom_number');
 $clanAcronym = $readConfig('clan_acronym');
-$clanName = $readConfig('clan_name', 'ChestCounter');
+$clanName = $readConfig('clan_name', 'TBOps');
 
 return [
     'CakeLte' => [
@@ -53,7 +53,7 @@ return [
             'skin' => 'blue',
         ],
         'footer' => [
-            'left' => 'ChestCounter',
+            'left' => 'TBOps',
             'right' => 'Versão 0.3'
         ],
         'sidebar' => [

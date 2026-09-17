@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $game_type
+ * @property string $ranking
  * @property string|null $name
  * @property string|null $name_source
  * @property int|null $duration_days
@@ -27,6 +28,9 @@ class GameTournament extends Entity
     public const SOURCE_JOURNAL = 'journal';
     public const SOURCE_UPLOADER = 'uploader';
     public const SOURCE_MANUAL = 'manual';
+
+    /** The ranking of a classic tournament result: the only one most types have. */
+    public const RANKING_DEFAULT = '';
 
     /** Duration assumed for a tournament whose length nobody has set. */
     public const DEFAULT_DURATION_DAYS = 1;
@@ -70,6 +74,20 @@ class GameTournament extends Entity
         return $this->name !== null && $this->name !== ''
             ? $this->name
             : __('Game tournament {0}', $this->game_type);
+    }
+
+    /**
+     * Short name of the ranking for the administration pages: the statistic
+     * when there is one, otherwise the message kind without its `_entry` ending.
+     *
+     * @return string
+     */
+    public function rankingLabel(): string
+    {
+        $ranking = (string)$this->ranking;
+        $colon = strpos($ranking, ':');
+
+        return $colon !== false ? substr($ranking, $colon + 1) : (string)preg_replace('/_entry$/', '', $ranking);
     }
 
     /**

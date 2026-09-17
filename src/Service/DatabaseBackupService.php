@@ -835,7 +835,7 @@ class DatabaseBackupService
      */
     protected function writeDefaultsFile(array $config): string
     {
-        $file = tempnam(sys_get_temp_dir(), 'chestcounter_dump_');
+        $file = tempnam(sys_get_temp_dir(), 'tbops_dump_');
         if ($file === false) {
             throw new BackupException(__('A temporary file for the database credentials could not be created.'));
         }

@@ -27,7 +27,7 @@ class GameTournamentsTable extends Table
      * @var list<string>
      */
     public const LIST_FIELDS = [
-        'id', 'game_type', 'name', 'name_source', 'duration_days', 'image_mime',
+        'id', 'game_type', 'ranking', 'name', 'name_source', 'duration_days', 'image_mime',
         'last_variant', 'first_seen_at', 'last_seen_at', 'created', 'modified',
     ];
 
@@ -84,26 +84,33 @@ class GameTournamentsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['game_type']), ['errorField' => 'game_type']);
+        $rules->add($rules->isUnique(['game_type', 'ranking']), ['errorField' => 'game_type']);
 
         return $rules;
     }
 
     /**
-     * The catalogue entry for a game type, created on first sight.
+     * The catalogue entry for one ranking of a game type, created on first sight.
      *
      * @param int $gameType Type id.
      * @param string|null $variant Rest of the key, such as `1` in `1024:1`.
      * @param \Cake\I18n\DateTime|null $seenAt When a tournament of this type ended.
+     * @param string $ranking Which ranking of the type, from normalizeRanking().
      * @return \App\Model\Entity\GameTournament
      */
-    public function touchType(int $gameType, ?string $variant = null, ?DateTime $seenAt = null): GameTournament
-    {
+    public function touchType(
+        int $gameType,
+        ?string $variant = null,
+        ?DateTime $seenAt = null,
+        string $ranking = GameTournament::RANKING_DEFAULT
+    ): GameTournament {
         /** @var \App\Model\Entity\GameTournament|null $entry */
-        $entry = $this->find('withoutImage')->where(['GameTournaments.game_type' => $gameType])->first();
+        $entry = $this->find('withoutImage')
+            ->where(['GameTournaments.game_type' => $gameType, 'GameTournaments.ranking' => $ranking])
+            ->first();
         if ($entry === null) {
             $entry = $this->newEmptyEntity();
-            $entry->set('game_type', $gameType, ['guard' => false]);
+            $entry->set(['game_type' => $gameType, 'ranking' => $ranking], ['guard' => false]);
         }
 
         if ($variant !== null && $variant !== '') {
@@ -151,6 +158,33 @@ class GameTournamentsTable extends Table
         $this->saveOrFail($entry);
 
         return true;
+    }
+
+    /**
+     * A ranking name as the uploader sends it, checked.
+     *
+     * The game names each ranking by the kind of its Journal message, followed
+     * by the statistic when it carries one: `clan_points_mining_tournament_clan_statistics_entry`,
+     * `clan_members_item_gain_tracking_final_tracker_statistic_entry:omens_damage`.
+     * Nothing, or the classic tournament result, is the default ranking.
+     *
+     * @param mixed $ranking Value sent.
+     * @return string|null The ranking, or null when it is not a valid one.
+     */
+    public static function normalizeRanking(mixed $ranking): ?string
+    {
+        if ($ranking === null) {
+            return GameTournament::RANKING_DEFAULT;
+        }
+        if (!is_string($ranking)) {
+            return null;
+        }
+        $ranking = strtolower(trim($ranking));
+        if ($ranking === '' || $ranking === 'global_tournament_user_result') {
+            return GameTournament::RANKING_DEFAULT;
+        }
+
+        return preg_match('/^[a-z0-9_]{1,80}(:[a-z0-9_]{1,39})?$/', $ranking) ? $ranking : null;
     }
 
     /**

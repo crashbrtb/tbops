@@ -297,13 +297,33 @@ class MaintenanceScheduleServiceTest extends TestCase
     }
 
     /**
+     * Test that a block written under the old chestcounter markers is still owned.
+     *
+     * @return void
+     */
+    public function testBlockWithLegacyMarkersIsStillManaged(): void
+    {
+        $block = explode("\n", $this->schedule->blockFor(['05:15']));
+        $block[0] = MaintenanceScheduleService::LEGACY_BEGIN;
+        $block[count($block) - 1] = MaintenanceScheduleService::LEGACY_END;
+        $crontab = array_merge(['MAILTO=ops@example.com'], $block);
+
+        $this->assertSame(['05:15'], $this->invoke('timesFromEntries', [
+            $this->invoke('managedBlock', [$crontab])['maintenance'],
+            'UTC',
+        ]));
+        $this->assertSame([], $this->invoke('unmanagedEntries', [$crontab]));
+        $this->assertSame(['MAILTO=ops@example.com'], $this->invoke('withoutManagedBlock', [$crontab]));
+    }
+
+    /**
      * Test that a maintenance line added by hand is reported, not adopted.
      *
      * @return void
      */
     public function testEntriesAddedByHandAreReportedSeparately(): void
     {
-        $byHand = '0 3 * * * cd /var/www/chestcounter && php bin/cake.php daily_maintenance';
+        $byHand = '0 3 * * * cd /var/www/tbops && php bin/cake.php daily_maintenance';
         $crontab = array_merge(
             [$byHand, '# 0 5 * * * php bin/cake.php daily_maintenance'],
             explode("\n", $this->schedule->blockFor(['05:15']))

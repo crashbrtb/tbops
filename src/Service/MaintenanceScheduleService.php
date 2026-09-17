@@ -72,12 +72,23 @@ class MaintenanceScheduleService
      * Fences marking the lines this page owns. Everything between them is
      * rewritten or removed wholesale; everything outside is never touched.
      */
-    public const BEGIN = '# >>> chestcounter daily_maintenance (managed from Admin > Maintenance) >>>';
+    public const BEGIN = '# >>> tbops daily_maintenance (managed from Admin > Maintenance) >>>';
 
     /**
      * @see self::BEGIN
      */
-    public const END = '# <<< chestcounter daily_maintenance <<<';
+    public const END = '# <<< tbops daily_maintenance <<<';
+
+    /**
+     * Fences written before the rename to TBOps, still recognised so the next
+     * save replaces that block instead of leaving it running beside a new one.
+     */
+    public const LEGACY_BEGIN = '# >>> chestcounter daily_maintenance (managed from Admin > Maintenance) >>>';
+
+    /**
+     * @see self::LEGACY_BEGIN
+     */
+    public const LEGACY_END = '# <<< chestcounter daily_maintenance <<<';
 
     /**
      * The backup, so its setting can decide whether the block carries its line.
@@ -633,7 +644,7 @@ class MaintenanceScheduleService
             array_pop($lines);
         }
 
-        $file = tempnam(sys_get_temp_dir(), 'chestcounter_cron_');
+        $file = tempnam(sys_get_temp_dir(), 'tbops_cron_');
         if ($file === false) {
             throw new CrontabException(__('A temporary file for the new crontab could not be created.'));
         }
@@ -677,11 +688,11 @@ class MaintenanceScheduleService
         foreach ($lines as $line) {
             $trimmed = trim($line);
 
-            if ($trimmed === self::BEGIN) {
+            if (self::isBegin($trimmed)) {
                 $inside = true;
                 continue;
             }
-            if ($trimmed === self::END) {
+            if (self::isEnd($trimmed)) {
                 $inside = false;
                 continue;
             }
@@ -774,11 +785,11 @@ class MaintenanceScheduleService
         foreach ($lines as $line) {
             $trimmed = trim($line);
 
-            if ($trimmed === self::BEGIN) {
+            if (self::isBegin($trimmed)) {
                 $inside = true;
                 continue;
             }
-            if ($trimmed === self::END) {
+            if (self::isEnd($trimmed)) {
                 $inside = false;
                 continue;
             }
@@ -797,6 +808,28 @@ class MaintenanceScheduleService
     }
 
     /**
+     * Whether a trimmed crontab line opens the managed block, old name included.
+     *
+     * @param string $line Trimmed crontab line.
+     * @return bool
+     */
+    protected static function isBegin(string $line): bool
+    {
+        return $line === self::BEGIN || $line === self::LEGACY_BEGIN;
+    }
+
+    /**
+     * Whether a trimmed crontab line closes the managed block, old name included.
+     *
+     * @param string $line Trimmed crontab line.
+     * @return bool
+     */
+    protected static function isEnd(string $line): bool
+    {
+        return $line === self::END || $line === self::LEGACY_END;
+    }
+
+    /**
      * The crontab without the managed block.
      *
      * @param array<string> $lines The whole crontab.
@@ -810,11 +843,11 @@ class MaintenanceScheduleService
         foreach ($lines as $line) {
             $trimmed = trim($line);
 
-            if ($trimmed === self::BEGIN) {
+            if (self::isBegin($trimmed)) {
                 $inside = true;
                 continue;
             }
-            if ($trimmed === self::END) {
+            if (self::isEnd($trimmed)) {
                 $inside = false;
                 continue;
             }

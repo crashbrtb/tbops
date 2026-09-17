@@ -1,9 +1,9 @@
-# de_DE translation of the Chest Counter & Clan Bank application.
+# de_DE translation of the TBOps (Total Battle Clan Operations) application.
 # Game terminology follows Total Battle.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Chest Counter\n"
+"Project-Id-Version: TBOps\n"
 "PO-Revision-Date: 2026-09-11 00:00+0000\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"

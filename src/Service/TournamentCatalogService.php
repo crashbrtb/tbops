@@ -14,7 +14,9 @@ use Throwable;
  *
  * The game only ever sends a tournament's type; its name exists on screen, in
  * the title "Your Clanmates' results in <name>". The mapper opens each result,
- * sees which type the game sends for it and reports the pair here.
+ * sees which type the game sends for it and reports the pair here. A type can
+ * have several rankings with different goals (the Dark Omens has two); each is
+ * its own entry.
  *
  * Names chosen by an administrator are never overwritten, and an image is only
  * added where the catalogue has none, so running the mapper again is harmless.
@@ -39,7 +41,7 @@ class TournamentCatalogService
     ];
 
     /**
-     * @param array<string, mixed> $data Body: `{entries: [{tournament_key|game_type, name, ended_at, image}]}`.
+     * @param array<string, mixed> $data Body: `{entries: [{tournament_key|game_type, ranking, name, ended_at, image}]}`.
      * @return array{errors: array<string, string>, results: list<array<string, mixed>>}
      */
     public function register(array $data): array
@@ -67,6 +69,11 @@ class TournamentCatalogService
                 $errors["entries.{$line}.tournament_key"] = __('The tournament type is missing or invalid.');
                 continue;
             }
+            $ranking = GameTournamentsTable::normalizeRanking($entry['ranking'] ?? null);
+            if ($ranking === null) {
+                $errors["entries.{$line}.ranking"] = __('The tournament ranking is invalid.');
+                continue;
+            }
             $name = is_string($entry['name'] ?? null) ? trim($entry['name']) : '';
             if (mb_strlen($name) > 120) {
                 $errors["entries.{$line}.name"] = __('The tournament name has more than {0} characters.', 120);
@@ -89,7 +96,7 @@ class TournamentCatalogService
                     continue;
                 }
             }
-            $clean[] = compact('type', 'variant', 'name', 'endedAt', 'image');
+            $clean[] = compact('type', 'variant', 'ranking', 'name', 'endedAt', 'image');
         }
 
         if ($errors) {
@@ -100,8 +107,8 @@ class TournamentCatalogService
         $results = [];
         $catalogue->getConnection()->transactional(function () use ($catalogue, $clean, &$results): void {
             foreach ($clean as $item) {
-                $existed = $catalogue->exists(['game_type' => $item['type']]);
-                $entry = $catalogue->touchType($item['type'], $item['variant'], $item['endedAt']);
+                $existed = $catalogue->exists(['game_type' => $item['type'], 'ranking' => $item['ranking']]);
+                $entry = $catalogue->touchType($item['type'], $item['variant'], $item['endedAt'], $item['ranking']);
                 $renamed = $item['name'] !== ''
                     && $catalogue->offerName($entry, $item['name'], GameTournament::SOURCE_JOURNAL);
 
@@ -116,6 +123,7 @@ class TournamentCatalogService
 
                 $results[] = [
                     'game_type' => $item['type'],
+                    'ranking' => $item['ranking'],
                     'id' => $entry->id,
                     'created' => !$existed,
                     'renamed' => $renamed,
