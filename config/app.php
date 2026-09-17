@@ -48,6 +48,7 @@ return [
      */
     'App' => [
         'namespace' => 'App',
+        'version' => trim((string)@file_get_contents(ROOT . DS . 'VERSION')) ?: 'unknown',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_US'),
         'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),

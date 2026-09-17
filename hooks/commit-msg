@@ -1,0 +1,40 @@
+#!/bin/sh
+# Auto-sync the VERSION file when a commit message is a bare semver string
+# (e.g. "2.1.0"), matching this repo's existing release-commit convention.
+# Normal commits (any other message) pass through untouched.
+MSG_FILE="$1"
+FIRST_LINE=$(head -n1 "$MSG_FILE" | tr -d '\r')
+
+if echo "$FIRST_LINE" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    VERSION_FILE="$(git rev-parse --show-toplevel)/VERSION"
+    CURRENT=$(cat "$VERSION_FILE" 2>/dev/null || echo "0.0.0")
+
+    IFS='.' read -r c1 c2 c3 <<EOF
+$CURRENT
+EOF
+    IFS='.' read -r n1 n2 n3 <<EOF
+$FIRST_LINE
+EOF
+
+    is_greater=0
+    if [ "$n1" -gt "$c1" ] 2>/dev/null; then
+        is_greater=1
+    elif [ "$n1" -eq "$c1" ] 2>/dev/null; then
+        if [ "$n2" -gt "$c2" ] 2>/dev/null; then
+            is_greater=1
+        elif [ "$n2" -eq "$c2" ] 2>/dev/null && [ "$n3" -gt "$c3" ] 2>/dev/null; then
+            is_greater=1
+        fi
+    fi
+
+    if [ "$is_greater" -ne 1 ]; then
+        echo "commit-msg hook: '$FIRST_LINE' is not greater than current VERSION ($CURRENT). Aborting." >&2
+        exit 1
+    fi
+
+    echo "$FIRST_LINE" > "$VERSION_FILE"
+    git add "$VERSION_FILE"
+    echo "commit-msg hook: VERSION updated to $FIRST_LINE"
+fi
+
+exit 0
