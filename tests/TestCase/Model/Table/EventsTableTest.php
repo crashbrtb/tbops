@@ -108,18 +108,19 @@ class EventsTableTest extends TestCase
     }
 
     /**
-     * A new event may not be scheduled to have already started.
+     * A new event may start in the past, as long as it still ends in the future:
+     * chests already collected inside that window are scored retroactively.
      *
      * @return void
      */
-    public function testStartDateInThePastIsRejected(): void
+    public function testStartDateInThePastIsAccepted(): void
     {
         $event = $this->Events->newEntity($this->formData([
             'starts_at' => DateTime::now()->subDays(1)->format('Y-m-d\TH:i'),
         ]));
 
-        $this->assertFalse($this->Events->save($event));
-        $this->assertArrayHasKey('startNotInPast', $event->getError('starts_at'));
+        $this->assertNotFalse($this->Events->save($event));
+        $this->assertEmpty($event->getError('starts_at'));
     }
 
     /**
