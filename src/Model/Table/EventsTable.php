@@ -394,34 +394,6 @@ class EventsTable extends Table
 
         $onSave(
             function (EntityInterface $entity) {
-                if (!$entity->get('starts_at')) {
-                    return true;
-                }
-
-                // Only a start date being *set* to the past is rejected. Leaving an
-                // already-running event's start where it is has to keep working.
-                if (!$entity->isNew() && !$entity->isDirty('starts_at')) {
-                    return true;
-                }
-
-                // A game tournament is registered after it was played.
-                if ($entity->get('criteria') === Event::CRITERIA_IMPORTED) {
-                    return true;
-                }
-
-                // A minute of slack, so a form submitted at the top of the chosen
-                // minute is not rejected by the seconds it took to press save.
-                return $entity->get('starts_at')->greaterThan(DateTime::now()->subMinutes(1));
-            },
-            'startNotInPast',
-            [
-                'errorField' => 'starts_at',
-                'message' => __('The start date must be in the future.'),
-            ]
-        );
-
-        $onSave(
-            function (EntityInterface $entity) {
                 if (!$entity->get('ends_at') || !$entity->isDirty('ends_at')) {
                     return true;
                 }

@@ -177,7 +177,7 @@ $fieldError = function (string $field) use ($event) {
                 <input type="radio" name="event_kind" value="clan" <?= $isGameEvent ? '' : 'checked' ?> <?= $isPublishedResult ? 'disabled' : '' ?> onchange="onKindChange()">
                 <span class="criteria-option-body">
                     <strong><i class="fas fa-flag"></i> <?= __('Clan event') ?></strong>
-                    <span><?= __('An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which starts in the future.') ?></span>
+                    <span><?= __('An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future.') ?></span>
                 </span>
             </label>
         </div>
@@ -236,7 +236,7 @@ $fieldError = function (string $field) use ($event) {
             <span class="utc-note"><i class="fas fa-globe"></i> UTC</span>
         </h2>
         <p class="section-hint" data-kind="clan"<?= $isGameEvent ? ' style="display: none;"' : '' ?>>
-            <?= __('Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count, and the start must be in the future.') ?>
+            <?= __('Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future.') ?>
         </p>
         <p class="section-hint" data-kind="game"<?= $isGameEvent ? '' : ' style="display: none;"' ?>>
             <?= __('The day and time the tournament ended in the game, in UTC. Past dates are accepted and nothing is counted from chests.') ?>
@@ -246,7 +246,7 @@ $fieldError = function (string $field) use ($event) {
             <div class="form-group">
                 <label for="starts-at"><?= __('Starts at (UTC)') ?></label>
                 <input type="datetime-local" class="form-control" id="starts-at" name="starts_at"
-                       value="<?= h($startsValue) ?>" <?= $isGameEvent ? '' : 'min="' . h($nowForMin) . '"' ?> step="60" required>
+                       value="<?= h($startsValue) ?>" step="60" required>
                 <?= $fieldError('starts_at') ?>
             </div>
 
@@ -506,15 +506,15 @@ $fieldError = function (string $field) use ($event) {
             el.style.display = el.getAttribute('data-kind') === (game ? 'game' : 'clan') ? '' : 'none';
         });
 
-        // A game event is dated after it was played: no lower limit on the dates.
-        ['starts-at', 'ends-at'].forEach(function (id) {
-            var input = document.getElementById(id);
-            if (game) {
-                input.removeAttribute('min');
-            } else {
-                input.setAttribute('min', NOW_FOR_MIN);
-            }
-        });
+        // The start can always be in the past. A game event is registered after it
+        // was played, so its end has no lower limit either; a clan event still has
+        // to end in the future.
+        var endsInput = document.getElementById('ends-at');
+        if (game) {
+            endsInput.removeAttribute('min');
+        } else {
+            endsInput.setAttribute('min', NOW_FOR_MIN);
+        }
 
         onCriteriaChange();
     }
