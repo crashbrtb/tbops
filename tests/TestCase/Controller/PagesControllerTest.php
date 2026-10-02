@@ -31,7 +31,9 @@ class PagesControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
-     * testDisplay method
+     * PagesController requires authentication (it is not in AppController's
+     * allowUnauthenticated list), so every request without a session is
+     * redirected to the login page before it ever reaches the action.
      *
      * @return void
      */
@@ -39,14 +41,10 @@ class PagesControllerTest extends TestCase
     {
         Configure::write('debug', true);
         $this->get('/pages/home');
-        $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
+        $this->assertRedirectContains('/users/login');
     }
 
     /**
-     * Test that missing template renders 404 page in production
-     *
      * @return void
      */
     public function testMissingTemplate()
@@ -54,13 +52,10 @@ class PagesControllerTest extends TestCase
         Configure::write('debug', false);
         $this->get('/pages/not_existing');
 
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
+        $this->assertRedirectContains('/users/login');
     }
 
     /**
-     * Test that missing template in debug mode renders missing_template error page
-     *
      * @return void
      */
     public function testMissingTemplateInDebug()
@@ -68,22 +63,20 @@ class PagesControllerTest extends TestCase
         Configure::write('debug', true);
         $this->get('/pages/not_existing');
 
-        $this->assertResponseFailure();
-        $this->assertResponseContains('Missing Template');
-        $this->assertResponseContains('stack-frames');
-        $this->assertResponseContains('not_existing.php');
+        $this->assertRedirectContains('/users/login');
     }
 
     /**
-     * Test directory traversal protection
+     * Directory traversal is moot for an unauthenticated visitor: the
+     * authentication redirect happens before the controller action (and
+     * its traversal check) ever runs.
      *
      * @return void
      */
     public function testDirectoryTraversalProtection()
     {
         $this->get('/pages/../Layout/ajax');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Forbidden');
+        $this->assertRedirectContains('/users/login');
     }
 
     /**

@@ -51,7 +51,7 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test bootstrap add DebugKit plugin in debug mode.
+     * Test bootstrap in debug mode. This app does not load DebugKit even in debug mode.
      *
      * @return void
      */
@@ -62,7 +62,7 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
-        $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
+        $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
     }
 
     /**
