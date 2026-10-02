@@ -168,6 +168,7 @@ class EventImportService
     public function import(Event $event, array $payload, ?int $userId, ?int $tokenId = null): array
     {
         $this->assertImportable($event);
+        $this->assertSamePoints($event, $payload);
 
         $imports = $this->fetchTable('EventImports');
         $hash = $this->payloadHash($payload);
@@ -221,6 +222,70 @@ class EventImportService
         });
 
         return ['import' => $import, 'created' => true];
+    }
+
+    /**
+     * Refuse any upload that would change points already received from the game.
+     *
+     * The first ranking read from the game's own data is the reference for the
+     * event, whatever happened to it since (superseded, published, taken down
+     * again). A later game upload may complete names, but must carry exactly the
+     * same players with the same points; a CSV or OCR reading cannot replace it.
+     * Changing a score would change who gets what: that is never allowed.
+     *
+     * @param \App\Model\Entity\Event $event The event.
+     * @param array{rows: list<array{position: int, points: int, game_player_id: int|null}>, capture_method: string} $payload From validate().
+     * @return void
+     * @throws \DomainException When the points differ from the game's.
+     */
+    public function assertSamePoints(Event $event, array $payload): void
+    {
+        /** @var \App\Model\Entity\EventImport|null $reference */
+        $reference = $this->fetchTable('EventImports')->find()
+            ->where(['EventImports.event_id' => $event->id, 'EventImports.capture_method' => EventImport::METHOD_PACKET])
+            ->contain(['EventImportRows'])
+            ->orderBy(['EventImports.id' => 'ASC'])
+            ->first();
+        if ($reference === null) {
+            return;
+        }
+
+        if ($payload['capture_method'] !== EventImport::METHOD_PACKET) {
+            throw new DomainException(__(
+                'The ranking of event #{0} was received from the game; a file cannot replace it.',
+                $event->event_number
+            ));
+        }
+
+        $expected = [];
+        foreach ((array)$reference->event_import_rows as $row) {
+            // original_points: what the game sent, if a correction was made by
+            // hand before points were locked.
+            $expected[$this->pointsKey($row->game_player_id, (int)$row->position)] = (int)($row->original_points ?? $row->points);
+        }
+        $received = [];
+        foreach ($payload['rows'] as $row) {
+            $received[$this->pointsKey($row['game_player_id'], (int)$row['position'])] = (int)$row['points'];
+        }
+        ksort($expected);
+        ksort($received);
+
+        if ($expected !== $received) {
+            throw new DomainException(__(
+                'The points of event #{0} were already received from the game and cannot change.',
+                $event->event_number
+            ));
+        }
+    }
+
+    /**
+     * @param int|string|null $playerId Game id.
+     * @param int $position Position, for a row without one.
+     * @return string
+     */
+    private function pointsKey(int|string|null $playerId, int $position): string
+    {
+        return $playerId !== null ? 'id' . $playerId : 'pos' . $position;
     }
 
     /**
@@ -691,7 +756,7 @@ class EventImportService
         }
 
         if (!$event->event_rewards) {
-            $out[] = ['level' => 'warning', 'text' => __('This event has no reward to split. Add one before publishing.')];
+            $out[] = ['level' => 'info', 'text' => __('This tournament has no reward: the result is published with the ranking only. Rewards can be added later by editing the event; the points stay as they are.')];
         }
 
         foreach ($this->preflightRewards($event, $rows) as $text) {
@@ -742,12 +807,12 @@ class EventImportService
                 }
             }
 
+            // The points are the game's: they are shown, never edited. A form
+            // that sends a different value is refused as a whole.
             if (array_key_exists('points', $input)) {
                 $points = $this->wholeNumber(is_string($input['points']) ? str_replace(['.', ',', ' '], '', $input['points']) : $input['points']);
-                if ($points !== null && $points !== (int)$row->points) {
-                    $original = $row->original_points ?? (int)$row->points;
-                    $row->set('points', $points, ['guard' => false]);
-                    $row->set('original_points', $points === (int)$original ? null : $original, ['guard' => false]);
+                if ($points !== (int)$row->points) {
+                    throw new DomainException(__('The points come from the game and cannot be changed.'));
                 }
             }
 
@@ -777,9 +842,6 @@ class EventImportService
     {
         if ($import->status !== EventImport::STATUS_DRAFT || $import->event_id !== $event->id) {
             throw new DomainException(__('This ranking is not a draft of this event.'));
-        }
-        if (!$event->event_rewards) {
-            throw new DomainException(__('This event has no reward to split. Add one before publishing.'));
         }
         $problems = $this->preflightRewards($event, (array)$import->event_import_rows);
         if ($problems) {
@@ -843,6 +905,109 @@ class EventImportService
         $import->set('status', EventImport::STATUS_PUBLISHED, ['guard' => false]);
 
         return count($rows);
+    }
+
+    /**
+     * Why a draft cannot be published without a human looking at it, or null
+     * when it can.
+     *
+     * The uploader asks for this when every player of the ranking had a name.
+     * The site checks again on its side: a player still known only by
+     * "id:<game id>", or not linked to any member, needs the review page.
+     *
+     * @param \App\Model\Entity\EventImport $import Draft with rows loaded.
+     * @return string|null
+     */
+    public function autoPublishBlocker(EventImport $import): ?string
+    {
+        $rows = (array)$import->event_import_rows;
+        if ($import->status !== EventImport::STATUS_DRAFT) {
+            return 'not_draft';
+        }
+        if ($rows === []) {
+            return 'empty';
+        }
+        foreach ($rows as $row) {
+            if (str_starts_with((string)$row->raw_name, MemberRosterService::PLACEHOLDER)) {
+                return 'unnamed';
+            }
+        }
+        foreach ($rows as $row) {
+            if ($row->member_id === null) {
+                return 'unlinked';
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Split the event's current rewards again over its published result.
+     *
+     * Used when an administrator edits a published tournament to add or change
+     * its rewards. The standings, and so every player's points, position and
+     * eligibility, are left exactly as they were published: only what each one
+     * receives is recalculated.
+     *
+     * @param \App\Model\Entity\Event $event Published event with its rewards loaded.
+     * @return int Allocations recorded.
+     * @throws \DomainException When the event has no published result, or a reward would go to nobody.
+     */
+    public function redistribute(Event $event): int
+    {
+        if ($event->published_at === null) {
+            throw new DomainException(__('The result of event #{0} is not published.', $event->event_number));
+        }
+
+        $standings = $this->fetchTable('EventStandings')->find()
+            ->where(['EventStandings.event_id' => $event->id])
+            ->orderBy(['EventStandings.position' => 'ASC'])
+            ->all()
+            ->toList();
+        $players = array_map(fn ($standing): array => [
+            'key' => (int)$standing->id,
+            'position' => (int)$standing->position,
+            'points' => (int)$standing->points,
+            'eligible' => (bool)$standing->eligible,
+        ], $standings);
+
+        $rewards = (array)$event->event_rewards;
+        $distribution = $this->distribution->distribute($players, $this->rewardLines($rewards));
+        $problems = [];
+        foreach ($rewards as $reward) {
+            $split = $distribution['rewards'][(int)$reward->id] ?? null;
+            if ($split !== null && $split['distributed'] === 0) {
+                $problems[] = __('Nobody qualifies for "{0}": check the eligible players and the minimum points.', $reward->item_name);
+            }
+        }
+        if ($problems) {
+            throw new DomainException(implode(' ', $problems));
+        }
+
+        $allocations = $this->fetchTable('EventRewardAllocations');
+
+        return $allocations->getConnection()->transactional(function () use ($allocations, $standings, $distribution): int {
+            $ids = array_map(fn ($standing): int => (int)$standing->id, $standings);
+            if ($ids) {
+                $allocations->deleteAll(['event_standing_id IN' => $ids]);
+            }
+
+            $recorded = 0;
+            foreach ($distribution['rewards'] as $rewardId => $split) {
+                foreach ($split['amounts'] as $standingId => $amount) {
+                    if ($amount > 0) {
+                        $allocations->saveOrFail($allocations->newEntity([
+                            'event_reward_id' => $rewardId,
+                            'event_standing_id' => $standingId,
+                            'amount' => $amount,
+                        ]));
+                        $recorded++;
+                    }
+                }
+            }
+
+            return $recorded;
+        });
     }
 
     /**

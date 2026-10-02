@@ -111,7 +111,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p class="text-danger"><?= __('No reward yet. Edit the event to add what will be split.') ?></p>
+                <p class="text-muted"><?= __('No rewards: the result is published with the ranking only. Edit the event to add rewards, even after it is published; the points do not change.') ?></p>
             <?php endif; ?>
         </div>
 
@@ -312,12 +312,8 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                                     <?php endif; ?>
                                 </td>
                                 <td class="event-points">
-                                    <?php if ($isDraft): ?>
-                                        <input type="text" inputmode="numeric" name="<?= $field('points') ?>" class="form-control form-control-sm text-right"
-                                               value="<?= h((string)$row->points) ?>">
-                                    <?php else: ?>
-                                        <?= $fmt($row->points) ?>
-                                    <?php endif; ?>
+                                    <?php /* Points come from the game and are never edited here. */ ?>
+                                    <span title="<?= h(__('Value received from the game')) ?>"><?= $fmt($row->points) ?></span>
                                     <?php if ($row->original_points !== null): ?>
                                         <small class="d-block text-warning" title="<?= h(__('Value received from the game')) ?>">
                                             <i class="fas fa-pen"></i> <?= __('was {0}', $fmt($row->original_points)) ?>
@@ -350,7 +346,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
             <?php if ($isDraft): ?>
                 <div class="event-form-actions review-actions">
                     <span class="text-muted" style="font-size: 0.85rem;">
-                        <?= __('Change the member, the prize checkbox or the points, then recalculate to see the new shares.') ?>
+                        <?= __('Change the member or the prize checkbox, then recalculate to see the new shares. The points come from the game and cannot be changed.') ?>
                     </span>
                     <button type="submit" name="intent" value="save" class="btn btn-outline-primary">
                         <i class="fas fa-calculator mr-1"></i><?= __('Save and recalculate') ?>

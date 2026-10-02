@@ -127,7 +127,7 @@ class EventsControllerImportedTest extends TestCase
         $this->assertSame(Event::STATE_AWAITING, $event->state);
     }
 
-    public function testATournamentWithoutRewardsIsRejected(): void
+    public function testATournamentCanBeCreatedWithoutRewards(): void
     {
         $this->loginAdmin();
         $this->post('/events/add', [
@@ -137,12 +137,102 @@ class EventsControllerImportedTest extends TestCase
             'ends_at' => '2026-09-01T23:59',
             'prize' => '',
             'contact_player' => 'Naughtius',
-            'event_rewards' => [['item_name' => '', 'quantity' => '']],
+            'no_rewards' => '1',
+            // Lines typed before ticking "no rewards" are dropped with it.
+            'event_rewards' => [['item_name' => 'Coins', 'quantity' => '10', 'rule' => 'equal', 'min_points' => '1', 'remainder' => 'top_ranked']],
         ]);
 
+        $event = $this->fetchTable('Events')->find()->contain(['EventRewards'])->firstOrFail();
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'review', $event->id]);
+        $this->assertSame([], $event->event_rewards);
+
+        // Its ranking can be published as it is.
+        $this->uploadCsv($event);
+        $this->loginAdmin();
+        $this->post("/events/review/{$event->id}", ['intent' => 'publish', 'rows' => []]);
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'view', $event->id]);
+        $this->assertNotNull($this->fetchTable('Events')->get($event->id)->published_at);
+
+        $this->session([]);
+        $this->get("/events/view/{$event->id}");
         $this->assertResponseOk();
-        $this->assertResponseContains('Add at least one reward');
-        $this->assertSame(0, $this->fetchTable('Events')->find()->count());
+        $this->assertResponseContains('This tournament has no rewards.');
+    }
+
+    public function testRewardsCanBeAddedToAPublishedTournamentWithoutTouchingThePoints(): void
+    {
+        $events = $this->fetchTable('Events');
+        $event = $events->newEntity([
+            'name' => 'Published bare',
+            'criteria' => Event::CRITERIA_IMPORTED,
+            'starts_at' => '2026-09-10T00:00',
+            'ends_at' => '2026-09-10T23:59',
+            'contact_player' => 'Naughtius',
+            'event_rewards' => [],
+        ]);
+        $events->saveOrFail($event);
+        $this->uploadCsv($event);
+        $this->loginAdmin();
+        $this->post("/events/review/{$event->id}", ['intent' => 'publish', 'rows' => []]);
+
+        $standings = $this->fetchTable('EventStandings');
+        $before = $standings->find()->where(['event_id' => $event->id])->orderBy(['position' => 'ASC'])
+            ->all()->combine('position', 'points')->toArray();
+        $this->assertCount(4, $before);
+
+        $this->loginAdmin();
+        $this->get("/events/edit/{$event->id}");
+        $this->assertResponseOk();
+        $this->assertResponseContains('nobody\'s points change');
+
+        $this->loginAdmin();
+        $this->post("/events/edit/{$event->id}", [
+            'name' => 'Published bare',
+            // Even a forged kind change is ignored: the result stays a tournament.
+            'criteria' => Event::CRITERIA_CHEST_SCORE,
+            'starts_at' => '2026-09-10T00:00',
+            'ends_at' => '2026-09-10T23:59',
+            'prize' => '',
+            'contact_player' => 'Naughtius',
+            // Points are not a field of this form: a forged one changes nothing.
+            'points' => 1,
+            'event_rewards' => [
+                ['item_name' => 'Coins', 'quantity' => '2', 'rule' => 'equal', 'min_points' => '1', 'remainder' => 'top_ranked'],
+            ],
+        ]);
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'review', $event->id]);
+
+        $event = $events->get($event->id, contain: ['EventRewards']);
+        $this->assertSame(Event::CRITERIA_IMPORTED, $event->criteria);
+        $this->assertNotNull($event->published_at);
+        $this->assertCount(1, $event->event_rewards);
+        $after = $standings->find()->where(['event_id' => $event->id])->orderBy(['position' => 'ASC'])
+            ->all()->combine('position', 'points')->toArray();
+        $this->assertSame($before, $after);
+
+        // Naughtius and WARLOCK each take one; Bank KOK is administrative, BENAR scored 0.
+        $result = (new \App\Service\EventImportService())->publishedResult($event);
+        $this->assertSame([$event->event_rewards[0]->id => 2], $result['totals']);
+        $this->assertSame(2, $result['recipients']);
+
+        // A reward nobody can receive is refused and the earlier one is kept.
+        $this->loginAdmin();
+        $this->post("/events/edit/{$event->id}", [
+            'name' => 'Published bare',
+            'criteria' => Event::CRITERIA_IMPORTED,
+            'starts_at' => '2026-09-10T00:00',
+            'ends_at' => '2026-09-10T23:59',
+            'prize' => '',
+            'contact_player' => 'Naughtius',
+            'event_rewards' => [
+                ['item_name' => 'Gems', 'quantity' => '5', 'rule' => 'equal', 'min_points' => '999999999999', 'remainder' => 'top_ranked'],
+            ],
+        ]);
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'edit', $event->id]);
+        $this->assertFlashElement('flash/error');
+        $kept = $events->get($event->id, contain: ['EventRewards']);
+        $this->assertSame('Coins', $kept->event_rewards[0]->item_name);
+        $this->assertSame(2, array_sum((new \App\Service\EventImportService())->publishedResult($kept)['totals']));
     }
 
     public function testUploadReviewAndPublish(): void

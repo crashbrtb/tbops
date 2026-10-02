@@ -202,14 +202,49 @@ class EventImportServiceTest extends TestCase
         $this->assertFalse($again['created']);
         $this->assertSame($first['import']->id, $again['import']->id);
 
+        // A new reading can complete a name; the points must stay the game's.
         $changed = $this->upload();
-        $changed['rows'][0]['points'] = 650;
+        $changed['rows'][1]['name'] = 'Bank KOK renamed';
         $second = $this->service->import($event, $this->service->validate($changed)['payload'], 1);
 
         $this->assertTrue($second['created']);
         $imports = $this->fetchTable('EventImports');
         $this->assertSame(EventImport::STATUS_SUPERSEDED, $imports->get($first['import']->id)->status);
         $this->assertSame($second['import']->id, $this->current($event)->id);
+    }
+
+    public function testPointsReceivedFromTheGameCanNeverChange(): void
+    {
+        $event = $this->event();
+        $this->service->import($event, $this->service->validate($this->upload())['payload'], 1);
+
+        $changed = $this->upload();
+        $changed['rows'][0]['points'] = 650;
+        try {
+            $this->service->import($event, $this->service->validate($changed)['payload'], 1);
+            $this->fail('Different points were accepted.');
+        } catch (DomainException $e) {
+            $this->assertStringContainsString('cannot change', $e->getMessage());
+        }
+
+        // Nor a player added or left out, nor a file in place of the game's data.
+        $fewer = $this->upload();
+        array_pop($fewer['rows']);
+        $csv = $this->upload();
+        $csv['capture_method'] = 'csv';
+        foreach ([$fewer, $csv] as $upload) {
+            try {
+                $this->service->import($event, $this->service->validate($upload)['payload'], 1);
+                $this->fail('The ranking was replaced.');
+            } catch (DomainException) {
+            }
+        }
+
+        // Still refused after the result was published and taken down again.
+        $this->service->publish($event, $this->current($event));
+        $this->service->unpublish($this->fetchTable('Events')->get($event->id, contain: ['EventRewards']));
+        $this->expectException(DomainException::class);
+        $this->service->import($this->fetchTable('Events')->get($event->id, contain: ['EventRewards']), $this->service->validate($changed)['payload'], 1);
     }
 
     public function testImportIsRefusedForEventsThatDoNotTakeOne(): void
@@ -259,16 +294,29 @@ class EventImportServiceTest extends TestCase
         $import = $this->current($event);
         [$naughtius, $bank, $warlock] = $import->event_import_rows;
 
+        // The points are the game's: a form that changes one is refused whole.
+        try {
+            $this->service->applyReview($import, [
+                $naughtius->id => ['eligible' => '0', 'points' => '700'],
+            ]);
+            $this->fail('A change of points was accepted.');
+        } catch (DomainException $e) {
+            $this->assertStringContainsString('cannot be changed', $e->getMessage());
+        }
+        $import = $this->current($event);
+        $this->assertSame(600, $import->event_import_rows[0]->points);
+        $this->assertTrue($import->event_import_rows[0]->eligible);
+        [$naughtius, $bank, $warlock] = $import->event_import_rows;
+
+        // The same points sent back with the form are fine; nothing else changed here.
         $changed = $this->service->applyReview($import, [
-            $naughtius->id => ['eligible' => '1', 'points' => '700'],
+            $naughtius->id => ['eligible' => '1', 'points' => '600'],
             $bank->id => ['eligible' => '0', 'member_id' => (string)$this->members['Bank KOK']],
             $warlock->id => ['eligible' => '1', 'member_id' => (string)$this->members['WARLOCK']],
         ]);
-        $this->assertSame(1, $changed);
+        $this->assertSame(0, $changed);
 
         $import = $this->current($event);
-        $this->assertSame(700, $import->event_import_rows[0]->points);
-        $this->assertSame(600, $import->event_import_rows[0]->original_points);
 
         $recorded = $this->service->publish($event, $import);
         $this->assertSame(5, $recorded);

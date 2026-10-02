@@ -24,6 +24,8 @@ class JobRunRecorder
     public const JOB_DAILY_MAINTENANCE = 'daily_maintenance';
     public const JOB_DATABASE_BACKUP = 'database_backup';
     public const JOB_TOURNAMENT_IMPORT = 'tournament_import';
+    /** The EventUploader's automatic walk through the Journal (scheduled task). */
+    public const JOB_TOURNAMENT_SEARCH = 'tournament_search';
 
     /**
      * Mark a job as started.

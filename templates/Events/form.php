@@ -111,6 +111,12 @@ $rewardLine = function (string $index, array $row) use ($ruleOptions, $remainder
 // the game, registered after it ends; a clan event is an internal challenge
 // counted from collected chests inside a window that has not started yet.
 $isGameEvent = $event->criteria === Event::CRITERIA_IMPORTED;
+// A published tournament keeps its kind and its points; only the rewards (and
+// the texts) change, and they are split again over the published result.
+$isPublishedResult = !$isNew && $isGameEvent && $event->published_at !== null;
+// "No rewards" starts ticked for a tournament saved without any, so editing it
+// does not suddenly ask for one; a new tournament starts with a line to fill.
+$noRewards = $isGameEvent && !$isNew && !array_filter($rewardRows, fn (array $r): bool => !empty($r['id']) || $r['item_name'] !== '');
 $currentCriteria = $isGameEvent || !$event->criteria ? Event::CRITERIA_CHEST_SCORE : $event->criteria;
 
 /** Renders the validation message for a field, if the save left one. */
@@ -149,19 +155,26 @@ $fieldError = function (string $field) use ($event) {
 
     <?= $this->Form->create($event, ['type' => 'file', 'id' => 'eventForm']) ?>
 
+    <?php if ($isPublishedResult): ?>
+        <div class="alert alert-info">
+            <i class="fas fa-lock mr-1"></i>
+            <?= __('The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody\'s points change.') ?>
+        </div>
+    <?php endif; ?>
+
     <!-- Kind -->
     <div class="event-form-card">
         <h2><i class="fas fa-layer-group text-primary"></i> <?= __('Event type') ?></h2>
         <div class="criteria-options">
             <label class="criteria-option">
-                <input type="radio" name="event_kind" value="game" <?= $isGameEvent ? 'checked' : '' ?> onchange="onKindChange()">
+                <input type="radio" name="event_kind" value="game" <?= $isGameEvent ? 'checked' : '' ?> <?= $isPublishedResult ? 'disabled' : '' ?> onchange="onKindChange()">
                 <span class="criteria-option-body">
                     <strong><i class="fas fa-gamepad"></i> <?= __('Game event') ?></strong>
                     <span><?= __('A tournament played in the game. It is registered after it ends, so past dates are accepted, and the EventUploader usually creates it together with the ranking.') ?></span>
                 </span>
             </label>
             <label class="criteria-option">
-                <input type="radio" name="event_kind" value="clan" <?= $isGameEvent ? '' : 'checked' ?> onchange="onKindChange()">
+                <input type="radio" name="event_kind" value="clan" <?= $isGameEvent ? '' : 'checked' ?> <?= $isPublishedResult ? 'disabled' : '' ?> onchange="onKindChange()">
                 <span class="criteria-option-body">
                     <strong><i class="fas fa-flag"></i> <?= __('Clan event') ?></strong>
                     <span><?= __('An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which starts in the future.') ?></span>
@@ -357,15 +370,28 @@ $fieldError = function (string $field) use ($event) {
                 <?= __('What the clan received for this tournament and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same. Administrative accounts never take part, and players below the minimum points are left out.') ?>
             </p>
 
-            <div id="rewardLines">
-                <?php foreach ($rewardRows as $index => $row): ?>
-                    <?= $rewardLine((string)$index, $row) ?>
-                <?php endforeach; ?>
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="no-rewards" name="no_rewards" value="1"
+                       <?= $noRewards ? 'checked' : '' ?> onchange="onNoRewardsChange()">
+                <label class="form-check-label" for="no-rewards">
+                    <?= __('This tournament has no rewards') ?>
+                </label>
+                <small class="form-text text-muted">
+                    <?= __('The result is published with the ranking only. Rewards can still be added later, even after it is published.') ?>
+                </small>
             </div>
 
-            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRewardLine()">
-                <i class="fas fa-plus mr-1"></i><?= __('Add another reward') ?>
-            </button>
+            <div id="rewardEditor"<?= $noRewards ? ' style="display: none;"' : '' ?>>
+                <div id="rewardLines">
+                    <?php foreach ($rewardRows as $index => $row): ?>
+                        <?= $rewardLine((string)$index, $row) ?>
+                    <?php endforeach; ?>
+                </div>
+
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addRewardLine()">
+                    <i class="fas fa-plus mr-1"></i><?= __('Add another reward') ?>
+                </button>
+            </div>
             <?= $fieldError('event_rewards') ?>
 
             <template id="rewardLineTemplate">
@@ -509,6 +535,13 @@ $fieldError = function (string $field) use ($event) {
                 ? <?= json_encode(__('Optional: filled in from the rewards when left empty.'), JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?>
                 : <?= json_encode(__('e.g. 500 gold for first place, 250 for second.'), JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?>;
         }
+    }
+
+    // The lines stay in the page while hidden; the server drops them when the
+    // box is ticked, so unticking it brings back whatever was typed.
+    function onNoRewardsChange() {
+        var none = document.getElementById('no-rewards').checked;
+        document.getElementById('rewardEditor').style.display = none ? 'none' : '';
     }
 
     function addRewardLine() {

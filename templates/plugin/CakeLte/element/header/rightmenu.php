@@ -174,7 +174,7 @@ endif;
 ?>
 
 <?php if (!$isLoggedIn): ?>
-    <li class="nav-item d-none d-sm-inline-block">
+    <li class="nav-item">
         <?= $this->Html->link(
             '<i class="fas fa-sign-in-alt nav-icon"></i> ' . __('Login'),
             ['controller' => 'Users', 'action' => 'login'],

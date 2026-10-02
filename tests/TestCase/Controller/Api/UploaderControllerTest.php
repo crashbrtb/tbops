@@ -375,6 +375,139 @@ class UploaderControllerTest extends TestCase
         $this->assertSame(0, $this->fetchTable('Events')->find()->count());
     }
 
+    public function testAutoPublishClosesATournamentWhereEveryoneHasANameAndMember(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+
+        $this->assertResponseCode(201);
+        $body = $this->body();
+        $this->assertTrue($body['published']);
+        $this->assertNull($body['publish_blocked']);
+        $this->assertSame(0, $body['unlinked']);
+
+        $event = $this->fetchTable('Events')->get($body['event_id']);
+        $this->assertNotNull($event->published_at, 'published even without rewards');
+        $this->assertSame(Event::STATE_FINISHED, $event->state);
+        $this->assertSame(20, $this->fetchTable('EventStandings')->find()->where(['event_id' => $event->id])->count());
+        $this->assertSame(EventImport::STATUS_PUBLISHED, $this->fetchTable('EventImports')->current($event->id)->status);
+    }
+
+    public function testAutoPublishLeavesARankingWithoutAllNamesForReview(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $ids = range(101, 120);
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows($ids, [120 => 'id:120']);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+
+        $this->assertResponseCode(201);
+        $this->assertFalse($this->body()['published']);
+        $this->assertSame('unnamed', $this->body()['publish_blocked']);
+        $event = $this->fetchTable('Events')->get($this->body()['event_id']);
+        $this->assertNull($event->published_at);
+        $this->assertSame(EventImport::STATUS_DRAFT, $this->fetchTable('EventImports')->current($event->id)->status);
+    }
+
+    public function testWithoutAutoPublishTheRankingStaysADraft(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $upload = $this->tournamentUpload();
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+
+        $this->assertResponseCode(201);
+        $this->assertFalse($this->body()['published']);
+        $this->assertNull($this->fetchTable('Events')->get($this->body()['event_id'])->published_at);
+    }
+
+    public function testResendingTheSameTournamentNeverDuplicatesNorChangesPoints(): void
+    {
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($this->tournamentUpload()));
+        $eventId = $this->body()['event_id'];
+
+        // The same result again, even with a name completed, reaches the same event.
+        $named = $this->tournamentUpload();
+        $named['rows'][2]['name'] = 'Lion II';
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($named));
+        $this->assertResponseCode(201);
+        $this->assertSame($eventId, $this->body()['event_id']);
+
+        // Different points for it are refused.
+        $changed = $this->tournamentUpload();
+        $changed['rows'][1]['points'] = 999;
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($changed));
+        $this->assertResponseCode(409);
+        $this->assertStringContainsString('cannot change', $this->body()['error']);
+
+        $this->assertSame(1, $this->fetchTable('Events')->find()->where(['game_result_uid IS NOT' => null])->count());
+    }
+
+    public function testLookupSaysWhichResultsTheSiteAlreadyHas(): void
+    {
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($this->tournamentUpload()));
+        $eventId = $this->body()['event_id'];
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments/lookup', json_encode([
+            'result_uids' => ['eede1d1c-3f13-481a-819d-51fdcebb1e54', '00000000-0000-4000-8000-000000000000', 'bad id!'],
+        ]));
+
+        $this->assertResponseOk();
+        $found = $this->body()['tournaments'];
+        $this->assertSame(['eede1d1c-3f13-481a-819d-51fdcebb1e54'], array_keys($found));
+        $this->assertSame($eventId, $found['eede1d1c-3f13-481a-819d-51fdcebb1e54']['event_id']);
+        $this->assertFalse($found['eede1d1c-3f13-481a-819d-51fdcebb1e54']['published']);
+        $this->assertTrue($found['eede1d1c-3f13-481a-819d-51fdcebb1e54']['has_draft']);
+    }
+
+    public function testOnlyACompleteSearchMovesWhereTheNextOneStops(): void
+    {
+        $this->authorize($this->adminToken);
+        $this->get('/api/v1/searches/last');
+        $this->assertResponseOk();
+        $this->assertNull($this->body()['covered_until']);
+        $this->assertNull($this->body()['latest_ended_at']);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($this->tournamentUpload()));
+        $this->authorize($this->adminToken);
+        $this->get('/api/v1/searches/last');
+        $this->assertSame('2026-09-12T17:00:26Z', $this->body()['latest_ended_at'], 'the fallback before any search');
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/searches', json_encode(['started_at' => '2026-09-20T10:00:00Z', 'complete' => true, 'reason' => 'older', 'sent' => 2]));
+        $this->assertResponseOk();
+        $this->assertSame('success', $this->body()['status']);
+
+        // Interrupted: recorded, but the next search still goes back to the 20th.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/searches', json_encode(['started_at' => '2026-09-21T10:00:00Z', 'complete' => false, 'reason' => 'stopped', 'sent' => 1]));
+        $this->assertSame('partial', $this->body()['status']);
+
+        $this->authorize($this->adminToken);
+        $this->get('/api/v1/searches/last');
+        $this->assertSame('2026-09-20T10:00:00Z', $this->body()['covered_until']);
+        $this->assertSame('partial', $this->body()['last_run']['status']);
+
+        // A clock in the future does not mark the future as searched.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/searches', json_encode(['started_at' => '2099-01-01T00:00:00Z', 'complete' => true]));
+        $this->assertLessThanOrEqual(DateTime::now()->format('Y-m-d\TH:i:s\Z'), $this->body()['covered_until']);
+    }
+
     public function testAPublishedTournamentRefusesANewRanking(): void
     {
         $this->authorize($this->adminToken);
