@@ -449,14 +449,45 @@ class EventsController extends AppController
             $data['created_by'] = $this->currentUserId();
         }
 
+        // A published game tournament stays a game tournament: its result is
+        // frozen. Its rewards can still change, and are split again over the
+        // published standings without touching anybody's points.
+        $published = !$isNew && $event->is_imported && $event->published_at !== null;
+        if ($published) {
+            $data['criteria'] = Event::CRITERIA_IMPORTED;
+        }
+
         $event = $this->Events->patchEntity($event, $data, [
             'associated' => ['EventChests', 'EventRewards'],
         ]);
 
-        if ($this->Events->save($event)) {
+        $allocations = null;
+        try {
+            $saved = $this->Events->getConnection()->transactional(function () use ($event, $published, &$allocations): bool {
+                if (!$this->Events->save($event)) {
+                    return false;
+                }
+                if ($published) {
+                    $allocations = (new EventImportService())->redistribute($event);
+                }
+
+                return true;
+            });
+        } catch (DomainException $e) {
+            // Rolled back: start again from what is stored, not from entities
+            // that were given ids the database no longer has.
+            $this->Flash->error(__('The rewards were not saved: {0}', $e->getMessage()));
+
+            return $this->redirect(['action' => 'edit', $event->id]);
+        }
+
+        if ($saved) {
             $this->Flash->success($isNew
                 ? __('Event #{0} was created.', $event->event_number)
                 : __('Event #{0} was saved.', $event->event_number));
+            if ($allocations !== null) {
+                $this->Flash->success(__('The rewards were split again over the published result; the points did not change.'));
+            }
 
             // A game tournament has nothing to show until its ranking arrives:
             // its review page is where the administrator goes next.

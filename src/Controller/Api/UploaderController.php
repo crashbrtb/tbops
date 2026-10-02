@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 
 use App\Model\Entity\ApiToken;
 use App\Model\Entity\Event;
+use App\Model\Entity\EventImport;
 use App\Model\Entity\EventReward;
 use App\Model\Entity\JobRun;
 use App\Service\EventImportService;
@@ -14,8 +15,10 @@ use App\Service\TournamentCatalogService;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\I18n\DateTime;
 use Cake\Routing\Router;
 use DomainException;
+use Throwable;
 
 /**
  * API for the EventUploader desktop tool.
@@ -26,7 +29,9 @@ use DomainException;
  *
  * The everyday call is `POST /tournaments`: the uploader sends the tournament
  * as the game identifies it plus its ranking, and the site registers the event
- * if it is new and attaches the ranking as a draft for review. The older
+ * if it is new and attaches the ranking as a draft for review; with
+ * `auto_publish: true` and every player identified, the result is published
+ * (the tournament closed) in the same call. The older
  * `events/awaiting` and `events/{id}/imports` pair serves events an
  * administrator created by hand.
  *
@@ -50,7 +55,9 @@ class UploaderController extends Controller
         // Loaded only to be told these actions need no session identity; the
         // token check in beforeFilter() is what guards them.
         $this->loadComponent('Authentication.Authentication');
-        $this->Authentication->allowUnauthenticated(['me', 'awaiting', 'import', 'tournament', 'known', 'catalog']);
+        $this->Authentication->allowUnauthenticated([
+            'me', 'awaiting', 'import', 'tournament', 'known', 'catalog', 'lookup', 'searchState', 'searchReport',
+        ]);
     }
 
     /**
@@ -217,6 +224,8 @@ class UploaderController extends Controller
             return $this->json(['error' => $e->getMessage()], 409);
         }
 
+        $result = $this->autoPublish($service, $event, $result);
+
         return $this->importResponse($service, $event, $result, ['members' => $roster], $result['created'] ? 201 : 200);
     }
 
@@ -224,7 +233,7 @@ class UploaderController extends Controller
      * Register a game tournament and its ranking in one call.
      *
      * Body (JSON): `{result_uid, tournament_key, name, ended_at, capture_method,
-     * client_version, rows: [{position, name, points, player_id, power}]}`.
+     * client_version, auto_publish, rows: [{position, name, points, player_id, power}]}`.
      * `result_uid` is the id the game gives the result in the Journal; sending
      * the same one again reaches the same event.
      *
@@ -276,6 +285,7 @@ class UploaderController extends Controller
         }
 
         $event = $registered['event'];
+        $result = $this->autoPublish($service, $event, $result);
 
         return $this->importResponse($service, $event, $result, [
             'event_id' => $event->id,
@@ -326,11 +336,216 @@ class UploaderController extends Controller
     }
 
     /**
+     * What the site already has for some game results, so the uploader sends
+     * nothing twice.
+     *
+     * Body (JSON): `{result_uids: [...]}`, at most 500. Answers
+     * `{tournaments: {uid: {event_id, event_number, event_name, published,
+     * cancelled, has_draft}}}` with only the uids the site knows.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function lookup(): Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $uids = $this->request->getData('result_uids');
+        if (!is_array($uids) || count($uids) > 500) {
+            return $this->json(['error' => __('Send result_uids as a list of at most {0} ids.', 500)], 422);
+        }
+        $uids = array_values(array_unique(array_filter(
+            $uids,
+            fn ($uid): bool => is_string($uid) && preg_match('/^[A-Za-z0-9-]{8,64}$/', $uid) === 1
+        )));
+        if ($uids === []) {
+            return $this->json(['tournaments' => (object)[]]);
+        }
+
+        $events = $this->fetchTable('Events')->find()
+            ->select(['id', 'event_number', 'name', 'game_result_uid', 'published_at', 'status'])
+            ->where(['Events.game_result_uid IN' => $uids])
+            ->all()
+            ->toList();
+
+        $drafts = [];
+        $ids = array_map(fn (Event $e): int => (int)$e->id, $events);
+        if ($ids) {
+            $drafts = $this->fetchTable('EventImports')->find()
+                ->select(['event_id'])
+                ->where(['event_id IN' => $ids, 'status' => EventImport::STATUS_DRAFT])
+                ->all()
+                ->combine('event_id', fn () => true)
+                ->toArray();
+        }
+
+        $out = [];
+        foreach ($events as $event) {
+            $out[$event->game_result_uid] = [
+                'event_id' => $event->id,
+                'event_number' => $event->event_number,
+                'event_name' => $event->name,
+                'published' => $event->published_at !== null,
+                'cancelled' => $event->status === Event::STATUS_CANCELLED,
+                'has_draft' => isset($drafts[$event->id]),
+            ];
+        }
+
+        return $this->json(['tournaments' => $out ?: (object)[]]);
+    }
+
+    /**
+     * Where the next automatic search has to go back to.
+     *
+     * `covered_until` is the start of the newest search that walked the
+     * Journal to its end, or back to where the search before it had covered,
+     * and sent everything it found. Tournaments that ended before it are on the
+     * site already. When no search ever completed, `latest_ended_at` (the end
+     * of the newest tournament on the site) is the fallback.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function searchState(): Response
+    {
+        $this->request->allowMethod(['get']);
+
+        $covered = null;
+        $runs = $this->fetchTable('JobRuns')->find()
+            ->where(['job' => JobRunRecorder::JOB_TOURNAMENT_SEARCH, 'status' => JobRun::STATUS_SUCCESS])
+            ->orderBy(['id' => 'DESC'])
+            ->limit(20)
+            ->all();
+        foreach ($runs as $run) {
+            $value = is_array($run->summary) ? ($run->summary['covered_until'] ?? null) : null;
+            if (is_string($value) && ($covered === null || strcmp($value, $covered) > 0)) {
+                $covered = $value;
+            }
+        }
+
+        $latest = $this->fetchTable('Events')->find()
+            ->select(['ends_at'])
+            ->where(['Events.game_result_uid IS NOT' => null])
+            ->orderBy(['Events.ends_at' => 'DESC'])
+            ->first();
+
+        $last = $this->fetchTable('JobRuns')->latest(JobRunRecorder::JOB_TOURNAMENT_SEARCH);
+
+        return $this->json([
+            'covered_until' => $covered,
+            'latest_ended_at' => $latest?->ends_at?->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z'),
+            'last_run' => $last === null ? null : [
+                'status' => $last->status,
+                'host' => $last->host,
+                'started_at' => $last->started_at?->toIso8601String(),
+                'summary' => $last->summary,
+            ],
+        ]);
+    }
+
+    /**
+     * Record one automatic search.
+     *
+     * Body (JSON): `{started_at, complete, reason, cards, sent, published,
+     * for_review, errors, cutoff, client_version}`. Only a complete search moves
+     * `covered_until` forward: an interrupted one is recorded as partial and the
+     * next search goes back to the same point.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function searchReport(): Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $data = $this->request->getData();
+        if (!is_array($data)) {
+            return $this->json(['error' => __('Send the search as a JSON body.')], 422);
+        }
+        try {
+            $startedAt = (new DateTime((string)($data['started_at'] ?? '')))->setTimezone('UTC');
+        } catch (Throwable) {
+            return $this->json(['error' => __('started_at is not a valid date.')], 422);
+        }
+        $now = DateTime::now();
+        if ($startedAt->greaterThan($now)) {
+            // A clock ahead of the server's must not mark the future as searched.
+            $startedAt = $now;
+        }
+
+        $complete = filter_var($data['complete'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $count = fn (string $key): int => max(0, (int)($data[$key] ?? 0));
+        $summary = [
+            'started_at' => $startedAt->format('Y-m-d\TH:i:s\Z'),
+            'complete' => $complete,
+            'reason' => mb_substr((string)($data['reason'] ?? ''), 0, 60),
+            'cutoff' => is_string($data['cutoff'] ?? null) ? mb_substr($data['cutoff'], 0, 30) : null,
+            'cards' => $count('cards'),
+            'sent' => $count('sent'),
+            'published' => $count('published'),
+            'for_review' => $count('for_review'),
+            'errors' => $count('errors'),
+            'client_version' => mb_substr((string)($data['client_version'] ?? ''), 0, 32),
+        ];
+        if ($complete) {
+            $summary['covered_until'] = $summary['started_at'];
+        }
+
+        $status = $complete ? JobRun::STATUS_SUCCESS : ($summary['sent'] > 0 ? JobRun::STATUS_PARTIAL : JobRun::STATUS_FAILED);
+        (new JobRunRecorder())->record(JobRunRecorder::JOB_TOURNAMENT_SEARCH, $status, $summary, $this->token?->name);
+
+        return $this->json(['recorded' => true, 'status' => $status, 'covered_until' => $summary['covered_until'] ?? null]);
+    }
+
+    /**
+     * Publish (close) the draft right away when the uploader asks for it and
+     * nobody in the ranking is left to identify.
+     *
+     * The uploader sends `auto_publish: true` only when every player came with
+     * a name; the site checks again (EventImportService::autoPublishBlocker()).
+     * Anything else stays a draft for the review page, as before. An event
+     * without rewards is published too: rewards can be added to it later.
+     *
+     * @param \App\Service\EventImportService $service Service.
+     * @param \App\Model\Entity\Event $event Event with rewards.
+     * @param array{import: \App\Model\Entity\EventImport, created: bool, completed?: int} $result From import().
+     * @return array{import: \App\Model\Entity\EventImport, created: bool, completed?: int, published?: bool, publish_blocked?: string|null}
+     */
+    private function autoPublish(EventImportService $service, Event $event, array $result): array
+    {
+        if (!filter_var($this->request->getData('auto_publish'), FILTER_VALIDATE_BOOLEAN)) {
+            return $result;
+        }
+
+        $import = $this->fetchTable('EventImports')->current($event->id);
+        if ($import === null) {
+            return $result;
+        }
+
+        $blocker = $service->autoPublishBlocker($import);
+        if ($blocker !== null) {
+            $result['publish_blocked'] = $blocker;
+
+            return $result;
+        }
+
+        try {
+            $service->publish($event, $import);
+        } catch (DomainException $e) {
+            // Left as a draft; the administrator finishes it from the review page.
+            $result['publish_blocked'] = $e->getMessage();
+
+            return $result;
+        }
+
+        $result['published'] = true;
+
+        return $result;
+    }
+
+    /**
      * What the uploader is told after a ranking is stored.
      *
      * @param \App\Service\EventImportService $service Service.
      * @param \App\Model\Entity\Event $event Event with rewards.
-     * @param array{import: \App\Model\Entity\EventImport, created: bool, completed?: int} $result From import(), with the draft rows completeDrafts() changed.
+     * @param array{import: \App\Model\Entity\EventImport, created: bool, completed?: int, published?: bool} $result From import(), with the draft rows completeDrafts() changed.
      * @param array<string, mixed> $extra Fields to add.
      * @param int $status HTTP status.
      * @return \Cake\Http\Response
@@ -350,6 +565,8 @@ class UploaderController extends Controller
         return $this->json($extra + [
             'import_id' => $result['import']->id,
             'created' => $result['created'],
+            'published' => $result['published'] ?? false,
+            'publish_blocked' => $result['publish_blocked'] ?? null,
             'rows' => $preview['totals']['players'],
             'linked' => $preview['totals']['players'] - $preview['totals']['unmatched'],
             'unlinked' => $preview['totals']['unmatched'],

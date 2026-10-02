@@ -5430,3 +5430,54 @@ msgstr "Envie a chave de monitoramento no cabeçalho X-Monitor-Key."
 
 msgid "Between {0} and {1} minutes."
 msgstr "Entre {0} e {1} minutos."
+
+msgid "This tournament has no reward: the result is published with the ranking only. Rewards can be added later by editing the event; the points stay as they are."
+msgstr "Este torneio não tem prêmios: o resultado é publicado só com o ranking. Dá para incluir prêmios depois, editando o evento; a pontuação não muda."
+
+msgid "The result of event #{0} is not published."
+msgstr "O resultado do evento #{0} não está publicado."
+
+msgid "The rewards were not saved: {0}"
+msgstr "Os prêmios não foram salvos: {0}"
+
+msgid "The rewards were split again over the published result; the points did not change."
+msgstr "Os prêmios foram redistribuídos sobre o resultado publicado; a pontuação não mudou."
+
+msgid "The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody's points change."
+msgstr "O resultado deste torneio já foi publicado. Aqui você pode incluir ou alterar os prêmios: eles são redistribuídos sobre o ranking publicado e a pontuação de ninguém muda."
+
+msgid "This tournament has no rewards"
+msgstr "Este torneio não tem prêmios"
+
+msgid "The result is published with the ranking only. Rewards can still be added later, even after it is published."
+msgstr "O resultado é publicado só com o ranking. Ainda dá para incluir prêmios depois, mesmo após a publicação."
+
+msgid "No rewards: the result is published with the ranking only. Edit the event to add rewards, even after it is published; the points do not change."
+msgstr "Sem prêmios: o resultado é publicado só com o ranking. Edite o evento para incluir prêmios, mesmo depois de publicado; a pontuação não muda."
+
+msgid "This tournament has no rewards."
+msgstr "Este torneio não tem prêmios."
+
+msgid "Edit rewards"
+msgstr "Editar prêmios"
+
+msgid "The ranking of event #{0} was received from the game; a file cannot replace it."
+msgstr "O ranking do evento #{0} veio do jogo; um arquivo não pode substituí-lo."
+
+msgid "The points of event #{0} were already received from the game and cannot change."
+msgstr "A pontuação do evento #{0} já foi recebida do jogo e não pode mudar."
+
+msgid "The points come from the game and cannot be changed."
+msgstr "A pontuação vem do jogo e não pode ser alterada."
+
+msgid "Change the member or the prize checkbox, then recalculate to see the new shares. The points come from the game and cannot be changed."
+msgstr "Altere o membro ou a participação no prêmio e recalcule para ver as novas partes. A pontuação vem do jogo e não pode ser alterada."
+
+msgid "Send result_uids as a list of at most {0} ids."
+msgstr "Envie result_uids como uma lista de no máximo {0} ids."
+
+msgid "Send the search as a JSON body."
+msgstr "Envie a busca como um corpo JSON."
+
+msgid "started_at is not a valid date."
+msgstr "started_at não é uma data válida."

@@ -55,6 +55,11 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                     ['action' => 'review', $event->id],
                     ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
                 ) ?>
+                <?= $this->Html->link(
+                    '<i class="fas fa-coins mr-1"></i>' . __('Edit rewards'),
+                    ['action' => 'edit', $event->id],
+                    ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
+                ) ?>
             <?php endif; ?>
         </div>
     </div>
@@ -108,14 +113,18 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
     <div class="event-info-grid">
         <div class="event-info-card is-prize">
             <h3><i class="fas fa-coins"></i> <?= __('Rewards') ?></h3>
-            <ul class="review-reward-list">
-                <?php foreach ($rewards as $reward): ?>
-                    <li>
-                        <strong><?= $fmt($result['totals'][$reward->id] ?? 0) ?> &times; <?= h($reward->item_name) ?></strong>
-                        <span class="text-muted">&middot; <?= h(EventReward::ruleOptions()[$reward->rule] ?? $reward->rule) ?></span>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <?php if ($rewards): ?>
+                <ul class="review-reward-list">
+                    <?php foreach ($rewards as $reward): ?>
+                        <li>
+                            <strong><?= $fmt($result['totals'][$reward->id] ?? 0) ?> &times; <?= h($reward->item_name) ?></strong>
+                            <span class="text-muted">&middot; <?= h(EventReward::ruleOptions()[$reward->rule] ?? $reward->rule) ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p class="text-muted"><?= __('This tournament has no rewards.') ?></p>
+            <?php endif; ?>
         </div>
         <div class="event-info-card is-contact">
             <h3><i class="fas fa-user-check"></i> <?= __('Who hands out the rewards') ?></h3>

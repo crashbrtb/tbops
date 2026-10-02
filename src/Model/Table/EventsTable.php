@@ -247,12 +247,16 @@ class EventsTable extends Table
             $data['custom_metric'] = Event::METRIC_SCORE;
         }
 
-        // Rewards, likewise, belong to game tournaments only.
+        // Rewards, likewise, belong to game tournaments only, and a tournament
+        // can be registered without any ("no rewards" on the form): its result
+        // is then published with the ranking alone.
         if (isset($data['criteria'])) {
-            $data['event_rewards'] = $data['criteria'] === Event::CRITERIA_IMPORTED
+            $noRewards = !empty($data['no_rewards']);
+            $data['event_rewards'] = $data['criteria'] === Event::CRITERIA_IMPORTED && !$noRewards
                 ? $this->normalizeRewards($data['event_rewards'] ?? [])
                 : [];
         }
+        unset($data['no_rewards']);
     }
 
     /**
@@ -446,24 +450,6 @@ class EventsTable extends Table
             [
                 'errorField' => 'event_chests',
                 'message' => __('Pick at least one chest for a custom chest event.'),
-            ]
-        );
-
-        $onSave(
-            function (EntityInterface $entity, array $options) {
-                // The uploader may register a tournament of a new type before
-                // anyone has said what it pays; publishing is refused until the
-                // rewards are there, so only the form insists on them up front.
-                if ($entity->get('criteria') !== Event::CRITERIA_IMPORTED || !empty($options['allowNoRewards'])) {
-                    return true;
-                }
-
-                return !empty($entity->get('event_rewards'));
-            },
-            'rewardsGiven',
-            [
-                'errorField' => 'event_rewards',
-                'message' => __('Add at least one reward to split among the players.'),
             ]
         );
 

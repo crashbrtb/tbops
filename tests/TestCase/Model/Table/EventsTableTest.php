@@ -277,8 +277,8 @@ class EventsTableTest extends TestCase
 
     /**
      * A game tournament is registered after it was played: past dates are
-     * accepted, the prize text is written from the rewards, and at least one
-     * reward is required.
+     * accepted, the prize text is written from the rewards, and rewards are
+     * optional: a tournament can have none.
      *
      * @return void
      */
@@ -292,8 +292,16 @@ class EventsTableTest extends TestCase
         ]);
 
         $withoutRewards = $this->Events->newEntity($data);
-        $this->assertFalse($this->Events->save($withoutRewards));
-        $this->assertArrayHasKey('event_rewards', $withoutRewards->getErrors());
+        $this->Events->saveOrFail($withoutRewards);
+        $this->assertSame([], $withoutRewards->event_rewards);
+        $this->assertSame('', $withoutRewards->prize);
+
+        // "No rewards" ticked on the form drops any line typed before.
+        $ticked = $this->Events->newEntity($data + ['no_rewards' => '1', 'event_rewards' => [
+            ['item_name' => 'Coins', 'quantity' => '5', 'rule' => 'equal'],
+        ]]);
+        $this->Events->saveOrFail($ticked);
+        $this->assertSame([], $ticked->event_rewards);
 
         $event = $this->Events->newEntity($data + ['event_rewards' => [
             ['item_name' => 'Coins', 'quantity' => '2.000', 'rule' => 'equal'],

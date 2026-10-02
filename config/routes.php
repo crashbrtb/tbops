@@ -66,6 +66,11 @@ return function (RouteBuilder $routes): void {
         // and attaches the ranking as a draft.
         $builder->connect('/tournaments', ['controller' => 'Uploader', 'action' => 'tournament']);
         $builder->connect('/tournaments/known', ['controller' => 'Uploader', 'action' => 'known']);
+        // Which results the site already has, so nothing is sent twice.
+        $builder->connect('/tournaments/lookup', ['controller' => 'Uploader', 'action' => 'lookup']);
+        // The automatic search: how far back to look, and what each run covered.
+        $builder->connect('/searches/last', ['controller' => 'Uploader', 'action' => 'searchState']);
+        $builder->connect('/searches', ['controller' => 'Uploader', 'action' => 'searchReport']);
         // The tournament mapper reports the names it reads off the Journal.
         $builder->connect('/tournament-catalog', ['controller' => 'Uploader', 'action' => 'catalog']);
         $builder->connect(

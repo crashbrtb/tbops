@@ -11,6 +11,16 @@ $this->Breadcrumbs->add([
 ]);
 ?>
 
+<style>
+    .members-table .troop-badges {
+        white-space: normal;
+    }
+    .members-table .troop-badges .badge {
+        display: inline-block;
+        margin: 1px 2px;
+    }
+</style>
+
 <div class="content-page-wrap">
     <div class="score-toolbar">
         <div class="score-title-group">
@@ -55,16 +65,13 @@ $this->Breadcrumbs->add([
             </div>
         </div>
 
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover text-nowrap">
+        <div class="card-body p-0">
+            <table class="table table-hover members-table mb-0">
                 <thead>
                     <tr>
                         <th><?= $this->Paginator->sort('player', __('Player')) ?></th>
                         <th><?= $this->Paginator->sort('power', __('Power')) ?></th>
-                        <th><?= $this->Paginator->sort('guards', __('Guards')) ?></th>
-                        <th><?= $this->Paginator->sort('specialists', __('Specialists')) ?></th>
-                        <th><?= $this->Paginator->sort('monsters', __('Monsters')) ?></th>
-                        <th><?= $this->Paginator->sort('engineers', __('Engineers')) ?></th>
+                        <th><?= __('Troops') ?></th>
                         <th><?= $this->Paginator->sort('active', __('Status')) ?></th>
                         <th><?= $this->Paginator->sort('administrative_account', __('Tournament Rewards')) ?></th>
                         <th class="actions text-right"><?= __('Actions') ?></th>
@@ -73,7 +80,7 @@ $this->Breadcrumbs->add([
                 <tbody>
                     <?php if (empty($members) || count($members) === 0): ?>
                         <tr>
-                            <td colspan="9" class="text-center text-muted py-4">
+                            <td colspan="6" class="text-center text-muted py-4">
                                 <i class="fas fa-users-slash fa-2x mb-2 d-block"></i>
                                 <?= __('No clan members found.') ?>
                             </td>
@@ -83,29 +90,26 @@ $this->Breadcrumbs->add([
                             <tr class="<?= !$member->active ? 'table-secondary text-muted' : '' ?>">
                                 <td class="font-weight-bold">
                                     <?= h($member->player) ?>
-                                    <?php if (!empty($member->game_player_id)): ?>
-                                        <span class="badge badge-light border ml-1 font-weight-normal" title="<?= __('Game Player ID: {0}', $member->game_player_id) ?>">
-                                            <i class="fas fa-gamepad text-primary mr-1"></i><?= h($member->game_player_id) ?>
-                                        </span>
-                                    <?php endif; ?>
                                 </td>
-                                <td>
+                                <td class="text-nowrap">
                                     <span class="font-weight-bold text-primary">
                                         <?= $this->Number->format($member->power) ?>
                                     </span>
                                 </td>
-                                <td><span class="badge badge-light border">G<?= $this->Number->format($member->guards) ?></span></td>
-                                <td><span class="badge badge-light border">S<?= $this->Number->format($member->specialists) ?></span></td>
-                                <td><span class="badge badge-light border">M<?= $this->Number->format($member->monsters) ?></span></td>
-                                <td><span class="badge badge-light border">E<?= $this->Number->format($member->engineers) ?></span></td>
-                                <td>
+                                <td class="troop-badges">
+                                    <span class="badge badge-light border" title="<?= __('Guards') ?>">G<?= $this->Number->format($member->guards) ?></span>
+                                    <span class="badge badge-light border" title="<?= __('Specialists') ?>">S<?= $this->Number->format($member->specialists) ?></span>
+                                    <span class="badge badge-light border" title="<?= __('Monsters') ?>">M<?= $this->Number->format($member->monsters) ?></span>
+                                    <span class="badge badge-light border" title="<?= __('Engineers') ?>">E<?= $this->Number->format($member->engineers) ?></span>
+                                </td>
+                                <td class="text-nowrap">
                                     <?php if ($member->active): ?>
                                         <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i> <?= __('Active') ?></span>
                                     <?php else: ?>
                                         <span class="badge badge-secondary"><i class="fas fa-user-slash mr-1"></i> <?= __('Inactive') ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td>
+                                <td class="text-nowrap">
                                     <?= $this->Form->postLink(
                                         $member->administrative_account
                                             ? '<span class="badge badge-secondary" title="' . __('Mark as a player who receives rewards') . '"><i class="fas fa-user-shield mr-1"></i>' . __('Administrative') . '</span>'
@@ -119,7 +123,7 @@ $this->Breadcrumbs->add([
                                         ]
                                     ) ?>
                                 </td>
-                                <td class="actions text-right">
+                                <td class="actions text-right text-nowrap">
                                     <?= $this->Html->link(
                                         '<i class="fas fa-eye"></i>',
                                         ['action' => 'view', $member->id],
