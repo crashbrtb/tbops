@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Service\ChestGoalService;
 use App\Service\GoalPenaltyService;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query\SelectQuery;
@@ -129,8 +130,9 @@ class PlayerCycleSummariesTable extends Table
      *
      * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle period.
      * @param \Cake\I18n\FrozenTime $cycleEnd End of the cycle period.
-     * @param int $minimumRequiredScore Minimum score to consider goal achieved; a player under the
-     *   goal penalty on the total score is judged by the raised goal instead.
+     * @param int $minimumRequiredScore Unused: each player is judged by their own chest score goal
+     *   (ChestGoalService, by guard level when so configured), or by the raised goal when the goal
+     *   penalty applies to it. Kept so existing callers do not break.
      * @param bool $forceReprocess If true, deletes existing summaries for this cycle before reprocessing.
      * @return array{processed: int, errors: int, skipped: bool} Result of the processing.
      */
@@ -156,16 +158,20 @@ class PlayerCycleSummariesTable extends Table
 
         $playerSummaries = $this->scoresForDateRange($cycleStart, $cycleEnd);
 
-        // Players who missed the goal in the previous cycle carry a raised one in this cycle
-        $penaltyGoals = (new GoalPenaltyService())->goalsForCycle($cycleStart);
+        // Each player's goal (by guard level when so configured); players who missed the goal
+        // in the previous cycle carry a raised one in this cycle
+        $goals = new ChestGoalService();
+        $penaltyGoals = (new GoalPenaltyService($goals))->goalsForCycle($cycleStart);
 
         // Save summaries
         $processedCount = 0;
         $errorCount = 0;
 
         foreach ($playerSummaries as $playerName => $data) {
+            $playerName = (string)$playerName;
             $raised = $penaltyGoals[$playerName] ?? [];
-            $requiredScore = $raised[GoalPenaltyService::TARGET_TOTAL] ?? $minimumRequiredScore;
+            $baseGoals = $goals->goalsFor($playerName);
+            $requiredScore = $raised[GoalPenaltyService::TARGET_TOTAL] ?? $baseGoals[ChestGoalService::TARGET_TOTAL];
             $goalAchieved = $data['total_score'] >= $requiredScore;
             $fineDue = !$goalAchieved;
 
@@ -176,6 +182,9 @@ class PlayerCycleSummariesTable extends Table
                 'total_chests' => $data['total_chests'],
                 'total_score' => $data['total_score'],
                 'epic_crypt_score' => $data['epic_crypt_score'],
+                'guard_level' => $goals->guardLevel($playerName),
+                'chest_goal' => $baseGoals[ChestGoalService::TARGET_TOTAL],
+                'epic_goal' => $baseGoals[ChestGoalService::TARGET_EPIC],
                 'penalty_goal' => $raised[GoalPenaltyService::TARGET_TOTAL] ?? null,
                 'penalty_epic_goal' => $raised[GoalPenaltyService::TARGET_EPIC] ?? null,
                 'penalty_target' => GoalPenaltyService::targetLabel($raised),

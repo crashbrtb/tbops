@@ -4648,21 +4648,6 @@ msgstr "Событие #{0} создано на основе #{1}. Провер�
 msgid "The event could not be duplicated: {0}"
 msgstr "Не удалось скопировать событие: {0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "Выберите CSV-файл рейтинга для загрузки."
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "Файл слишком велик для рейтинга максимум из {0} игроков."
-
-msgid "The ranking was not accepted: {0}"
-msgstr "Рейтинг не принят: {0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "Получен рейтинг из {0} игрок(ов). Проверьте его ниже."
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "Этот рейтинг совпадает с текущим черновиком; ничего не изменилось."
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "Передайте API-токен в заголовке Authorization: Bearer <token>."
 
@@ -4800,21 +4785,6 @@ msgstr "Получен {0} UTC от {1}"
 
 msgid "In the game: {0}"
 msgstr "В игре: {0}"
-
-msgid "Send a ranking"
-msgstr "Отправить рейтинг"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "EventUploader отправляет его прямо из игры. Без него загрузите ranking.csv, который экспортирует инструмент поиска."
-
-msgid "Replace with this file"
-msgstr "Заменить этим файлом"
-
-msgid "Upload CSV"
-msgstr "Загрузить CSV"
-
-msgid "Tokens for the EventUploader"
-msgstr "Токены для EventUploader"
 
 msgid "{0} taking part in the prize"
 msgstr "{0} участвуют в распределении"
@@ -5316,8 +5286,6 @@ msgstr "Отправьте ключ мониторинга в заголовке
 msgid "Between {0} and {1} minutes."
 msgstr "От {0} до {1} минут."
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "Игрокам, не выполнившим цель в прошлом цикле, цель в этом цикле повышается на {0}% (с округлением вверх)."
 
@@ -5330,8 +5298,6 @@ msgstr "Штраф за цель: +{0}% к цели по очкам сундук
 msgid "Players with a raised goal: {0}"
 msgstr "Игроков с повышенной целью: {0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "Штрафы за цель"
 
@@ -5343,7 +5309,6 @@ msgstr "Цель по очкам сундуков"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "У игроков, не выполнивших цель в прошлом цикле, в этом цикле цель повышена. Освободите игрока здесь, если есть уважительная причина."
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}: {1} очков, повышается на {2}% до {3} очков для не выполнивших её."
@@ -5362,7 +5327,6 @@ msgstr "В этом цикле ни у кого нет повышенной це
 
 msgid "Previous cycle (score / goal)"
 msgstr "Прошлый цикл (очки / цель)"
-
 
 msgid "Release"
 msgstr "Освободить"
@@ -5456,3 +5420,240 @@ msgstr "Штраф за цель: +{0}% к цели по очкам сундук
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "Повышенная цель в этом цикле: {0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "Цель: {0} очков сундуков, {1} очков эпических сундуков"
+
+msgid "Guards G{0}"
+msgstr "Стражники G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "Уровень стражников неизвестен (G0): самая высокая цель"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "Цель по очкам сундуков / Цель по эпическим сундукам"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0 (неизвестно): самая высокая цель"
+
+msgid "Goals by guard level"
+msgstr "Цели по уровню стражников"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "Цели по уровню стражников: каждая ячейка окрашена по цели, которая была у игрока в том цикле."
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "Цели по уровню стражников: каждый результат оценивается по цели, которая была у игрока в том цикле."
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "Цель в этом цикле: {0} очков сундуков, {1} очков эпических сундуков"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}: цель уровня стражников игрока, повышенная на {1}% для тех, кто её не выполнил."
+
+msgid "General settings"
+msgstr "Общие настройки"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "Данные клана, оформление, резервные копии и все параметры без отдельного раздела."
+
+msgid "Bank settings"
+msgstr "Настройки банка"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "Включён ли банк и какая комиссия взимается за каждый тип операции."
+
+msgid "Chest settings"
+msgstr "Настройки сундуков"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "Циклы, цели по сундукам, штраф за цель и цвета результатов."
+
+msgid "Chest goals"
+msgstr "Цели по сундукам"
+
+msgid "How goals are set"
+msgstr "Как задаются цели"
+
+msgid "Global goal: the same goal for every player"
+msgstr "Общая цель: одна цель для всех игроков"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "Индивидуальная цель по уровню стражников: каждый игрок получает цель своего уровня стражников (G1–G9) из профиля участника"
+
+msgid "Global {0}"
+msgstr "Общая {0}"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "При целях по уровню стражников для уровней, оставленных пустыми ниже, используется общая цель."
+
+msgid "Global ({0})"
+msgstr "Общая ({0})"
+
+msgid "Guard level not identified"
+msgstr "Уровень стражников не определён"
+
+msgid "Highest goal: {0}"
+msgstr "Самая высокая цель: {0}"
+
+msgid "Highest goal"
+msgstr "Самая высокая цель"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0 означает, что уровень стражников не был определён. Такие игроки, а также игроки без профиля участника, получают самую высокую цель таблицы."
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "Каждый закрытый цикл хранит цель, которая была у игрока, поэтому последующее изменение уровня не переписывает историю. Штраф за цель повышает собственную цель игрока."
+
+msgid "Save Chest Goals"
+msgstr "Сохранить цели по сундукам"
+
+msgid "Chest goals saved."
+msgstr "Цели по сундукам сохранены."
+
+msgid "Choose how the chest goals are set."
+msgstr "Выберите, как задаются цели по сундукам."
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "Общие цели должны быть целыми числами не меньше 0."
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}: цель должна быть целым числом не меньше 0 или оставаться пустой."
+
+msgid "System"
+msgstr "Система"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "События из игры создаёт EventUploader, а не эта форма."
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "Награды и цель заново применены к записанному результату; очки не изменились."
+
+msgid "By position"
+msgstr "По месту"
+
+msgid "#{0} {1}"
+msgstr "{0}-е {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "Укажите количество для каждого места, начиная с лучшего, например 500; 250; 100."
+
+msgid "Describe the prize, or add a reward line."
+msgstr "Опишите приз или добавьте строку награды."
+
+msgid "The goal must be a whole number."
+msgstr "Цель должна быть целым числом."
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "Укажите цель или выберите «Без цели»."
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "Никто не выполнил цель, а цель обязательна: награды остаются у клана."
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "{0} игрок(ов) без известного уровня стражников получают самую высокую цель: {1}."
+
+msgid "Amount per place"
+msgstr "Количество за место"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "1-е; 2-е; 3-е... напр. 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "Турнир, сыгранный в игре и записанный EventUploader вместе с рейтингом. Здесь можно изменить название, даты, награды и цель."
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "Внутреннее соревнование по склепам и эпическим монстрам. Считаются сундуки, собранные в его период; он может начаться в прошлом, но должен закончиться в будущем."
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "События из игры здесь не создаются: EventUploader записывает каждый турнир вместе с рейтингом."
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "Что раздаётся и как делится. Пропорционально — каждому по его доле очков; поровну — всем одинаково; по месту — фиксированное количество за каждое место (1-е, 2-е, 3-е...). Служебные аккаунты никогда не участвуют, а игроки ниже минимума очков исключаются."
+
+msgid "This event has no rewards"
+msgstr "У этого события нет наград"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "Опишите приз словами ниже. Награды можно добавить и позже, даже после записи результата."
+
+msgid "Event goal"
+msgstr "Цель события"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "Что каждый игрок должен набрать в этом турнире. Новые турниры начинаются с цели по умолчанию из Каталога турниров."
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "Что каждый игрок должен набрать в этом событии, в тех же единицах, что и рейтинг. Цель может быть общей или зависеть от уровня стражников в профиле участника."
+
+msgid "points of the ranking"
+msgstr "очки рейтинга"
+
+msgid "Goal reached"
+msgstr "Цель выполнена"
+
+msgid "only they share the rewards"
+msgstr "только они делят награды"
+
+msgid "the goal does not decide the rewards"
+msgstr "цель не влияет на награды"
+
+msgid "Goal"
+msgstr "Цель"
+
+msgid "What each player receives is in the ranking below."
+msgstr "Что получает каждый игрок — в рейтинге ниже."
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "Рейтинг ниже показывает, что получил бы каждый игрок, если бы событие закончилось сейчас. Служебные аккаунты никогда не получают награду."
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "Служебный аккаунт: в рейтинге, но без награды"
+
+msgid "Default goal"
+msgstr "Цель по умолчанию"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "Каждое новое событие этого турнира, отправленное EventUploader, начинается с этой цели. Её можно изменить в каждом событии до публикации результата."
+
+msgid "No goal"
+msgstr "Без цели"
+
+msgid "Individual goal by guard level"
+msgstr "Индивидуальная цель по уровню стражников"
+
+msgid "Goal not reached"
+msgstr "Цель не выполнена"
+
+msgid "Goal ({0})"
+msgstr "Цель ({0})"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "Цель для незаполненных уровней ({0})"
+
+msgid "Same as blank levels"
+msgstr "Как у незаполненных"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "Для получения награды нужно выполнить цель"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "Не выполнившие цель остаются в рейтинге, но награды делятся только между выполнившими. Награда по месту достаётся лучшим из выполнивших цель."
+
+msgid "Each player has the goal of their guard level:"
+msgstr "У каждого игрока цель его уровня стражников:"
+
+msgid "{0} points for every player."
+msgstr "{0} очков для каждого игрока."
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "Для награды нужно выполнить цель: награды делятся только между игроками, которые её выполнили."
+
+msgid "The goal does not decide the rewards."
+msgstr "Цель не влияет на награды."
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "Выполнили {0} из {1} игрок(ов)."

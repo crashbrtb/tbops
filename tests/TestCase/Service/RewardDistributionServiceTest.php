@@ -169,4 +169,57 @@ class RewardDistributionServiceTest extends TestCase
         $this->assertSame(400, $result['eligible_points']);
         $this->assertSame(['p1' => 75.0, 'p2' => 25.0], $result['participation']);
     }
+
+    public function testByPositionGivesEachPlaceItsAmount(): void
+    {
+        $players = $this->ranking([[900, true], [500, true], [100, true], [50, true]]);
+
+        $result = $this->service->split($players, [
+            'quantity' => 850, 'rule' => EventReward::RULE_POSITION, 'positions' => [500, 250, 100],
+        ]);
+
+        $this->assertSame(['p1' => 500, 'p2' => 250, 'p3' => 100, 'p4' => 0], $result['amounts']);
+        $this->assertSame(850, $result['distributed']);
+        $this->assertSame(0, $result['leftover']);
+    }
+
+    public function testByPositionCountsPlacesAmongRecipientsOnly(): void
+    {
+        // The best placed is an administrative account: first place goes to the next.
+        $players = $this->ranking([[900, false], [500, true], [100, true]]);
+
+        $result = $this->service->split($players, [
+            'quantity' => 750, 'rule' => EventReward::RULE_POSITION, 'positions' => [500, 250],
+        ]);
+
+        $this->assertSame(['p1' => 0, 'p2' => 500, 'p3' => 250], $result['amounts']);
+    }
+
+    public function testByPositionKeepsThePlacesNobodyFills(): void
+    {
+        $players = $this->ranking([[900, true]]);
+
+        $result = $this->service->split($players, [
+            'quantity' => 850, 'rule' => EventReward::RULE_POSITION, 'positions' => [500, 250, 100],
+        ]);
+
+        $this->assertSame(['p1' => 500], $result['amounts']);
+        $this->assertSame(350, $result['leftover']);
+    }
+
+    public function testPlayersWhoAreNotQualifiedTakeNoPart(): void
+    {
+        // p1 missed a required goal: proportional and position rewards skip them.
+        $players = $this->ranking([[900, true], [300, true], [100, true]]);
+        $players[0]['qualified'] = false;
+
+        $proportional = $this->service->split($players, ['quantity' => 40, 'rule' => EventReward::RULE_PROPORTIONAL]);
+        $this->assertSame(['p1' => 0, 'p2' => 30, 'p3' => 10], $proportional['amounts']);
+        $this->assertSame(2, $proportional['recipients']);
+
+        $byPosition = $this->service->split($players, [
+            'quantity' => 15, 'rule' => EventReward::RULE_POSITION, 'positions' => [10, 5],
+        ]);
+        $this->assertSame(['p1' => 0, 'p2' => 10, 'p3' => 5], $byPosition['amounts']);
+    }
 }

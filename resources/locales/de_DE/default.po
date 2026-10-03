@@ -4648,21 +4648,6 @@ msgstr "Event #{0} wurde aus #{1} erstellt. Prüfe Namen und Datum."
 msgid "The event could not be duplicated: {0}"
 msgstr "Das Event konnte nicht dupliziert werden: {0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "Wähle die CSV-Datei der Rangliste zum Hochladen."
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "Die Datei ist zu groß für eine Rangliste mit höchstens {0} Spielern."
-
-msgid "The ranking was not accepted: {0}"
-msgstr "Die Rangliste wurde nicht angenommen: {0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "Rangliste mit {0} Spieler(n) empfangen. Prüfe sie unten."
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "Diese Rangliste entspricht dem aktuellen Entwurf; nichts wurde geändert."
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "Sende den API-Token im Authorization-Header: Bearer <token>."
 
@@ -4800,21 +4785,6 @@ msgstr "Empfangen {0} UTC von {1}"
 
 msgid "In the game: {0}"
 msgstr "Im Spiel: {0}"
-
-msgid "Send a ranking"
-msgstr "Rangliste senden"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "Der EventUploader sendet sie direkt aus dem Spiel. Ohne ihn lade die ranking.csv hoch, die das Erkundungswerkzeug exportiert."
-
-msgid "Replace with this file"
-msgstr "Durch diese Datei ersetzen"
-
-msgid "Upload CSV"
-msgstr "CSV hochladen"
-
-msgid "Tokens for the EventUploader"
-msgstr "Tokens für den EventUploader"
 
 msgid "{0} taking part in the prize"
 msgstr "{0} nehmen an der Belohnung teil"
@@ -5316,8 +5286,6 @@ msgstr "Senden Sie den Überwachungsschlüssel im Header X-Monitor-Key."
 msgid "Between {0} and {1} minutes."
 msgstr "Zwischen {0} und {1} Minuten."
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "Spieler, die das Ziel im vorherigen Zyklus verfehlt haben, erhalten in diesem Zyklus ein um {0} % erhöhtes Ziel (aufgerundet)."
 
@@ -5330,8 +5298,6 @@ msgstr "Zielstrafe: +{0} % auf das Truhenpunkte-Ziel"
 msgid "Players with a raised goal: {0}"
 msgstr "Spieler mit erhöhtem Ziel: {0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "Zielstrafen"
 
@@ -5343,7 +5309,6 @@ msgstr "Truhenpunkte-Ziel"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "Spieler, die das Ziel im vorherigen Zyklus verfehlt haben, haben in diesem Zyklus ein erhöhtes Ziel. Gib einen Spieler hier frei, wenn es einen guten Grund gibt."
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}: {1} Punkte, um {2} % auf {3} Punkte erhöht für Spieler, die es verfehlt haben."
@@ -5362,7 +5327,6 @@ msgstr "Niemand hat in diesem Zyklus ein erhöhtes Ziel."
 
 msgid "Previous cycle (score / goal)"
 msgstr "Vorheriger Zyklus (Punkte / Ziel)"
-
 
 msgid "Release"
 msgstr "Freigeben"
@@ -5456,3 +5420,240 @@ msgstr "Zielstrafe: +{0} % auf das Truhenpunkte-Ziel und das Ziel für epische T
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "Erhöhtes Ziel in diesem Zyklus: {0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "Ziel: {0} Truhenpunkte, {1} Punkte für epische Truhen"
+
+msgid "Guards G{0}"
+msgstr "Gardisten G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "Gardistenstufe unbekannt (G0): höchstes Ziel"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "Truhenpunkte-Ziel / Ziel für epische Truhen"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0 (unbekannt): höchstes Ziel"
+
+msgid "Goals by guard level"
+msgstr "Ziele nach Gardistenstufe"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "Ziele nach Gardistenstufe: Jede Zelle wird nach dem Ziel gefärbt, das der Spieler in diesem Zyklus hatte."
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "Ziele nach Gardistenstufe: Jede Punktzahl wird am Ziel gemessen, das der Spieler in diesem Zyklus hatte."
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "Ziel in diesem Zyklus: {0} Truhenpunkte, {1} Punkte für epische Truhen"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}: das Ziel der Gardistenstufe des Spielers, um {1}% erhöht für alle, die es verfehlt haben."
+
+msgid "General settings"
+msgstr "Allgemeine Einstellungen"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "Clan-Identität, Erscheinungsbild, Sicherungen und jeder Parameter ohne eigenen Abschnitt."
+
+msgid "Bank settings"
+msgstr "Bank-Einstellungen"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "Ob die Bank aktiv ist und welche Gebühr für jede Transaktionsart anfällt."
+
+msgid "Chest settings"
+msgstr "Truhen-Einstellungen"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "Zyklen, Truhenziele, Zielstrafe und die Farben der Punktzahlen."
+
+msgid "Chest goals"
+msgstr "Truhenziele"
+
+msgid "How goals are set"
+msgstr "Wie die Ziele festgelegt werden"
+
+msgid "Global goal: the same goal for every player"
+msgstr "Globales Ziel: dasselbe Ziel für alle Spieler"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "Individuelles Ziel nach Gardistenstufe: Jeder Spieler erhält das Ziel seiner Gardistenstufe (G1 bis G9) aus dem Mitgliederprofil"
+
+msgid "Global {0}"
+msgstr "Globales {0}"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "Bei Zielen nach Gardistenstufe gilt das globale Ziel für jede unten leer gelassene Stufe."
+
+msgid "Global ({0})"
+msgstr "Global ({0})"
+
+msgid "Guard level not identified"
+msgstr "Gardistenstufe nicht ermittelt"
+
+msgid "Highest goal: {0}"
+msgstr "Höchstes Ziel: {0}"
+
+msgid "Highest goal"
+msgstr "Höchstes Ziel"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0 bedeutet, dass die Gardistenstufe nie ermittelt wurde. Diese Spieler und Spieler ohne Mitgliederprofil erhalten das höchste Ziel der Tabelle."
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "Jeder abgeschlossene Zyklus behält das Ziel, das der Spieler darin hatte; eine spätere Änderung einer Stufe schreibt die Historie also nicht um. Die Zielstrafe erhöht das eigene Ziel des Spielers."
+
+msgid "Save Chest Goals"
+msgstr "Truhenziele speichern"
+
+msgid "Chest goals saved."
+msgstr "Truhenziele gespeichert."
+
+msgid "Choose how the chest goals are set."
+msgstr "Wählen Sie, wie die Truhenziele festgelegt werden."
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "Die globalen Ziele müssen ganze Zahlen ab 0 sein."
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}: Das Ziel muss eine ganze Zahl ab 0 sein oder leer bleiben."
+
+msgid "System"
+msgstr "System"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "Spielevents werden vom EventUploader angelegt, nicht über dieses Formular."
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "Belohnungen und Ziel wurden erneut auf das gespeicherte Ergebnis angewendet; die Punkte haben sich nicht geändert."
+
+msgid "By position"
+msgstr "Nach Platzierung"
+
+msgid "#{0} {1}"
+msgstr "{0}. {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "Gib die Menge für jeden Platz an, bester Platz zuerst, zum Beispiel 500; 250; 100."
+
+msgid "Describe the prize, or add a reward line."
+msgstr "Beschreibe den Preis oder füge eine Belohnungszeile hinzu."
+
+msgid "The goal must be a whole number."
+msgstr "Das Ziel muss eine ganze Zahl sein."
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "Lege das Ziel fest oder wähle „Kein Ziel\"."
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "Niemand hat das Ziel erreicht, und das Ziel ist Pflicht: Die Belohnungen bleiben beim Clan."
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "{0} Spieler ohne bekannte Gardistenstufe erhalten das höchste Ziel: {1}."
+
+msgid "Amount per place"
+msgstr "Menge pro Platz"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "1.; 2.; 3. ... z. B. 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "Ein im Spiel gespieltes Turnier, vom EventUploader zusammen mit seiner Rangliste angelegt. Name, Daten, Belohnungen und Ziel können hier angepasst werden."
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "Eine interne Herausforderung für Krypten und epische Monster. Gezählt werden die Truhen, die im Zeitraum gesammelt werden; er darf in der Vergangenheit beginnen, muss aber in der Zukunft enden."
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "Spielevents werden hier nicht angelegt: Der EventUploader registriert jedes Turnier zusammen mit seiner Rangliste."
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "Was ausgegeben und wie es aufgeteilt wird. Proportional gibt jedem Spieler einen Teil nach seinem Anteil an den Punkten; gleiche Teile gibt allen dasselbe; nach Platzierung gibt jedem Platz eine feste Menge (1., 2., 3. ...). Administrative Konten nehmen nie teil, und Spieler unter den Mindestpunkten bleiben außen vor."
+
+msgid "This event has no rewards"
+msgstr "Dieses Event hat keine Belohnungen"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "Beschreibe den Preis stattdessen unten in Worten. Belohnungen können später noch ergänzt werden, auch nach dem gespeicherten Ergebnis."
+
+msgid "Event goal"
+msgstr "Event-Ziel"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "Was jeder Spieler in diesem Turnier erreichen muss. Neue Turniere starten mit dem Standardziel aus dem Turnierkatalog."
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "Was jeder Spieler in diesem Event erreichen muss, in derselben Einheit wie die Rangliste. Es kann für alle gleich sein oder der Gardistenstufe im Mitgliederprofil folgen."
+
+msgid "points of the ranking"
+msgstr "Punkte der Rangliste"
+
+msgid "Goal reached"
+msgstr "Ziel erreicht"
+
+msgid "only they share the rewards"
+msgstr "nur sie teilen sich die Belohnungen"
+
+msgid "the goal does not decide the rewards"
+msgstr "das Ziel entscheidet nicht über die Belohnungen"
+
+msgid "Goal"
+msgstr "Ziel"
+
+msgid "What each player receives is in the ranking below."
+msgstr "Was jeder Spieler erhält, steht in der Rangliste unten."
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "Die Rangliste unten zeigt, was jeder Spieler bekäme, wenn das Event jetzt endete. Administrative Konten erhalten nie eine Belohnung."
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "Administratives Konto: in der Rangliste, nie belohnt"
+
+msgid "Default goal"
+msgstr "Standardziel"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "Jedes neue Event dieses Turniers, das der EventUploader sendet, startet mit diesem Ziel. Es kann in jedem Event vor der Veröffentlichung des Ergebnisses noch geändert werden."
+
+msgid "No goal"
+msgstr "Kein Ziel"
+
+msgid "Individual goal by guard level"
+msgstr "Individuelles Ziel nach Gardistenstufe"
+
+msgid "Goal not reached"
+msgstr "Ziel nicht erreicht"
+
+msgid "Goal ({0})"
+msgstr "Ziel ({0})"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "Ziel für leer gelassene Stufen ({0})"
+
+msgid "Same as blank levels"
+msgstr "Wie leere Stufen"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "Das Ziel zu erreichen ist Pflicht für eine Belohnung"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "Spieler, die das Ziel verfehlen, bleiben in der Rangliste, aber die Belohnungen werden nur unter denen aufgeteilt, die es erreicht haben. Eine Belohnung nach Platzierung geht an die bestplatzierten Spieler, die es erreicht haben."
+
+msgid "Each player has the goal of their guard level:"
+msgstr "Jeder Spieler hat das Ziel seiner Gardistenstufe:"
+
+msgid "{0} points for every player."
+msgstr "{0} Punkte für jeden Spieler."
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "Das Ziel zu erreichen ist Pflicht für eine Belohnung: Die Belohnungen werden nur unter den Spielern aufgeteilt, die es erreicht haben."
+
+msgid "The goal does not decide the rewards."
+msgstr "Das Ziel entscheidet nicht über die Belohnungen."
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "{0} von {1} Spieler(n) haben es erreicht."

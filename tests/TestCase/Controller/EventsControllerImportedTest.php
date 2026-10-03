@@ -6,12 +6,11 @@ namespace App\Test\TestCase\Controller;
 use App\Model\Entity\Event;
 use App\Model\Entity\EventImport;
 use App\Model\Entity\EventReward;
+use App\Service\EventImportService;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Laminas\Diactoros\Stream;
-use Laminas\Diactoros\UploadedFile;
 
 /**
  * Game tournaments in App\Controller\EventsController: from creation to the
@@ -90,68 +89,55 @@ class EventsControllerImportedTest extends TestCase
         return $event;
     }
 
-    private function uploadCsv(Event $event, string $csv = self::CSV): void
+    /**
+     * Store a ranking as the event's draft, as the EventUploader does.
+     */
+    private function receiveRanking(Event $event, string $csv = self::CSV): void
     {
-        $path = TMP . 'ranking_' . uniqid() . '.csv';
-        file_put_contents($path, $csv);
-        $this->loginAdmin();
-        $this->post("/events/review/{$event->id}", [
-            'intent' => 'upload',
-            'ranking_file' => new UploadedFile(new Stream($path), strlen($csv), UPLOAD_ERR_OK, 'ranking.csv', 'text/csv'),
-        ]);
-        @unlink($path);
+        $service = new EventImportService();
+        $service->import($event, $service->validate($service->parseCsv($csv))['payload'], 1);
     }
 
-    public function testCreatingAGameTournamentWithRewards(): void
+    public function testTheFormCannotCreateAGameTournament(): void
     {
+        // Game tournaments are registered by the EventUploader through the API.
         $this->loginAdmin();
         $this->post('/events/add', [
             'name' => 'Daily tournament',
             'criteria' => Event::CRITERIA_IMPORTED,
-            // Played yesterday: past dates are fine for a tournament.
             'starts_at' => DateTime::now()->subDays(1)->format('Y-m-d\T00:00'),
             'ends_at' => DateTime::now()->subDays(1)->format('Y-m-d\T23:59'),
             'prize' => '',
             'contact_player' => 'Naughtius',
             'event_rewards' => [
                 ['item_name' => 'Artifact pieces', 'quantity' => '1.500', 'rule' => 'proportional', 'min_points' => '1', 'remainder' => 'top_ranked'],
-                ['item_name' => '', 'quantity' => '', 'rule' => 'equal', 'min_points' => '1', 'remainder' => 'top_ranked'],
             ],
         ]);
 
-        $event = $this->fetchTable('Events')->find()->contain(['EventRewards'])->firstOrFail();
-        $this->assertRedirect(['controller' => 'Events', 'action' => 'review', $event->id]);
-        $this->assertCount(1, $event->event_rewards, 'the blank line the form keeps is ignored');
-        $this->assertSame(1500, $event->event_rewards[0]->quantity);
-        $this->assertStringContainsString('Artifact pieces', $event->prize);
-        $this->assertSame(Event::STATE_AWAITING, $event->state);
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'manage']);
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $this->fetchTable('Events')->find()->count());
     }
 
-    public function testATournamentCanBeCreatedWithoutRewards(): void
+    public function testATournamentWithoutRewardsIsPublishedWithTheRankingOnly(): void
     {
-        $this->loginAdmin();
-        $this->post('/events/add', [
+        // As the uploader registers one before anybody set its rewards.
+        $events = $this->fetchTable('Events');
+        $event = $events->newEntity([
             'name' => 'No rewards',
             'criteria' => Event::CRITERIA_IMPORTED,
             'starts_at' => '2026-09-01T00:00',
             'ends_at' => '2026-09-01T23:59',
             'prize' => '',
             'contact_player' => 'Naughtius',
-            'no_rewards' => '1',
-            // Lines typed before ticking "no rewards" are dropped with it.
-            'event_rewards' => [['item_name' => 'Coins', 'quantity' => '10', 'rule' => 'equal', 'min_points' => '1', 'remainder' => 'top_ranked']],
         ]);
+        $events->saveOrFail($event, ['allowNoRewards' => true]);
 
-        $event = $this->fetchTable('Events')->find()->contain(['EventRewards'])->firstOrFail();
-        $this->assertRedirect(['controller' => 'Events', 'action' => 'review', $event->id]);
-        $this->assertSame([], $event->event_rewards);
-
-        // Its ranking can be published as it is.
-        $this->uploadCsv($event);
+        $this->receiveRanking($event);
         $this->loginAdmin();
         $this->post("/events/review/{$event->id}", ['intent' => 'publish', 'rows' => []]);
         $this->assertRedirect(['controller' => 'Events', 'action' => 'view', $event->id]);
-        $this->assertNotNull($this->fetchTable('Events')->get($event->id)->published_at);
+        $this->assertNotNull($events->get($event->id)->published_at);
 
         $this->session([]);
         $this->get("/events/view/{$event->id}");
@@ -171,7 +157,7 @@ class EventsControllerImportedTest extends TestCase
             'event_rewards' => [],
         ]);
         $events->saveOrFail($event);
-        $this->uploadCsv($event);
+        $this->receiveRanking($event);
         $this->loginAdmin();
         $this->post("/events/review/{$event->id}", ['intent' => 'publish', 'rows' => []]);
 
@@ -244,9 +230,9 @@ class EventsControllerImportedTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('No ranking has been received yet.');
 
-        $this->uploadCsv($event);
-        $this->assertRedirect(['controller' => 'Events', 'action' => 'review', $event->id]);
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseNotContains('name="ranking_file"');
+
+        $this->receiveRanking($event);
 
         $this->loginAdmin();
         $this->get("/events/review/{$event->id}");
@@ -304,7 +290,7 @@ class EventsControllerImportedTest extends TestCase
     public function testUnpublishDuplicateAndFinalizeGuard(): void
     {
         $event = $this->tournament();
-        $this->uploadCsv($event);
+        $this->receiveRanking($event);
 
         $this->loginAdmin();
         $this->post("/events/review/{$event->id}", ['intent' => 'publish']);
@@ -320,13 +306,11 @@ class EventsControllerImportedTest extends TestCase
         $this->assertNull($this->fetchTable('Events')->get($event->id)->published_at);
         $this->assertSame(0, $this->fetchTable('EventStandings')->find()->count());
 
+        // Only the EventUploader registers tournaments: duplicating one is refused.
         $this->loginAdmin();
         $this->post("/events/duplicate/{$event->id}");
-        $copy = $this->fetchTable('Events')->find()->where(['Events.id !=' => $event->id])->contain(['EventRewards'])->firstOrFail();
-        $this->assertRedirect(['controller' => 'Events', 'action' => 'edit', $copy->id]);
-        $this->assertSame(Event::CRITERIA_IMPORTED, $copy->criteria);
-        $this->assertCount(2, $copy->event_rewards);
-        $this->assertSame(DateTime::now()->format('Y-m-d'), $copy->starts_at->format('Y-m-d'));
+        $this->assertRedirect(['controller' => 'Events', 'action' => 'manage']);
+        $this->assertSame(0, $this->fetchTable('Events')->find()->where(['Events.id !=' => $event->id])->count());
     }
 
     public function testEventsCanBeDeletedWhateverTheirRules(): void
@@ -369,25 +353,29 @@ class EventsControllerImportedTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('Awaiting result');
         $this->assertResponseContains("/events/review/{$event->id}");
-        $this->assertResponseContains('New Game Tournament');
+        $this->assertResponseNotContains('New Game Tournament');
+        $this->assertResponseNotContains("/events/duplicate/{$event->id}");
     }
 
-    public function testTheFormOffersTheTournamentType(): void
+    public function testTheFormOnlyCreatesClanEvents(): void
     {
         $this->loginAdmin();
         $this->get('/events/add?type=imported');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('value="imported"');
+        $this->assertResponseNotContains('value="imported"');
+        $this->assertResponseNotContains('name="event_kind"');
+        // Clan events hand out rewards and have a goal too.
         $this->assertResponseContains('rewardLineTemplate');
-        $this->assertResponseContains('name="event_kind" value="game" checked');
-        // Past dates must not be blocked by the browser either.
-        $this->assertDoesNotMatchRegularExpression('/id="starts-at"[^>]*min=/', (string)$this->_response->getBody());
+        $this->assertResponseContains('name="goal[mode]"');
+        $this->assertMatchesRegularExpression('/id="ends-at"[^>]*min=/', (string)$this->_response->getBody());
 
-        // A clan event keeps the future-only limit, and the game criteria is not sent.
+        // An existing tournament is still edited here, and stays one.
+        $event = $this->tournament();
         $this->loginAdmin();
-        $this->get('/events/add');
-        $this->assertMatchesRegularExpression('/id="starts-at"[^>]*min=/', (string)$this->_response->getBody());
-        $this->assertMatchesRegularExpression('/id="gameCriteria"\s+disabled/', (string)$this->_response->getBody());
+        $this->get("/events/edit/{$event->id}");
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="criteria" value="imported"');
+        $this->assertDoesNotMatchRegularExpression('/id="ends-at"[^>]*min=/', (string)$this->_response->getBody());
     }
 }

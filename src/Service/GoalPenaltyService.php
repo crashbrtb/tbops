@@ -36,6 +36,12 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  *
  * Players with no chest at all in the previous cycle are not penalized: with
  * no row for them there is no telling a new member from an idle one.
+ *
+ * The base goals come from ChestGoalService, so with goals by guard level each
+ * player's goal is the one of their level, and the raised goal is that goal
+ * plus the percentage. The previous cycle is judged by the goal stored in its
+ * summary (chest_goal / epic_goal), so a player who changed level since is not
+ * judged by a goal they never had.
  */
 class GoalPenaltyService
 {
@@ -53,19 +59,19 @@ class GoalPenaltyService
     public const STATUS_FIRST_CYCLE = 'first_cycle';
 
     /**
-     * The config row holding each goal's base value.
-     */
-    private const BASE_PARAMS = [
-        self::TARGET_TOTAL => 'minimum_chest_score',
-        self::TARGET_EPIC => 'minimum_epic_chest_score',
-    ];
-
-    /**
      * The player_cycle_summaries column holding each raised goal.
      */
     public const SUMMARY_COLUMNS = [
         self::TARGET_TOTAL => 'penalty_goal',
         self::TARGET_EPIC => 'penalty_epic_goal',
+    ];
+
+    /**
+     * The player_cycle_summaries column holding each goal before the penalty.
+     */
+    public const BASE_COLUMNS = [
+        self::TARGET_TOTAL => 'chest_goal',
+        self::TARGET_EPIC => 'epic_goal',
     ];
 
     /**
@@ -78,18 +84,40 @@ class GoalPenaltyService
      */
     private ?array $settings = null;
 
+    private ChestGoalService $goals;
+
+    /**
+     * @param \App\Service\ChestGoalService|null $goals Base goals; shared with the caller when it needs them too.
+     */
+    public function __construct(?ChestGoalService $goals = null)
+    {
+        $this->goals = $goals ?? new ChestGoalService();
+    }
+
+    /**
+     * The base goals the penalty raises.
+     *
+     * @return \App\Service\ChestGoalService
+     */
+    public function goals(): ChestGoalService
+    {
+        return $this->goals;
+    }
+
     /**
      * The penalty settings, read once from the config table.
      *
      * - `mode`: total, epic or both, as configured;
-     * - `targets`: the goals actually watched, i.e. those of the mode whose
-     *   base value is above 0;
-     * - `base_goals` / `raised_goals`: per target;
+     * - `targets`: the goals actually watched, i.e. those of the mode that
+     *   someone can have above 0;
+     * - `base_goals` / `raised_goals`: the global goals, per target. With goals
+     *   by guard level (`by_guard`) each player's goals differ; see
+     *   ChestGoalService::levelTable();
      * - `enabled`: false whenever the penalty could not raise anything
      *   (switched off, a non-positive percentage, no goal), so callers only
      *   check it.
      *
-     * @return array{enabled: bool, mode: string, targets: list<string>, percent: float, base_goals: array<string, int>, raised_goals: array<string, int>, cycle_days: int, reference_day: ?\Cake\I18n\FrozenTime}
+     * @return array{enabled: bool, mode: string, targets: list<string>, percent: float, base_goals: array<string, int>, raised_goals: array<string, int>, by_guard: bool, cycle_days: int, reference_day: ?\Cake\I18n\FrozenTime}
      */
     public function settings(): array
     {
@@ -100,7 +128,6 @@ class GoalPenaltyService
         $configs = $this->fetchTable('Config')->find('list', keyField: 'param', valueField: 'value')
             ->where(['param IN' => [
                 'goal_penalty_enabled', 'goal_penalty_percent', 'goal_penalty_target',
-                'minimum_chest_score', 'minimum_epic_chest_score',
                 'every_how_many_days', 'reference_day',
             ]])
             ->toArray();
@@ -114,13 +141,13 @@ class GoalPenaltyService
         $referenceDay = !empty($configs['reference_day']) ? new FrozenTime($configs['reference_day']) : null;
 
         $baseGoals = [];
-        foreach (self::BASE_PARAMS as $target => $param) {
-            $baseGoals[$target] = is_numeric($configs[$param] ?? null) ? (int)$configs[$param] : 0;
+        foreach (array_keys(self::SUMMARY_COLUMNS) as $target) {
+            $baseGoals[$target] = $this->goals->globalGoal($target);
         }
         $targets = [];
         $raisedGoals = [];
         foreach (self::targetsOf($mode) as $target) {
-            if ($baseGoals[$target] > 0) {
+            if ($this->goals->hasGoal($target)) {
                 $targets[] = $target;
                 $raisedGoals[$target] = self::raisedGoal($baseGoals[$target], $percent);
             }
@@ -138,6 +165,7 @@ class GoalPenaltyService
             'percent' => $percent,
             'base_goals' => $baseGoals,
             'raised_goals' => $raisedGoals,
+            'by_guard' => $this->goals->isByGuard(),
             'cycle_days' => $cycleDays,
             'reference_day' => $referenceDay,
         ];
@@ -291,8 +319,8 @@ class GoalPenaltyService
         }
         $summary->penalty_target = self::targetLabel($raised);
 
-        $minimum = $this->fetchTable('Config')->find()->where(['param' => 'minimum_chest_score'])->first();
-        $requiredScore = $raised[self::TARGET_TOTAL] ?? (int)($minimum->value ?? 0);
+        $requiredScore = $raised[self::TARGET_TOTAL]
+            ?? $summary->baseGoalFor(self::TARGET_TOTAL, $this->baseGoal($player, self::TARGET_TOTAL));
         $summary->goal_achieved = (int)$summary->total_score >= $requiredScore;
         $summary->fine_due = !$summary->goal_achieved;
         $summaries->saveOrFail($summary);
@@ -307,7 +335,6 @@ class GoalPenaltyService
     {
         $settings = $this->settings();
         $targets = $settings['targets'];
-        $baseGoals = $settings['base_goals'];
         $previousStart = $cycleStart->subDays($settings['cycle_days']);
 
         /** @var \App\Model\Table\PlayerCycleSummariesTable $summaries */
@@ -316,7 +343,10 @@ class GoalPenaltyService
         // player => target => [score, goal the player had in that cycle]
         $previous = [];
         $rows = $summaries->find()
-            ->select(['player_name', 'total_score', 'epic_crypt_score', 'penalty_goal', 'penalty_epic_goal'])
+            ->select([
+                'player_name', 'total_score', 'epic_crypt_score',
+                'penalty_goal', 'penalty_epic_goal', 'chest_goal', 'epic_goal',
+            ])
             ->where(['cycle_start_date' => $previousStart->format('Y-m-d')])
             ->all();
 
@@ -327,7 +357,10 @@ class GoalPenaltyService
                 $waived = isset($previousWaivers[$row->player_name]);
                 foreach ($targets as $target) {
                     $stored = $row->get(self::SUMMARY_COLUMNS[$target]);
-                    $carried = $stored !== null && !$waived ? (int)$stored : $baseGoals[$target];
+                    // Rows written before goals by guard level have no base goal; today's is the best guess
+                    $base = $row->get(self::BASE_COLUMNS[$target]);
+                    $base = $base !== null ? (int)$base : $this->baseGoal((string)$row->player_name, $target);
+                    $carried = $stored !== null && !$waived ? (int)$stored : $base;
                     $previous[$row->player_name][$target] = [self::scoreFor($result, $target), $carried];
                 }
             }
@@ -346,7 +379,7 @@ class GoalPenaltyService
                 foreach ($targets as $target) {
                     $previous[$player][$target] = [
                         self::scoreFor($result, $target),
-                        $previousGoals[$player][$target] ?? $baseGoals[$target],
+                        $previousGoals[$player][$target] ?? $this->baseGoal((string)$player, $target),
                     ];
                 }
             }
@@ -384,12 +417,13 @@ class GoalPenaltyService
             $goals = [];
             foreach ($byTarget as $target => [$score, $goal]) {
                 $previousRows[$target] = ['score' => $score, 'goal' => $goal, 'missed' => $score < $goal];
-                if ($score < $goal) {
-                    $raised[$target] = $settings['raised_goals'][$target];
+                $base = $this->baseGoal($player, $target);
+                if ($score < $goal && $base > 0) {
+                    $raised[$target] = self::raisedGoal($base, $settings['percent']);
                 }
                 $goals[$target] = $status === self::STATUS_PENALIZED && isset($raised[$target])
                     ? $raised[$target]
-                    : $baseGoals[$target];
+                    : $base;
             }
 
             $evaluation[$player] = [
@@ -401,6 +435,18 @@ class GoalPenaltyService
         }
 
         return $evaluation;
+    }
+
+    /**
+     * A player's goal before the penalty, as it stands now.
+     *
+     * @param string $player Player name.
+     * @param string $target TARGET_TOTAL or TARGET_EPIC.
+     * @return int
+     */
+    private function baseGoal(string $player, string $target): int
+    {
+        return $this->goals->goalsFor($player)[$target];
     }
 
     /**

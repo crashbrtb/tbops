@@ -23,7 +23,7 @@ $this->assign('title', __('Missing Configuration'));
         <div class="toolbar-actions">
             <?= $this->Html->link(
                 '<i class="fas fa-cogs mr-1"></i> ' . __('System Configurations'),
-                ['controller' => 'Config', 'action' => 'index'],
+                ['controller' => 'Config', 'action' => 'index', '?' => ['section' => 'chests']],
                 ['class' => 'btn btn-primary btn-sm', 'escape' => false]
             ) ?>
         </div>
@@ -43,7 +43,7 @@ $this->assign('title', __('Missing Configuration'));
             <p class="mb-2"><?= __('If this is a fresh setup or update, execute the initial migration seed in your terminal:') ?></p>
             <pre class="bg-dark text-white p-3 rounded mb-3"><code>php bin/cake.php migrations seed --seed InitialDataSeed</code></pre>
             <p class="mb-0">
-                <?= __('Then review and configure parameters in {0}.', $this->Html->link(__('Configurations'), ['controller' => 'Config', 'action' => 'index'], ['class' => 'font-weight-bold'])) ?>
+                <?= __('Then review and configure parameters in {0}.', $this->Html->link(__('Configurations'), ['controller' => 'Config', 'action' => 'index', '?' => ['section' => 'chests']], ['class' => 'font-weight-bold'])) ?>
             </p>
         </div>
     </div>

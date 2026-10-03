@@ -204,7 +204,11 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
         <?php endif; ?>
     </div>
 
-    <?php if ($minimumChestScore > 0 || $minimumEpicChestScore > 0): ?>
+    <?php if (!empty($goalsByGuard)): ?>
+    <div class="goal-pill">
+        <?= __('Goals by guard level: each score is judged by the goal the player had in that cycle.') ?>
+    </div>
+    <?php elseif ($minimumChestScore > 0 || $minimumEpicChestScore > 0): ?>
     <div class="goal-pill">
         <?= __('Current Goal: {0} chest points and {1} Epic chest points', $this->Number->format($minimumChestScore), $this->Number->format($minimumEpicChestScore)) ?>
     </div>
@@ -271,6 +275,9 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                                 ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($summary->player_name)],
                                                 ['class' => 'player-link', 'title' => $penaltyTitle ?? $summary->player_name]
                                             ) ?>
+                                            <?php if ($summary->guard_level !== null): ?>
+                                                <span class="badge badge-light border ml-1" title="<?= h(__('Goal in this cycle: {0} chest points, {1} Epic chest points', $this->Number->format($summary->goalFor('total', (int)$minimumChestScore)), $this->Number->format($summary->goalFor('epic', (int)$minimumEpicChestScore)))) ?>">G<?= (int)$summary->guard_level ?></span>
+                                            <?php endif; ?>
                                             <?php if ($penaltyTitle !== null): ?>
                                                 <i class="fas fa-arrow-up" style="color: #d97706; cursor: help;" title="<?= h($penaltyTitle) ?>"></i>
                                             <?php endif; ?>

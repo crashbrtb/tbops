@@ -4474,7 +4474,6 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:6
 msgid "Scoreboard"
 msgstr ""
@@ -4656,21 +4655,6 @@ msgstr ""
 msgid "The event could not be duplicated: {0}"
 msgstr ""
 
-msgid "Choose the ranking CSV file to upload."
-msgstr ""
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr ""
-
-msgid "The ranking was not accepted: {0}"
-msgstr ""
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr ""
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr ""
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr ""
 
@@ -4807,21 +4791,6 @@ msgid "Received {0} UTC from {1}"
 msgstr ""
 
 msgid "In the game: {0}"
-msgstr ""
-
-msgid "Send a ranking"
-msgstr ""
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr ""
-
-msgid "Replace with this file"
-msgstr ""
-
-msgid "Upload CSV"
-msgstr ""
-
-msgid "Tokens for the EventUploader"
 msgstr ""
 
 msgid "{0} taking part in the prize"
@@ -5324,8 +5293,6 @@ msgstr ""
 msgid "Between {0} and {1} minutes."
 msgstr ""
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr ""
 
@@ -5338,8 +5305,6 @@ msgstr ""
 msgid "Players with a raised goal: {0}"
 msgstr ""
 
-
-
 msgid "Goal Penalties"
 msgstr ""
 
@@ -5351,7 +5316,6 @@ msgstr ""
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr ""
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr ""
@@ -5370,7 +5334,6 @@ msgstr ""
 
 msgid "Previous cycle (score / goal)"
 msgstr ""
-
 
 msgid "Release"
 msgstr ""
@@ -5463,4 +5426,241 @@ msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
 msgstr ""
 
 msgid "Raised goal in this cycle: {0}"
+msgstr ""
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr ""
+
+msgid "Guards G{0}"
+msgstr ""
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr ""
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr ""
+
+msgid "G0 (unknown): highest goal"
+msgstr ""
+
+msgid "Goals by guard level"
+msgstr ""
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr ""
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr ""
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr ""
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr ""
+
+msgid "General settings"
+msgstr ""
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr ""
+
+msgid "Bank settings"
+msgstr ""
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr ""
+
+msgid "Chest settings"
+msgstr ""
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr ""
+
+msgid "Chest goals"
+msgstr ""
+
+msgid "How goals are set"
+msgstr ""
+
+msgid "Global goal: the same goal for every player"
+msgstr ""
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr ""
+
+msgid "Global {0}"
+msgstr ""
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr ""
+
+msgid "Global ({0})"
+msgstr ""
+
+msgid "Guard level not identified"
+msgstr ""
+
+msgid "Highest goal: {0}"
+msgstr ""
+
+msgid "Highest goal"
+msgstr ""
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr ""
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr ""
+
+msgid "Save Chest Goals"
+msgstr ""
+
+msgid "Chest goals saved."
+msgstr ""
+
+msgid "Choose how the chest goals are set."
+msgstr ""
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr ""
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr ""
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr ""
+
+msgid "By position"
+msgstr ""
+
+msgid "#{0} {1}"
+msgstr ""
+
+msgid "{0}: {1}"
+msgstr ""
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr ""
+
+msgid "Describe the prize, or add a reward line."
+msgstr ""
+
+msgid "The goal must be a whole number."
+msgstr ""
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr ""
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr ""
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr ""
+
+msgid "Amount per place"
+msgstr ""
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr ""
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr ""
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr ""
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr ""
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr ""
+
+msgid "This event has no rewards"
+msgstr ""
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr ""
+
+msgid "Event goal"
+msgstr ""
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr ""
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr ""
+
+msgid "points of the ranking"
+msgstr ""
+
+msgid "Goal reached"
+msgstr ""
+
+msgid "only they share the rewards"
+msgstr ""
+
+msgid "the goal does not decide the rewards"
+msgstr ""
+
+msgid "Goal"
+msgstr ""
+
+msgid "What each player receives is in the ranking below."
+msgstr ""
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr ""
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr ""
+
+msgid "Default goal"
+msgstr ""
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr ""
+
+msgid "No goal"
+msgstr ""
+
+msgid "Individual goal by guard level"
+msgstr ""
+
+msgid "Goal not reached"
+msgstr ""
+
+msgid "Goal ({0})"
+msgstr ""
+
+msgid "Goal for levels left blank ({0})"
+msgstr ""
+
+msgid "Same as blank levels"
+msgstr ""
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr ""
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr ""
+
+msgid "Each player has the goal of their guard level:"
+msgstr ""
+
+msgid "{0} points for every player."
+msgstr ""
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr ""
+
+msgid "The goal does not decide the rewards."
+msgstr ""
+
+msgid "{0} of {1} player(s) reached it."
 msgstr ""

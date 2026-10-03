@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use App\Service\ChestGoalService;
 use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
@@ -141,7 +142,11 @@ class StandardChestsController extends AppController
             ->first();
 
         // Passar o parâmetro show_all para a view
-        $this->set(compact('standardChests', 'referencegoalConfig', 'epicGoalConfig', 'showAllParam'));
+        // Com metas por nível de guarda, a meta global não diz a meta de ninguém
+        $chestGoals = new ChestGoalService();
+        $guardGoalTable = $chestGoals->isByGuard() ? $chestGoals->levelTable() : [];
+
+        $this->set(compact('standardChests', 'referencegoalConfig', 'epicGoalConfig', 'showAllParam', 'guardGoalTable'));
     }
 
     /**

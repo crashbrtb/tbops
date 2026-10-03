@@ -17,8 +17,13 @@ use App\Model\Entity\EventReward;
  * - Proportional: largest remainder method. Each player first gets the whole
  *   part of `quantity * points / total`; the units still left go to the largest
  *   fractional parts (ties: more points, then better position).
+ * - By position: a fixed amount per place (1st gets X, 2nd gets Y, ...). The
+ *   places are counted among the recipients only, so when the best placed
+ *   player cannot receive, the first place goes to the next one who can.
+ *   Places nobody fills stay with the clan.
  *
  * A recipient is a player marked eligible (administrative accounts are not)
+ * who is qualified (reached the event goal, when the goal is required) and
  * whose points reach the reward's minimum. Nobody else takes part in the split
  * or counts towards the total it is divided by.
  *
@@ -32,8 +37,8 @@ class RewardDistributionService
     /**
      * Split one reward.
      *
-     * @param list<array{key: int|string, position: int, points: int, eligible: bool}> $players Ranking.
-     * @param array{quantity: int, rule: string, min_points?: int, remainder?: string} $reward Reward line.
+     * @param list<array{key: int|string, position: int, points: int, eligible: bool, qualified?: bool}> $players Ranking.
+     * @param array{quantity: int, rule: string, min_points?: int, remainder?: string, positions?: list<int>} $reward Reward line.
      * @return array{
      *     amounts: array<int|string, int>,
      *     distributed: int,
@@ -52,7 +57,8 @@ class RewardDistributionService
         $recipients = [];
         foreach ($players as $player) {
             $amounts[$player['key']] = 0;
-            if ($player['eligible'] && (int)$player['points'] >= $minPoints) {
+            $qualified = $player['qualified'] ?? true;
+            if ($player['eligible'] && $qualified && (int)$player['points'] >= $minPoints) {
                 $recipients[] = $player;
             }
         }
@@ -81,6 +87,10 @@ class RewardDistributionService
             return $this->equal($result, $recipients, $quantity, $remainder);
         }
 
+        if ($reward['rule'] === EventReward::RULE_POSITION) {
+            return $this->byPosition($result, $recipients, $quantity, (array)($reward['positions'] ?? []));
+        }
+
         if ($pool === '0') {
             // Everybody eligible scored nothing: there is no proportion to follow.
             return $result;
@@ -92,8 +102,8 @@ class RewardDistributionService
     /**
      * Split every reward of an event over one ranking.
      *
-     * @param list<array{key: int|string, position: int, points: int, eligible: bool}> $players Ranking.
-     * @param iterable<int|string, array{quantity: int, rule: string, min_points?: int, remainder?: string}> $rewards Reward lines by key.
+     * @param list<array{key: int|string, position: int, points: int, eligible: bool, qualified?: bool}> $players Ranking.
+     * @param iterable<int|string, array{quantity: int, rule: string, min_points?: int, remainder?: string, positions?: list<int>}> $rewards Reward lines by key.
      * @return array{
      *     rewards: array<int|string, array{amounts: array<int|string, int>, distributed: int, leftover: int, recipients: int, pool_points: int}>,
      *     participation: array<int|string, float>,
@@ -207,6 +217,25 @@ class RewardDistributionService
             foreach (array_slice($fractions, 0, $left) as $fraction) {
                 $result['amounts'][$fraction['key']]++;
             }
+        }
+
+        return $this->totals($result, $quantity);
+    }
+
+    /**
+     * @param array{amounts: array<int|string, int>, distributed: int, leftover: int, recipients: int, pool_points: int} $result Result so far.
+     * @param list<array{key: int|string, position: int, points: int, eligible: bool}> $recipients Best placed first.
+     * @param int $quantity Units to hand out: the sum of the places.
+     * @param list<int> $positions Amount for each place, first place first.
+     * @return array{amounts: array<int|string, int>, distributed: int, leftover: int, recipients: int, pool_points: int}
+     */
+    private function byPosition(array $result, array $recipients, int $quantity, array $positions): array
+    {
+        foreach (array_values($positions) as $place => $amount) {
+            if (!isset($recipients[$place])) {
+                break;
+            }
+            $result['amounts'][$recipients[$place]['key']] = max(0, (int)$amount);
         }
 
         return $this->totals($result, $quantity);

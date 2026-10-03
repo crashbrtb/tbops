@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\GameTournament;
+use App\Service\EventGoal;
+use Cake\Datasource\EntityInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -29,6 +31,7 @@ class GameTournamentsTable extends Table
     public const LIST_FIELDS = [
         'id', 'game_type', 'ranking', 'name', 'name_source', 'duration_days', 'image_mime',
         'last_variant', 'first_seen_at', 'last_seen_at', 'created', 'modified',
+        'goal_mode', 'goal_points', 'goal_by_guard', 'goal_required',
     ];
 
     /**
@@ -75,6 +78,10 @@ class GameTournamentsTable extends Table
             ->range('duration_days', [1, self::MAX_DURATION_DAYS], __('The duration must be between {0} and {1} days.', 1, self::MAX_DURATION_DAYS))
             ->allowEmptyString('duration_days');
 
+        $validator
+            ->nonNegativeInteger('goal_points', __('The goal must be a whole number.'))
+            ->allowEmptyString('goal_points');
+
         return $validator;
     }
 
@@ -85,6 +92,13 @@ class GameTournamentsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['game_type', 'ranking']), ['errorField' => 'game_type']);
+        $rules->add(
+            fn (EntityInterface $entity): bool => (string)$entity->get('goal_mode') === EventGoal::MODE_NONE
+                || !$entity->get('goal_mode')
+                || EventGoal::fromEntity($entity)->isActive(),
+            'goalSet',
+            ['errorField' => 'goal_points', 'message' => __('Set the goal, or choose "No goal".')]
+        );
 
         return $rules;
     }

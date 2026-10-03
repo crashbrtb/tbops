@@ -15,6 +15,10 @@
  * @var array $chestDisplayNames
  * @var array $scoreColorsConfig
  * @var array $epicMonsterDetails
+ * @var bool $goalsByGuard Whether goals follow the guard level
+ * @var array<int, array<string, int>> $guardGoalTable Guard level => target => goal (only with goals by guard level)
+ * @var array<string, array<string, int>> $playerGoals Player => target => goal before any penalty
+ * @var array<string, int> $playerGuardLevels Player => guard level (0 = unknown)
  */
 ?>
 <?php
@@ -243,11 +247,24 @@ $goalPenaltySettings = $goalPenaltySettings ?? ['enabled' => false, 'mode' => 't
 $penaltyGoals = $penaltyGoals ?? [];
 $penaltyMode = $goalPenaltySettings['mode'] ?? 'total';
 $penaltyPercent = $this->Number->format((float)($goalPenaltySettings['percent'] ?? 0));
-$totalGoalFor = function (string $player) use ($penaltyGoals, $minimumChestScore): int {
-    return $penaltyGoals[$player]['total'] ?? (int)$minimumChestScore;
+// $playerGoals: each player's goal before the penalty (by guard level when so configured)
+$goalsByGuard = $goalsByGuard ?? false;
+$guardGoalTable = $guardGoalTable ?? [];
+$playerGoals = $playerGoals ?? [];
+$playerGuardLevels = $playerGuardLevels ?? [];
+$totalGoalFor = function (string $player) use ($penaltyGoals, $playerGoals, $minimumChestScore): int {
+    return $penaltyGoals[$player]['total'] ?? $playerGoals[$player]['total'] ?? (int)$minimumChestScore;
 };
-$epicGoalFor = function (string $player) use ($penaltyGoals, $minimumEpicChestScore): int {
-    return $penaltyGoals[$player]['epic'] ?? (int)$minimumEpicChestScore;
+$epicGoalFor = function (string $player) use ($penaltyGoals, $playerGoals, $minimumEpicChestScore): int {
+    return $penaltyGoals[$player]['epic'] ?? $playerGoals[$player]['epic'] ?? (int)$minimumEpicChestScore;
+};
+$guardTooltip = function (string $player) use ($playerGuardLevels, $totalGoalFor, $epicGoalFor): string {
+    $level = (int)($playerGuardLevels[$player] ?? 0);
+    $goal = __('Goal: {0} chest points, {1} Epic chest points', $this->Number->format($totalGoalFor($player)), $this->Number->format($epicGoalFor($player)));
+
+    return $level > 0
+        ? __('Guards G{0}', $level) . ' — ' . $goal
+        : __('Guard level unknown (G0): highest goal') . ' — ' . $goal;
 };
 $penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyPercent): string {
     $parts = [];
@@ -265,7 +282,7 @@ foreach (array_keys($penaltyGoals) as $penalizedPlayer) {
     $penaltyTooltipsData[$penalizedPlayer] = $penaltyTooltip((string)$penalizedPlayer);
 }
 // Player name linking to the history page, flagged when the player carries a raised goal
-$playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip, $penaltyPercent): string {
+$playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip, $penaltyPercent, $goalsByGuard, $playerGuardLevels, $guardTooltip): string {
     $penalized = isset($penaltyGoals[$player]);
     $title = $penalized ? $player . ' — ' . $penaltyTooltip($player) : $player;
     $html = $this->Html->link(
@@ -273,10 +290,18 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
         ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($player)],
         ['class' => 'player-link' . ($penalized ? ' penalized' : ''), 'title' => $title]
     );
+    $badges = '';
+    if ($goalsByGuard) {
+        $level = (int)($playerGuardLevels[$player] ?? 0);
+        $badges .= '<span class="guard-badge' . ($level === 0 ? ' unknown' : '') . '" title="' . h($guardTooltip($player)) . '">'
+            . 'G' . $level . '</span>';
+    }
     if ($penalized) {
-        $html = '<span class="player-name-line">' . $html
-            . '<span class="penalty-badge" title="' . h($penaltyTooltip($player)) . '">'
-            . '<i class="fas fa-arrow-up"></i> ' . h($penaltyPercent) . '%</span></span>';
+        $badges .= '<span class="penalty-badge" title="' . h($penaltyTooltip($player)) . '">'
+            . '<i class="fas fa-arrow-up"></i> ' . h($penaltyPercent) . '%</span>';
+    }
+    if ($badges !== '') {
+        $html = '<span class="player-name-line">' . $html . $badges . '</span>';
     }
 
     return $html;
@@ -627,6 +652,31 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
 
     tr.penalized-row td:first-child {
         box-shadow: inset 3px 0 0 #f59e0b;
+    }
+
+    /* Goals by guard level: the player's guard level next to their name */
+    .guard-badge {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        padding: 1px 6px;
+        border-radius: 6px;
+        background: var(--surface-sunken);
+        border: 1px solid var(--accent-border);
+        color: var(--accent-dark);
+        font-size: 0.7rem;
+        font-weight: 700;
+        line-height: 1.4;
+        cursor: help;
+    }
+
+    .guard-badge.unknown {
+        border-style: dashed;
+        color: var(--text-soft);
+    }
+
+    .goal-pill.guard {
+        cursor: help;
     }
 
     .goal-pill.penalty {
@@ -1294,14 +1344,31 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
 
     <!-- Goals Bar (Without Total Players) -->
     <div class="goals-bar">
-        <div class="goal-pill">
-            <i class="fas fa-bullseye"></i>
-            <span><?= __('Chest Score Goal: {0} points', $this->Number->format($minimumChestScore ?? 0)) ?></span>
-        </div>
-        <div class="goal-pill epic">
-            <i class="fas fa-gem"></i>
-            <span><?= __('Epic Chest Goal: {0} points', $this->Number->format($minimumEpicChestScore ?? 0)) ?></span>
-        </div>
+        <?php if ($goalsByGuard): ?>
+            <?php
+            $guardGoalLines = [];
+            foreach ($guardGoalTable as $level => $goals) {
+                if ($level === 0) {
+                    continue;
+                }
+                $guardGoalLines[] = 'G' . $level . ': ' . $this->Number->format($goals['total']) . ' / ' . $this->Number->format($goals['epic']);
+            }
+            $guardGoalLines[] = __('G0 (unknown): highest goal');
+            ?>
+            <div class="goal-pill guard" title="<?= h(__('Chest Score Goal / Epic Chest Goal') . "\n" . implode("\n", $guardGoalLines)) ?>">
+                <i class="fas fa-shield-alt"></i>
+                <span><?= __('Goals by guard level') ?></span>
+            </div>
+        <?php else: ?>
+            <div class="goal-pill">
+                <i class="fas fa-bullseye"></i>
+                <span><?= __('Chest Score Goal: {0} points', $this->Number->format($minimumChestScore ?? 0)) ?></span>
+            </div>
+            <div class="goal-pill epic">
+                <i class="fas fa-gem"></i>
+                <span><?= __('Epic Chest Goal: {0} points', $this->Number->format($minimumEpicChestScore ?? 0)) ?></span>
+            </div>
+        <?php endif; ?>
         <?php if (!empty($goalPenaltySettings['enabled'])): ?>
             <div class="goal-pill penalty" title="<?= h(__('Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up).', $penaltyPercent)) ?>">
                 <i class="fas fa-arrow-up"></i>

@@ -4775,21 +4775,6 @@ msgstr "O evento #{0} foi criado a partir do #{1}. Confira o nome e a data."
 msgid "The event could not be duplicated: {0}"
 msgstr "Não foi possível duplicar o evento: {0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "Escolha o arquivo CSV da classificação para enviar."
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "O arquivo é grande demais para uma classificação de no máximo {0} jogadores."
-
-msgid "The ranking was not accepted: {0}"
-msgstr "A classificação não foi aceita: {0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "Classificação com {0} jogador(es) recebida. Revise-a abaixo."
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "Esta classificação é igual ao rascunho atual; nada mudou."
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "Envie o token da API no cabeçalho Authorization: Bearer <token>."
 
@@ -4927,21 +4912,6 @@ msgstr "Recebida em {0} UTC de {1}"
 
 msgid "In the game: {0}"
 msgstr "No jogo: {0}"
-
-msgid "Send a ranking"
-msgstr "Enviar uma classificação"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "O EventUploader envia direto do jogo. Sem ele, envie o ranking.csv que a ferramenta de descoberta exporta."
-
-msgid "Replace with this file"
-msgstr "Substituir por este arquivo"
-
-msgid "Upload CSV"
-msgstr "Enviar CSV"
-
-msgid "Tokens for the EventUploader"
-msgstr "Tokens para o EventUploader"
 
 msgid "{0} taking part in the prize"
 msgstr "{0} participando do prêmio"
@@ -5494,8 +5464,6 @@ msgstr "Envie a busca como um corpo JSON."
 msgid "started_at is not a valid date."
 msgstr "started_at não é uma data válida."
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "Jogadores que não atingiram a meta no ciclo anterior têm a meta aumentada em {0}% neste ciclo (arredondada para cima)."
 
@@ -5508,8 +5476,6 @@ msgstr "Penalidade de meta: +{0}% na meta de pontos de baús"
 msgid "Players with a raised goal: {0}"
 msgstr "Jogadores com meta aumentada: {0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "Penalidades de meta"
 
@@ -5521,7 +5487,6 @@ msgstr "Meta de pontos de baús"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "Jogadores que não atingiram a meta no ciclo anterior têm a meta aumentada neste ciclo. Libere um jogador aqui quando houver um bom motivo."
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}: {1} pontos, aumentada em {2}% para {3} pontos para quem não a atingiu."
@@ -5540,7 +5505,6 @@ msgstr "Ninguém está com meta aumentada neste ciclo."
 
 msgid "Previous cycle (score / goal)"
 msgstr "Ciclo anterior (pontos / meta)"
-
 
 msgid "Release"
 msgstr "Liberar"
@@ -5634,3 +5598,240 @@ msgstr "Penalidade de meta: +{0}% na meta de pontos de baús e na meta de baús 
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "Meta aumentada neste ciclo: {0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "Meta: {0} pontos de baús, {1} pontos de baús épicos"
+
+msgid "Guards G{0}"
+msgstr "Guardas G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "Nível dos guardas desconhecido (G0): maior meta"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "Meta de pontos de baús / Meta de baús épicos"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0 (desconhecido): maior meta"
+
+msgid "Goals by guard level"
+msgstr "Metas por nível dos guardas"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "Metas por nível dos guardas: cada célula é colorida pela meta que o jogador tinha naquele ciclo."
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "Metas por nível dos guardas: cada pontuação é avaliada pela meta que o jogador tinha naquele ciclo."
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "Meta neste ciclo: {0} pontos de baús, {1} pontos de baús épicos"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}: a meta do nível dos guardas do jogador, aumentada em {1}% para quem não a atingiu."
+
+msgid "General settings"
+msgstr "Configurações gerais"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "Identidade do clã, aparência, backups e todo parâmetro que não tem uma seção própria."
+
+msgid "Bank settings"
+msgstr "Configurações de banco"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "Se o banco está ativo e a taxa cobrada em cada tipo de transação."
+
+msgid "Chest settings"
+msgstr "Configurações de baús"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "Ciclos, metas de baús, penalidade de meta e as cores das pontuações."
+
+msgid "Chest goals"
+msgstr "Metas de baús"
+
+msgid "How goals are set"
+msgstr "Como as metas são definidas"
+
+msgid "Global goal: the same goal for every player"
+msgstr "Meta global: a mesma meta para todos os jogadores"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "Meta individual por nível dos guardas: cada jogador recebe a meta do nível dos seus guardas (G1 a G9) no perfil do membro"
+
+msgid "Global {0}"
+msgstr "{0} global"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "Com metas por nível dos guardas, a meta global vale para os níveis deixados em branco abaixo."
+
+msgid "Global ({0})"
+msgstr "Global ({0})"
+
+msgid "Guard level not identified"
+msgstr "Nível dos guardas não identificado"
+
+msgid "Highest goal: {0}"
+msgstr "Maior meta: {0}"
+
+msgid "Highest goal"
+msgstr "Maior meta"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0 significa que o nível dos guardas nunca foi identificado. Esses jogadores, e os que não têm perfil de membro, recebem a maior meta da tabela."
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "Cada ciclo fechado guarda a meta que o jogador tinha nele, então mudar um nível depois não reescreve o histórico. A penalidade de meta aumenta a meta do próprio jogador."
+
+msgid "Save Chest Goals"
+msgstr "Salvar metas de baús"
+
+msgid "Chest goals saved."
+msgstr "Metas de baús salvas."
+
+msgid "Choose how the chest goals are set."
+msgstr "Escolha como as metas de baús são definidas."
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "As metas globais devem ser números inteiros iguais ou maiores que 0."
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}: a meta deve ser um número inteiro igual ou maior que 0, ou ficar em branco."
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "Eventos do jogo são criados pelo EventUploader, não por este formulário."
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "Os prêmios e a meta foram aplicados novamente ao resultado registrado; os pontos não mudaram."
+
+msgid "By position"
+msgstr "Por posição"
+
+msgid "#{0} {1}"
+msgstr "{0}º {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "Informe o valor de cada colocação, da melhor para a pior, por exemplo 500; 250; 100."
+
+msgid "Describe the prize, or add a reward line."
+msgstr "Descreva o prêmio ou adicione uma linha de prêmio."
+
+msgid "The goal must be a whole number."
+msgstr "A meta deve ser um número inteiro."
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "Defina a meta ou escolha \"Sem meta\"."
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "Ninguém bateu a meta, e a meta é condicionante: os prêmios ficam com o clã."
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "{0} jogador(es) sem nível de guarda conhecido recebem a maior meta: {1}."
+
+msgid "Amount per place"
+msgstr "Valor por colocação"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "1º; 2º; 3º... ex.: 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "Um torneio jogado no jogo, registrado pelo EventUploader junto com o ranking. Nome, datas, prêmios e meta podem ser ajustados aqui."
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "Um desafio interno para incentivar criptas e monstros épicos. É contado pelos baús coletados dentro do período, que pode começar no passado mas deve terminar no futuro."
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "Eventos do jogo não são criados aqui: o EventUploader registra cada torneio junto com o ranking."
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "O que é distribuído e como é dividido. Proporcional dá a cada jogador uma parte conforme sua participação nos pontos; partes iguais dá o mesmo a todos; por posição dá um valor fixo a cada colocação (1º, 2º, 3º...). Contas administrativas nunca participam, e jogadores abaixo dos pontos mínimos ficam de fora."
+
+msgid "This event has no rewards"
+msgstr "Este evento não tem prêmios"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "Descreva o prêmio em texto abaixo. Prêmios ainda podem ser adicionados depois, mesmo após o resultado registrado."
+
+msgid "Event goal"
+msgstr "Meta do evento"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "O que cada jogador precisa atingir neste torneio. Torneios novos começam com a meta padrão definida no Catálogo de Torneios."
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "O que cada jogador precisa atingir neste evento, na mesma unidade do ranking. Pode ser igual para todos ou seguir o nível dos guardas do perfil do membro."
+
+msgid "points of the ranking"
+msgstr "pontos do ranking"
+
+msgid "Goal reached"
+msgstr "Meta atingida"
+
+msgid "only they share the rewards"
+msgstr "só eles dividem os prêmios"
+
+msgid "the goal does not decide the rewards"
+msgstr "a meta não decide os prêmios"
+
+msgid "Goal"
+msgstr "Meta"
+
+msgid "What each player receives is in the ranking below."
+msgstr "O que cada jogador recebe está no ranking abaixo."
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "O ranking abaixo mostra o que cada jogador receberia se o evento terminasse agora. Contas administrativas nunca recebem prêmio."
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "Conta administrativa: aparece no ranking, nunca recebe prêmio"
+
+msgid "Default goal"
+msgstr "Meta padrão"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "Todo evento novo deste torneio enviado pelo EventUploader começa com esta meta. Ela ainda pode ser alterada em cada evento antes de publicar o resultado."
+
+msgid "No goal"
+msgstr "Sem meta"
+
+msgid "Individual goal by guard level"
+msgstr "Meta individual por nível dos guardas"
+
+msgid "Goal not reached"
+msgstr "Meta não atingida"
+
+msgid "Goal ({0})"
+msgstr "Meta ({0})"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "Meta dos níveis em branco ({0})"
+
+msgid "Same as blank levels"
+msgstr "Igual aos níveis em branco"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "Bater a meta é condição para receber prêmio"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "Quem não bate a meta continua no ranking, mas os prêmios são divididos só entre quem bateu. Um prêmio por posição vai para os melhores colocados que bateram a meta."
+
+msgid "Each player has the goal of their guard level:"
+msgstr "Cada jogador tem a meta do seu nível de guarda:"
+
+msgid "{0} points for every player."
+msgstr "{0} pontos para todos os jogadores."
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "Bater a meta é condição para receber prêmio: os prêmios são divididos só entre os jogadores que bateram."
+
+msgid "The goal does not decide the rewards."
+msgstr "A meta não decide os prêmios."
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "{0} de {1} jogador(es) bateram a meta."

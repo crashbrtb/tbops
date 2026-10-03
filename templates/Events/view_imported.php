@@ -33,6 +33,12 @@ $bannerUrl = match (true) {
     default => $this->Url->build(['action' => 'asset', EventAsset::SLUG_NO_EVENT]),
 };
 $fmt = fn ($n) => $this->Number->format((int)$n);
+$goal = $event->goal();
+$showGoal = $goal->isActive();
+$goalMet = 0;
+foreach ($rows as $row) {
+    $goalMet += $row['standing']->goal_met ? 1 : 0;
+}
 ?>
 <div class="content-page-wrap">
 
@@ -117,7 +123,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                 <ul class="review-reward-list">
                     <?php foreach ($rewards as $reward): ?>
                         <li>
-                            <strong><?= $fmt($result['totals'][$reward->id] ?? 0) ?> &times; <?= h($reward->item_name) ?></strong>
+                            <strong><?= $reward->rule === EventReward::RULE_POSITION ? h($reward->summary()) : $fmt($result['totals'][$reward->id] ?? 0) . ' &times; ' . h($reward->item_name) ?></strong>
                             <span class="text-muted">&middot; <?= h(EventReward::ruleOptions()[$reward->rule] ?? $reward->rule) ?></span>
                         </li>
                     <?php endforeach; ?>
@@ -126,6 +132,13 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                 <p class="text-muted"><?= __('This tournament has no rewards.') ?></p>
             <?php endif; ?>
         </div>
+        <?php if ($showGoal): ?>
+            <?= $this->element('event_goal_summary', [
+                'goal' => $goal,
+                'metCount' => $goalMet,
+                'playerCount' => count($rows),
+            ]) ?>
+        <?php endif; ?>
         <div class="event-info-card is-contact">
             <h3><i class="fas fa-user-check"></i> <?= __('Who hands out the rewards') ?></h3>
             <p><?= h($event->contact_player) ?></p>
@@ -157,8 +170,11 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                         <th><?= __('Player') ?></th>
                         <th style="width: 160px;"><?= __('Points') ?></th>
                         <th style="width: 90px;"><?= __('Share') ?></th>
+                        <?php if ($showGoal): ?>
+                            <th style="width: 150px;"><?= __('Goal') ?></th>
+                        <?php endif; ?>
                         <?php foreach ($rewards as $reward): ?>
-                            <th style="width: 130px;"><?= h($reward->item_name) ?></th>
+                            <th style="width: 130px;" title="<?= h($reward->summary()) ?>"><?= h($reward->item_name) ?></th>
                         <?php endforeach; ?>
                     </tr>
                 </thead>
@@ -186,6 +202,14 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                             </td>
                             <td class="event-points"><?= $fmt($standing->points) ?></td>
                             <td><?= $standing->eligible ? $this->Number->format($standing->participation, ['places' => 2]) . '%' : '—' ?></td>
+                            <?php if ($showGoal): ?>
+                                <td><?= $this->element('event_goal_cell', [
+                                    'value' => $standing->goal,
+                                    'met' => $standing->goal_met,
+                                    'level' => (int)$standing->guard_level,
+                                    'byGuard' => $goal->isByGuard(),
+                                ]) ?></td>
+                            <?php endif; ?>
                             <?php foreach ($rewards as $reward): ?>
                                 <?php $amount = $row['amounts'][$reward->id] ?? 0; ?>
                                 <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $fmt($amount) ?></td>

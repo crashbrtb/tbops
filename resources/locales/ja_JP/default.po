@@ -4648,21 +4648,6 @@ msgstr "#{1} をもとにイベント #{0} を作成しました。名前と日�
 msgid "The event could not be duplicated: {0}"
 msgstr "イベントを複製できませんでした：{0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "アップロードするランキングのCSVファイルを選んでください。"
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "最大 {0} 人のランキングとしてはファイルが大きすぎます。"
-
-msgid "The ranking was not accepted: {0}"
-msgstr "ランキングは受け付けられませんでした：{0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "{0} 人分のランキングを受け取りました。下で確認してください。"
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "このランキングは現在の下書きと同じです。変更はありません。"
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "API トークンを Authorization ヘッダーで送信してください：Bearer <token>。"
 
@@ -4800,21 +4785,6 @@ msgstr "{0} UTC に {1} から受信"
 
 msgid "In the game: {0}"
 msgstr "ゲーム内：{0}"
-
-msgid "Send a ranking"
-msgstr "ランキングを送信"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "EventUploader がゲームから直接送信します。使わない場合は、調査ツールが書き出した ranking.csv をアップロードしてください。"
-
-msgid "Replace with this file"
-msgstr "このファイルで置き換える"
-
-msgid "Upload CSV"
-msgstr "CSVをアップロード"
-
-msgid "Tokens for the EventUploader"
-msgstr "EventUploader 用トークン"
 
 msgid "{0} taking part in the prize"
 msgstr "{0} 人が報酬の対象"
@@ -5316,8 +5286,6 @@ msgstr "監視キーを X-Monitor-Key ヘッダーで送ってください。"
 msgid "Between {0} and {1} minutes."
 msgstr "{0} 分から {1} 分の間で指定してください。"
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "前サイクルで目標未達のプレイヤーは、今サイクルの目標が {0}% 引き上げられます（切り上げ）。"
 
@@ -5330,8 +5298,6 @@ msgstr "目標ペナルティ: 宝箱ポイントの目標 +{0}%"
 msgid "Players with a raised goal: {0}"
 msgstr "目標が引き上げられたプレイヤー: {0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "目標ペナルティ"
 
@@ -5343,7 +5309,6 @@ msgstr "宝箱ポイントの目標"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "前サイクルで目標未達のプレイヤーは、このサイクルの目標が引き上げられます。正当な理由がある場合はここで免除してください。"
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}: {1} ポイント、未達のプレイヤーは {2}% 引き上げて {3} ポイント。"
@@ -5362,7 +5327,6 @@ msgstr "このサイクルで目標が引き上げられたプレイヤーはい
 
 msgid "Previous cycle (score / goal)"
 msgstr "前サイクル（ポイント / 目標）"
-
 
 msgid "Release"
 msgstr "免除"
@@ -5456,3 +5420,240 @@ msgstr "目標ペナルティ: 宝箱ポイントの目標とエピック宝箱�
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "このサイクルの引き上げ目標: {0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "目標: 宝箱 {0} ポイント、エピック宝箱 {1} ポイント"
+
+msgid "Guards G{0}"
+msgstr "衛兵 G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "衛兵レベル不明 (G0): 最も高い目標"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "宝箱ポイントの目標 / エピック宝箱の目標"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0（不明）: 最も高い目標"
+
+msgid "Goals by guard level"
+msgstr "衛兵レベル別の目標"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "衛兵レベル別の目標: 各セルはそのサイクルでのプレイヤーの目標に対して色分けされます。"
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "衛兵レベル別の目標: 各スコアはそのサイクルでのプレイヤーの目標で判定されます。"
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "このサイクルの目標: 宝箱 {0} ポイント、エピック宝箱 {1} ポイント"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}: プレイヤーの衛兵レベルの目標。未達成のプレイヤーは {1}% 引き上げ。"
+
+msgid "General settings"
+msgstr "一般設定"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "クランの情報、外観、バックアップ、専用セクションのないすべてのパラメーター。"
+
+msgid "Bank settings"
+msgstr "銀行設定"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "銀行が有効かどうかと、取引の種類ごとの手数料。"
+
+msgid "Chest settings"
+msgstr "宝箱設定"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "サイクル、宝箱の目標、目標ペナルティ、スコアの色分け。"
+
+msgid "Chest goals"
+msgstr "宝箱の目標"
+
+msgid "How goals are set"
+msgstr "目標の決め方"
+
+msgid "Global goal: the same goal for every player"
+msgstr "共通目標: 全プレイヤー同じ目標"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "衛兵レベル別の個人目標: 各プレイヤーにはメンバープロフィールの衛兵レベル（G1〜G9）の目標が適用されます"
+
+msgid "Global {0}"
+msgstr "共通の{0}"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "衛兵レベル別の目標では、下で空欄のレベルには共通目標が使われます。"
+
+msgid "Global ({0})"
+msgstr "共通（{0}）"
+
+msgid "Guard level not identified"
+msgstr "衛兵レベル未確認"
+
+msgid "Highest goal: {0}"
+msgstr "最も高い目標: {0}"
+
+msgid "Highest goal"
+msgstr "最も高い目標"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0 は衛兵レベルが一度も確認されていないことを意味します。これらのプレイヤーとメンバープロフィールのないプレイヤーには、表の中で最も高い目標が適用されます。"
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "終了したサイクルにはその時点のプレイヤーの目標が保存されるため、後でレベルを変えても履歴は書き換わりません。目標ペナルティはプレイヤー自身の目標を引き上げます。"
+
+msgid "Save Chest Goals"
+msgstr "宝箱の目標を保存"
+
+msgid "Chest goals saved."
+msgstr "宝箱の目標を保存しました。"
+
+msgid "Choose how the chest goals are set."
+msgstr "宝箱の目標の決め方を選んでください。"
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "共通目標は 0 以上の整数で入力してください。"
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}: 目標は 0 以上の整数にするか、空欄にしてください。"
+
+msgid "System"
+msgstr "システム"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "ゲーム内イベントはこのフォームではなく EventUploader が作成します。"
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "報酬と目標を記録済みの結果に再適用しました。ポイントは変わっていません。"
+
+msgid "By position"
+msgstr "順位別"
+
+msgid "#{0} {1}"
+msgstr "{0}位 {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "各順位の数量を上位から入力してください。例: 500; 250; 100"
+
+msgid "Describe the prize, or add a reward line."
+msgstr "賞品を説明するか、報酬の行を追加してください。"
+
+msgid "The goal must be a whole number."
+msgstr "目標は整数で入力してください。"
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "目標を設定するか、「目標なし」を選んでください。"
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "誰も目標を達成しておらず、目標は必須です。報酬はクランに残ります。"
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "衛兵レベルが不明な {0} 人のプレイヤーには最も高い目標が適用されます: {1}。"
+
+msgid "Amount per place"
+msgstr "順位ごとの数量"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "1位; 2位; 3位... 例: 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "ゲーム内で行われたトーナメントで、EventUploader がランキングと一緒に登録します。名前・日時・報酬・目標はここで調整できます。"
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "クリプトとエピックモンスターを盛り上げるクラン内の挑戦です。期間内に回収した宝箱で集計し、開始は過去でもかまいませんが、終了は未来である必要があります。"
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "ゲーム内イベントはここでは作成しません。EventUploader が各トーナメントをランキングと一緒に登録します。"
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "何をどう分配するか。比例はポイントの割合に応じて、均等は全員同じ量を、順位別は各順位に決まった量（1位、2位、3位…）を渡します。管理用アカウントは対象外で、最低ポイントに届かないプレイヤーも除外されます。"
+
+msgid "This event has no rewards"
+msgstr "このイベントには報酬がありません"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "代わりに下で賞品を文章で説明してください。結果の記録後でも報酬は後から追加できます。"
+
+msgid "Event goal"
+msgstr "イベントの目標"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "このトーナメントで各プレイヤーが達成すべき目標です。新しいトーナメントはトーナメント一覧で設定した既定の目標から始まります。"
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "このイベントで各プレイヤーが達成すべき目標で、ランキングと同じ単位です。全員同じにすることも、メンバープロフィールの衛兵レベルに合わせることもできます。"
+
+msgid "points of the ranking"
+msgstr "ランキングのポイント"
+
+msgid "Goal reached"
+msgstr "目標達成"
+
+msgid "only they share the rewards"
+msgstr "報酬を分け合うのは彼らのみ"
+
+msgid "the goal does not decide the rewards"
+msgstr "目標は報酬に影響しません"
+
+msgid "Goal"
+msgstr "目標"
+
+msgid "What each player receives is in the ranking below."
+msgstr "各プレイヤーが受け取る量は下のランキングにあります。"
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "下のランキングは、今イベントが終わった場合に各プレイヤーが受け取る量です。管理用アカウントは報酬を受け取りません。"
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "管理用アカウント: ランキングには載るが報酬なし"
+
+msgid "Default goal"
+msgstr "既定の目標"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "EventUploader が送るこのトーナメントの新しいイベントは、すべてこの目標から始まります。結果を公開する前なら各イベントで変更できます。"
+
+msgid "No goal"
+msgstr "目標なし"
+
+msgid "Individual goal by guard level"
+msgstr "衛兵レベル別の個人目標"
+
+msgid "Goal not reached"
+msgstr "目標未達成"
+
+msgid "Goal ({0})"
+msgstr "目標（{0}）"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "空欄のレベルの目標（{0}）"
+
+msgid "Same as blank levels"
+msgstr "空欄のレベルと同じ"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "報酬を受け取るには目標達成が必要"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "目標に届かなかったプレイヤーもランキングには残りますが、報酬は達成したプレイヤーだけで分けます。順位別の報酬は達成したプレイヤーの上位から渡します。"
+
+msgid "Each player has the goal of their guard level:"
+msgstr "各プレイヤーの目標は衛兵レベルで決まります:"
+
+msgid "{0} points for every player."
+msgstr "全プレイヤー {0} ポイント。"
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "報酬を受け取るには目標達成が必要です。報酬は達成したプレイヤーだけで分けます。"
+
+msgid "The goal does not decide the rewards."
+msgstr "目標は報酬に影響しません。"
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "{1} 人中 {0} 人が達成しました。"

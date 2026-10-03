@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use App\Service\ChestGoalService;
 use App\Service\GoalPenaltyService;
 use Cake\Http\Response;
 use Cake\Controller\Controller;
@@ -289,8 +290,20 @@ class CollectedChestsController extends AppController
             'end' => $cycleEnd->format('Y-m-d H:i:s'),
         ];
 
+        // Meta de cada jogador: global ou pelo nível dos guardas, conforme configurado
+        $chestGoals = new ChestGoalService();
+        $goalsByGuard = $chestGoals->isByGuard();
+        $guardGoalTable = $goalsByGuard ? $chestGoals->levelTable() : [];
+        $playerGoals = [];
+        $playerGuardLevels = [];
+        foreach (array_keys($playerChestCounts) as $player) {
+            $player = (string)$player;
+            $playerGoals[$player] = $chestGoals->goalsFor($player);
+            $playerGuardLevels[$player] = $chestGoals->guardLevel($player);
+        }
+
         // Penalidade de meta: quem não bateu a meta no ciclo anterior tem meta maior neste
-        $goalPenalty = new GoalPenaltyService();
+        $goalPenalty = new GoalPenaltyService($chestGoals);
         $goalPenaltySettings = $goalPenalty->settings();
         $penaltyGoals = $goalPenalty->goalsForCycle($cycleStart);
 
@@ -326,7 +339,11 @@ class CollectedChestsController extends AppController
             'scoreColorsConfig',
             'epicMonsterDetails',
             'goalPenaltySettings',
-            'penaltyGoals'
+            'penaltyGoals',
+            'goalsByGuard',
+            'guardGoalTable',
+            'playerGoals',
+            'playerGuardLevels'
         ));
 
     }

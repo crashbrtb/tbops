@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Event;
 use App\Model\Entity\EventReward;
+use App\Service\EventGoal;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
@@ -40,7 +41,8 @@ class EventsTable extends Table
     public const LIST_FIELDS = [
         'id', 'event_number', 'name', 'description', 'criteria', 'custom_metric',
         'starts_at', 'ends_at', 'prize', 'contact_player', 'banner_mime',
-        'status', 'finalized_at', 'published_at', 'game_result_uid', 'game_tournament_key', 'game_tournament_id',
+        'status', 'goal_mode', 'goal_points', 'goal_by_guard', 'goal_required',
+        'finalized_at', 'published_at', 'game_result_uid', 'game_tournament_key', 'game_tournament_id',
         'created_by', 'created', 'modified',
     ];
 
@@ -247,16 +249,23 @@ class EventsTable extends Table
             $data['custom_metric'] = Event::METRIC_SCORE;
         }
 
-        // Rewards, likewise, belong to game tournaments only, and a tournament
-        // can be registered without any ("no rewards" on the form): its result
-        // is then published with the ranking alone.
+        // Both kinds of event hand out rewards, and either can go without any
+        // ("no rewards" on the form): a tournament's result is then published
+        // with the ranking alone, a clan event announces its prize as text.
         if (isset($data['criteria'])) {
-            $noRewards = !empty($data['no_rewards']);
-            $data['event_rewards'] = $data['criteria'] === Event::CRITERIA_IMPORTED && !$noRewards
+            $data['event_rewards'] = empty($data['no_rewards'])
                 ? $this->normalizeRewards($data['event_rewards'] ?? [])
                 : [];
         }
         unset($data['no_rewards']);
+
+        // The goal arrives as one group of fields and is stored in four columns.
+        if (isset($data['goal']) && is_array($data['goal'])) {
+            foreach (EventGoal::marshal($data['goal']) as $field => $value) {
+                $data[$field] = $value;
+            }
+        }
+        unset($data['goal']);
     }
 
     /**
@@ -275,7 +284,17 @@ class EventsTable extends Table
             }
             $name = trim((string)($row['item_name'] ?? ''));
             $quantity = trim((string)($row['quantity'] ?? ''));
-            if ($name === '' && $quantity === '') {
+            $rule = $row['rule'] ?? EventReward::RULE_PROPORTIONAL;
+            $positions = null;
+            if ($rule === EventReward::RULE_POSITION) {
+                // The amount of every place, best first: "500; 250; 100". The
+                // reward hands out their sum.
+                $positions = $this->positionAmounts((string)($row['positions'] ?? ''));
+                $quantity = $positions === null ? '' : (string)array_sum($positions);
+                if ($name === '' && $positions === []) {
+                    continue;
+                }
+            } elseif ($name === '' && $quantity === '') {
                 continue;
             }
             // Thousands separators are how people type big numbers; the
@@ -284,7 +303,8 @@ class EventsTable extends Table
             $clean = [
                 'item_name' => $name,
                 'quantity' => str_replace(['.', ',', ' '], '', $quantity),
-                'rule' => $row['rule'] ?? EventReward::RULE_PROPORTIONAL,
+                'position_amounts' => $positions ? (string)json_encode($positions) : null,
+                'rule' => $rule,
                 'min_points' => $minPoints === '' ? 1 : str_replace(['.', ',', ' '], '', $minPoints),
                 'remainder' => $row['remainder'] ?? EventReward::REMAINDER_TOP_RANKED,
                 'sort' => count($out),
@@ -296,6 +316,33 @@ class EventsTable extends Table
         }
 
         return $out;
+    }
+
+    /**
+     * The amounts typed for a reward by position, best place first.
+     *
+     * Places are separated by ";", "|" or a line break; inside each one,
+     * thousands separators are dropped. Null when one of them is not a whole
+     * number, so the reward is refused rather than saved with a place missing.
+     *
+     * @param string $raw Text typed in the form.
+     * @return list<int>|null
+     */
+    private function positionAmounts(string $raw): ?array
+    {
+        $amounts = [];
+        foreach (preg_split('/[;|\r\n]+/', $raw) ?: [] as $part) {
+            $part = str_replace(['.', ',', ' '], '', trim($part));
+            if ($part === '') {
+                continue;
+            }
+            if (!ctype_digit($part)) {
+                return null;
+            }
+            $amounts[] = (int)$part;
+        }
+
+        return $amounts;
     }
 
     /**
@@ -335,13 +382,25 @@ class EventsTable extends Table
             ->requirePresence('ends_at', 'create')
             ->notEmptyDateTime('ends_at', __('Choose when the event ends (UTC).'));
 
-        // A game tournament describes its prize with reward lines; the text is
-        // filled in from them when left empty.
-        $notImported = fn (array $context): bool => ($context['data']['criteria'] ?? null) !== Event::CRITERIA_IMPORTED;
+        // The prize text is filled in from the reward lines when left empty, so
+        // only a clan event with no reward line has to describe it in words.
+        $needsPrizeText = function (array $context): bool {
+            return ($context['data']['criteria'] ?? null) !== Event::CRITERIA_IMPORTED
+                && empty($context['data']['event_rewards']);
+        };
         $validator
             ->scalar('prize')
-            ->requirePresence('prize', fn (array $context): bool => $context['newRecord'] && $notImported($context))
-            ->notEmptyString('prize', __('Describe the prize the players are competing for.'), $notImported);
+            ->requirePresence('prize', fn (array $context): bool => $context['newRecord'] && $needsPrizeText($context))
+            ->allowEmptyString('prize', null, fn (array $context): bool => !$needsPrizeText($context))
+            ->notEmptyString('prize', __('Describe the prize, or add a reward line.'), $needsPrizeText);
+
+        $validator
+            ->inList('goal_mode', array_keys(EventGoal::modeOptions()))
+            ->allowEmptyString('goal_mode');
+
+        $validator
+            ->nonNegativeInteger('goal_points', __('The goal must be a whole number.'))
+            ->allowEmptyString('goal_points');
 
         $validator
             ->scalar('contact_player')
@@ -425,6 +484,21 @@ class EventsTable extends Table
             ]
         );
 
+        $onSave(
+            function (EntityInterface $entity) {
+                if ((string)$entity->get('goal_mode') === EventGoal::MODE_NONE || !$entity->get('goal_mode')) {
+                    return true;
+                }
+
+                return EventGoal::fromEntity($entity)->isActive();
+            },
+            'goalSet',
+            [
+                'errorField' => 'goal_points',
+                'message' => __('Set the goal, or choose "No goal".'),
+            ]
+        );
+
         $rules->add($rules->isUnique(['game_result_uid'], ['allowMultipleNulls' => true]), 'uniqueGameResult', [
             'errorField' => 'game_result_uid',
             'message' => __('This game tournament result is already registered.'),
@@ -455,7 +529,7 @@ class EventsTable extends Table
             $entity->set('event_number', $this->nextEventNumber());
         }
 
-        if ($entity->get('criteria') === Event::CRITERIA_IMPORTED && trim((string)$entity->get('prize')) === '') {
+        if (trim((string)$entity->get('prize')) === '') {
             $lines = [];
             foreach ((array)$entity->get('event_rewards') as $reward) {
                 if ($reward instanceof EventReward) {

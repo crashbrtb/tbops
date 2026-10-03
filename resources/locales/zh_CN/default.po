@@ -4648,21 +4648,6 @@ msgstr "已根据 #{1} 创建活动 #{0}。请检查名称和日期。"
 msgid "The event could not be duplicated: {0}"
 msgstr "无法复制活动：{0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "请选择要上传的排名 CSV 文件。"
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "文件过大，排名最多只能有 {0} 名玩家。"
-
-msgid "The ranking was not accepted: {0}"
-msgstr "排名未被接受：{0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "已收到包含 {0} 名玩家的排名。请在下方审核。"
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "此排名与当前草稿相同，没有任何变化。"
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "请在 Authorization 请求头中发送 API 令牌：Bearer <token>。"
 
@@ -4800,21 +4785,6 @@ msgstr "{0} UTC 收到，来自 {1}"
 
 msgid "In the game: {0}"
 msgstr "游戏中：{0}"
-
-msgid "Send a ranking"
-msgstr "发送排名"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "EventUploader 会直接从游戏发送。若未使用，请上传探测工具导出的 ranking.csv。"
-
-msgid "Replace with this file"
-msgstr "用此文件替换"
-
-msgid "Upload CSV"
-msgstr "上传 CSV"
-
-msgid "Tokens for the EventUploader"
-msgstr "EventUploader 令牌"
 
 msgid "{0} taking part in the prize"
 msgstr "{0} 人参与奖励分配"
@@ -5316,8 +5286,6 @@ msgstr "请在 X-Monitor-Key 请求头中发送监控密钥。"
 msgid "Between {0} and {1} minutes."
 msgstr "介于 {0} 到 {1} 分钟之间。"
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "上一周期未达标的玩家，本周期目标提高 {0}%（向上取整）。"
 
@@ -5330,8 +5298,6 @@ msgstr "目标惩罚：宝箱分数目标 +{0}%"
 msgid "Players with a raised goal: {0}"
 msgstr "目标被提高的玩家：{0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "目标惩罚"
 
@@ -5343,7 +5309,6 @@ msgstr "宝箱分数目标"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "上一周期未达标的玩家在本周期目标会提高。如有正当理由，可在此豁免玩家。"
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}：{1} 分，未达标的玩家提高 {2}% 至 {3} 分。"
@@ -5362,7 +5327,6 @@ msgstr "本周期没有玩家的目标被提高。"
 
 msgid "Previous cycle (score / goal)"
 msgstr "上一周期（分数 / 目标）"
-
 
 msgid "Release"
 msgstr "豁免"
@@ -5456,3 +5420,240 @@ msgstr "目标惩罚：宝箱分数目标和史诗宝箱目标 +{0}%"
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "该周期提高后的目标：{0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "目标：{0} 宝箱分数，{1} 史诗宝箱分数"
+
+msgid "Guards G{0}"
+msgstr "卫兵 G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "卫兵等级未知 (G0)：最高目标"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "宝箱分数目标 / 史诗宝箱目标"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0（未知）：最高目标"
+
+msgid "Goals by guard level"
+msgstr "按卫兵等级设定目标"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "按卫兵等级设定目标：每个单元格按玩家在该周期的目标着色。"
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "按卫兵等级设定目标：每个分数按玩家在该周期的目标评判。"
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "该周期目标：{0} 宝箱分数，{1} 史诗宝箱分数"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}：玩家卫兵等级对应的目标，未达成者提高 {1}%。"
+
+msgid "General settings"
+msgstr "常规设置"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "部落信息、外观、备份，以及所有没有单独分区的参数。"
+
+msgid "Bank settings"
+msgstr "银行设置"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "银行是否启用，以及每种交易收取的手续费。"
+
+msgid "Chest settings"
+msgstr "宝箱设置"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "周期、宝箱目标、目标惩罚以及分数的着色方式。"
+
+msgid "Chest goals"
+msgstr "宝箱目标"
+
+msgid "How goals are set"
+msgstr "目标的设定方式"
+
+msgid "Global goal: the same goal for every player"
+msgstr "全局目标：所有玩家使用同一目标"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "按卫兵等级的个人目标：每位玩家使用成员资料中其卫兵等级（G1 至 G9）对应的目标"
+
+msgid "Global {0}"
+msgstr "全局{0}"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "按卫兵等级设定目标时，下方留空的等级使用全局目标。"
+
+msgid "Global ({0})"
+msgstr "全局（{0}）"
+
+msgid "Guard level not identified"
+msgstr "未识别卫兵等级"
+
+msgid "Highest goal: {0}"
+msgstr "最高目标：{0}"
+
+msgid "Highest goal"
+msgstr "最高目标"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0 表示从未识别出卫兵等级。这些玩家以及没有成员资料的玩家使用表中最高的目标。"
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "每个已结束的周期都会保留玩家当时的目标，因此之后修改等级不会改写历史。目标惩罚提高的是玩家自己的目标。"
+
+msgid "Save Chest Goals"
+msgstr "保存宝箱目标"
+
+msgid "Chest goals saved."
+msgstr "宝箱目标已保存。"
+
+msgid "Choose how the chest goals are set."
+msgstr "请选择宝箱目标的设定方式。"
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "全局目标必须是大于或等于 0 的整数。"
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}：目标必须是大于或等于 0 的整数，或留空。"
+
+msgid "System"
+msgstr "系统"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "游戏活动由 EventUploader 创建，不能通过此表单创建。"
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "奖励和目标已重新应用到已记录的结果；积分未改变。"
+
+msgid "By position"
+msgstr "按名次"
+
+msgid "#{0} {1}"
+msgstr "第{0}名 {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}：{1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "请按名次从高到低填写每个名次的数量，例如 500; 250; 100。"
+
+msgid "Describe the prize, or add a reward line."
+msgstr "请描述奖品，或添加一条奖励。"
+
+msgid "The goal must be a whole number."
+msgstr "目标必须是整数。"
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "请设置目标，或选择“无目标”。"
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "没有人达成目标，且目标为必需条件：奖励留在公会。"
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "{0} 名玩家的卫兵等级未知，使用最高目标：{1}。"
+
+msgid "Amount per place"
+msgstr "每个名次的数量"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "第1; 第2; 第3... 例如 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "在游戏中进行的锦标赛，由 EventUploader 连同排名一起登记。可在此调整名称、日期、奖励和目标。"
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "推动地穴和史诗怪物的公会内部挑战。按时间段内收集的宝箱计算，开始时间可在过去，但结束时间必须在将来。"
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "游戏活动不在此创建：EventUploader 会连同排名一起登记每场锦标赛。"
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "发放什么以及如何分配。按比例：每位玩家按其积分占比获得；平均分配：每人相同；按名次：每个名次固定数量（第1、第2、第3名……）。管理账号从不参与，低于最低积分的玩家不计入。"
+
+msgid "This event has no rewards"
+msgstr "此活动没有奖励"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "请在下方用文字描述奖品。之后仍可添加奖励，即使结果已记录。"
+
+msgid "Event goal"
+msgstr "活动目标"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "每位玩家在此锦标赛中需达到的目标。新锦标赛使用锦标赛目录中设置的默认目标。"
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "每位玩家在此活动中需达到的目标，单位与排名相同。可以人人相同，也可按成员资料中的卫兵等级设定。"
+
+msgid "points of the ranking"
+msgstr "排名积分"
+
+msgid "Goal reached"
+msgstr "已达成目标"
+
+msgid "only they share the rewards"
+msgstr "只有他们分配奖励"
+
+msgid "the goal does not decide the rewards"
+msgstr "目标不影响奖励"
+
+msgid "Goal"
+msgstr "目标"
+
+msgid "What each player receives is in the ranking below."
+msgstr "每位玩家获得的奖励见下方排名。"
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "下方排名显示若活动此刻结束每位玩家将获得的奖励。管理账号从不获得奖励。"
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "管理账号：参与排名，从不获得奖励"
+
+msgid "Default goal"
+msgstr "默认目标"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "EventUploader 发送的此锦标赛的每个新活动都以此目标开始。在发布结果前仍可在每个活动中修改。"
+
+msgid "No goal"
+msgstr "无目标"
+
+msgid "Individual goal by guard level"
+msgstr "按卫兵等级的个人目标"
+
+msgid "Goal not reached"
+msgstr "未达成目标"
+
+msgid "Goal ({0})"
+msgstr "目标（{0}）"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "留空等级的目标（{0}）"
+
+msgid "Same as blank levels"
+msgstr "同留空等级"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "达成目标才能获得奖励"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "未达成目标的玩家仍在排名中，但奖励只在达成目标的玩家之间分配。按名次的奖励发给达成目标的排名最高的玩家。"
+
+msgid "Each player has the goal of their guard level:"
+msgstr "每位玩家使用其卫兵等级对应的目标："
+
+msgid "{0} points for every player."
+msgstr "每位玩家 {0} 积分。"
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "达成目标才能获得奖励：奖励只在达成目标的玩家之间分配。"
+
+msgid "The goal does not decide the rewards."
+msgstr "目标不影响奖励。"
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "{1} 名玩家中有 {0} 名达成。"

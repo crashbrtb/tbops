@@ -23,6 +23,9 @@ use Cake\ORM\Entity;
  * @property int|null $game_player_id
  * @property int|null $power
  * @property bool $eligible
+ * @property int|null $guard_level Guard level when the result was recorded; 0 = unknown
+ * @property int|null $goal Goal the player had in this event; null when the event has none
+ * @property bool|null $goal_met Whether the player reached it
  * @property \Cake\I18n\DateTime|null $created
  * @property \App\Model\Entity\Event $event
  * @property array<\App\Model\Entity\EventRewardAllocation> $event_reward_allocations
@@ -44,5 +47,8 @@ class EventStanding extends Entity
         'game_player_id' => true,
         'power' => true,
         'eligible' => true,
+        'guard_level' => true,
+        'goal' => true,
+        'goal_met' => true,
     ];
 }

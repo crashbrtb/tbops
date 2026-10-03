@@ -44,6 +44,10 @@ class GameTournament extends Entity
     protected array $_accessible = [
         'name' => true,
         'duration_days' => true,
+        'goal_mode' => true,
+        'goal_points' => true,
+        'goal_by_guard' => true,
+        'goal_required' => true,
     ];
 
     /**

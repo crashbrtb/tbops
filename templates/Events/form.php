@@ -35,11 +35,6 @@ $formatForInput = function ($value): string {
 $startsValue = $formatForInput($event->starts_at) ?: DateTime::now()->addHours(1)->format('Y-m-d\TH:i');
 $endsValue = $formatForInput($event->ends_at) ?: DateTime::now()->addDays(7)->format('Y-m-d\TH:i');
 
-// A game tournament is registered for the day it was played.
-if ($isNew && $event->criteria === Event::CRITERIA_IMPORTED && !$event->starts_at) {
-    $startsValue = DateTime::now()->format('Y-m-d\T00:00');
-    $endsValue = DateTime::now()->format('Y-m-d\T23:59');
-}
 $nowForMin = DateTime::now()->format('Y-m-d\TH:i');
 
 $criteriaIcons = [
@@ -59,6 +54,7 @@ foreach ((array)$event->event_rewards as $reward) {
             'id' => $reward->id,
             'item_name' => $reward->item_name,
             'quantity' => $reward->quantity,
+            'positions' => implode('; ', $reward->positionList()),
             'rule' => $reward->rule,
             'min_points' => $reward->min_points ?? 1,
             'remainder' => $reward->remainder ?: EventReward::REMAINDER_TOP_RANKED,
@@ -68,7 +64,7 @@ foreach ((array)$event->event_rewards as $reward) {
 }
 if (!$rewardRows) {
     $rewardRows[] = [
-        'id' => null, 'item_name' => '', 'quantity' => '', 'rule' => EventReward::RULE_PROPORTIONAL,
+        'id' => null, 'item_name' => '', 'quantity' => '', 'positions' => '', 'rule' => EventReward::RULE_PROPORTIONAL,
         'min_points' => 1, 'remainder' => EventReward::REMAINDER_TOP_RANKED, 'errors' => [],
     ];
 }
@@ -85,19 +81,23 @@ $rewardLine = function (string $index, array $row) use ($ruleOptions, $remainder
         return $html;
     };
 
+    $byPosition = (string)$row['rule'] === EventReward::RULE_POSITION;
+    $hidden = fn (bool $hide): string => $hide ? ' style="display: none;"' : '';
     $html = '<div class="reward-line">';
     if (!empty($row['id'])) {
         $html .= '<input type="hidden" name="' . $name('id') . '" value="' . (int)$row['id'] . '">';
     }
     $html .= '<div class="form-group reward-item"><label>' . __('Item') . '</label>'
         . '<input type="text" class="form-control" maxlength="120" name="' . $name('item_name') . '" value="' . h($row['item_name']) . '" placeholder="' . h(__('e.g. Artifact pieces')) . '"></div>';
-    $html .= '<div class="form-group reward-quantity"><label>' . __('Quantity') . '</label>'
-        . '<input type="text" inputmode="numeric" class="form-control" name="' . $name('quantity') . '" value="' . h((string)$row['quantity']) . '" placeholder="500"></div>';
     $html .= '<div class="form-group reward-rule"><label>' . __('Split') . '</label>'
-        . '<select class="form-control" name="' . $name('rule') . '">' . $options($ruleOptions, $row['rule']) . '</select></div>';
+        . '<select class="form-control" name="' . $name('rule') . '" onchange="onRewardRuleChange(this)">' . $options($ruleOptions, $row['rule']) . '</select></div>';
+    $html .= '<div class="form-group reward-quantity js-not-position"' . $hidden($byPosition) . '><label>' . __('Quantity') . '</label>'
+        . '<input type="text" inputmode="numeric" class="form-control" name="' . $name('quantity') . '" value="' . h((string)$row['quantity']) . '" placeholder="500"></div>';
+    $html .= '<div class="form-group reward-positions js-position"' . $hidden(!$byPosition) . '><label>' . __('Amount per place') . '</label>'
+        . '<input type="text" class="form-control" name="' . $name('positions') . '" value="' . h((string)($row['positions'] ?? '')) . '" placeholder="' . h(__('1st; 2nd; 3rd... e.g. 500; 250; 100')) . '"></div>';
     $html .= '<div class="form-group reward-min"><label>' . __('Minimum points') . '</label>'
         . '<input type="text" inputmode="numeric" class="form-control" name="' . $name('min_points') . '" value="' . h((string)$row['min_points']) . '"></div>';
-    $html .= '<div class="form-group reward-remainder"><label>' . __('Leftover units') . '</label>'
+    $html .= '<div class="form-group reward-remainder js-not-position"' . $hidden($byPosition) . '><label>' . __('Leftover units') . '</label>'
         . '<select class="form-control" name="' . $name('remainder') . '">' . $options($remainderOptions, $row['remainder']) . '</select></div>';
     $html .= '<button type="button" class="btn btn-outline-danger btn-sm reward-remove" onclick="removeRewardLine(this)" title="' . h(__('Remove')) . '"><i class="fas fa-trash"></i></button>';
     if (!empty($row['errors'])) {
@@ -107,16 +107,17 @@ $rewardLine = function (string $index, array $row) use ($ruleOptions, $remainder
     return $html . '</div>';
 };
 
-// Two kinds of event share this form. A game event is a tournament played in
-// the game, registered after it ends; a clan event is an internal challenge
-// counted from collected chests inside a window that has not started yet.
-$isGameEvent = $event->criteria === Event::CRITERIA_IMPORTED;
-// A published tournament keeps its kind and its points; only the rewards (and
-// the texts) change, and they are split again over the published result.
-$isPublishedResult = !$isNew && $isGameEvent && $event->published_at !== null;
-// "No rewards" starts ticked for a tournament saved without any, so editing it
-// does not suddenly ask for one; a new tournament starts with a line to fill.
-$noRewards = $isGameEvent && !$isNew && !array_filter($rewardRows, fn (array $r): bool => !empty($r['id']) || $r['item_name'] !== '');
+// Two kinds of event share this form, but only one can be created here. A
+// clan event is an internal challenge counted from collected chests; a game
+// event is a tournament played in the game, which only the EventUploader
+// registers (with its ranking) and which is only edited here.
+$isGameEvent = !$isNew && $event->criteria === Event::CRITERIA_IMPORTED;
+// Once the result is recorded the points are frozen; rewards and goal (and
+// the texts) can still change, and are applied again to the recorded result.
+$isRecordedResult = !$isNew && $event->hasRecordedResult();
+// "No rewards" starts ticked for an event saved without any, so editing it
+// does not suddenly ask for one; a new event starts with a line to fill.
+$noRewards = !$isNew && !array_filter($rewardRows, fn (array $r): bool => !empty($r['id']) || $r['item_name'] !== '');
 $currentCriteria = $isGameEvent || !$event->criteria ? Event::CRITERIA_CHEST_SCORE : $event->criteria;
 
 /** Renders the validation message for a field, if the save left one. */
@@ -155,34 +156,33 @@ $fieldError = function (string $field) use ($event) {
 
     <?= $this->Form->create($event, ['type' => 'file', 'id' => 'eventForm']) ?>
 
-    <?php if ($isPublishedResult): ?>
+    <?php if ($isRecordedResult): ?>
         <div class="alert alert-info">
             <i class="fas fa-lock mr-1"></i>
-            <?= __('The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody\'s points change.') ?>
+            <?= $isGameEvent
+                ? __('The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody\'s points change.')
+                : __('The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody\'s points change.') ?>
         </div>
     <?php endif; ?>
 
-    <!-- Kind -->
+    <!-- Kind: fixed. Game events only come from the EventUploader. -->
     <div class="event-form-card">
         <h2><i class="fas fa-layer-group text-primary"></i> <?= __('Event type') ?></h2>
-        <div class="criteria-options">
-            <label class="criteria-option">
-                <input type="radio" name="event_kind" value="game" <?= $isGameEvent ? 'checked' : '' ?> <?= $isPublishedResult ? 'disabled' : '' ?> onchange="onKindChange()">
-                <span class="criteria-option-body">
-                    <strong><i class="fas fa-gamepad"></i> <?= __('Game event') ?></strong>
-                    <span><?= __('A tournament played in the game. It is registered after it ends, so past dates are accepted, and the EventUploader usually creates it together with the ranking.') ?></span>
-                </span>
-            </label>
-            <label class="criteria-option">
-                <input type="radio" name="event_kind" value="clan" <?= $isGameEvent ? '' : 'checked' ?> <?= $isPublishedResult ? 'disabled' : '' ?> onchange="onKindChange()">
-                <span class="criteria-option-body">
-                    <strong><i class="fas fa-flag"></i> <?= __('Clan event') ?></strong>
-                    <span><?= __('An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future.') ?></span>
-                </span>
-            </label>
-        </div>
-        <!-- Sent instead of the chest criteria when the event comes from the game. -->
-        <input type="hidden" name="criteria" value="<?= Event::CRITERIA_IMPORTED ?>" id="gameCriteria" <?= $isGameEvent ? '' : 'disabled' ?>>
+        <?php if ($isGameEvent): ?>
+            <p class="mb-0">
+                <strong><i class="fas fa-gamepad"></i> <?= __('Game event') ?></strong> &mdash;
+                <?= __('A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here.') ?>
+            </p>
+            <input type="hidden" name="criteria" value="<?= Event::CRITERIA_IMPORTED ?>" id="gameCriteria">
+        <?php else: ?>
+            <p class="mb-0">
+                <strong><i class="fas fa-flag"></i> <?= __('Clan event') ?></strong> &mdash;
+                <?= __('An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future.') ?>
+            </p>
+            <small class="form-text text-muted">
+                <?= __('Game events are not created here: the EventUploader registers each tournament together with its ranking.') ?>
+            </small>
+        <?php endif; ?>
     </div>
 
     <!-- Identity -->
@@ -362,22 +362,23 @@ $fieldError = function (string $field) use ($event) {
         </div>
     </div>
 
-    <!-- Rewards of a game event -->
-    <div class="event-form-card" data-kind="game"<?= $isGameEvent ? '' : ' style="display: none;"' ?>>
+    <!-- Rewards -->
+    <div class="event-form-card">
         <div id="rewardsSection">
             <h2><i class="fas fa-coins text-primary"></i> <?= __('Rewards to split') ?></h2>
             <p class="section-hint">
-                <?= __('What the clan received for this tournament and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same. Administrative accounts never take part, and players below the minimum points are left out.') ?>
+                <?= __('What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out.') ?>
             </p>
-
             <div class="form-check mb-3">
                 <input type="checkbox" class="form-check-input" id="no-rewards" name="no_rewards" value="1"
                        <?= $noRewards ? 'checked' : '' ?> onchange="onNoRewardsChange()">
                 <label class="form-check-label" for="no-rewards">
-                    <?= __('This tournament has no rewards') ?>
+                    <?= __('This event has no rewards') ?>
                 </label>
                 <small class="form-text text-muted">
-                    <?= __('The result is published with the ranking only. Rewards can still be added later, even after it is published.') ?>
+                    <?= $isGameEvent
+                        ? __('The result is published with the ranking only. Rewards can still be added later, even after it is published.')
+                        : __('Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded.') ?>
                 </small>
             </div>
 
@@ -396,13 +397,27 @@ $fieldError = function (string $field) use ($event) {
 
             <template id="rewardLineTemplate">
                 <?= $rewardLine('__INDEX__', [
-                    'id' => null, 'item_name' => '', 'quantity' => '', 'rule' => EventReward::RULE_PROPORTIONAL,
+                    'id' => null, 'item_name' => '', 'quantity' => '', 'positions' => '', 'rule' => EventReward::RULE_PROPORTIONAL,
                     'min_points' => 1, 'remainder' => EventReward::REMAINDER_TOP_RANKED, 'errors' => [],
                 ]) ?>
             </template>
         </div>
     </div>
 
+    <!-- Goal -->
+    <div class="event-form-card">
+        <h2><i class="fas fa-bullseye text-primary"></i> <?= __('Event goal') ?></h2>
+        <p class="section-hint">
+            <?= $isGameEvent
+                ? __('What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue.')
+                : __('What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile.') ?>
+        </p>
+        <?= $this->element('event_goal_fields', [
+            'goal' => $event->goal(),
+            'error' => implode(' ', (array)$event->getError('goal_points')) ?: null,
+            'pointsLabel' => $isGameEvent ? __('Points') : __('points of the ranking'),
+        ]) ?>
+    </div>
     <!-- Prize and contact -->
     <div class="event-form-card">
         <h2><i class="fas fa-gift text-primary"></i> <?= __('Prize and contact') ?></h2>
@@ -416,8 +431,9 @@ $fieldError = function (string $field) use ($event) {
                     'type' => 'textarea',
                     'class' => 'form-control',
                     'rows' => 3,
-                    'required' => true,
-                    'placeholder' => __('e.g. 500 gold for first place, 250 for second.'),
+                    // Filled in from the reward lines when left empty.
+                    'required' => false,
+                    'placeholder' => __('Optional: filled in from the rewards when left empty.'),
                     'templates' => ['inputContainer' => '{{content}}'],
                     'error' => false,
                 ]) ?>
@@ -485,58 +501,25 @@ $fieldError = function (string $field) use ($event) {
 <?php $this->start('script'); ?>
 <script>
     var CUSTOM_CRITERIA = '<?= Event::CRITERIA_CUSTOM_CHESTS ?>';
-    var NOW_FOR_MIN = '<?= h($nowForMin) ?>';
 
-    function isGameEvent() {
-        var kind = document.querySelector('input[name="event_kind"]:checked');
-        return kind !== null && kind.value === 'game';
-    }
-
-    // Switching the kind swaps what is sent: the hidden "imported" criteria for
-    // a game event, the chest criteria radios for a clan event. Disabled inputs
-    // are not submitted, so only one of them ever reaches the server.
-    function onKindChange() {
-        var game = isGameEvent();
-
-        document.getElementById('gameCriteria').disabled = !game;
-        document.querySelectorAll('.clan-criteria').forEach(function (radio) {
-            radio.disabled = game;
-        });
-        document.querySelectorAll('[data-kind]').forEach(function (el) {
-            el.style.display = el.getAttribute('data-kind') === (game ? 'game' : 'clan') ? '' : 'none';
-        });
-
-        // The start can always be in the past. A game event is registered after it
-        // was played, so its end has no lower limit either; a clan event still has
-        // to end in the future.
-        var endsInput = document.getElementById('ends-at');
-        if (game) {
-            endsInput.removeAttribute('min');
-        } else {
-            endsInput.setAttribute('min', NOW_FOR_MIN);
-        }
-
-        onCriteriaChange();
-    }
-
+    var IS_GAME_EVENT = <?= $isGameEvent ? 'true' : 'false' ?>;
     // The chest list only means anything for the custom criteria of a clan event.
     function onCriteriaChange() {
-        var game = isGameEvent();
         var selected = document.querySelector('.clan-criteria:checked');
         var value = selected ? selected.value : '';
-
-        document.getElementById('customChestSection').style.display = !game && value === CUSTOM_CRITERIA ? 'block' : 'none';
-        var imported = game;
-        var prize = document.getElementById('prize');
-        if (prize) {
-            prize.required = !imported;
-            // json_encode: a translation may well contain an apostrophe.
-            prize.placeholder = imported
-                ? <?= json_encode(__('Optional: filled in from the rewards when left empty.'), JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?>
-                : <?= json_encode(__('e.g. 500 gold for first place, 250 for second.'), JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?>;
-        }
+        document.getElementById('customChestSection').style.display = !IS_GAME_EVENT && value === CUSTOM_CRITERIA ? 'block' : 'none';
     }
-
+    // A reward by position is described by its places, not by one quantity.
+    function onRewardRuleChange(select) {
+        var line = select.closest('.reward-line');
+        var byPosition = select.value === '<?= EventReward::RULE_POSITION ?>';
+        line.querySelectorAll('.js-position').forEach(function (el) {
+            el.style.display = byPosition ? '' : 'none';
+        });
+        line.querySelectorAll('.js-not-position').forEach(function (el) {
+            el.style.display = byPosition ? 'none' : '';
+        });
+    }
     // The lines stay in the page while hidden; the server drops them when the
     // box is ticked, so unticking it brings back whatever was typed.
     function onNoRewardsChange() {
@@ -639,7 +622,7 @@ $fieldError = function (string $field) use ($event) {
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        onKindChange();
+        onCriteriaChange();
         updateChestCount();
         updateDuration();
         document.getElementById('starts-at').addEventListener('change', updateDuration);

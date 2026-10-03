@@ -130,9 +130,6 @@ if ($isAdmin):
                     <?= $this->Html->link(__('New Event'), ['controller' => 'Events', 'action' => 'add'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
-                    <?= $this->Html->link(__('New Game Tournament'), ['controller' => 'Events', 'action' => 'add', '?' => ['type' => 'imported']], ['class' => 'dropdown-item']) ?>
-                </li>
-                <li>
                     <?= $this->Html->link(__('Tournament Catalogue'), ['controller' => 'GameTournaments', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
@@ -144,31 +141,28 @@ if ($isAdmin):
             </ul>
         </li>
 
-        <?= $this->Html->link(
-            __('Branding'),
-            ['controller' => 'Config', 'action' => 'branding'],
-            ['class' => 'dropdown-item']
-        ) ?>
-
-        <?= $this->Html->link(
-            __('Theme'),
-            ['controller' => 'Config', 'action' => 'theme'],
-            ['class' => 'dropdown-item']
-        ) ?>
-
-        <?= $this->Html->link(
-            __('Maintenance'),
-            ['controller' => 'Config', 'action' => 'maintenance'],
-            ['class' => 'dropdown-item']
-        ) ?>
-
-        <?= $this->Html->link(
-            __('Monitoring'),
-            ['controller' => 'Monitoring', 'action' => 'index'],
-            ['class' => 'dropdown-item']
-        ) ?>
-
-        <?= $this->Html->link(__('Configs'), ['controller' => 'Config', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+        <li class="dropdown-submenu dropdown-hover">
+            <a id="systemDropdownMenuLink" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">
+                <?= __('System') ?>
+            </a>
+            <ul aria-labelledby="systemDropdownMenuLink" class="dropdown-menu border-0 shadow">
+                <li>
+                    <?= $this->Html->link(__('Configs'), ['controller' => 'Config', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(__('Branding'), ['controller' => 'Config', 'action' => 'branding'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(__('Theme'), ['controller' => 'Config', 'action' => 'theme'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(__('Monitoring'), ['controller' => 'Monitoring', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(__('Maintenance'), ['controller' => 'Config', 'action' => 'maintenance'], ['class' => 'dropdown-item']) ?>
+                </li>
+            </ul>
+        </li>
 
     </ul>
 </li>

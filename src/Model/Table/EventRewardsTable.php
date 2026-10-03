@@ -24,6 +24,11 @@ class EventRewardsTable extends Table
     public const MAX_QUANTITY = 1000000000;
 
     /**
+     * Most places a reward by position can name.
+     */
+    public const MAX_POSITIONS = 100;
+
+    /**
      * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
@@ -72,6 +77,26 @@ class EventRewardsTable extends Table
         $validator
             ->nonNegativeInteger('min_points')
             ->allowEmptyString('min_points');
+
+        $validator
+            ->scalar('position_amounts')
+            ->allowEmptyString('position_amounts')
+            ->add('position_amounts', 'positionList', [
+                'rule' => function ($value, array $context): bool {
+                    if (($context['data']['rule'] ?? null) !== EventReward::RULE_POSITION) {
+                        return true;
+                    }
+                    $list = json_decode((string)$value, true);
+
+                    return is_array($list) && $list !== [] && count($list) <= self::MAX_POSITIONS;
+                },
+                'message' => __('Give the amount of each place, best place first, for example 500; 250; 100.'),
+            ]);
+        $validator->notEmptyString(
+            'position_amounts',
+            __('Give the amount of each place, best place first, for example 500; 250; 100.'),
+            fn (array $context): bool => ($context['data']['rule'] ?? null) === EventReward::RULE_POSITION
+        );
 
         $validator
             ->inList('remainder', array_keys(EventReward::remainderOptions()))

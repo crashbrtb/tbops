@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\ConfigTable;
 use App\Service\Branding\BrandingImageException;
 use App\Service\BrandingService;
+use App\Service\ChestGoalService;
 use App\Service\DatabaseBackupService;
 use App\Service\Maintenance\BackupException;
 use App\Service\Maintenance\CrontabException;
@@ -278,17 +280,81 @@ class ConfigController extends AppController
     }
 
     /**
-     * Index method
+     * All parameters, split into the general, bank and chests sections.
+     *
+     * The chests section opens with the goals form: the chest goals, global or
+     * by guard level, are a small table rather than one value each, so their
+     * rows are edited there and left out of the raw list.
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function index()
     {
         $this->requireAdmin();
-        $query = $this->Config->find();
-        $config = $this->paginate($query);
 
-        $this->set(compact('config'));
+        $managed = array_merge(
+            [ChestGoalService::MODE_PARAM],
+            array_values(ChestGoalService::GLOBAL_PARAMS),
+            array_values(ChestGoalService::BY_GUARD_PARAMS)
+        );
+        $sections = array_fill_keys(ConfigTable::SECTIONS, []);
+        foreach ($this->Config->find()->orderBy(['param' => 'ASC'])->all() as $row) {
+            if (in_array($row->param, $managed, true)) {
+                continue;
+            }
+            $sections[ConfigTable::sectionOf($row->param)][] = $row;
+        }
+
+        $section = (string)$this->request->getQuery('section');
+        if (!in_array($section, ConfigTable::SECTIONS, true)) {
+            $section = ConfigTable::SECTION_GENERAL;
+        }
+
+        $chestGoals = new ChestGoalService();
+
+        $this->set([
+            'sections' => $sections,
+            'section' => $section,
+            'goalSettings' => $chestGoals->settings(),
+            'guardGoalTable' => $chestGoals->levelTable(),
+            // Highest level first: the table reads like a ladder, best guards at the top
+            'guardLevels' => array_reverse(ChestGoalService::LEVELS),
+        ]);
+    }
+
+    /**
+     * Store the chest goals: global, or by guard level.
+     *
+     * @return \Cake\Http\Response|null Redirects to the chests section.
+     */
+    public function chestGoals()
+    {
+        $this->requireAdmin();
+        $this->request->allowMethod(['post', 'put']);
+
+        try {
+            (new ChestGoalService())->save([
+                'mode' => $this->request->getData('mode'),
+                'global' => (array)$this->request->getData('global'),
+                'by_guard' => (array)$this->request->getData('by_guard'),
+            ]);
+            $this->Flash->success(__('Chest goals saved.'));
+        } catch (InvalidArgumentException $e) {
+            $this->Flash->error($e->getMessage());
+        }
+
+        return $this->redirect(['action' => 'index', '?' => ['section' => ConfigTable::SECTION_CHESTS]]);
+    }
+
+    /**
+     * The Configs page opened on the section a parameter belongs to.
+     *
+     * @param string $param Parameter name.
+     * @return array<string, mixed>
+     */
+    protected function sectionUrl(string $param): array
+    {
+        return ['action' => 'index', '?' => ['section' => ConfigTable::sectionOf($param)]];
     }
 
     /**
@@ -319,7 +385,7 @@ class ConfigController extends AppController
             if ($this->Config->save($config)) {
                 $this->Flash->success(__('The config has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect($this->sectionUrl((string)$config->param));
             }
             $this->Flash->error(__('The config could not be saved. Please, try again.'));
         }
@@ -342,7 +408,7 @@ class ConfigController extends AppController
             if ($this->Config->save($config)) {
                 $this->Flash->success(__('The config has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect($this->sectionUrl((string)$config->param));
             }
             $this->Flash->error(__('The config could not be saved. Please, try again.'));
         }
@@ -367,6 +433,6 @@ class ConfigController extends AppController
             $this->Flash->error(__('The config could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect($this->sectionUrl((string)$config->param));
     }
 }

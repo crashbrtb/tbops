@@ -21,6 +21,7 @@ $this->assign('title', __('Review result - Event #{0}', $event->event_number));
 
 $isDraft = $import !== null && $import->status === EventImport::STATUS_DRAFT;
 $isPublished = $event->published_at !== null;
+$showGoal = $event->goal()->isActive();
 
 $matchLabels = [
     EventImportRow::MATCH_PLAYER_ID => [__('game id'), 'is-top', 'fa-link'],
@@ -93,7 +94,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                     <?php foreach ($event->event_rewards as $reward): ?>
                         <?php $split = $preview['distribution']['rewards'][$reward->id] ?? null; ?>
                         <li>
-                            <strong><?= $fmt($reward->quantity) ?> &times; <?= h($reward->item_name) ?></strong>
+                            <strong><?= $reward->rule === EventReward::RULE_POSITION ? h($reward->summary()) : $fmt($reward->quantity) . ' &times; ' . h($reward->item_name) ?></strong>
                             <span class="text-muted">
                                 &middot; <?= h(EventReward::ruleOptions()[$reward->rule] ?? $reward->rule) ?>
                                 &middot; <?= __('min. {0} pts', $fmt($reward->min_points)) ?>
@@ -137,26 +138,6 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                 </p>
             <?php endif; ?>
         </div>
-
-        <?php if (!$isPublished): ?>
-            <div class="event-info-card is-contact">
-                <h3><i class="fas fa-upload"></i> <?= __('Send a ranking') ?></h3>
-                <p style="font-size: 0.85rem;">
-                    <?= __('The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports.') ?>
-                </p>
-                <?= $this->Form->create(null, ['type' => 'file', 'url' => ['action' => 'review', $event->id]]) ?>
-                <input type="hidden" name="intent" value="upload">
-                <input type="file" name="ranking_file" accept=".csv,text/csv" class="form-control-file mb-2" required>
-                <?= $this->Form->button(
-                    '<i class="fas fa-file-csv mr-1"></i>' . ($import ? __('Replace with this file') : __('Upload CSV')),
-                    ['class' => 'btn btn-outline-primary btn-sm', 'escapeTitle' => false]
-                ) ?>
-                <?= $this->Form->end() ?>
-                <p class="mt-2 mb-0" style="font-size: 0.8rem;">
-                    <?= $this->Html->link(__('Tokens for the EventUploader'), ['controller' => 'ApiTokens', 'action' => 'index']) ?>
-                </p>
-            </div>
-        <?php endif; ?>
     </div>
 
     <!-- When it was played -->
@@ -221,6 +202,13 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                 <div class="event-stat-value"><?= $fmt($preview['totals']['unmatched']) ?></div>
                 <div class="event-stat-note"><?= __('players without a member') ?></div>
             </div>
+            <?php if ($event->goal()->isActive()): ?>
+                <div class="event-stat">
+                    <div class="event-stat-label"><i class="fas fa-bullseye"></i> <?= __('Goal reached') ?></div>
+                    <div class="event-stat-value"><?= $fmt($preview['totals']['goal_met']) ?></div>
+                    <div class="event-stat-note"><?= $event->goal()->isRequired() ? __('only they share the rewards') : __('the goal does not decide the rewards') ?></div>
+                </div>
+            <?php endif; ?>
             <div class="event-stat">
                 <div class="event-stat-label"><i class="fas fa-chart-bar"></i> <?= __('Points in the split') ?></div>
                 <div class="event-stat-value"><?= $fmt($preview['distribution']['eligible_points']) ?></div>
@@ -262,8 +250,11 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                             <th style="width: 90px;" title="<?= h(__('Takes part in the prize')) ?>"><?= __('Prize') ?></th>
                             <th style="width: 160px;"><?= __('Points') ?></th>
                             <th style="width: 80px;"><?= __('Share') ?></th>
+                            <?php if ($showGoal): ?>
+                                <th style="width: 140px;"><?= __('Goal') ?></th>
+                            <?php endif; ?>
                             <?php foreach ($event->event_rewards as $reward): ?>
-                                <th style="width: 110px;"><?= h($reward->item_name) ?></th>
+                                <th style="width: 110px;" title="<?= h($reward->summary()) ?>"><?= h($reward->item_name) ?></th>
                             <?php endforeach; ?>
                         </tr>
                     </thead>
@@ -321,6 +312,15 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                                     <?php endif; ?>
                                 </td>
                                 <td><?= $this->Number->format($preview['distribution']['participation'][$row->id] ?? 0, ['places' => 2]) ?>%</td>
+                                <?php if ($showGoal): ?>
+                                    <?php $goalRow = $preview['distribution']['goals'][$row->id] ?? ['goal' => null, 'met' => null, 'level' => 0]; ?>
+                                    <td><?= $this->element('event_goal_cell', [
+                                        'value' => $goalRow['goal'],
+                                        'met' => $goalRow['met'],
+                                        'level' => (int)$goalRow['level'],
+                                        'byGuard' => $event->goal()->isByGuard(),
+                                    ]) ?></td>
+                                <?php endif; ?>
                                 <?php foreach ($event->event_rewards as $reward): ?>
                                     <?php $amount = $preview['distribution']['rewards'][$reward->id]['amounts'][$row->id] ?? 0; ?>
                                     <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $fmt($amount) ?></td>
@@ -330,7 +330,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" class="text-right"><strong><?= __('Total handed out') ?></strong></td>
+                            <td colspan="<?= $showGoal ? 7 : 6 ?>" class="text-right"><strong><?= __('Total handed out') ?></strong></td>
                             <?php foreach ($event->event_rewards as $reward): ?>
                                 <?php $split = $preview['distribution']['rewards'][$reward->id]; ?>
                                 <td class="review-amount">
