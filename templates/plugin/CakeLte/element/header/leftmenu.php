@@ -57,6 +57,27 @@ $calculatorFunctionEnabled = !$calculatorFunctionConfig || (int)$calculatorFunct
             ['controller' => 'TroopCalculator', 'action' => 'index'],
             ['class' => 'dropdown-item']
         ) ?>
+        <div class="dropdown-submenu dropdown-hover">
+            <a id="automationsDropdownMenuLink" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">
+                <?= __('Automations') ?>
+            </a>
+            <ul aria-labelledby="automationsDropdownMenuLink" class="dropdown-menu border-0 shadow">
+                <li>
+                    <?= $this->Html->link(
+                        __('Crypt Invader'),
+                        'https://github.com/crashbrtb/crypt_collector',
+                        ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']
+                    ) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(
+                        __('Citadel Attack'),
+                        'https://github.com/crashbrtb/citadels_attack',
+                        ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']
+                    ) ?>
+                </li>
+            </ul>
+        </div>
     </div>
 </li>
 <?php endif; ?>
