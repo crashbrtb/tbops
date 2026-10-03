@@ -4648,21 +4648,6 @@ msgstr "#{0} numaralı etkinlik #{1} numaralıdan oluşturuldu. Adı ve tarihi k
 msgid "The event could not be duplicated: {0}"
 msgstr "Etkinlik çoğaltılamadı: {0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "Yüklenecek sıralama CSV dosyasını seçin."
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "Dosya en fazla {0} oyunculuk bir sıralama için çok büyük."
-
-msgid "The ranking was not accepted: {0}"
-msgstr "Sıralama kabul edilmedi: {0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "{0} oyunculu sıralama alındı. Aşağıdan inceleyin."
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "Bu sıralama mevcut taslakla aynı; hiçbir şey değişmedi."
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "API tokenını Authorization başlığında gönderin: Bearer <token>."
 
@@ -4800,21 +4785,6 @@ msgstr "{0} UTC tarihinde {1} tarafından alındı"
 
 msgid "In the game: {0}"
 msgstr "Oyunda: {0}"
-
-msgid "Send a ranking"
-msgstr "Sıralama gönder"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "EventUploader bunu doğrudan oyundan gönderir. O yoksa keşif aracının dışa aktardığı ranking.csv dosyasını yükleyin."
-
-msgid "Replace with this file"
-msgstr "Bu dosyayla değiştir"
-
-msgid "Upload CSV"
-msgstr "CSV yükle"
-
-msgid "Tokens for the EventUploader"
-msgstr "EventUploader tokenları"
 
 msgid "{0} taking part in the prize"
 msgstr "{0} ödüle katılıyor"
@@ -5316,8 +5286,6 @@ msgstr "İzleme anahtarını X-Monitor-Key başlığında gönderin."
 msgid "Between {0} and {1} minutes."
 msgstr "{0} ile {1} dakika arasında."
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "Önceki döngüde hedefi tutturamayan oyuncuların hedefi bu döngüde %{0} artırılır (yukarı yuvarlanır)."
 
@@ -5330,8 +5298,6 @@ msgstr "Hedef cezası: sandık puanı hedefine +%{0}"
 msgid "Players with a raised goal: {0}"
 msgstr "Hedefi artırılan oyuncular: {0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "Hedef cezaları"
 
@@ -5343,7 +5309,6 @@ msgstr "Sandık puanı hedefi"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "Önceki döngüde hedefi tutturamayan oyuncuların bu döngüde hedefi artırılır. Geçerli bir neden varsa oyuncuyu buradan muaf tutun."
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}: {1} puan, tutturamayanlar için %{2} artırılarak {3} puan."
@@ -5362,7 +5327,6 @@ msgstr "Bu döngüde kimsenin hedefi artırılmadı."
 
 msgid "Previous cycle (score / goal)"
 msgstr "Önceki döngü (puan / hedef)"
-
 
 msgid "Release"
 msgstr "Muaf tut"
@@ -5456,3 +5420,240 @@ msgstr "Hedef cezası: sandık puanı hedefine ve epik sandık hedefine +%{0}"
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "Bu döngüde artırılmış hedef: {0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "Hedef: {0} sandık puanı, {1} epik sandık puanı"
+
+msgid "Guards G{0}"
+msgstr "Muhafızlar G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "Muhafız seviyesi bilinmiyor (G0): en yüksek hedef"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "Sandık puanı hedefi / Epik sandık hedefi"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0 (bilinmiyor): en yüksek hedef"
+
+msgid "Goals by guard level"
+msgstr "Muhafız seviyesine göre hedefler"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "Muhafız seviyesine göre hedefler: her hücre, oyuncunun o döngüdeki hedefine göre renklendirilir."
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "Muhafız seviyesine göre hedefler: her puan, oyuncunun o döngüdeki hedefine göre değerlendirilir."
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "Bu döngüdeki hedef: {0} sandık puanı, {1} epik sandık puanı"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}: oyuncunun muhafız seviyesinin hedefi, tutturamayanlar için %{1} artırılır."
+
+msgid "General settings"
+msgstr "Genel ayarlar"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "Klan kimliği, görünüm, yedekler ve kendi bölümü olmayan tüm parametreler."
+
+msgid "Bank settings"
+msgstr "Banka ayarları"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "Bankanın açık olup olmadığı ve her işlem türünde alınan ücret."
+
+msgid "Chest settings"
+msgstr "Sandık ayarları"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "Döngüler, sandık hedefleri, hedef cezası ve puan renkleri."
+
+msgid "Chest goals"
+msgstr "Sandık hedefleri"
+
+msgid "How goals are set"
+msgstr "Hedeflerin belirlenme şekli"
+
+msgid "Global goal: the same goal for every player"
+msgstr "Genel hedef: tüm oyuncular için aynı hedef"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "Muhafız seviyesine göre bireysel hedef: her oyuncu, üye profilindeki muhafız seviyesinin (G1-G9) hedefini alır"
+
+msgid "Global {0}"
+msgstr "Genel {0}"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "Muhafız seviyesine göre hedeflerde, aşağıda boş bırakılan seviyeler için genel hedef kullanılır."
+
+msgid "Global ({0})"
+msgstr "Genel ({0})"
+
+msgid "Guard level not identified"
+msgstr "Muhafız seviyesi belirlenmedi"
+
+msgid "Highest goal: {0}"
+msgstr "En yüksek hedef: {0}"
+
+msgid "Highest goal"
+msgstr "En yüksek hedef"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0, muhafız seviyesinin hiç belirlenmediği anlamına gelir. Bu oyuncular ve üye profili olmayanlar tablodaki en yüksek hedefi alır."
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "Kapanan her döngü, oyuncunun o döngüdeki hedefini saklar; bu yüzden bir seviyeyi sonradan değiştirmek geçmişi değiştirmez. Hedef cezası oyuncunun kendi hedefini artırır."
+
+msgid "Save Chest Goals"
+msgstr "Sandık hedeflerini kaydet"
+
+msgid "Chest goals saved."
+msgstr "Sandık hedefleri kaydedildi."
+
+msgid "Choose how the chest goals are set."
+msgstr "Sandık hedeflerinin nasıl belirleneceğini seçin."
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "Genel hedefler 0 veya daha büyük tam sayılar olmalıdır."
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}: hedef 0 veya daha büyük bir tam sayı olmalı ya da boş bırakılmalıdır."
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "Oyun etkinlikleri bu formdan değil, EventUploader tarafından oluşturulur."
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "Ödüller ve hedef kayıtlı sonuca yeniden uygulandı; puanlar değişmedi."
+
+msgid "By position"
+msgstr "Sıralamaya göre"
+
+msgid "#{0} {1}"
+msgstr "{0}. {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "Her sıranın miktarını en iyi sıradan başlayarak girin, örneğin 500; 250; 100."
+
+msgid "Describe the prize, or add a reward line."
+msgstr "Ödülü açıklayın veya bir ödül satırı ekleyin."
+
+msgid "The goal must be a whole number."
+msgstr "Hedef tam sayı olmalıdır."
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "Hedefi belirleyin veya \"Hedef yok\" seçin."
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "Kimse hedefe ulaşmadı ve hedef zorunlu: ödüller klanda kalır."
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "Muhafız seviyesi bilinmeyen {0} oyuncu en yüksek hedefi alır: {1}."
+
+msgid "Amount per place"
+msgstr "Sıra başına miktar"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "1.; 2.; 3. ... örn. 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "Oyunda oynanan, sıralamasıyla birlikte EventUploader tarafından kaydedilen bir turnuva. Adı, tarihleri, ödülleri ve hedefi burada düzenlenebilir."
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "Kriptaları ve epik canavarları teşvik eden iç bir yarışma. Süresi içinde toplanan sandıklarla sayılır; geçmişte başlayabilir ama gelecekte bitmelidir."
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "Oyun etkinlikleri burada oluşturulmaz: EventUploader her turnuvayı sıralamasıyla birlikte kaydeder."
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "Ne dağıtılacağı ve nasıl bölüneceği. Orantılı, her oyuncuya puan payı kadar verir; eşit paylar herkese aynısını verir; sıralamaya göre her sıraya sabit bir miktar verir (1., 2., 3. ...). Yönetim hesapları hiçbir zaman katılmaz, minimum puanın altındaki oyuncular dışarıda kalır."
+
+msgid "This event has no rewards"
+msgstr "Bu etkinliğin ödülü yok"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "Bunun yerine ödülü aşağıda yazıyla açıklayın. Ödüller sonradan, sonuç kaydedildikten sonra bile eklenebilir."
+
+msgid "Event goal"
+msgstr "Etkinlik hedefi"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "Her oyuncunun bu turnuvada ulaşması gereken hedef. Yeni turnuvalar Turnuva Kataloğu'ndaki varsayılan hedefle başlar."
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "Her oyuncunun bu etkinlikte sıralamayla aynı birimde ulaşması gereken hedef. Herkes için aynı olabilir veya üye profilindeki muhafız seviyesine göre değişebilir."
+
+msgid "points of the ranking"
+msgstr "sıralama puanı"
+
+msgid "Goal reached"
+msgstr "Hedefe ulaşıldı"
+
+msgid "only they share the rewards"
+msgstr "ödülleri yalnızca onlar paylaşır"
+
+msgid "the goal does not decide the rewards"
+msgstr "hedef ödülleri belirlemez"
+
+msgid "Goal"
+msgstr "Hedef"
+
+msgid "What each player receives is in the ranking below."
+msgstr "Her oyuncunun aldığı aşağıdaki sıralamada."
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "Aşağıdaki sıralama, etkinlik şimdi bitseydi her oyuncunun ne alacağını gösterir. Yönetim hesapları hiçbir zaman ödül almaz."
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "Yönetim hesabı: sıralamada yer alır, asla ödül almaz"
+
+msgid "Default goal"
+msgstr "Varsayılan hedef"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "EventUploader'ın gönderdiği bu turnuvanın her yeni etkinliği bu hedefle başlar. Sonuç yayımlanmadan önce her etkinlikte değiştirilebilir."
+
+msgid "No goal"
+msgstr "Hedef yok"
+
+msgid "Individual goal by guard level"
+msgstr "Muhafız seviyesine göre bireysel hedef"
+
+msgid "Goal not reached"
+msgstr "Hedefe ulaşılmadı"
+
+msgid "Goal ({0})"
+msgstr "Hedef ({0})"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "Boş bırakılan seviyelerin hedefi ({0})"
+
+msgid "Same as blank levels"
+msgstr "Boş seviyelerle aynı"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "Ödül almak için hedefe ulaşmak zorunludur"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "Hedefi tutturamayan oyuncular sıralamada kalır, ama ödüller yalnızca hedefe ulaşanlar arasında paylaşılır. Sıralamaya göre ödül, hedefe ulaşan en iyi sıradaki oyunculara gider."
+
+msgid "Each player has the goal of their guard level:"
+msgstr "Her oyuncunun hedefi muhafız seviyesine göredir:"
+
+msgid "{0} points for every player."
+msgstr "Her oyuncu için {0} puan."
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "Ödül almak için hedefe ulaşmak zorunludur: ödüller yalnızca hedefe ulaşan oyuncular arasında paylaşılır."
+
+msgid "The goal does not decide the rewards."
+msgstr "Hedef ödülleri belirlemez."
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "{1} oyuncudan {0} tanesi ulaştı."

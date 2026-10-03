@@ -51,11 +51,6 @@ $stateIcons = [
                 ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
             ) ?>
             <?= $this->Html->link(
-                '<i class="fas fa-gamepad mr-1"></i>' . __('New Game Tournament'),
-                ['action' => 'add', '?' => ['type' => Event::CRITERIA_IMPORTED]],
-                ['class' => 'btn btn-primary btn-sm', 'escape' => false]
-            ) ?>
-            <?= $this->Html->link(
                 '<i class="fas fa-plus mr-1"></i>' . __('New Event'),
                 ['action' => 'add'],
                 ['class' => 'btn btn-primary btn-sm', 'escape' => false]
@@ -130,16 +125,17 @@ $stateIcons = [
                                             ) ?>
                                         <?php endif; ?>
 
-                                        <?= $this->Form->postLink(
-                                            '<i class="fas fa-copy"></i>',
-                                            ['action' => 'duplicate', $event->id],
-                                            [
-                                                'class' => 'btn btn-outline-primary btn-xs',
-                                                'escape' => false,
-                                                'title' => __('Duplicate'),
-                                            ]
-                                        ) ?>
-
+                                        <?php if (!$event->is_imported): ?>
+                                            <?= $this->Form->postLink(
+                                                '<i class="fas fa-copy"></i>',
+                                                ['action' => 'duplicate', $event->id],
+                                                [
+                                                    'class' => 'btn btn-outline-primary btn-xs',
+                                                    'escape' => false,
+                                                    'title' => __('Duplicate'),
+                                                ]
+                                            ) ?>
+                                        <?php endif; ?>
                                         <?php if (!$event->is_imported && ($state === Event::STATE_FINISHED || $state === Event::STATE_CANCELLED)): ?>
                                             <?= $this->Form->postLink(
                                                 '<i class="fas fa-lock"></i>',

@@ -43,9 +43,20 @@ $toggleShowAllLink = $this->Url->build(['prefix' => false, 'controller' => 'Stan
         </div>
     </div>
 
+    <?php if (!empty($guardGoalTable)): ?>
+    <div class="goal-pill">
+        <?= __('Goals by guard level') ?>:
+        <?php foreach ($guardGoalTable as $level => $goals): ?>
+            <?php if ($level === 0) { continue; } ?>
+            <span class="text-nowrap ml-2">G<?= $level ?> <?= $this->Number->format($goals['total']) ?> / <?= $this->Number->format($goals['epic']) ?></span>
+        <?php endforeach; ?>
+        <span class="text-nowrap ml-2"><?= __('G0 (unknown): highest goal') ?></span>
+    </div>
+    <?php else: ?>
     <div class="goal-pill">
         <?= __('Current Goal: {0} chest points and {1} Epic chest points', $this->Number->format($referencegoalConfig->value ?? 0), $this->Number->format($epicGoalConfig->value ?? 0)) ?>
     </div>
+    <?php endif; ?>
 
     <div class="card ranking-card">
         <div class="ranking-header d-flex justify-content-between align-items-center">

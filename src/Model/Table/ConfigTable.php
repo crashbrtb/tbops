@@ -27,6 +27,67 @@ use Cake\Validation\Validator;
  */
 class ConfigTable extends Table
 {
+    public const SECTION_GENERAL = 'general';
+    public const SECTION_BANK = 'bank';
+    public const SECTION_CHESTS = 'chests';
+
+    /**
+     * The sections the Configs page is split into, in the order they are shown.
+     */
+    public const SECTIONS = [self::SECTION_GENERAL, self::SECTION_BANK, self::SECTION_CHESTS];
+
+    /**
+     * Parameters of the bank and chests sections. Anything else, including
+     * parameters added by hand, is general.
+     *
+     * @var array<string, list<string>>
+     */
+    private const SECTION_PARAMS = [
+        self::SECTION_BANK => [
+            'bank_function', 'caravan_fee', 'deposit_fee', 'transfer_fee', 'withdrawal_fee',
+        ],
+        self::SECTION_CHESTS => [
+            'reference_day', 'every_how_many_days',
+            'minimum_chest_score', 'minimum_epic_chest_score', 'minimum_epic_score',
+            'chest_goal_mode', 'chest_goal_by_guard', 'epic_goal_by_guard',
+            'collected_chests_retention_days',
+        ],
+    ];
+
+    /**
+     * Parameter prefixes that place a parameter in a section.
+     *
+     * @var array<string, list<string>>
+     */
+    private const SECTION_PREFIXES = [
+        self::SECTION_BANK => ['bank_'],
+        self::SECTION_CHESTS => ['goal_penalty_', 'score_color_'],
+    ];
+
+    /**
+     * Which section of the Configs page a parameter belongs to.
+     *
+     * @param string $param Parameter name.
+     * @return string One of the SECTION_* constants.
+     */
+    public static function sectionOf(string $param): string
+    {
+        foreach (self::SECTION_PARAMS as $section => $params) {
+            if (in_array($param, $params, true)) {
+                return $section;
+            }
+        }
+        foreach (self::SECTION_PREFIXES as $section => $prefixes) {
+            foreach ($prefixes as $prefix) {
+                if (str_starts_with($param, $prefix)) {
+                    return $section;
+                }
+            }
+        }
+
+        return self::SECTION_GENERAL;
+    }
+
     /**
      * Initialize method
      *

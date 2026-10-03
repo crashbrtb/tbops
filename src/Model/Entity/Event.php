@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Service\EventGoal;
 use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 
@@ -22,6 +23,10 @@ use Cake\ORM\Entity;
  * @property string|null $banner_mime
  * @property resource|string|null $banner_image
  * @property string $status
+ * @property string $goal_mode none | global | guard
+ * @property int|null $goal_points
+ * @property string|null $goal_by_guard JSON map of guard level => goal
+ * @property bool $goal_required
  * @property \Cake\I18n\DateTime|null $finalized_at
  * @property \Cake\I18n\DateTime|null $published_at
  * @property string|null $game_result_uid
@@ -89,6 +94,10 @@ class Event extends Entity
         'banner_mime' => true,
         'banner_image' => true,
         'status' => true,
+        'goal_mode' => true,
+        'goal_points' => true,
+        'goal_by_guard' => true,
+        'goal_required' => true,
         'finalized_at' => true,
         'created_by' => true,
         'event_chests' => true,
@@ -166,6 +175,30 @@ class Event extends Entity
                 && $this->custom_metric === self::METRIC_COUNT => __('Chests'),
             default => __('Total Score'),
         };
+    }
+
+    /**
+     * The goal players have to reach in this event.
+     *
+     * @return \App\Service\EventGoal
+     */
+    public function goal(): EventGoal
+    {
+        return EventGoal::fromEntity($this);
+    }
+
+    /**
+     * Whether the result is recorded: published for a game tournament, closed
+     * for a clan event. Rewards and goal changed after that are split again
+     * over the recorded standings.
+     *
+     * @return bool
+     */
+    public function hasRecordedResult(): bool
+    {
+        return $this->criteria === self::CRITERIA_IMPORTED
+            ? $this->published_at !== null
+            : $this->finalized_at !== null;
     }
 
     /**

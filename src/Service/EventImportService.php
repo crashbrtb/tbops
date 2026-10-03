@@ -35,14 +35,14 @@ class EventImportService
     public const MAX_ROWS = 100;
     public const MAX_NAME = 60;
 
-    protected RewardDistributionService $distribution;
+    protected EventPrizeService $prizes;
 
     /**
      * @param \App\Service\RewardDistributionService|null $distribution Split calculator.
      */
     public function __construct(?RewardDistributionService $distribution = null)
     {
-        $this->distribution = $distribution ?? new RewardDistributionService();
+        $this->prizes = new EventPrizeService($distribution);
     }
 
     // ---------------------------------------------------------------- upload
@@ -543,11 +543,21 @@ class EventImportService
             $rewards[] = [
                 'item_name' => $reward->item_name,
                 'quantity' => $reward->quantity,
+                'position_amounts' => $reward->position_amounts,
                 'rule' => $reward->rule,
                 'min_points' => $reward->min_points,
                 'remainder' => $reward->remainder,
             ];
         }
+
+        // The goal comes from the catalogue, where each tournament keeps its
+        // default; without one there, from the previous event of the type, the
+        // way the rewards do.
+        $goal = match (true) {
+            $entry !== null && EventGoal::fromEntity($entry)->isActive() => EventGoal::fromEntity($entry),
+            $previous !== null => $previous->goal(),
+            default => new EventGoal(),
+        };
 
         $event = $events->newEntity([
             'name' => $name,
@@ -558,7 +568,7 @@ class EventImportService
             'contact_player' => $previous?->contact_player ?: ($userName ?: '-'),
             'description' => $previous?->description,
             'event_rewards' => $rewards,
-        ], ['associated' => ['EventRewards']]);
+        ] + $goal->toFields(), ['associated' => ['EventRewards']]);
         $event->set([
             'game_result_uid' => $tournament['result_uid'],
             'game_tournament_key' => $tournament['tournament_key'],
@@ -670,9 +680,12 @@ class EventImportService
         $rows = (array)$import->event_import_rows;
         $rewards = (array)$event->event_rewards;
 
-        $distribution = $this->distribution->distribute($this->players($rows), $this->rewardLines($rewards));
+        $distribution = $this->prizes->distribute($event, $this->players($rows));
 
-        $totals = ['players' => count($rows), 'eligible' => 0, 'administrative' => 0, 'unmatched' => 0, 'points' => 0];
+        $totals = [
+            'players' => count($rows), 'eligible' => 0, 'administrative' => 0, 'unmatched' => 0, 'points' => 0,
+            'goal_met' => $distribution['goal_met'],
+        ];
         foreach ($rows as $row) {
             $totals['points'] += (int)$row->points;
             $totals['eligible'] += $row->eligible ? 1 : 0;
@@ -759,8 +772,31 @@ class EventImportService
             $out[] = ['level' => 'info', 'text' => __('This tournament has no reward: the result is published with the ranking only. Rewards can be added later by editing the event; the points stay as they are.')];
         }
 
-        foreach ($this->preflightRewards($event, $rows) as $text) {
+        foreach ($this->prizes->problems($event, $this->players($rows)) as $text) {
             $out[] = ['level' => 'warning', 'text' => $text];
+        }
+
+        $goal = $event->goal();
+        if ($goal->isRequired() && $event->event_rewards) {
+            $met = $this->prizes->distribute($event, $this->players($rows))['goal_met'];
+            if ($met === 0) {
+                $out[] = [
+                    'level' => 'warning',
+                    'text' => __('Nobody reached the goal, and the goal is required: the rewards stay with the clan.'),
+                ];
+            }
+        }
+
+        $unknownLevel = array_filter($rows, fn (EventImportRow $r): bool => (int)($r->member->guards ?? 0) < 1);
+        if ($goal->isByGuard() && $unknownLevel) {
+            $out[] = ['level' => 'info', 'text' => __(
+                '{0} player(s) have no known guard level and get the highest goal: {1}.',
+                count($unknownLevel),
+                implode(', ', array_slice(array_map(
+                    fn (EventImportRow $r): string => $r->displayName(),
+                    $unknownLevel
+                ), 0, 8))
+            )];
         }
 
         return $out;
@@ -843,13 +879,13 @@ class EventImportService
         if ($import->status !== EventImport::STATUS_DRAFT || $import->event_id !== $event->id) {
             throw new DomainException(__('This ranking is not a draft of this event.'));
         }
-        $problems = $this->preflightRewards($event, (array)$import->event_import_rows);
+        $rows = (array)$import->event_import_rows;
+        $problems = $this->prizes->problems($event, $this->players($rows));
         if ($problems) {
             throw new DomainException(implode(' ', $problems));
         }
 
-        $rows = (array)$import->event_import_rows;
-        $distribution = $this->distribution->distribute($this->players($rows), $this->rewardLines((array)$event->event_rewards));
+        $distribution = $this->prizes->distribute($event, $this->players($rows));
 
         $standings = $this->fetchTable('EventStandings');
         $allocations = $this->fetchTable('EventRewardAllocations');
@@ -873,6 +909,9 @@ class EventImportService
                     'game_player_id' => $row->game_player_id,
                     'power' => $row->power,
                     'eligible' => (bool)$row->eligible,
+                    'guard_level' => $distribution['goals'][$row->id]['level'] ?? 0,
+                    'goal' => $distribution['goals'][$row->id]['goal'] ?? null,
+                    'goal_met' => $distribution['goals'][$row->id]['met'] ?? null,
                 ]);
                 $standings->saveOrFail($standing);
 
@@ -959,55 +998,7 @@ class EventImportService
             throw new DomainException(__('The result of event #{0} is not published.', $event->event_number));
         }
 
-        $standings = $this->fetchTable('EventStandings')->find()
-            ->where(['EventStandings.event_id' => $event->id])
-            ->orderBy(['EventStandings.position' => 'ASC'])
-            ->all()
-            ->toList();
-        $players = array_map(fn ($standing): array => [
-            'key' => (int)$standing->id,
-            'position' => (int)$standing->position,
-            'points' => (int)$standing->points,
-            'eligible' => (bool)$standing->eligible,
-        ], $standings);
-
-        $rewards = (array)$event->event_rewards;
-        $distribution = $this->distribution->distribute($players, $this->rewardLines($rewards));
-        $problems = [];
-        foreach ($rewards as $reward) {
-            $split = $distribution['rewards'][(int)$reward->id] ?? null;
-            if ($split !== null && $split['distributed'] === 0) {
-                $problems[] = __('Nobody qualifies for "{0}": check the eligible players and the minimum points.', $reward->item_name);
-            }
-        }
-        if ($problems) {
-            throw new DomainException(implode(' ', $problems));
-        }
-
-        $allocations = $this->fetchTable('EventRewardAllocations');
-
-        return $allocations->getConnection()->transactional(function () use ($allocations, $standings, $distribution): int {
-            $ids = array_map(fn ($standing): int => (int)$standing->id, $standings);
-            if ($ids) {
-                $allocations->deleteAll(['event_standing_id IN' => $ids]);
-            }
-
-            $recorded = 0;
-            foreach ($distribution['rewards'] as $rewardId => $split) {
-                foreach ($split['amounts'] as $standingId => $amount) {
-                    if ($amount > 0) {
-                        $allocations->saveOrFail($allocations->newEntity([
-                            'event_reward_id' => $rewardId,
-                            'event_standing_id' => $standingId,
-                            'amount' => $amount,
-                        ]));
-                        $recorded++;
-                    }
-                }
-            }
-
-            return $recorded;
-        });
+        return $this->prizes->redistribute($event);
     }
 
     /**
@@ -1172,56 +1163,19 @@ class EventImportService
 
     /**
      * @param list<\App\Model\Entity\EventImportRow> $rows Rows.
-     * @return list<array{key: int, position: int, points: int, eligible: bool}>
+     * @return list<array{key: int, position: int, points: int, eligible: bool, guard_level: int}>
      */
     private function players(array $rows): array
     {
+        // The guard level comes from the linked member; a player linked to
+        // nobody has no known level and gets the highest goal.
         return array_map(fn (EventImportRow $row): array => [
             'key' => (int)$row->id,
             'position' => (int)$row->position,
             'points' => (int)$row->points,
             'eligible' => (bool)$row->eligible,
+            'guard_level' => (int)($row->member->guards ?? 0),
         ], $rows);
-    }
-
-    /**
-     * @param list<\App\Model\Entity\EventReward> $rewards Rewards.
-     * @return array<int, array{quantity: int, rule: string, min_points: int, remainder: string}>
-     */
-    private function rewardLines(array $rewards): array
-    {
-        $lines = [];
-        foreach ($rewards as $reward) {
-            $lines[(int)$reward->id] = [
-                'quantity' => (int)$reward->quantity,
-                'rule' => (string)$reward->rule,
-                'min_points' => (int)$reward->min_points,
-                'remainder' => (string)($reward->remainder ?: EventReward::REMAINDER_TOP_RANKED),
-            ];
-        }
-
-        return $lines;
-    }
-
-    /**
-     * Reward lines that would hand out nothing.
-     *
-     * @param \App\Model\Entity\Event $event Event with rewards loaded.
-     * @param list<\App\Model\Entity\EventImportRow> $rows Rows.
-     * @return list<string>
-     */
-    private function preflightRewards(Event $event, array $rows): array
-    {
-        $problems = [];
-        $result = $this->distribution->distribute($this->players($rows), $this->rewardLines((array)$event->event_rewards));
-        foreach ((array)$event->event_rewards as $reward) {
-            $split = $result['rewards'][(int)$reward->id] ?? null;
-            if ($split !== null && $split['distributed'] === 0) {
-                $problems[] = __('Nobody qualifies for "{0}": check the eligible players and the minimum points.', $reward->item_name);
-            }
-        }
-
-        return $problems;
     }
 
     /**

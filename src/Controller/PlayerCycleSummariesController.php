@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\ChestGoalService;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenTime;
 use Cake\Event\EventInterface;
@@ -99,7 +100,9 @@ class PlayerCycleSummariesController extends AppController
         ];
 
         // A paginação original $this->paginate($query) é removida pois estamos focando nos 3 últimos ciclos.
-        $this->set(compact('summariesByCycle', 'formattedCycleDates', 'minimumChestScore', 'minimumEpicChestScore', 'scoreColorsConfig'));
+        $goalsByGuard = (new ChestGoalService())->isByGuard();
+
+        $this->set(compact('summariesByCycle', 'formattedCycleDates', 'minimumChestScore', 'minimumEpicChestScore', 'scoreColorsConfig', 'goalsByGuard'));
     }
 
     public function playerHistory($playerName = null)
@@ -167,15 +170,19 @@ class PlayerCycleSummariesController extends AppController
             ->extract('player_name')
             ->toList();
 
-        // Pivot the data for the view; playersGoals holds the raised goals of penalized players
+        // Load configs for score coloring
+        $configsTable = TableRegistry::getTableLocator()->get('Config');
+        $configs = $configsTable->find('list', ['keyField' => 'param', 'valueField' => 'value'])->toArray();
+        $minimumChestScore = (int)($configs['minimum_chest_score'] ?? 0);
+
+        // Pivot the data for the view; playersGoals holds the goal each player had in each cycle
+        // (by guard level and raised by the goal penalty where that applied)
         $pivotedData = [];
         $pivotedGoals = [];
         foreach ($summaries as $summary) {
             $dateKey = $summary->cycle_end_date->toDateString();
             $pivotedData[$summary->player_name][$dateKey] = $summary->total_score;
-            if ($summary->penalty_goal !== null) {
-                $pivotedGoals[$summary->player_name][$dateKey] = (int)$summary->penalty_goal;
-            }
+            $pivotedGoals[$summary->player_name][$dateKey] = $summary->goalFor('total', $minimumChestScore);
         }
 
         $this->set('playersData', $pivotedData);
@@ -183,11 +190,6 @@ class PlayerCycleSummariesController extends AppController
         $this->set('playerNames', $playerNames);
         $this->set('cycleDates', $cycleEndDates);
 
-        // Load configs for score coloring
-        $configsTable = TableRegistry::getTableLocator()->get('Config');
-        $configs = $configsTable->find('list', ['keyField' => 'param', 'valueField' => 'value'])->toArray();
-
-        $minimumChestScore = (int)($configs['minimum_chest_score'] ?? 0);
         $scoreColorsConfig = [
             'score_color_transition_start' => (float)($configs['score_color_transition_start'] ?? 0.0),
             'score_color_start_r' => (int)($configs['score_color_start_r'] ?? 255),
@@ -198,7 +200,9 @@ class PlayerCycleSummariesController extends AppController
             'score_color_end_b' => (int)($configs['score_color_end_b'] ?? 0),
         ];
 
-        $this->set(compact('minimumChestScore', 'scoreColorsConfig'));
+        $goalsByGuard = (new ChestGoalService())->isByGuard();
+
+        $this->set(compact('minimumChestScore', 'scoreColorsConfig', 'goalsByGuard'));
     }
 
     /**

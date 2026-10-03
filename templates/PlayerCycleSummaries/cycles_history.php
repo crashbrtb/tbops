@@ -149,7 +149,11 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
         </div>
     </div>
 
-    <?php if ($minimumChestScore > 0): ?>
+    <?php if (!empty($goalsByGuard)): ?>
+    <div class="goal-pill">
+        <?= __('Goals by guard level: each cell is coloured against the goal the player had in that cycle.') ?>
+    </div>
+    <?php elseif ($minimumChestScore > 0): ?>
     <div class="goal-pill">
         <?= __('Chest Score Goal per cycle: {0}', $this->Number->format($minimumChestScore)) ?>
     </div>

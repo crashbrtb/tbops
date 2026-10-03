@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\GameTournament;
+use App\Service\EventGoal;
 use App\Service\TournamentCatalogService;
 use Cake\Http\Response;
 use Psr\Http\Message\UploadedFileInterface;
@@ -74,7 +75,8 @@ class GameTournamentsController extends AppController
             $tournament = $this->GameTournaments->patchEntity($tournament, [
                 'name' => trim((string)($data['name'] ?? '')),
                 'duration_days' => ($data['duration_days'] ?? '') === '' ? null : $data['duration_days'],
-            ]);
+                // The default goal every new event of this tournament starts with.
+            ] + EventGoal::marshal((array)($data['goal'] ?? [])));
             if ((string)$tournament->name !== $nameBefore) {
                 // A name typed here is final: the mapper will not replace it.
                 $tournament->set('name_source', $tournament->name ? GameTournament::SOURCE_MANUAL : null, ['guard' => false]);

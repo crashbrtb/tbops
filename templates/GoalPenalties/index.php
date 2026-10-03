@@ -101,7 +101,7 @@ $currentCell = function (string $player, array $row) use ($scoreAgainst, $curren
             <strong><?= __('Preview') ?>:</strong>
             <?= __('the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now.') ?>
             <?= __('Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on.') ?>
-            <?= $this->Html->link(__('Configs'), ['controller' => 'Config', 'action' => 'index'], ['class' => 'alert-link ml-1']) ?>
+            <?= $this->Html->link(__('Configs'), ['controller' => 'Config', 'action' => 'index', '?' => ['section' => 'chests']], ['class' => 'alert-link ml-1']) ?>
         </div>
     <?php endif; ?>
     <div class="card card-outline card-warning">
@@ -109,7 +109,11 @@ $currentCell = function (string $player, array $row) use ($scoreAgainst, $curren
             <i class="fas fa-info-circle text-warning mr-1"></i>
             <?php foreach ($settings['targets'] as $target): ?>
                 <div>
-                    <?= __('{0}: {1} points, raised by {2}% to {3} points for players who missed it.', $goalNames[$target], $number($settings['base_goals'][$target]), $this->Number->format($settings['percent']), $number($settings['raised_goals'][$target])) ?>
+                    <?php if (!empty($settings['by_guard'])): ?>
+                        <?= __('{0}: the goal of the player\'s guard level, raised by {1}% for players who missed it.', $goalNames[$target], $this->Number->format($settings['percent'])) ?>
+                    <?php else: ?>
+                        <?= __('{0}: {1} points, raised by {2}% to {3} points for players who missed it.', $goalNames[$target], $number($settings['base_goals'][$target]), $this->Number->format($settings['percent']), $number($settings['raised_goals'][$target])) ?>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
             <?php if (!$settings['targets']): ?>

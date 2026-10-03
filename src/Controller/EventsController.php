@@ -9,6 +9,7 @@ use App\Model\Entity\EventImport;
 use App\Model\Entity\EventReward;
 use App\Model\Table\EventAssetsTable;
 use App\Service\EventImportService;
+use App\Service\EventPrizeService;
 use App\Service\EventScoringService;
 use DomainException;
 use Cake\Http\Exception\BadRequestException;
@@ -204,7 +205,10 @@ class EventsController extends AppController
     }
 
     /**
-     * Create an event.
+     * Create a clan event.
+     *
+     * Game tournaments are not created here: the EventUploader registers them
+     * through the API together with their ranking (POST /api/v1/tournaments).
      *
      * @return \Cake\Http\Response|null|void Redirects on success.
      */
@@ -213,9 +217,7 @@ class EventsController extends AppController
         $this->requireAdmin();
 
         $event = $this->Events->newEmptyEntity();
-        $event->set('criteria', $this->request->getQuery('type') === Event::CRITERIA_IMPORTED
-            ? Event::CRITERIA_IMPORTED
-            : Event::CRITERIA_CHEST_SCORE);
+        $event->set('criteria', Event::CRITERIA_CHEST_SCORE);
         $event->set('custom_metric', Event::METRIC_SCORE);
 
         if ($this->request->is('post')) {
@@ -449,13 +451,21 @@ class EventsController extends AppController
             $data['created_by'] = $this->currentUserId();
         }
 
-        // A published game tournament stays a game tournament: its result is
-        // frozen. Its rewards can still change, and are split again over the
-        // published standings without touching anybody's points.
-        $published = !$isNew && $event->is_imported && $event->published_at !== null;
-        if ($published) {
+        // The kind of an event never changes. A game tournament comes from the
+        // EventUploader only, so this form cannot create one, nor turn a clan
+        // event into one; a game tournament stays one whatever is posted.
+        if (!$isNew && $event->is_imported) {
             $data['criteria'] = Event::CRITERIA_IMPORTED;
+        } elseif (($data['criteria'] ?? null) === Event::CRITERIA_IMPORTED) {
+            $this->Flash->error(__('Game events are created by the EventUploader, not by this form.'));
+
+            return $this->redirect($isNew ? ['action' => 'manage'] : ['action' => 'edit', $event->id]);
         }
+
+        // Once the result is recorded (a published tournament, a closed clan
+        // event) the points are frozen. Rewards and goal can still change, and
+        // are split again over the recorded standings.
+        $recorded = !$isNew && $event->hasRecordedResult();
 
         $event = $this->Events->patchEntity($event, $data, [
             'associated' => ['EventChests', 'EventRewards'],
@@ -463,12 +473,13 @@ class EventsController extends AppController
 
         $allocations = null;
         try {
-            $saved = $this->Events->getConnection()->transactional(function () use ($event, $published, &$allocations): bool {
+            $connection = $this->Events->getConnection();
+            $saved = $connection->transactional(function () use ($event, $recorded, &$allocations): bool {
                 if (!$this->Events->save($event)) {
                     return false;
                 }
-                if ($published) {
-                    $allocations = (new EventImportService())->redistribute($event);
+                if ($recorded) {
+                    $allocations = (new EventPrizeService())->redistribute($event);
                 }
 
                 return true;
@@ -486,7 +497,9 @@ class EventsController extends AppController
                 ? __('Event #{0} was created.', $event->event_number)
                 : __('Event #{0} was saved.', $event->event_number));
             if ($allocations !== null) {
-                $this->Flash->success(__('The rewards were split again over the published result; the points did not change.'));
+                $this->Flash->success(
+                    __('The rewards and the goal were applied again to the recorded result; the points did not change.')
+                );
             }
 
             // A game tournament has nothing to show until its ranking arrives:
@@ -665,7 +678,6 @@ class EventsController extends AppController
      *
      * GET shows the current draft (or the published import) with each player's
      * share of every reward. POST does one of:
-     * - `intent=upload`: take a CSV ranking (the discovery tool's ranking.csv)
      * - `intent=save`: store the corrections made in the table
      * - `intent=publish`: store them and publish the result
      *
@@ -692,12 +704,6 @@ class EventsController extends AppController
 
         if ($this->request->is(['post', 'put'])) {
             $intent = (string)$this->request->getData('intent');
-
-            if ($intent === 'upload') {
-                $this->uploadCsv($service, $event);
-
-                return $this->redirect(['action' => 'review', $event->id]);
-            }
 
             if ($intent === 'dates') {
                 $this->saveDates($event);
@@ -772,8 +778,8 @@ class EventsController extends AppController
     }
 
     /**
-     * Start a new event from an existing one: same rules, same rewards, dated
-     * today. Tournaments repeat every day with the same prizes.
+     * Start a new clan event from an existing one: same rules, rewards and
+     * goal, starting in an hour and lasting as long as the original.
      *
      * @param string|null $id Event id.
      * @return \Cake\Http\Response
@@ -785,30 +791,37 @@ class EventsController extends AppController
 
         $source = $this->Events->get($id, contain: ['EventRewards', 'EventChests']);
 
-        $today = DateTime::now()->setTime(0, 0);
-        $isImported = $source->is_imported;
+        // A game tournament is registered by the EventUploader, which already
+        // copies the name, rewards and goal of the previous one of its type.
+        if ($source->is_imported) {
+            $this->Flash->warning(__('Game events are created by the EventUploader, not by this form.'));
+
+            return $this->redirect(['action' => 'manage']);
+        }
+
         $data = [
             'name' => $source->name,
             'description' => $source->description,
             'criteria' => $source->criteria,
             'custom_metric' => $source->custom_metric,
-            'prize' => $isImported ? '' : $source->prize,
+            'prize' => $source->prize,
             'contact_player' => $source->contact_player,
-            // A chest event has to start in the future; a tournament is dated
-            // the day it is played.
-            'starts_at' => $isImported ? $today : DateTime::now()->addHours(1),
-            'ends_at' => $isImported ? $today->setTime(23, 59) : DateTime::now()->addHours(1)->addSeconds(
+            // A chest event has to end in the future: the copy starts in an hour
+            // and lasts as long as the original.
+            'starts_at' => DateTime::now()->addHours(1),
+            'ends_at' => DateTime::now()->addHours(1)->addSeconds(
                 $source->ends_at->getTimestamp() - $source->starts_at->getTimestamp()
             ),
             'event_chests' => array_map(fn ($c) => ['standard_chest_id' => $c->standard_chest_id, 'source' => $c->source], (array)$source->event_chests),
             'event_rewards' => array_map(fn (EventReward $r) => [
                 'item_name' => $r->item_name,
                 'quantity' => $r->quantity,
+                'position_amounts' => $r->position_amounts,
                 'rule' => $r->rule,
                 'min_points' => $r->min_points,
                 'remainder' => $r->remainder,
             ], (array)$source->event_rewards),
-        ];
+        ] + $source->goal()->toFields();
 
         $copy = $this->Events->newEntity($data, ['associated' => ['EventChests', 'EventRewards']]);
         $copy->set('created_by', $this->currentUserId());
@@ -850,43 +863,5 @@ class EventsController extends AppController
         }
 
         $this->Flash->error(__('The dates were not saved: {0}', implode(' ', array_values(Hash::flatten($entity->getErrors())))));
-    }
-
-    /**
-     * Store a CSV ranking as the event's draft.
-     *
-     * @param \App\Service\EventImportService $service Import service.
-     * @param \App\Model\Entity\Event $event The event.
-     * @return void
-     */
-    private function uploadCsv(EventImportService $service, Event $event): void
-    {
-        $file = $this->request->getData('ranking_file');
-        if (!$file instanceof UploadedFileInterface || $file->getError() !== UPLOAD_ERR_OK) {
-            $this->Flash->error(__('Choose the ranking CSV file to upload.'));
-
-            return;
-        }
-        if (($file->getSize() ?? 0) > 1048576) {
-            $this->Flash->error(__('The file is too large for a ranking of at most {0} players.', EventImportService::MAX_ROWS));
-
-            return;
-        }
-
-        $checked = $service->validate($service->parseCsv((string)$file->getStream()));
-        if ($checked['errors']) {
-            $this->Flash->error(__('The ranking was not accepted: {0}', implode(' ', array_slice($checked['errors'], 0, 5))));
-
-            return;
-        }
-
-        try {
-            $result = $service->import($event, $checked['payload'], $this->currentUserId());
-            $this->Flash->success($result['created']
-                ? __('Ranking with {0} player(s) received. Review it below.', count($checked['payload']['rows']))
-                : __('This ranking is the same as the current draft; nothing changed.'));
-        } catch (DomainException $e) {
-            $this->Flash->error($e->getMessage());
-        }
     }
 }

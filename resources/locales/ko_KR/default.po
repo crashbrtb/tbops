@@ -4648,21 +4648,6 @@ msgstr "#{1}을(를) 바탕으로 이벤트 #{0}을(를) 만들었습니다. 이
 msgid "The event could not be duplicated: {0}"
 msgstr "이벤트를 복제할 수 없습니다: {0}"
 
-msgid "Choose the ranking CSV file to upload."
-msgstr "업로드할 순위 CSV 파일을 선택하세요."
-
-msgid "The file is too large for a ranking of at most {0} players."
-msgstr "최대 {0}명 순위에 비해 파일이 너무 큽니다."
-
-msgid "The ranking was not accepted: {0}"
-msgstr "순위가 접수되지 않았습니다: {0}"
-
-msgid "Ranking with {0} player(s) received. Review it below."
-msgstr "플레이어 {0}명의 순위를 받았습니다. 아래에서 검토하세요."
-
-msgid "This ranking is the same as the current draft; nothing changed."
-msgstr "이 순위는 현재 초안과 같아 변경된 것이 없습니다."
-
 msgid "Send the API token in the Authorization header: Bearer <token>."
 msgstr "Authorization 헤더로 API 토큰을 보내세요: Bearer <token>."
 
@@ -4800,21 +4785,6 @@ msgstr "{0} UTC에 {1}에게서 받음"
 
 msgid "In the game: {0}"
 msgstr "게임 내: {0}"
-
-msgid "Send a ranking"
-msgstr "순위 보내기"
-
-msgid "The EventUploader sends it straight from the game. Without it, upload the ranking.csv the discovery tool exports."
-msgstr "EventUploader가 게임에서 바로 보냅니다. 없으면 탐색 도구가 내보낸 ranking.csv를 업로드하세요."
-
-msgid "Replace with this file"
-msgstr "이 파일로 교체"
-
-msgid "Upload CSV"
-msgstr "CSV 업로드"
-
-msgid "Tokens for the EventUploader"
-msgstr "EventUploader 토큰"
 
 msgid "{0} taking part in the prize"
 msgstr "{0}명이 보상 대상"
@@ -5316,8 +5286,6 @@ msgstr "모니터링 키를 X-Monitor-Key 헤더로 보내세요."
 msgid "Between {0} and {1} minutes."
 msgstr "{0}분에서 {1}분 사이여야 합니다."
 
-
-
 msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
 msgstr "이전 주기에 목표를 달성하지 못한 플레이어는 이번 주기 목표가 {0}% 상향됩니다 (올림)."
 
@@ -5330,8 +5298,6 @@ msgstr "목표 페널티: 상자 점수 목표 +{0}%"
 msgid "Players with a raised goal: {0}"
 msgstr "목표가 상향된 플레이어: {0}"
 
-
-
 msgid "Goal Penalties"
 msgstr "목표 페널티"
 
@@ -5343,7 +5309,6 @@ msgstr "상자 점수 목표"
 
 msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
 msgstr "이전 주기에 목표를 달성하지 못한 플레이어는 이번 주기 목표가 상향됩니다. 정당한 이유가 있으면 여기서 플레이어를 면제하세요."
-
 
 msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
 msgstr "{0}: {1}점, 미달한 플레이어는 {2}% 상향되어 {3}점."
@@ -5362,7 +5327,6 @@ msgstr "이번 주기에 목표가 상향된 플레이어가 없습니다."
 
 msgid "Previous cycle (score / goal)"
 msgstr "이전 주기 (점수 / 목표)"
-
 
 msgid "Release"
 msgstr "면제"
@@ -5456,3 +5420,240 @@ msgstr "목표 페널티: 상자 점수 목표와 에픽 상자 목표 +{0}%"
 
 msgid "Raised goal in this cycle: {0}"
 msgstr "이 주기의 상향 목표: {0}"
+
+msgid "Goal: {0} chest points, {1} Epic chest points"
+msgstr "목표: 상자 {0}점, 에픽 상자 {1}점"
+
+msgid "Guards G{0}"
+msgstr "근위병 G{0}"
+
+msgid "Guard level unknown (G0): highest goal"
+msgstr "근위병 레벨 알 수 없음 (G0): 가장 높은 목표"
+
+msgid "Chest Score Goal / Epic Chest Goal"
+msgstr "상자 점수 목표 / 에픽 상자 목표"
+
+msgid "G0 (unknown): highest goal"
+msgstr "G0 (알 수 없음): 가장 높은 목표"
+
+msgid "Goals by guard level"
+msgstr "근위병 레벨별 목표"
+
+msgid "Goals by guard level: each cell is coloured against the goal the player had in that cycle."
+msgstr "근위병 레벨별 목표: 각 칸은 해당 주기에 플레이어가 가졌던 목표를 기준으로 색이 표시됩니다."
+
+msgid "Goals by guard level: each score is judged by the goal the player had in that cycle."
+msgstr "근위병 레벨별 목표: 각 점수는 해당 주기에 플레이어가 가졌던 목표로 판정됩니다."
+
+msgid "Goal in this cycle: {0} chest points, {1} Epic chest points"
+msgstr "이 주기의 목표: 상자 {0}점, 에픽 상자 {1}점"
+
+msgid "{0}: the goal of the player's guard level, raised by {1}% for players who missed it."
+msgstr "{0}: 플레이어 근위병 레벨의 목표이며, 달성하지 못한 플레이어는 {1}% 상향됩니다."
+
+msgid "General settings"
+msgstr "일반 설정"
+
+msgid "Clan identity, appearance, backups and every parameter that has no section of its own."
+msgstr "클랜 정보, 외관, 백업 및 별도 섹션이 없는 모든 매개변수."
+
+msgid "Bank settings"
+msgstr "은행 설정"
+
+msgid "Whether the bank is on, and the fee charged on each kind of transaction."
+msgstr "은행 사용 여부와 거래 유형별 수수료."
+
+msgid "Chest settings"
+msgstr "상자 설정"
+
+msgid "Cycles, chest goals, the goal penalty and how scores are coloured."
+msgstr "주기, 상자 목표, 목표 패널티 및 점수 색상."
+
+msgid "Chest goals"
+msgstr "상자 목표"
+
+msgid "How goals are set"
+msgstr "목표 설정 방식"
+
+msgid "Global goal: the same goal for every player"
+msgstr "공통 목표: 모든 플레이어에게 같은 목표"
+
+msgid "Individual goal by guard level: each player gets the goal of their guards (G1 to G9) from the member profile"
+msgstr "근위병 레벨별 개인 목표: 각 플레이어는 멤버 프로필의 근위병 레벨(G1~G9)에 해당하는 목표를 받습니다"
+
+msgid "Global {0}"
+msgstr "공통 {0}"
+
+msgid "With goals by guard level, the global goal is used for any level left blank below."
+msgstr "근위병 레벨별 목표에서는 아래에서 비워 둔 레벨에 공통 목표가 적용됩니다."
+
+msgid "Global ({0})"
+msgstr "공통 ({0})"
+
+msgid "Guard level not identified"
+msgstr "근위병 레벨 미확인"
+
+msgid "Highest goal: {0}"
+msgstr "가장 높은 목표: {0}"
+
+msgid "Highest goal"
+msgstr "가장 높은 목표"
+
+msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
+msgstr "G0은 근위병 레벨이 확인된 적이 없다는 뜻입니다. 이런 플레이어와 멤버 프로필이 없는 플레이어는 표에서 가장 높은 목표를 받습니다."
+
+msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
+msgstr "종료된 각 주기는 그때 플레이어가 가졌던 목표를 보관하므로 나중에 레벨을 바꿔도 기록이 바뀌지 않습니다. 목표 패널티는 플레이어 자신의 목표를 상향합니다."
+
+msgid "Save Chest Goals"
+msgstr "상자 목표 저장"
+
+msgid "Chest goals saved."
+msgstr "상자 목표를 저장했습니다."
+
+msgid "Choose how the chest goals are set."
+msgstr "상자 목표 설정 방식을 선택하세요."
+
+msgid "The global goals must be whole numbers of 0 or more."
+msgstr "공통 목표는 0 이상의 정수여야 합니다."
+
+msgid "G{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "G{0}: 목표는 0 이상의 정수이거나 비워 두어야 합니다."
+
+msgid "System"
+msgstr "시스템"
+
+msgid "Game events are created by the EventUploader, not by this form."
+msgstr "게임 이벤트는 이 양식이 아니라 EventUploader가 생성합니다."
+
+msgid "The rewards and the goal were applied again to the recorded result; the points did not change."
+msgstr "보상과 목표를 기록된 결과에 다시 적용했습니다. 포인트는 바뀌지 않았습니다."
+
+msgid "By position"
+msgstr "순위별"
+
+msgid "#{0} {1}"
+msgstr "{0}위 {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+msgid "Give the amount of each place, best place first, for example 500; 250; 100."
+msgstr "각 순위의 수량을 1위부터 입력하세요. 예: 500; 250; 100"
+
+msgid "Describe the prize, or add a reward line."
+msgstr "상품을 설명하거나 보상 줄을 추가하세요."
+
+msgid "The goal must be a whole number."
+msgstr "목표는 정수여야 합니다."
+
+msgid "Set the goal, or choose \"No goal\"."
+msgstr "목표를 설정하거나 \"목표 없음\"을 선택하세요."
+
+msgid "Nobody reached the goal, and the goal is required: the rewards stay with the clan."
+msgstr "아무도 목표를 달성하지 못했고 목표가 필수입니다. 보상은 클랜에 남습니다."
+
+msgid "{0} player(s) have no known guard level and get the highest goal: {1}."
+msgstr "근위병 레벨을 알 수 없는 플레이어 {0}명은 가장 높은 목표를 받습니다: {1}."
+
+msgid "Amount per place"
+msgstr "순위별 수량"
+
+msgid "1st; 2nd; 3rd... e.g. 500; 250; 100"
+msgstr "1위; 2위; 3위... 예: 500; 250; 100"
+
+msgid "A tournament played in the game, registered by the EventUploader together with its ranking. Its name, dates, rewards and goal can be adjusted here."
+msgstr "게임에서 진행된 토너먼트로, EventUploader가 순위와 함께 등록합니다. 이름, 날짜, 보상, 목표는 여기서 조정할 수 있습니다."
+
+msgid "An internal challenge to push crypts and epic monsters. It is counted from the chests collected inside its window, which can start in the past but must end in the future."
+msgstr "크립트와 에픽 몬스터를 독려하는 클랜 내부 도전입니다. 기간 안에 수집한 상자로 집계하며, 시작은 과거여도 되지만 종료는 미래여야 합니다."
+
+msgid "Game events are not created here: the EventUploader registers each tournament together with its ranking."
+msgstr "게임 이벤트는 여기서 만들지 않습니다. EventUploader가 각 토너먼트를 순위와 함께 등록합니다."
+
+msgid "What is handed out and how it is divided. Proportional gives each player a part matching their share of the points; equal gives everybody the same; by position gives a fixed amount to each place (1st, 2nd, 3rd...). Administrative accounts never take part, and players below the minimum points are left out."
+msgstr "무엇을 어떻게 나누는지입니다. 비례는 포인트 비율대로, 균등 분배는 모두 같게, 순위별은 각 순위에 정해진 수량(1위, 2위, 3위...)을 줍니다. 관리용 계정은 참여하지 않으며 최소 포인트 미만인 플레이어도 제외됩니다."
+
+msgid "This event has no rewards"
+msgstr "이 이벤트에는 보상이 없습니다"
+
+msgid "Describe the prize in words below instead. Rewards can still be added later, even after the result is recorded."
+msgstr "대신 아래에 상품을 글로 설명하세요. 결과가 기록된 뒤에도 보상을 나중에 추가할 수 있습니다."
+
+msgid "Event goal"
+msgstr "이벤트 목표"
+
+msgid "What each player has to reach in this tournament. New tournaments start with the default goal set in the Tournament Catalogue."
+msgstr "이 토너먼트에서 각 플레이어가 달성해야 할 목표입니다. 새 토너먼트는 토너먼트 카탈로그에 설정한 기본 목표로 시작합니다."
+
+msgid "What each player has to reach in this event, in the same unit as the ranking. It can be the same for everybody or follow the guard level shown in the member profile."
+msgstr "이 이벤트에서 각 플레이어가 달성해야 할 목표로, 순위와 같은 단위입니다. 모두 같게 하거나 멤버 프로필의 근위병 레벨에 따르게 할 수 있습니다."
+
+msgid "points of the ranking"
+msgstr "순위 포인트"
+
+msgid "Goal reached"
+msgstr "목표 달성"
+
+msgid "only they share the rewards"
+msgstr "이들만 보상을 나눕니다"
+
+msgid "the goal does not decide the rewards"
+msgstr "목표는 보상을 결정하지 않습니다"
+
+msgid "Goal"
+msgstr "목표"
+
+msgid "What each player receives is in the ranking below."
+msgstr "각 플레이어가 받는 양은 아래 순위에 있습니다."
+
+msgid "The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward."
+msgstr "아래 순위는 이벤트가 지금 끝난다면 각 플레이어가 받을 양을 보여 줍니다. 관리용 계정은 보상을 받지 않습니다."
+
+msgid "Administrative account: ranked, never rewarded"
+msgstr "관리용 계정: 순위에는 오르지만 보상은 없음"
+
+msgid "Default goal"
+msgstr "기본 목표"
+
+msgid "Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published."
+msgstr "EventUploader가 보내는 이 토너먼트의 새 이벤트는 모두 이 목표로 시작합니다. 결과를 게시하기 전에는 각 이벤트에서 바꿀 수 있습니다."
+
+msgid "No goal"
+msgstr "목표 없음"
+
+msgid "Individual goal by guard level"
+msgstr "근위병 레벨별 개인 목표"
+
+msgid "Goal not reached"
+msgstr "목표 미달성"
+
+msgid "Goal ({0})"
+msgstr "목표 ({0})"
+
+msgid "Goal for levels left blank ({0})"
+msgstr "비워 둔 레벨의 목표 ({0})"
+
+msgid "Same as blank levels"
+msgstr "빈 레벨과 같음"
+
+msgid "Reaching the goal is required to receive a reward"
+msgstr "보상을 받으려면 목표를 달성해야 함"
+
+msgid "Players who miss the goal are still ranked, but the rewards are split only among those who reached it. A reward by position goes to the best placed players who reached it."
+msgstr "목표를 달성하지 못한 플레이어도 순위에는 남지만, 보상은 달성한 플레이어끼리만 나눕니다. 순위별 보상은 목표를 달성한 상위 플레이어에게 갑니다."
+
+msgid "Each player has the goal of their guard level:"
+msgstr "각 플레이어의 목표는 근위병 레벨에 따릅니다:"
+
+msgid "{0} points for every player."
+msgstr "모든 플레이어 {0}포인트."
+
+msgid "Reaching the goal is required to receive a reward: the rewards are split only among the players who reached it."
+msgstr "보상을 받으려면 목표를 달성해야 합니다. 보상은 달성한 플레이어끼리만 나눕니다."
+
+msgid "The goal does not decide the rewards."
+msgstr "목표는 보상을 결정하지 않습니다."
+
+msgid "{0} of {1} player(s) reached it."
+msgstr "{1}명 중 {0}명이 달성했습니다."

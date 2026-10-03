@@ -81,6 +81,17 @@ $this->assign('title', __('Edit Tournament'));
         </div>
     </div>
 
+    <div class="event-form-card">
+        <h2><i class="fas fa-bullseye text-primary"></i> <?= __('Default goal') ?></h2>
+        <p class="section-hint">
+            <?= __('Every new event of this tournament sent by the EventUploader starts with this goal. It can still be changed in each event before the result is published.') ?>
+        </p>
+        <?= $this->element('event_goal_fields', [
+            'goal' => \App\Service\EventGoal::fromEntity($tournament),
+            'error' => implode(' ', (array)$tournament->getError('goal_points')) ?: null,
+        ]) ?>
+    </div>
+
     <div class="event-form-actions">
         <?= $this->Html->link(__('Cancel'), ['action' => 'index'], ['class' => 'btn btn-default spacer']) ?>
         <?= $this->Form->button('<i class="fas fa-save mr-1"></i>' . __('Save changes'), ['class' => 'btn btn-primary', 'escapeTitle' => false]) ?>

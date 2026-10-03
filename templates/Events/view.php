@@ -16,7 +16,12 @@ $this->assign('title', __('Event #{0} - {1}', $event->event_number, $event->name
 $state = $event->state;
 $rows = $results['rows'];
 $leader = $results['leader'];
-
+// Goal and rewards of every row: live while the event runs, frozen with the result.
+$prizes = $results['prizes'] ?? ['rewards' => [], 'totals' => [], 'goal' => $event->goal(), 'goal_met' => 0];
+$rewards = $prizes['rewards'];
+$goal = $prizes['goal'];
+$showGoal = $goal->isActive();
+$isOfficial = ($results['source'] ?? 'live') === 'snapshot';
 $stateLabels = [
     Event::STATE_RUNNING => __('Running'),
     Event::STATE_SCHEDULED => __('Starts soon'),
@@ -233,9 +238,23 @@ if ($identity !== null) {
     <div class="event-info-grid">
         <div class="event-info-card is-prize">
             <h3><i class="fas fa-gift"></i> <?= __('Prize') ?></h3>
-            <p><?= h($event->prize) ?></p>
+            <p><?= nl2br(h($event->prize)) ?></p>
+            <?php if ($rewards): ?>
+                <p class="text-muted mt-2" style="font-size: 0.82rem;">
+                    <?= $isOfficial
+                        ? __('What each player receives is in the ranking below.')
+                        : __('The ranking below shows what each player would receive if the event ended now. Administrative accounts never receive a reward.') ?>
+                </p>
+            <?php endif; ?>
         </div>
 
+        <?php if ($showGoal): ?>
+            <?= $this->element('event_goal_summary', [
+                'goal' => $goal,
+                'metCount' => $prizes['goal_met'],
+                'playerCount' => count($rows),
+            ]) ?>
+        <?php endif; ?>
         <div class="event-info-card is-contact">
             <h3><i class="fas fa-user-check"></i> <?= __('Who to talk to') ?></h3>
             <p><?= h($event->contact_player) ?></p>
@@ -306,6 +325,12 @@ if ($identity !== null) {
                             <th style="width: 150px;"><?= h($event->pointsLabel()) ?></th>
                             <th style="width: 130px;"><?= __('Total Chests') ?></th>
                             <th style="width: 160px;"><?= __('Share') ?></th>
+                            <?php if ($showGoal): ?>
+                                <th style="width: 150px;"><?= __('Goal') ?></th>
+                            <?php endif; ?>
+                            <?php foreach ($rewards as $reward): ?>
+                                <th style="width: 130px;" title="<?= h($reward->summary()) ?>"><?= h($reward->item_name) ?></th>
+                            <?php endforeach; ?>
                             <th style="width: 150px;"><?= __('Highlight') ?></th>
                         </tr>
                     </thead>
@@ -344,6 +369,9 @@ if ($identity !== null) {
                                         ],
                                         ['class' => 'player-link', 'title' => $row['player']]
                                     ) ?>
+                                    <?php if (array_key_exists('eligible', $row) && !$row['eligible']): ?>
+                                        <span class="badge badge-light border ml-1" title="<?= h(__('Administrative account: ranked, never rewarded')) ?>"><?= __('administrative') ?></span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="event-points"><?= $this->Number->format($row['points']) ?></td>
                                 <td><?= $this->Number->format($row['chest_count']) ?></td>
@@ -356,6 +384,18 @@ if ($identity !== null) {
                                         <span><?= $this->Number->format($share, ['places' => 1]) ?>%</span>
                                     </div>
                                 </td>
+                                <?php if ($showGoal): ?>
+                                    <td><?= $this->element('event_goal_cell', [
+                                        'value' => $row['goal'] ?? null,
+                                        'met' => $row['goal_met'] ?? null,
+                                        'level' => (int)($row['guard_level'] ?? 0),
+                                        'byGuard' => $goal->isByGuard(),
+                                    ]) ?></td>
+                                <?php endif; ?>
+                                <?php foreach ($rewards as $reward): ?>
+                                    <?php $amount = (int)($row['amounts'][$reward->id] ?? 0); ?>
+                                    <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $this->Number->format($amount) ?></td>
+                                <?php endforeach; ?>
                                 <td>
                                     <span class="event-highlight <?= $badgeClass ?>">
                                         <i class="fas <?= $badgeIcon ?>"></i> <?= h($badgeText) ?>
