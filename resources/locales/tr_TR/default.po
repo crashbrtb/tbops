@@ -3924,6 +3924,18 @@ msgstr "Geri"
 msgid "Tools"
 msgstr "Araçlar"
 
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:62
+msgid "Automations"
+msgstr "Otomasyonlar"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:67
+msgid "Crypt Invader"
+msgstr "Mahzen İstilacısı"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:74
+msgid "Citadel Attack"
+msgstr "Kale Saldırısı"
+
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:67
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:108
 msgid "Bank"

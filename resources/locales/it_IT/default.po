@@ -3924,6 +3924,18 @@ msgstr "Indietro"
 msgid "Tools"
 msgstr "Strumenti"
 
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:62
+msgid "Automations"
+msgstr "Automazioni"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:67
+msgid "Crypt Invader"
+msgstr "Invasore delle Cripte"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:74
+msgid "Citadel Attack"
+msgstr "Attacco alla Cittadella"
+
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:67
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:108
 msgid "Bank"

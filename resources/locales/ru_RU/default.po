@@ -3924,6 +3924,18 @@ msgstr "Назад"
 msgid "Tools"
 msgstr "Инструменты"
 
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:62
+msgid "Automations"
+msgstr "Автоматизации"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:67
+msgid "Crypt Invader"
+msgstr "Захватчик крипт"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php:74
+msgid "Citadel Attack"
+msgstr "Атака на цитадель"
+
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:67
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:108
 msgid "Bank"
