@@ -235,6 +235,52 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
 
     return sprintf('rgb(%d, %d, %d)', $r, $g, $b);
 };
+
+// Goal penalty: players who missed the goal last cycle carry a raised goal in this one,
+// and their score only turns green once it reaches that raised goal.
+// $penaltyGoals: player => target ('total' / 'epic') => raised goal, only for the goals that were raised.
+$goalPenaltySettings = $goalPenaltySettings ?? ['enabled' => false, 'mode' => 'total', 'percent' => 0];
+$penaltyGoals = $penaltyGoals ?? [];
+$penaltyMode = $goalPenaltySettings['mode'] ?? 'total';
+$penaltyPercent = $this->Number->format((float)($goalPenaltySettings['percent'] ?? 0));
+$totalGoalFor = function (string $player) use ($penaltyGoals, $minimumChestScore): int {
+    return $penaltyGoals[$player]['total'] ?? (int)$minimumChestScore;
+};
+$epicGoalFor = function (string $player) use ($penaltyGoals, $minimumEpicChestScore): int {
+    return $penaltyGoals[$player]['epic'] ?? (int)$minimumEpicChestScore;
+};
+$penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyPercent): string {
+    $parts = [];
+    if (isset($penaltyGoals[$player]['total'])) {
+        $parts[] = __('{0} chest points', $this->Number->format($penaltyGoals[$player]['total']));
+    }
+    if (isset($penaltyGoals[$player]['epic'])) {
+        $parts[] = __('{0} Epic chest points', $this->Number->format($penaltyGoals[$player]['epic']));
+    }
+
+    return __('Raised goal this cycle: {0} (+{1}%), goal missed last cycle', implode(' + ', $parts), $penaltyPercent);
+};
+$penaltyTooltipsData = [];
+foreach (array_keys($penaltyGoals) as $penalizedPlayer) {
+    $penaltyTooltipsData[$penalizedPlayer] = $penaltyTooltip((string)$penalizedPlayer);
+}
+// Player name linking to the history page, flagged when the player carries a raised goal
+$playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip, $penaltyPercent): string {
+    $penalized = isset($penaltyGoals[$player]);
+    $title = $penalized ? $player . ' — ' . $penaltyTooltip($player) : $player;
+    $html = $this->Html->link(
+        $player,
+        ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($player)],
+        ['class' => 'player-link' . ($penalized ? ' penalized' : ''), 'title' => $title]
+    );
+    if ($penalized) {
+        $html = '<span class="player-name-line">' . $html
+            . '<span class="penalty-badge" title="' . h($penaltyTooltip($player)) . '">'
+            . '<i class="fas fa-arrow-up"></i> ' . h($penaltyPercent) . '%</span></span>';
+    }
+
+    return $html;
+};
 ?>
 
 <style>
@@ -547,6 +593,49 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
     .player-link:hover {
         color: var(--link);
         text-decoration: underline;
+    }
+
+    /* Goal penalty: player carrying a raised goal this cycle */
+    .player-name-line {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .player-link.penalized,
+    .player-link.penalized:hover {
+        color: #d97706;
+    }
+
+    .penalty-badge {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 1px 7px;
+        border-radius: 999px;
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(217, 119, 6, 0.45);
+        color: #d97706;
+        font-size: 0.72rem;
+        font-weight: 700;
+        line-height: 1.4;
+        cursor: help;
+    }
+
+    tr.penalized-row td:first-child {
+        box-shadow: inset 3px 0 0 #f59e0b;
+    }
+
+    .goal-pill.penalty {
+        border-color: rgba(217, 119, 6, 0.45);
+        color: #d97706;
+    }
+
+    .goal-pill.penalty i {
+        color: #f59e0b;
     }
 
     /* Monster hunted chips under player name */
@@ -1213,6 +1302,23 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
             <i class="fas fa-gem"></i>
             <span><?= __('Epic Chest Goal: {0} points', $this->Number->format($minimumEpicChestScore ?? 0)) ?></span>
         </div>
+        <?php if (!empty($goalPenaltySettings['enabled'])): ?>
+            <div class="goal-pill penalty" title="<?= h(__('Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up).', $penaltyPercent)) ?>">
+                <i class="fas fa-arrow-up"></i>
+                <span>
+                    <?php if ($penaltyMode === 'both'): ?>
+                        <?= __('Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal', $penaltyPercent) ?>
+                    <?php elseif ($penaltyMode === 'epic'): ?>
+                        <?= __('Goal penalty: +{0}% on the Epic Chest Goal', $penaltyPercent) ?>
+                    <?php else: ?>
+                        <?= __('Goal penalty: +{0}% on the Chest Score Goal', $penaltyPercent) ?>
+                    <?php endif; ?>
+                    <?php if (!empty($penaltyGoals)): ?>
+                        · <?= __('Players with a raised goal: {0}', count($penaltyGoals)) ?>
+                    <?php endif; ?>
+                </span>
+            </div>
+        <?php endif; ?>
         <?= $this->element('event_banner') ?>
     </div>
 
@@ -1249,10 +1355,10 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                             <?php foreach ($summaryPlayers as $index => $p): ?>
                                 <?php
                                 $finalScore = (int)$p['final_score'];
-                                $scoreCellColor = $scoreColor($finalScore, (int)$minimumChestScore);
+                                $scoreCellColor = $scoreColor($finalScore, $totalGoalFor((string)$p['player']));
                                 $monsterCount = (int)$p['epic_monster_chest_count'];
                                 ?>
-                                <tr>
+                                <tr<?= isset($penaltyGoals[$p['player']]) ? ' class="penalized-row"' : '' ?>>
                                     <td class="col-pos">
                                         <span class="top-rank <?= $index === 0 ? 'rank-1' : ($index === 1 ? 'rank-2' : ($index === 2 ? 'rank-3' : '')) ?>">
                                             <?= $index + 1 ?>
@@ -1260,11 +1366,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                     </td>
                                     <td class="col-player" style="text-align: left;">
                                         <div class="player-cell-box">
-                                            <?= $this->Html->link(
-                                                $p['player'],
-                                                ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($p['player'])],
-                                                ['class' => 'player-link', 'title' => $p['player']]
-                                            ) ?>
+                                            <?= $playerNameLink((string)$p['player']) ?>
                                         </div>
                                     </td>
                                     <!-- Interactive Final Score Link -> opens detailed score popup -->
@@ -1346,7 +1448,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                 <?php $mPos = 1; ?>
                                 <?php foreach ($monsterPlayers as $p): ?>
                                     <?php $mCount = (int)$p['epic_monster_chest_count']; ?>
-                                    <tr>
+                                    <tr<?= isset($penaltyGoals[$p['player']]) ? ' class="penalized-row"' : '' ?>>
                                         <td class="col-pos">
                                             <span class="top-rank <?= $mPos === 1 ? 'rank-1' : ($mPos === 2 ? 'rank-2' : ($mPos === 3 ? 'rank-3' : '')) ?>">
                                                 <?= $mPos++ ?>
@@ -1354,11 +1456,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                         </td>
                                         <td class="col-player" style="text-align: left;">
                                             <div class="player-cell-box">
-                                                <?= $this->Html->link(
-                                                    $p['player'],
-                                                    ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($p['player'])],
-                                                    ['class' => 'player-link', 'title' => $p['player']]
-                                                ) ?>
+                                                <?= $playerNameLink((string)$p['player']) ?>
                                                 <?php
                                                 $playerHunted = [];
                                                 foreach ($activeMonsterSources as $mSource) {
@@ -1452,19 +1550,15 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                 <?php foreach ($playersData as $index => $playerData): ?>
                                     <?php
                                     $score = $playerData['final_score'];
-                                    $scoreCellColor = $scoreColor($score, (int)$minimumChestScore);
+                                    $scoreCellColor = $scoreColor($score, $totalGoalFor((string)$playerData['player']));
                                     $epicScore = $playerData['epic_crypt_score'];
-                                    $epicCellColor = $scoreColor($epicScore, (int)$minimumEpicChestScore);
+                                    $epicCellColor = $scoreColor($epicScore, $epicGoalFor((string)$playerData['player']));
                                     ?>
-                                    <tr>
+                                    <tr<?= isset($penaltyGoals[$playerData['player']]) ? ' class="penalized-row"' : '' ?>>
                                         <td><span class="top-rank"><?= $index + 1 ?></span></td>
                                         <td style="text-align: left;">
                                             <div class="player-cell-box">
-                                                <?= $this->Html->link(
-                                                    $playerData['player'],
-                                                    ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($playerData['player'])],
-                                                    ['class' => 'player-link', 'title' => $playerData['player']]
-                                                ) ?>
+                                                <?= $playerNameLink((string)$playerData['player']) ?>
                                             </div>
                                         </td>
                                         <td>
@@ -1532,6 +1626,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
 // Data serialized for client interactivity
 var epicMonsterData = <?= json_encode($epicMonsterPopupData, JSON_UNESCAPED_UNICODE) ?>;
 var playerAllDetails = <?= json_encode($playerAllDetailsData, JSON_UNESCAPED_UNICODE) ?>;
+var penaltyTooltips = <?= json_encode((object)$penaltyTooltipsData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 
 var currentMode = 'split';
 
@@ -1655,6 +1750,9 @@ function showPlayerSummaryModal(playerName) {
     html += '<div class="goal-pill"><i class="fas fa-box text-primary"></i> Total Chests: <strong>' + p.total_chests.toLocaleString() + '</strong></div>';
     html += '<div class="goal-pill epic"><i class="fas fa-gem"></i> Epic Crypts: <strong>' + p.epic_crypt_score.toLocaleString() + '</strong></div>';
     html += '<div class="goal-pill" style="border-color:#fecaca; color:#991b1b;"><i class="fas fa-dragon text-danger"></i> Monsters: <strong>' + p.monster_chests.toLocaleString() + '</strong></div>';
+    if (penaltyTooltips[playerName]) {
+        html += '<div class="goal-pill penalty"><i class="fas fa-arrow-up"></i> ' + escapeHtml(penaltyTooltips[playerName]) + '</div>';
+    }
     html += '</div>';
 
     if (!p.chests || p.chests.length === 0) {

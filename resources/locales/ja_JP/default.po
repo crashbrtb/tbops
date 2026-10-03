@@ -5303,3 +5303,144 @@ msgstr "監視キーを X-Monitor-Key ヘッダーで送ってください。"
 
 msgid "Between {0} and {1} minutes."
 msgstr "{0} 分から {1} 分の間で指定してください。"
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "前サイクルで目標未達のプレイヤーは、今サイクルの目標が {0}% 引き上げられます（切り上げ）。"
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "目標ペナルティ: エピック宝箱の目標 +{0}%"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "目標ペナルティ: 宝箱ポイントの目標 +{0}%"
+
+msgid "Players with a raised goal: {0}"
+msgstr "目標が引き上げられたプレイヤー: {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "目標ペナルティ"
+
+msgid "Epic Chest Goal"
+msgstr "エピック宝箱の目標"
+
+msgid "Chest Score Goal"
+msgstr "宝箱ポイントの目標"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "前サイクルで目標未達のプレイヤーは、このサイクルの目標が引き上げられます。正当な理由がある場合はここで免除してください。"
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}: {1} ポイント、未達のプレイヤーは {2}% 引き上げて {3} ポイント。"
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "クランでの最初のサイクルは目標未達として数えません。"
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "設定に reference_day または every_how_many_days がありません。"
+
+msgid "Players with a raised goal"
+msgstr "目標が引き上げられたプレイヤー"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "このサイクルで目標が引き上げられたプレイヤーはいません。"
+
+msgid "Previous cycle (score / goal)"
+msgstr "前サイクル（ポイント / 目標）"
+
+
+msgid "Release"
+msgstr "免除"
+
+msgid "Released by an administrator"
+msgstr "管理者による免除"
+
+msgid "Nobody was released in this cycle."
+msgstr "このサイクルで免除されたプレイヤーはいません。"
+
+msgid "Reason"
+msgstr "理由"
+
+msgid "Released by"
+msgstr "免除した人"
+
+msgid "Not penalized anyway"
+msgstr "いずれにしてもペナルティ対象外"
+
+msgid "Undo"
+msgstr "取り消し"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "{0} の免除を取り消しますか？目標未達の場合、引き上げ目標が再び適用されます。"
+
+msgid "Spared: first cycle in the clan"
+msgstr "対象外: クランでの最初のサイクル"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "前サイクルで目標未達の新メンバーはいません。"
+
+msgid "The player could not be released. Please, try again."
+msgstr "プレイヤーを免除できませんでした。もう一度お試しください。"
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} はこのサイクルの目標ペナルティを免除されました。"
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "取り消せるのは現在または前サイクルの免除のみです。"
+
+msgid "The release of {0} was undone."
+msgstr "{0} の免除を取り消しました。"
+
+msgid "This player is already released in this cycle."
+msgstr "このプレイヤーはこのサイクルで既に免除されています。"
+
+msgid "Preview"
+msgstr "プレビュー"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "目標ペナルティはオフのため、まだ誰も影響を受けていません。下の一覧は、今オンにした場合に影響を受けるプレイヤーを示します。"
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "有効にするには goal_penalty_enabled を 1（かつ 0 より大きい割合）に設定してください。"
+
+msgid "Players who would get a raised goal"
+msgstr "目標が引き上げられる予定のプレイヤー"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "このサイクルで目標が引き上げられるプレイヤーはいません。"
+
+msgid "Total"
+msgstr "合計"
+
+msgid "Epic"
+msgstr "エピック"
+
+msgid "Raised goal"
+msgstr "引き上げ目標"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "ペナルティが監視する目標が設定で 0 のため、誰も未達になりません。"
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "どちらかの目標が未達なら未達とみなし、未達の目標だけが引き上げられます。"
+
+msgid "This cycle (score / goal)"
+msgstr "このサイクル（ポイント / 目標）"
+
+msgid "{0} chest points"
+msgstr "宝箱 {0} ポイント"
+
+msgid "{0} Epic chest points"
+msgstr "エピック宝箱 {0} ポイント"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "今サイクルの引き上げ目標: {0}（+{1}%）、前サイクルで目標未達"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "目標ペナルティ: 宝箱ポイントの目標とエピック宝箱の目標 +{0}%"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "このサイクルの引き上げ目標: {0}"

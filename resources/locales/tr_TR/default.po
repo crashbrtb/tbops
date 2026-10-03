@@ -5303,3 +5303,144 @@ msgstr "İzleme anahtarını X-Monitor-Key başlığında gönderin."
 
 msgid "Between {0} and {1} minutes."
 msgstr "{0} ile {1} dakika arasında."
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "Önceki döngüde hedefi tutturamayan oyuncuların hedefi bu döngüde %{0} artırılır (yukarı yuvarlanır)."
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "Hedef cezası: epik sandık hedefine +%{0}"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "Hedef cezası: sandık puanı hedefine +%{0}"
+
+msgid "Players with a raised goal: {0}"
+msgstr "Hedefi artırılan oyuncular: {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "Hedef cezaları"
+
+msgid "Epic Chest Goal"
+msgstr "Epik sandık hedefi"
+
+msgid "Chest Score Goal"
+msgstr "Sandık puanı hedefi"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "Önceki döngüde hedefi tutturamayan oyuncuların bu döngüde hedefi artırılır. Geçerli bir neden varsa oyuncuyu buradan muaf tutun."
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}: {1} puan, tutturamayanlar için %{2} artırılarak {3} puan."
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "Bir oyuncunun klandaki ilk döngüsü asla tutturulamamış hedef sayılmaz."
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "Yapılandırmada reference_day veya every_how_many_days eksik."
+
+msgid "Players with a raised goal"
+msgstr "Hedefi artırılan oyuncular"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "Bu döngüde kimsenin hedefi artırılmadı."
+
+msgid "Previous cycle (score / goal)"
+msgstr "Önceki döngü (puan / hedef)"
+
+
+msgid "Release"
+msgstr "Muaf tut"
+
+msgid "Released by an administrator"
+msgstr "Bir yönetici tarafından muaf tutulanlar"
+
+msgid "Nobody was released in this cycle."
+msgstr "Bu döngüde kimse muaf tutulmadı."
+
+msgid "Reason"
+msgstr "Neden"
+
+msgid "Released by"
+msgstr "Muaf tutan"
+
+msgid "Not penalized anyway"
+msgstr "Zaten cezalandırılmayacaktı"
+
+msgid "Undo"
+msgstr "Geri al"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "{0} için muafiyet geri alınsın mı? Oyuncu hedefi tutturamadıysa artırılmış hedef yeniden geçerli olur."
+
+msgid "Spared: first cycle in the clan"
+msgstr "Muaf: klandaki ilk döngü"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "Önceki döngüde hedefi tutturamayan yeni üye yok."
+
+msgid "The player could not be released. Please, try again."
+msgstr "Oyuncu muaf tutulamadı. Lütfen tekrar deneyin."
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} bu döngüde hedef cezasından muaf tutuldu."
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "Yalnızca mevcut veya önceki döngünün muafiyetleri geri alınabilir."
+
+msgid "The release of {0} was undone."
+msgstr "{0} için muafiyet geri alındı."
+
+msgid "This player is already released in this cycle."
+msgstr "Bu oyuncu bu döngüde zaten muaf."
+
+msgid "Preview"
+msgstr "Önizleme"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "hedef cezası kapalı, bu yüzden henüz kimse etkilenmiyor. Aşağıdaki listeler şimdi açılsaydı kimlerin etkileneceğini gösterir."
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "Açmak için goal_penalty_enabled değerini 1 (ve yüzdeyi 0'dan büyük) yapın."
+
+msgid "Players who would get a raised goal"
+msgstr "Hedefi artırılacak oyuncular"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "Bu döngüde kimsenin hedefi artırılmazdı."
+
+msgid "Total"
+msgstr "Toplam"
+
+msgid "Epic"
+msgstr "Epik"
+
+msgid "Raised goal"
+msgstr "Artırılmış hedef"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "Cezanın izlediği hedef yapılandırmada 0, bu yüzden kimse onu kaçıramaz."
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "Hedeflerden herhangi birini tutturamamak başarısızlık sayılır ve yalnızca tutturulamayan hedef artırılır."
+
+msgid "This cycle (score / goal)"
+msgstr "Bu döngü (puan / hedef)"
+
+msgid "{0} chest points"
+msgstr "{0} sandık puanı"
+
+msgid "{0} Epic chest points"
+msgstr "{0} epik sandık puanı"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "Bu döngüde artırılmış hedef: {0} (+%{1}), önceki döngüde hedef tutturulamadı"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "Hedef cezası: sandık puanı hedefine ve epik sandık hedefine +%{0}"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "Bu döngüde artırılmış hedef: {0}"

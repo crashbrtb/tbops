@@ -167,14 +167,19 @@ class PlayerCycleSummariesController extends AppController
             ->extract('player_name')
             ->toList();
 
-        // Pivot the data for the view
+        // Pivot the data for the view; playersGoals holds the raised goals of penalized players
         $pivotedData = [];
+        $pivotedGoals = [];
         foreach ($summaries as $summary) {
             $dateKey = $summary->cycle_end_date->toDateString();
             $pivotedData[$summary->player_name][$dateKey] = $summary->total_score;
+            if ($summary->penalty_goal !== null) {
+                $pivotedGoals[$summary->player_name][$dateKey] = (int)$summary->penalty_goal;
+            }
         }
 
         $this->set('playersData', $pivotedData);
+        $this->set('playersGoals', $pivotedGoals);
         $this->set('playerNames', $playerNames);
         $this->set('cycleDates', $cycleEndDates);
 

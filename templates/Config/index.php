@@ -64,11 +64,11 @@ $this->Breadcrumbs->add([
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th style="width: 80px;"><?= $this->Paginator->sort('id', '#') ?></th>
-                        <th style="width: 260px;"><?= $this->Paginator->sort('param', __('Parameter')) ?></th>
-                        <th style="width: 220px;"><?= $this->Paginator->sort('value', __('Value')) ?></th>
-                        <th class="text-wrap"><?= $this->Paginator->sort('description', __('Description')) ?></th>
-                        <th class="actions text-right" style="width: 140px;"><?= __('Actions') ?></th>
+                        <th><?= $this->Paginator->sort('id', '#') ?></th>
+                        <th><?= $this->Paginator->sort('param', __('Parameter')) ?></th>
+                        <th><?= $this->Paginator->sort('value', __('Value')) ?></th>
+                        <th class="text-wrap text-left"><?= $this->Paginator->sort('description', __('Description')) ?></th>
+                        <th class="actions text-right"><?= __('Actions') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,7 +92,7 @@ $this->Breadcrumbs->add([
                                         <?= h($c->value) ?>
                                     </span>
                                 </td>
-                                <td class="text-muted small"><?= h($c->description) ?></td>
+                                <td class="text-muted small text-wrap text-left"><?= h($c->description) ?></td>
                                 <td class="actions text-right">
                                     <?= $this->Html->link(
                                         '<i class="fas fa-eye"></i>',

@@ -5303,3 +5303,144 @@ msgstr "Envoyez la clé de surveillance dans l'en-tête X-Monitor-Key."
 
 msgid "Between {0} and {1} minutes."
 msgstr "Entre {0} et {1} minutes."
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "Les joueurs qui ont manqué l'objectif au cycle précédent ont un objectif relevé de {0} % ce cycle (arrondi au supérieur)."
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "Pénalité d'objectif : +{0} % sur l'objectif de coffres épiques"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "Pénalité d'objectif : +{0} % sur l'objectif de points de coffres"
+
+msgid "Players with a raised goal: {0}"
+msgstr "Joueurs avec un objectif relevé : {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "Pénalités d'objectif"
+
+msgid "Epic Chest Goal"
+msgstr "Objectif de coffres épiques"
+
+msgid "Chest Score Goal"
+msgstr "Objectif de points de coffres"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "Les joueurs qui ont manqué l'objectif au cycle précédent ont un objectif relevé dans celui-ci. Libérez un joueur ici lorsqu'il y a une bonne raison."
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0} : {1} points, relevé de {2} % à {3} points pour les joueurs qui l'ont manqué."
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "Le premier cycle d'un joueur dans le clan ne compte jamais comme un objectif manqué."
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "reference_day ou every_how_many_days est absent de la configuration."
+
+msgid "Players with a raised goal"
+msgstr "Joueurs avec un objectif relevé"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "Personne n'a d'objectif relevé dans ce cycle."
+
+msgid "Previous cycle (score / goal)"
+msgstr "Cycle précédent (points / objectif)"
+
+
+msgid "Release"
+msgstr "Libérer"
+
+msgid "Released by an administrator"
+msgstr "Libérés par un administrateur"
+
+msgid "Nobody was released in this cycle."
+msgstr "Personne n'a été libéré dans ce cycle."
+
+msgid "Reason"
+msgstr "Motif"
+
+msgid "Released by"
+msgstr "Libéré par"
+
+msgid "Not penalized anyway"
+msgstr "N'aurait pas été pénalisé de toute façon"
+
+msgid "Undo"
+msgstr "Annuler"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "Annuler la libération de {0} ? L'objectif relevé s'applique de nouveau si le joueur a manqué l'objectif."
+
+msgid "Spared: first cycle in the clan"
+msgstr "Épargnés : premier cycle dans le clan"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "Aucun nouveau venu n'a manqué l'objectif au cycle précédent."
+
+msgid "The player could not be released. Please, try again."
+msgstr "Le joueur n'a pas pu être libéré. Veuillez réessayer."
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} a été libéré de la pénalité d'objectif pour ce cycle."
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "Seules les libérations du cycle actuel ou précédent peuvent être annulées."
+
+msgid "The release of {0} was undone."
+msgstr "La libération de {0} a été annulée."
+
+msgid "This player is already released in this cycle."
+msgstr "Ce joueur est déjà libéré pour ce cycle."
+
+msgid "Preview"
+msgstr "Aperçu"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "la pénalité d'objectif est désactivée, personne n'est donc encore concerné. Les listes ci-dessous montrent qui le serait si elle était activée maintenant."
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "Mettez goal_penalty_enabled à 1 (et un pourcentage supérieur à 0) pour l'activer."
+
+msgid "Players who would get a raised goal"
+msgstr "Joueurs qui auraient un objectif relevé"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "Personne n'aurait d'objectif relevé dans ce cycle."
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Epic"
+msgstr "Épique"
+
+msgid "Raised goal"
+msgstr "Objectif relevé"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "L'objectif surveillé par la pénalité est à 0 dans la configuration, personne ne peut donc le manquer."
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "Manquer l'un ou l'autre objectif compte comme un échec, et seul l'objectif manqué est relevé."
+
+msgid "This cycle (score / goal)"
+msgstr "Ce cycle (points / objectif)"
+
+msgid "{0} chest points"
+msgstr "{0} points de coffres"
+
+msgid "{0} Epic chest points"
+msgstr "{0} points de coffres épiques"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "Objectif relevé ce cycle : {0} (+{1} %), objectif manqué au cycle précédent"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "Pénalité d'objectif : +{0} % sur l'objectif de points de coffres et l'objectif de coffres épiques"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "Objectif relevé pendant ce cycle : {0}"

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Service\GoalPenaltyService;
 use Cake\ORM\Entity;
 
 /**
@@ -14,6 +15,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenDate $cycle_end_date
  * @property int $total_chests
  * @property int $total_score
+ * @property int $epic_crypt_score
+ * @property int|null $penalty_goal Raised chest score (total) goal carried in this cycle, null when not raised
+ * @property int|null $penalty_epic_goal Raised epic chest goal carried in this cycle, null when not raised
+ * @property string|null $penalty_target Which goals were raised: total, epic or both
  * @property bool $goal_achieved
  * @property bool $fine_due
  * @property bool $fine_paid
@@ -38,10 +43,28 @@ class PlayerCycleSummary extends Entity
         'total_chests' => true,
         'total_score' => true,
         'epic_crypt_score' => true,
+        'penalty_goal' => true,
+        'penalty_epic_goal' => true,
+        'penalty_target' => true,
         'goal_achieved' => true,
         'fine_due' => true,
         'fine_paid' => true,
         'created' => true,
         'modified' => true,
     ];
+
+    /**
+     * The goal this player had in this cycle for the given target: the raised
+     * goal when the goal penalty applied to it, the base goal otherwise.
+     *
+     * @param string $target 'total' or 'epic'.
+     * @param int $baseGoal The configured goal for that target.
+     * @return int
+     */
+    public function goalFor(string $target, int $baseGoal): int
+    {
+        $raised = $this->get(GoalPenaltyService::SUMMARY_COLUMNS[$target] ?? '');
+
+        return $raised !== null ? (int)$raised : $baseGoal;
+    }
 } 

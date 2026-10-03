@@ -5303,3 +5303,144 @@ msgstr "Senden Sie den Überwachungsschlüssel im Header X-Monitor-Key."
 
 msgid "Between {0} and {1} minutes."
 msgstr "Zwischen {0} und {1} Minuten."
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "Spieler, die das Ziel im vorherigen Zyklus verfehlt haben, erhalten in diesem Zyklus ein um {0} % erhöhtes Ziel (aufgerundet)."
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "Zielstrafe: +{0} % auf das Ziel für epische Truhen"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "Zielstrafe: +{0} % auf das Truhenpunkte-Ziel"
+
+msgid "Players with a raised goal: {0}"
+msgstr "Spieler mit erhöhtem Ziel: {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "Zielstrafen"
+
+msgid "Epic Chest Goal"
+msgstr "Ziel für epische Truhen"
+
+msgid "Chest Score Goal"
+msgstr "Truhenpunkte-Ziel"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "Spieler, die das Ziel im vorherigen Zyklus verfehlt haben, haben in diesem Zyklus ein erhöhtes Ziel. Gib einen Spieler hier frei, wenn es einen guten Grund gibt."
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}: {1} Punkte, um {2} % auf {3} Punkte erhöht für Spieler, die es verfehlt haben."
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "Der erste Zyklus eines Spielers im Clan zählt nie als verfehltes Ziel."
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "reference_day oder every_how_many_days fehlt in der Konfiguration."
+
+msgid "Players with a raised goal"
+msgstr "Spieler mit erhöhtem Ziel"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "Niemand hat in diesem Zyklus ein erhöhtes Ziel."
+
+msgid "Previous cycle (score / goal)"
+msgstr "Vorheriger Zyklus (Punkte / Ziel)"
+
+
+msgid "Release"
+msgstr "Freigeben"
+
+msgid "Released by an administrator"
+msgstr "Von einem Administrator freigegeben"
+
+msgid "Nobody was released in this cycle."
+msgstr "In diesem Zyklus wurde niemand freigegeben."
+
+msgid "Reason"
+msgstr "Grund"
+
+msgid "Released by"
+msgstr "Freigegeben von"
+
+msgid "Not penalized anyway"
+msgstr "Wäre ohnehin nicht bestraft worden"
+
+msgid "Undo"
+msgstr "Rückgängig"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "Freigabe von {0} rückgängig machen? Das erhöhte Ziel gilt wieder, wenn der Spieler das Ziel verfehlt hat."
+
+msgid "Spared: first cycle in the clan"
+msgstr "Verschont: erster Zyklus im Clan"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "Kein Neuling hat im vorherigen Zyklus das Ziel verfehlt."
+
+msgid "The player could not be released. Please, try again."
+msgstr "Der Spieler konnte nicht freigegeben werden. Bitte versuche es erneut."
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} wurde in diesem Zyklus von der Zielstrafe befreit."
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "Nur Freigaben des aktuellen oder vorherigen Zyklus können rückgängig gemacht werden."
+
+msgid "The release of {0} was undone."
+msgstr "Die Freigabe von {0} wurde rückgängig gemacht."
+
+msgid "This player is already released in this cycle."
+msgstr "Dieser Spieler ist in diesem Zyklus bereits freigegeben."
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "die Zielstrafe ist aus, daher ist noch niemand betroffen. Die Listen unten zeigen, wen sie träfe, wenn sie jetzt eingeschaltet würde."
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "Setze goal_penalty_enabled auf 1 (und einen Prozentsatz über 0), um sie einzuschalten."
+
+msgid "Players who would get a raised goal"
+msgstr "Spieler, die ein erhöhtes Ziel bekämen"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "In diesem Zyklus hätte niemand ein erhöhtes Ziel."
+
+msgid "Total"
+msgstr "Gesamt"
+
+msgid "Epic"
+msgstr "Episch"
+
+msgid "Raised goal"
+msgstr "Erhöhtes Ziel"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "Das von der Strafe überwachte Ziel steht in der Konfiguration auf 0, also kann es niemand verfehlen."
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "Wer eines der beiden Ziele verfehlt, hat das Ziel verfehlt, und nur das verfehlte Ziel wird erhöht."
+
+msgid "This cycle (score / goal)"
+msgstr "Dieser Zyklus (Punkte / Ziel)"
+
+msgid "{0} chest points"
+msgstr "{0} Truhenpunkte"
+
+msgid "{0} Epic chest points"
+msgstr "{0} Punkte für epische Truhen"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "Erhöhtes Ziel in diesem Zyklus: {0} (+{1} %), Ziel im vorherigen Zyklus verfehlt"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "Zielstrafe: +{0} % auf das Truhenpunkte-Ziel und das Ziel für epische Truhen"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "Erhöhtes Ziel in diesem Zyklus: {0}"

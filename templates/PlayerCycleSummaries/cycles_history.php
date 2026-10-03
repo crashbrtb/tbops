@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var array $playersData
+ * @var array $playersGoals Raised goals of penalized players, by player and cycle end date
  * @var string[] $playerNames
  * @var \Cake\I18n\FrozenDate[] $cycleDates
  * @var int $minimumChestScore
@@ -9,6 +10,7 @@
  */
 
 $minimumChestScore = $minimumChestScore ?? 0;
+$playersGoals = $playersGoals ?? [];
 $scoreColorsConfig = $scoreColorsConfig ?? [];
 
 $transitionStart = (float)($scoreColorsConfig['score_color_transition_start'] ?? 0.0);
@@ -176,7 +178,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                     foreach ($lastFourCycleDates as $date) {
                                         $dateKey = $date->toDateString();
                                         $score = $playersData[$playerName][$dateKey] ?? 0;
-                                        if ($score < $minimumChestScore) {
+                                        if ($score < ($playersGoals[$playerName][$dateKey] ?? $minimumChestScore)) {
                                             $missedGoalCount++;
                                         }
                                     }
@@ -203,7 +205,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                 <?php
                                     $dateKey = $date->toDateString();
                                     $score = $playersData[$playerName][$dateKey] ?? 0;
-                                    $cellColor = $scoreColor($score, (int)$minimumChestScore);
+                                    $cellColor = $scoreColor($score, (int)($playersGoals[$playerName][$dateKey] ?? $minimumChestScore));
                                 ?>
                                 <td style="color: <?= $score > 0 ? h($cellColor) : 'inherit' ?>; font-weight: <?= $score > 0 ? '700' : 'normal' ?>;">
                                     <?= $score > 0 ? $this->Number->format($score) : '-' ?>

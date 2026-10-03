@@ -5303,3 +5303,144 @@ msgstr "请在 X-Monitor-Key 请求头中发送监控密钥。"
 
 msgid "Between {0} and {1} minutes."
 msgstr "介于 {0} 到 {1} 分钟之间。"
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "上一周期未达标的玩家，本周期目标提高 {0}%（向上取整）。"
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "目标惩罚：史诗宝箱目标 +{0}%"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "目标惩罚：宝箱分数目标 +{0}%"
+
+msgid "Players with a raised goal: {0}"
+msgstr "目标被提高的玩家：{0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "目标惩罚"
+
+msgid "Epic Chest Goal"
+msgstr "史诗宝箱目标"
+
+msgid "Chest Score Goal"
+msgstr "宝箱分数目标"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "上一周期未达标的玩家在本周期目标会提高。如有正当理由，可在此豁免玩家。"
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}：{1} 分，未达标的玩家提高 {2}% 至 {3} 分。"
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "玩家在公会的第一个周期从不算作未达标。"
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "配置中缺少 reference_day 或 every_how_many_days。"
+
+msgid "Players with a raised goal"
+msgstr "目标被提高的玩家"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "本周期没有玩家的目标被提高。"
+
+msgid "Previous cycle (score / goal)"
+msgstr "上一周期（分数 / 目标）"
+
+
+msgid "Release"
+msgstr "豁免"
+
+msgid "Released by an administrator"
+msgstr "由管理员豁免"
+
+msgid "Nobody was released in this cycle."
+msgstr "本周期没有玩家被豁免。"
+
+msgid "Reason"
+msgstr "原因"
+
+msgid "Released by"
+msgstr "豁免人"
+
+msgid "Not penalized anyway"
+msgstr "本来也不会受罚"
+
+msgid "Undo"
+msgstr "撤销"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "撤销对 {0} 的豁免？如果该玩家未达标，提高后的目标将重新生效。"
+
+msgid "Spared: first cycle in the clan"
+msgstr "免罚：公会内第一个周期"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "上一周期没有新成员未达标。"
+
+msgid "The player could not be released. Please, try again."
+msgstr "无法豁免该玩家，请重试。"
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} 已在本周期免除目标惩罚。"
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "只能撤销本周期或上一周期的豁免。"
+
+msgid "The release of {0} was undone."
+msgstr "已撤销对 {0} 的豁免。"
+
+msgid "This player is already released in this cycle."
+msgstr "该玩家在本周期已被豁免。"
+
+msgid "Preview"
+msgstr "预览"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "目标惩罚已关闭，因此目前没有玩家受影响。下方列表显示如果现在开启会影响哪些玩家。"
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "将 goal_penalty_enabled 设为 1（并设置大于 0 的百分比）即可开启。"
+
+msgid "Players who would get a raised goal"
+msgstr "目标将被提高的玩家"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "本周期不会有玩家的目标被提高。"
+
+msgid "Total"
+msgstr "总计"
+
+msgid "Epic"
+msgstr "史诗"
+
+msgid "Raised goal"
+msgstr "提高后的目标"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "惩罚所监控的目标在配置中为 0，因此没有人会未达标。"
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "任一目标未达成都算未达标，且只提高未达成的目标。"
+
+msgid "This cycle (score / goal)"
+msgstr "本周期（分数 / 目标）"
+
+msgid "{0} chest points"
+msgstr "{0} 宝箱分"
+
+msgid "{0} Epic chest points"
+msgstr "{0} 史诗宝箱分"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "本周期提高后的目标：{0}（+{1}%），上一周期未达标"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "目标惩罚：宝箱分数目标和史诗宝箱目标 +{0}%"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "该周期提高后的目标：{0}"

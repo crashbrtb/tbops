@@ -251,9 +251,17 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                     <?php foreach ($summariesByCycle[$cycleStartDateString] as $idx => $summary): ?>
                                     <?php
                                     $score = $summary->total_score;
-                                    $scoreCellColor = $scoreColor($score, (int)$minimumChestScore);
+                                    $scoreCellColor = $scoreColor($score, $summary->goalFor('total', (int)$minimumChestScore));
                                     $epicScore = $summary->epic_crypt_score ?? 0;
-                                    $epicCellColor = $scoreColor($epicScore, (int)$minimumEpicChestScore);
+                                    $epicCellColor = $scoreColor($epicScore, $summary->goalFor('epic', (int)$minimumEpicChestScore));
+                                    $raisedParts = [];
+                                    if ($summary->penalty_goal !== null) {
+                                        $raisedParts[] = __('{0} chest points', $this->Number->format($summary->penalty_goal));
+                                    }
+                                    if ($summary->penalty_epic_goal !== null) {
+                                        $raisedParts[] = __('{0} Epic chest points', $this->Number->format($summary->penalty_epic_goal));
+                                    }
+                                    $penaltyTitle = $raisedParts ? __('Raised goal in this cycle: {0}', implode(' + ', $raisedParts)) : null;
                                     ?>
                                     <tr>
                                         <td><span class="top-rank"><?= $idx + 1 ?></span></td>
@@ -261,8 +269,11 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                             <?= $this->Html->link(
                                                 $summary->player_name,
                                                 ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($summary->player_name)],
-                                                ['class' => 'player-link']
+                                                ['class' => 'player-link', 'title' => $penaltyTitle ?? $summary->player_name]
                                             ) ?>
+                                            <?php if ($penaltyTitle !== null): ?>
+                                                <i class="fas fa-arrow-up" style="color: #d97706; cursor: help;" title="<?= h($penaltyTitle) ?>"></i>
+                                            <?php endif; ?>
                                         </td>
                                         <td><?= $this->Number->format($summary->total_chests) ?></td>
                                         <td style="color: <?= h($scoreCellColor) ?>; font-weight: 700;">

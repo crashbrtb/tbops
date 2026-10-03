@@ -5311,3 +5311,144 @@ msgstr ""
 
 msgid "Between {0} and {1} minutes."
 msgstr ""
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr ""
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr ""
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr ""
+
+msgid "Players with a raised goal: {0}"
+msgstr ""
+
+
+
+msgid "Goal Penalties"
+msgstr ""
+
+msgid "Epic Chest Goal"
+msgstr ""
+
+msgid "Chest Score Goal"
+msgstr ""
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr ""
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr ""
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr ""
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr ""
+
+msgid "Players with a raised goal"
+msgstr ""
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr ""
+
+msgid "Previous cycle (score / goal)"
+msgstr ""
+
+
+msgid "Release"
+msgstr ""
+
+msgid "Released by an administrator"
+msgstr ""
+
+msgid "Nobody was released in this cycle."
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Released by"
+msgstr ""
+
+msgid "Not penalized anyway"
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr ""
+
+msgid "Spared: first cycle in the clan"
+msgstr ""
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr ""
+
+msgid "The player could not be released. Please, try again."
+msgstr ""
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr ""
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr ""
+
+msgid "The release of {0} was undone."
+msgstr ""
+
+msgid "This player is already released in this cycle."
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr ""
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr ""
+
+msgid "Players who would get a raised goal"
+msgstr ""
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Epic"
+msgstr ""
+
+msgid "Raised goal"
+msgstr ""
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr ""
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr ""
+
+msgid "This cycle (score / goal)"
+msgstr ""
+
+msgid "{0} chest points"
+msgstr ""
+
+msgid "{0} Epic chest points"
+msgstr ""
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr ""
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr ""
+
+msgid "Raised goal in this cycle: {0}"
+msgstr ""

@@ -204,6 +204,12 @@ class MaintenanceScheduleService
 
         $unavailable = $this->unavailableReason();
         if ($unavailable !== null) {
+            // Nothing can be written to a crontab that does not exist here, but the
+            // choice itself is still worth keeping: it is what the manual-install
+            // block below is built from, and an administrator who just changed the
+            // time expects to see it reflected there even though the "Instalar
+            // cron" button could not act on it.
+            $this->saveTimes($times);
             throw new CrontabException($unavailable);
         }
 
