@@ -5303,3 +5303,144 @@ msgstr "모니터링 키를 X-Monitor-Key 헤더로 보내세요."
 
 msgid "Between {0} and {1} minutes."
 msgstr "{0}분에서 {1}분 사이여야 합니다."
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "이전 주기에 목표를 달성하지 못한 플레이어는 이번 주기 목표가 {0}% 상향됩니다 (올림)."
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "목표 페널티: 에픽 상자 목표 +{0}%"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "목표 페널티: 상자 점수 목표 +{0}%"
+
+msgid "Players with a raised goal: {0}"
+msgstr "목표가 상향된 플레이어: {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "목표 페널티"
+
+msgid "Epic Chest Goal"
+msgstr "에픽 상자 목표"
+
+msgid "Chest Score Goal"
+msgstr "상자 점수 목표"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "이전 주기에 목표를 달성하지 못한 플레이어는 이번 주기 목표가 상향됩니다. 정당한 이유가 있으면 여기서 플레이어를 면제하세요."
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}: {1}점, 미달한 플레이어는 {2}% 상향되어 {3}점."
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "클랜에서의 첫 주기는 목표 미달로 계산되지 않습니다."
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "설정에 reference_day 또는 every_how_many_days가 없습니다."
+
+msgid "Players with a raised goal"
+msgstr "목표가 상향된 플레이어"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "이번 주기에 목표가 상향된 플레이어가 없습니다."
+
+msgid "Previous cycle (score / goal)"
+msgstr "이전 주기 (점수 / 목표)"
+
+
+msgid "Release"
+msgstr "면제"
+
+msgid "Released by an administrator"
+msgstr "관리자가 면제함"
+
+msgid "Nobody was released in this cycle."
+msgstr "이번 주기에 면제된 플레이어가 없습니다."
+
+msgid "Reason"
+msgstr "사유"
+
+msgid "Released by"
+msgstr "면제한 사람"
+
+msgid "Not penalized anyway"
+msgstr "어차피 페널티 대상 아님"
+
+msgid "Undo"
+msgstr "취소"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "{0}의 면제를 취소할까요? 플레이어가 목표에 미달했다면 상향 목표가 다시 적용됩니다."
+
+msgid "Spared: first cycle in the clan"
+msgstr "면제: 클랜 첫 주기"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "이전 주기에 목표에 미달한 신규 멤버가 없습니다."
+
+msgid "The player could not be released. Please, try again."
+msgstr "플레이어를 면제할 수 없습니다. 다시 시도하세요."
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0}은(는) 이번 주기 목표 페널티에서 면제되었습니다."
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "현재 또는 이전 주기의 면제만 취소할 수 있습니다."
+
+msgid "The release of {0} was undone."
+msgstr "{0}의 면제가 취소되었습니다."
+
+msgid "This player is already released in this cycle."
+msgstr "이 플레이어는 이번 주기에 이미 면제되었습니다."
+
+msgid "Preview"
+msgstr "미리보기"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "목표 페널티가 꺼져 있어 아직 아무도 영향을 받지 않습니다. 아래 목록은 지금 켜면 영향을 받을 플레이어를 보여줍니다."
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "켜려면 goal_penalty_enabled를 1로(그리고 비율을 0보다 크게) 설정하세요."
+
+msgid "Players who would get a raised goal"
+msgstr "목표가 상향될 플레이어"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "이번 주기에 목표가 상향될 플레이어가 없습니다."
+
+msgid "Total"
+msgstr "총계"
+
+msgid "Epic"
+msgstr "에픽"
+
+msgid "Raised goal"
+msgstr "상향 목표"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "페널티가 감시하는 목표가 설정에서 0이므로 아무도 미달할 수 없습니다."
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "두 목표 중 하나라도 미달하면 미달로 간주되며, 미달한 목표만 상향됩니다."
+
+msgid "This cycle (score / goal)"
+msgstr "이번 주기 (점수 / 목표)"
+
+msgid "{0} chest points"
+msgstr "상자 {0}점"
+
+msgid "{0} Epic chest points"
+msgstr "에픽 상자 {0}점"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "이번 주기 상향 목표: {0} (+{1}%), 이전 주기 목표 미달"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "목표 페널티: 상자 점수 목표와 에픽 상자 목표 +{0}%"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "이 주기의 상향 목표: {0}"

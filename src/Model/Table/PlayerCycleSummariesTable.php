@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Service\GoalPenaltyService;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -128,7 +129,8 @@ class PlayerCycleSummariesTable extends Table
      *
      * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle period.
      * @param \Cake\I18n\FrozenTime $cycleEnd End of the cycle period.
-     * @param int $minimumRequiredScore Minimum score to consider goal achieved.
+     * @param int $minimumRequiredScore Minimum score to consider goal achieved; a player under the
+     *   goal penalty on the total score is judged by the raised goal instead.
      * @param bool $forceReprocess If true, deletes existing summaries for this cycle before reprocessing.
      * @return array{processed: int, errors: int, skipped: bool} Result of the processing.
      */
@@ -152,7 +154,58 @@ class PlayerCycleSummariesTable extends Table
             $this->deleteAll(['cycle_start_date' => $cycleStart->format('Y-m-d')]);
         }
 
-        // Fetch collected chests data for the cycle period
+        $playerSummaries = $this->scoresForDateRange($cycleStart, $cycleEnd);
+
+        // Players who missed the goal in the previous cycle carry a raised one in this cycle
+        $penaltyGoals = (new GoalPenaltyService())->goalsForCycle($cycleStart);
+
+        // Save summaries
+        $processedCount = 0;
+        $errorCount = 0;
+
+        foreach ($playerSummaries as $playerName => $data) {
+            $raised = $penaltyGoals[$playerName] ?? [];
+            $requiredScore = $raised[GoalPenaltyService::TARGET_TOTAL] ?? $minimumRequiredScore;
+            $goalAchieved = $data['total_score'] >= $requiredScore;
+            $fineDue = !$goalAchieved;
+
+            $summary = $this->newEntity([
+                'player_name' => $playerName,
+                'cycle_start_date' => $cycleStart->format('Y-m-d'),
+                'cycle_end_date' => $cycleEnd->format('Y-m-d'),
+                'total_chests' => $data['total_chests'],
+                'total_score' => $data['total_score'],
+                'epic_crypt_score' => $data['epic_crypt_score'],
+                'penalty_goal' => $raised[GoalPenaltyService::TARGET_TOTAL] ?? null,
+                'penalty_epic_goal' => $raised[GoalPenaltyService::TARGET_EPIC] ?? null,
+                'penalty_target' => GoalPenaltyService::targetLabel($raised),
+                'goal_achieved' => $goalAchieved,
+                'fine_due' => $fineDue,
+                'fine_paid' => false,
+            ]);
+
+            if ($this->save($summary)) {
+                $processedCount++;
+            } else {
+                $errorCount++;
+            }
+        }
+
+        return ['processed' => $processedCount, 'errors' => $errorCount, 'skipped' => false];
+    }
+
+    /**
+     * Chest totals and scores per player for a date range, read from collected_chests.
+     *
+     * The epic crypt score adds up chests whose source contains "epic", the
+     * same rule the score page uses.
+     *
+     * @param \Cake\I18n\FrozenTime $cycleStart Start of the period.
+     * @param \Cake\I18n\FrozenTime $cycleEnd End of the period.
+     * @return array<string, array{total_chests: int, total_score: int, epic_crypt_score: int}>
+     */
+    public function scoresForDateRange(FrozenTime $cycleStart, FrozenTime $cycleEnd): array
+    {
         $collectedChestsTable = TableRegistry::getTableLocator()->get('CollectedChests');
         $standardChestsTable = TableRegistry::getTableLocator()->get('StandardChests');
 
@@ -179,7 +232,7 @@ class PlayerCycleSummariesTable extends Table
         foreach ($collectedChestsData as $chest) {
             $playerName = $chest->player;
             $sourceName = $chest->source;
-            $chestCount = $chest->count;
+            $chestCount = (int)$chest->count;
 
             if (!isset($playerSummaries[$playerName])) {
                 $playerSummaries[$playerName] = [
@@ -202,33 +255,6 @@ class PlayerCycleSummariesTable extends Table
             }
         }
 
-        // Save summaries
-        $processedCount = 0;
-        $errorCount = 0;
-
-        foreach ($playerSummaries as $playerName => $data) {
-            $goalAchieved = $data['total_score'] >= $minimumRequiredScore;
-            $fineDue = !$goalAchieved;
-
-            $summary = $this->newEntity([
-                'player_name' => $playerName,
-                'cycle_start_date' => $cycleStart->format('Y-m-d'),
-                'cycle_end_date' => $cycleEnd->format('Y-m-d'),
-                'total_chests' => $data['total_chests'],
-                'total_score' => $data['total_score'],
-                'epic_crypt_score' => $data['epic_crypt_score'],
-                'goal_achieved' => $goalAchieved,
-                'fine_due' => $fineDue,
-                'fine_paid' => false,
-            ]);
-
-            if ($this->save($summary)) {
-                $processedCount++;
-            } else {
-                $errorCount++;
-            }
-        }
-
-        return ['processed' => $processedCount, 'errors' => $errorCount, 'skipped' => false];
+        return $playerSummaries;
     }
 } 

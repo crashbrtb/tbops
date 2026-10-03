@@ -139,7 +139,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                     <?php foreach ($playerHistory as $summary): ?>
                     <?php
                         $score = $summary->total_score;
-                        $cellColor = $scoreColor($score, (int)$minimumChestScore);
+                        $cellColor = $scoreColor($score, $summary->goalFor('total', (int)$minimumChestScore));
                     ?>
                     <tr>
                         <td><?= h($summary->cycle_end_date->i18nFormat('dd/MM/yyyy')) ?></td>

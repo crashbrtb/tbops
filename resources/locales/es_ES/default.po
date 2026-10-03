@@ -5303,3 +5303,144 @@ msgstr "Envía la clave de monitorización en la cabecera X-Monitor-Key."
 
 msgid "Between {0} and {1} minutes."
 msgstr "Entre {0} y {1} minutos."
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "Los jugadores que no alcanzaron la meta en el ciclo anterior tienen la meta aumentada un {0}% en este ciclo (redondeada hacia arriba)."
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "Penalización de meta: +{0}% en la meta de cofres épicos"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "Penalización de meta: +{0}% en la meta de puntos de cofres"
+
+msgid "Players with a raised goal: {0}"
+msgstr "Jugadores con meta aumentada: {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "Penalizaciones de meta"
+
+msgid "Epic Chest Goal"
+msgstr "Meta de cofres épicos"
+
+msgid "Chest Score Goal"
+msgstr "Meta de puntos de cofres"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "Los jugadores que no alcanzaron la meta en el ciclo anterior tienen una meta aumentada en este. Libera a un jugador aquí cuando haya un buen motivo."
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}: {1} puntos, aumentada un {2}% hasta {3} puntos para quien no la alcanzó."
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "El primer ciclo de un jugador en el clan nunca cuenta como meta no alcanzada."
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "Falta reference_day o every_how_many_days en la configuración."
+
+msgid "Players with a raised goal"
+msgstr "Jugadores con meta aumentada"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "Nadie tiene la meta aumentada en este ciclo."
+
+msgid "Previous cycle (score / goal)"
+msgstr "Ciclo anterior (puntos / meta)"
+
+
+msgid "Release"
+msgstr "Liberar"
+
+msgid "Released by an administrator"
+msgstr "Liberados por un administrador"
+
+msgid "Nobody was released in this cycle."
+msgstr "Nadie fue liberado en este ciclo."
+
+msgid "Reason"
+msgstr "Motivo"
+
+msgid "Released by"
+msgstr "Liberado por"
+
+msgid "Not penalized anyway"
+msgstr "No sería penalizado de todos modos"
+
+msgid "Undo"
+msgstr "Deshacer"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "¿Deshacer la liberación de {0}? La meta aumentada vuelve a aplicarse si el jugador no alcanzó la meta."
+
+msgid "Spared: first cycle in the clan"
+msgstr "Exentos: primer ciclo en el clan"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "Ningún recién llegado dejó de alcanzar la meta en el ciclo anterior."
+
+msgid "The player could not be released. Please, try again."
+msgstr "No se pudo liberar al jugador. Inténtalo de nuevo."
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} fue liberado de la penalización de meta en este ciclo."
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "Solo se pueden deshacer liberaciones del ciclo actual o del anterior."
+
+msgid "The release of {0} was undone."
+msgstr "Se deshizo la liberación de {0}."
+
+msgid "This player is already released in this cycle."
+msgstr "Este jugador ya está liberado en este ciclo."
+
+msgid "Preview"
+msgstr "Vista previa"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "la penalización de meta está desactivada, así que todavía no afecta a nadie. Las listas de abajo muestran a quién afectaría si se activara ahora."
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "Pon goal_penalty_enabled en 1 (y un porcentaje mayor que 0) para activarla."
+
+msgid "Players who would get a raised goal"
+msgstr "Jugadores que tendrían la meta aumentada"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "Nadie tendría la meta aumentada en este ciclo."
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Epic"
+msgstr "Épico"
+
+msgid "Raised goal"
+msgstr "Meta aumentada"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "La meta que vigila la penalización está en 0 en la configuración, así que nadie puede dejar de alcanzarla."
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "No alcanzar cualquiera de las metas cuenta como fallo, y solo se aumenta la meta no alcanzada."
+
+msgid "This cycle (score / goal)"
+msgstr "Este ciclo (puntos / meta)"
+
+msgid "{0} chest points"
+msgstr "{0} puntos de cofres"
+
+msgid "{0} Epic chest points"
+msgstr "{0} puntos de cofres épicos"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "Meta aumentada en este ciclo: {0} (+{1}%), meta no alcanzada en el ciclo anterior"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "Penalización de meta: +{0}% en la meta de puntos de cofres y en la meta de cofres épicos"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "Meta aumentada en este ciclo: {0}"

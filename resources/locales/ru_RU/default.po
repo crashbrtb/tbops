@@ -5303,3 +5303,144 @@ msgstr "Отправьте ключ мониторинга в заголовке
 
 msgid "Between {0} and {1} minutes."
 msgstr "От {0} до {1} минут."
+
+
+
+msgid "Players who missed the goal in the previous cycle have it raised by {0}% in this cycle (rounded up)."
+msgstr "Игрокам, не выполнившим цель в прошлом цикле, цель в этом цикле повышается на {0}% (с округлением вверх)."
+
+msgid "Goal penalty: +{0}% on the Epic Chest Goal"
+msgstr "Штраф за цель: +{0}% к цели по эпическим сундукам"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal"
+msgstr "Штраф за цель: +{0}% к цели по очкам сундуков"
+
+msgid "Players with a raised goal: {0}"
+msgstr "Игроков с повышенной целью: {0}"
+
+
+
+msgid "Goal Penalties"
+msgstr "Штрафы за цель"
+
+msgid "Epic Chest Goal"
+msgstr "Цель по эпическим сундукам"
+
+msgid "Chest Score Goal"
+msgstr "Цель по очкам сундуков"
+
+msgid "Players who missed the goal in the previous cycle carry a raised goal in this one. Release a player here when there is a good reason."
+msgstr "У игроков, не выполнивших цель в прошлом цикле, в этом цикле цель повышена. Освободите игрока здесь, если есть уважительная причина."
+
+
+msgid "{0}: {1} points, raised by {2}% to {3} points for players who missed it."
+msgstr "{0}: {1} очков, повышается на {2}% до {3} очков для не выполнивших её."
+
+msgid "The first cycle of a player in the clan never counts as a miss."
+msgstr "Первый цикл игрока в клане никогда не считается невыполнением цели."
+
+msgid "reference_day or every_how_many_days is missing in the configs."
+msgstr "В настройках отсутствует reference_day или every_how_many_days."
+
+msgid "Players with a raised goal"
+msgstr "Игроки с повышенной целью"
+
+msgid "Nobody carries a raised goal in this cycle."
+msgstr "В этом цикле ни у кого нет повышенной цели."
+
+msgid "Previous cycle (score / goal)"
+msgstr "Прошлый цикл (очки / цель)"
+
+
+msgid "Release"
+msgstr "Освободить"
+
+msgid "Released by an administrator"
+msgstr "Освобождены администратором"
+
+msgid "Nobody was released in this cycle."
+msgstr "В этом цикле никто не освобождён."
+
+msgid "Reason"
+msgstr "Причина"
+
+msgid "Released by"
+msgstr "Освободил"
+
+msgid "Not penalized anyway"
+msgstr "Не был бы оштрафован в любом случае"
+
+msgid "Undo"
+msgstr "Отменить"
+
+msgid "Undo the release of {0}? The raised goal applies again if the player missed the goal."
+msgstr "Отменить освобождение {0}? Повышенная цель снова действует, если игрок не выполнил цель."
+
+msgid "Spared: first cycle in the clan"
+msgstr "Пощажены: первый цикл в клане"
+
+msgid "No newcomer missed the goal in the previous cycle."
+msgstr "Ни один новичок не провалил цель в прошлом цикле."
+
+msgid "The player could not be released. Please, try again."
+msgstr "Не удалось освободить игрока. Попробуйте ещё раз."
+
+msgid "{0} was released from the goal penalty in this cycle."
+msgstr "{0} освобождён от штрафа за цель в этом цикле."
+
+msgid "Only releases of the current or the previous cycle can be undone."
+msgstr "Отменить можно только освобождения текущего или прошлого цикла."
+
+msgid "The release of {0} was undone."
+msgstr "Освобождение {0} отменено."
+
+msgid "This player is already released in this cycle."
+msgstr "Этот игрок уже освобождён в этом цикле."
+
+msgid "Preview"
+msgstr "Предпросмотр"
+
+msgid "the goal penalty is off, so nobody is affected yet. The lists below show who would be if it were turned on now."
+msgstr "штраф за цель выключен, поэтому пока никто не затронут. Списки ниже показывают, кого бы он затронул, если включить его сейчас."
+
+msgid "Set goal_penalty_enabled to 1 (and a percentage above 0) to turn it on."
+msgstr "Установите goal_penalty_enabled в 1 (и процент больше 0), чтобы включить его."
+
+msgid "Players who would get a raised goal"
+msgstr "Игроки, которым повысили бы цель"
+
+msgid "Nobody would carry a raised goal in this cycle."
+msgstr "В этом цикле никому не повысили бы цель."
+
+msgid "Total"
+msgstr "Всего"
+
+msgid "Epic"
+msgstr "Эпические"
+
+msgid "Raised goal"
+msgstr "Повышенная цель"
+
+msgid "The goal the penalty watches is 0 in the configs, so nobody can miss it."
+msgstr "Цель, за которой следит штраф, равна 0 в настройках, поэтому её никто не может провалить."
+
+msgid "Missing either goal is a miss, and only the goal that was missed is raised."
+msgstr "Невыполнение любой из целей считается провалом, и повышается только невыполненная цель."
+
+msgid "This cycle (score / goal)"
+msgstr "Этот цикл (очки / цель)"
+
+msgid "{0} chest points"
+msgstr "{0} очков сундуков"
+
+msgid "{0} Epic chest points"
+msgstr "{0} очков эпических сундуков"
+
+msgid "Raised goal this cycle: {0} (+{1}%), goal missed last cycle"
+msgstr "Повышенная цель в этом цикле: {0} (+{1}%), цель не выполнена в прошлом цикле"
+
+msgid "Goal penalty: +{0}% on the Chest Score Goal and the Epic Chest Goal"
+msgstr "Штраф за цель: +{0}% к цели по очкам сундуков и к цели по эпическим сундукам"
+
+msgid "Raised goal in this cycle: {0}"
+msgstr "Повышенная цель в этом цикле: {0}"

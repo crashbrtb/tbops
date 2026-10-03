@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace App\Controller;
+use App\Service\GoalPenaltyService;
 use Cake\Http\Response;
 use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
@@ -288,6 +289,11 @@ class CollectedChestsController extends AppController
             'end' => $cycleEnd->format('Y-m-d H:i:s'),
         ];
 
+        // Penalidade de meta: quem não bateu a meta no ciclo anterior tem meta maior neste
+        $goalPenalty = new GoalPenaltyService();
+        $goalPenaltySettings = $goalPenalty->settings();
+        $penaltyGoals = $goalPenalty->goalsForCycle($cycleStart);
+
         // Buscar a data/hora da linha mais recente da tabela CollectedChests
         $lastUpdate = $collectedChestsTable->find()
             ->order(['collected_at' => 'DESC'])
@@ -318,7 +324,9 @@ class CollectedChestsController extends AppController
             'chestScores',
             'chestDisplayNames',
             'scoreColorsConfig',
-            'epicMonsterDetails'
+            'epicMonsterDetails',
+            'goalPenaltySettings',
+            'penaltyGoals'
         ));
 
     }

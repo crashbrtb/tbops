@@ -100,6 +100,9 @@ if ($isAdmin):
                 <li>
                     <?= $this->Html->link(__('Summary last cycles'), ['controller' => 'PlayerCycleSummaries', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
+                <li>
+                    <?= $this->Html->link(__('Goal Penalties'), ['controller' => 'GoalPenalties', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                </li>
             </ul>
         </li>
         <?php if ($bankFunctionEnabled): ?>
