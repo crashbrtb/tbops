@@ -128,6 +128,23 @@ class CollectedChestsController extends AppController
         return $this->render('config_missing')->withStatus(503);
     }
 
+    /**
+     * Key under which two spellings of a player name are the same player.
+     *
+     * Mirrors the accent- and case-insensitive collation of the `player`
+     * columns, which PHP array keys do not follow.
+     *
+     * @param string $name Player name as stored.
+     * @return string
+     */
+    private function playerKey(string $name): string
+    {
+        $decomposed = \Normalizer::normalize($name, \Normalizer::FORM_D);
+        $folded = preg_replace('/\p{Mn}+/u', '', $decomposed === false ? $name : $decomposed);
+
+        return mb_strtolower(rtrim($folded ?? $name));
+    }
+
     public function score()
     {
 
@@ -219,6 +236,17 @@ class CollectedChestsController extends AppController
             $chestDisplayNames[$row->source] = $row->display_name;
         }
 
+        // O banco compara nomes sem diferenciar acento nem caixa ("EOMER" = "ÉOMER"), então o
+        // GROUP BY junta as grafias mas devolve qualquer uma delas em cada grupo; o PHP não.
+        // Uma grafia por jogador: a cadastrada em Members quando existir, senão a primeira vista.
+        $playerSpellings = [];
+        foreach (TableRegistry::getTableLocator()->get('Members')->find()->select(['player'])->all() as $member) {
+            $playerSpellings[$this->playerKey((string)$member->player)] ??= (string)$member->player;
+        }
+        $canonicalPlayer = function (string $name) use (&$playerSpellings): string {
+            return $playerSpellings[$this->playerKey($name)] ??= $name;
+        };
+
         // Identificar sources de Epic Monster (monster = 1) e buscar detalhes individuais
         $epicMonsterSources = [];
         foreach ($chestScores as $src => $chestData) {
@@ -240,7 +268,7 @@ class CollectedChestsController extends AppController
                 ->toArray();
 
             foreach ($rawEpicDetails as $row) {
-                $epicMonsterDetails[$row->player][$row->source][] = $row->collected_at->format('d/m/Y H:i');
+                $epicMonsterDetails[$canonicalPlayer((string)$row->player)][$row->source][] = $row->collected_at->format('d/m/Y H:i');
             }
         }
 
@@ -254,7 +282,7 @@ class CollectedChestsController extends AppController
 
         // Processar os dados dos baús coletados
         foreach ($collectedChestsData as $data) {
-            $player = $data->player;
+            $player = $canonicalPlayer((string)$data->player);
             $source = $data->source;
             $count = $data->count;
 
@@ -262,7 +290,7 @@ class CollectedChestsController extends AppController
                 $playerChestCounts[$player] = [];
                 $playerFinalScores[$player] = 0;
             }
-            $playerChestCounts[$player][$source] = $count;
+            $playerChestCounts[$player][$source] = ($playerChestCounts[$player][$source] ?? 0) + $count;
 
             if (isset($chestScores[$source])) {
                 $playerFinalScores[$player] += $chestScores[$source]->score * $count;
@@ -305,7 +333,10 @@ class CollectedChestsController extends AppController
         // Penalidade de meta: quem não bateu a meta no ciclo anterior tem meta maior neste
         $goalPenalty = new GoalPenaltyService($chestGoals);
         $goalPenaltySettings = $goalPenalty->settings();
-        $penaltyGoals = $goalPenalty->goalsForCycle($cycleStart);
+        $penaltyGoals = [];
+        foreach ($goalPenalty->goalsForCycle($cycleStart) as $player => $raised) {
+            $penaltyGoals[$canonicalPlayer((string)$player)] = $raised;
+        }
 
         // Buscar a data/hora da linha mais recente da tabela CollectedChests
         $lastUpdate = $collectedChestsTable->find()
@@ -349,6 +380,62 @@ class CollectedChestsController extends AppController
     }
 
     /**
+     * Collection times of the chests one player took from one source in a cycle.
+     *
+     * Feeds the popup opened from the Chest Source column of the score
+     * breakdown. Public like the score page itself, and answers JSON.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function chestTimes(): Response
+    {
+        $this->request->allowMethod(['get']);
+
+        $player = $this->request->getQuery('player');
+        $source = $this->request->getQuery('source');
+        $chests = [];
+
+        $configsTable = TableRegistry::getTableLocator()->get('Config');
+        $config = $configsTable->find('list', keyField: 'param', valueField: 'value')
+            ->where(['param IN' => ['reference_day', 'every_how_many_days']])
+            ->toArray();
+        $cycleDuration = (int)($config['every_how_many_days'] ?? 0);
+
+        if (is_string($player) && $player !== '' && is_string($source) && $source !== ''
+            && !empty($config['reference_day']) && $cycleDuration > 0
+        ) {
+            // Mesma janela de ciclo calculada em score()
+            $referenceDay = new FrozenTime($config['reference_day']);
+            $currentCycleOffset = (int)floor($referenceDay->diffInDays(FrozenTime::now()) / $cycleDuration);
+            $targetCycleOffset = $currentCycleOffset - (int)$this->request->getQuery('cycle', 0);
+            $cycleStart = $referenceDay->addDays($targetCycleOffset * $cycleDuration);
+            $cycleEnd = $cycleStart->addDays($cycleDuration)->sub(new \DateInterval('PT1S'));
+
+            $rows = $this->CollectedChests->find()
+                ->select(['name', 'collected_at'])
+                ->where([
+                    'player' => $player,
+                    'source' => $source,
+                    'collected_at >=' => $cycleStart,
+                    'collected_at <=' => $cycleEnd,
+                ])
+                ->order(['collected_at' => 'DESC', 'id' => 'DESC'])
+                ->all();
+
+            foreach ($rows as $row) {
+                $chests[] = [
+                    'name' => (string)$row->name,
+                    'collected_at' => $row->collected_at->format('d/m/Y H:i:s'),
+                ];
+            }
+        }
+
+        return $this->response
+            ->withType('application/json')
+            ->withStringBody((string)json_encode(['chests' => $chests], JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
      * New score layout with top blocks + full ranking table.
      *
      * Reuses the same data preparation from score() and renders scorenew.php.
@@ -366,11 +453,13 @@ class CollectedChestsController extends AppController
         $collectedChestsTable = $this->CollectedChests; // Ou TableRegistry::getTableLocator()->get('CollectedChests');
         $membersTable = TableRegistry::getTableLocator()->get('Members'); // Adicionar MembersTable
 
+        // A coluna compara sem diferenciar acento nem caixa: agrupar também pela forma binária
+        // lista cada grafia ("EOMER" e "ÉOMER"), para que possam ser mescladas entre si.
         $uniquePlayersQuery = $collectedChestsTable->find()
             ->select(['player'])
-            ->distinct(['player'])
+            ->group(['player', 'BINARY player'])
             ->order(['player' => 'ASC']);
-        
+
         $playerList = $uniquePlayersQuery->all()->combine('player', 'player')->toArray();
 
         if ($this->request->is('post')) {
@@ -407,7 +496,12 @@ class CollectedChestsController extends AppController
                         }
 
                         // Excluir o jogador incorreto da tabela Members
-                        $incorrectPlayerEntity = $membersTable->find()->where(['player' => $incorrectPlayer])->first();
+                        // Comparação exata: a do banco casaria "EOMER" com o membro "ÉOMER" e o excluiria
+                        $incorrectPlayerEntity = $membersTable->find()
+                            ->where(['player' => $incorrectPlayer])
+                            ->all()
+                            ->filter(fn ($member) => $member->player === $incorrectPlayer)
+                            ->first();
                         if ($incorrectPlayerEntity) {
                             if ($membersTable->delete($incorrectPlayerEntity)) {
                                 $this->Flash->success(__('Player "{0}" was successfully deleted from the members list.', $incorrectPlayer));
@@ -422,7 +516,7 @@ class CollectedChestsController extends AppController
                          // Atualizar a lista de jogadores após a mesclagem
                         $playerList = $collectedChestsTable->find()
                                             ->select(['player'])
-                                            ->distinct(['player'])
+                                            ->group(['player', 'BINARY player'])
                                             ->order(['player' => 'ASC'])
                                             ->all()
                                             ->combine('player', 'player')
