@@ -195,6 +195,7 @@ foreach ($playersData as $p) {
             $isMonster = !empty($chestScores[$src]->monster);
             $nonZeroChests[] = [
                 'source' => $chestName($src),
+                'source_key' => (string)$src,
                 'count' => $cnt,
                 'score_each' => $singleScore,
                 'total_points' => $cnt * $singleScore,
@@ -931,6 +932,25 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
 
     .em-detail-table tbody tr:hover {
         background: var(--surface-hover);
+    }
+
+    /* Chest source link in the breakdown, and the way back from its time list */
+    .chest-source-link,
+    .chest-times-back {
+        color: var(--link);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .chest-source-link:hover,
+    .chest-times-back:hover {
+        text-decoration: underline;
+    }
+
+    .chest-times-back {
+        display: inline-block;
+        margin-bottom: 12px;
+        font-size: 0.86rem;
     }
 
     .em-no-data {
@@ -1694,6 +1714,8 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
 var epicMonsterData = <?= json_encode($epicMonsterPopupData, JSON_UNESCAPED_UNICODE) ?>;
 var playerAllDetails = <?= json_encode($playerAllDetailsData, JSON_UNESCAPED_UNICODE) ?>;
 var penaltyTooltips = <?= json_encode((object)$penaltyTooltipsData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+var chestTimesUrl = <?= json_encode($this->Url->build(['controller' => 'CollectedChests', 'action' => 'chestTimes'])) ?>;
+var selectedCycle = <?= (int)$selectedCycleOffset ?>;
 
 var currentMode = 'split';
 
@@ -1837,7 +1859,7 @@ function showPlayerSummaryModal(playerName) {
             var c = p.chests[i];
             var icon = c.is_monster ? '<i class="fas fa-dragon text-danger mr-1"></i> ' : '<i class="fas fa-box text-muted mr-1"></i> ';
             html += '<tr>';
-            html += '<td>' + icon + escapeHtml(c.source) + '</td>';
+            html += '<td>' + icon + '<a href="#" class="chest-source-link" data-chest-index="' + i + '" title="<?= __('View details') ?>">' + escapeHtml(c.source) + '</a></td>';
             html += '<td style="text-align:center; font-weight: 600;">' + c.count + '</td>';
             html += '<td style="text-align:center; color: #6b7280;">' + c.score_each + '</td>';
             html += '<td style="text-align:right; font-weight: 700; color: #4f46e5;">' + c.total_points.toLocaleString() + '</td>';
@@ -1847,7 +1869,70 @@ function showPlayerSummaryModal(playerName) {
     }
 
     body.innerHTML = html;
+    var sourceLinks = body.querySelectorAll('.chest-source-link');
+    for (var j = 0; j < sourceLinks.length; j++) {
+        sourceLinks[j].addEventListener('click', function (e) {
+            e.preventDefault();
+            showChestTimes(playerName, p.chests[parseInt(this.getAttribute('data-chest-index'), 10)]);
+        });
+    }
     openModal();
+}
+
+// Collection time of each chest the player took from one source in the selected cycle
+function showChestTimes(playerName, chest) {
+    var title = document.getElementById('appModalTitle');
+    var body = document.getElementById('appModalBody');
+    var backLink = '<a href="#" class="chest-times-back"><i class="fas fa-arrow-left mr-1"></i><?= __('Back') ?></a>';
+    var bindBack = function () {
+        body.querySelector('.chest-times-back').addEventListener('click', function (e) {
+            e.preventDefault();
+            showPlayerSummaryModal(playerName);
+        });
+    };
+
+    title.innerHTML = '<i class="fas fa-clock text-primary mr-2"></i>' + escapeHtml(playerName) + ' — ' + escapeHtml(chest.source);
+    body.innerHTML = backLink + '<div class="em-no-data"><i class="fas fa-spinner fa-spin"></i></div>';
+    bindBack();
+
+    var url = chestTimesUrl
+        + '?player=' + encodeURIComponent(playerName)
+        + '&source=' + encodeURIComponent(chest.source_key)
+        + '&cycle=' + encodeURIComponent(selectedCycle);
+
+    fetch(url, { headers: { 'Accept': 'application/json' } })
+        .then(function (response) {
+            if (!response.ok) throw new Error(response.status);
+            return response.json();
+        })
+        .then(function (data) {
+            var chests = data.chests || [];
+            var html = backLink;
+            if (chests.length === 0) {
+                html += '<div class="em-no-data"><?= __('No scored chests recorded for this player in this cycle.') ?></div>';
+            } else {
+                html += '<table class="em-detail-table">';
+                html += '<thead><tr>';
+                html += '<th style="width: 48px;">#</th>';
+                html += '<th><?= __('Chest') ?></th>';
+                html += '<th style="text-align:right;"><?= __('Collected at') ?> (UTC)</th>';
+                html += '</tr></thead><tbody>';
+                for (var i = 0; i < chests.length; i++) {
+                    html += '<tr>';
+                    html += '<td>' + (chests.length - i) + '</td>';
+                    html += '<td>' + escapeHtml(chests[i].name) + '</td>';
+                    html += '<td style="text-align:right; white-space: nowrap;">' + escapeHtml(chests[i].collected_at) + '</td>';
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+            }
+            body.innerHTML = html;
+            bindBack();
+        })
+        .catch(function () {
+            body.innerHTML = backLink + '<div class="em-no-data"><?= __('Player data not found.') ?></div>';
+            bindBack();
+        });
 }
 
 function openModal() {
