@@ -269,9 +269,23 @@ h1.page-title,
    Tables
    ========================================================================== */
 .table-responsive,
-.ranking-table-wrap {
+.ranking-table-wrap,
+.event-table-wrap,
+.table-wrap {
+    display: block;
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.card,
+.card-body,
+.content-page-wrap {
+    min-width: 0;
+    max-width: 100%;
 }
 
 .table,
