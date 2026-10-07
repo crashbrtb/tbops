@@ -191,7 +191,7 @@ $short = function (float $number): string {
                 ?>
                 <?php foreach ($bonusGrids as $grid) : ?>
                     <h6 class="text-uppercase text-muted small mb-2"><?= h($grid['heading']) ?></h6>
-                    <table class="table table-sm bonus-table mb-3">
+                    <div class="table-responsive"><table class="table table-sm bonus-table mb-3">
                         <thead>
                             <tr>
                                 <th></th>
@@ -214,7 +214,7 @@ $short = function (float $number): string {
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
-                    </table>
+                    </table></div>
                 <?php endforeach; ?>
 
                 <div class="form-group">
