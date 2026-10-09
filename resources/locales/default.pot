@@ -5664,3 +5664,57 @@ msgstr ""
 
 msgid "{0} of {1} player(s) reached it."
 msgstr ""
+
+msgid "Previous goal not reached ({0})"
+msgstr ""
+
+msgid "Manual penalties"
+msgstr ""
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr ""
+
+msgid "Both goals"
+msgstr ""
+
+msgid "Increase (%)"
+msgstr ""
+
+msgid "Reason (required, up to {0} characters)"
+msgstr ""
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr ""
+
+msgid "Added by"
+msgstr ""
+
+msgid "Remove the manual penalty of {0}?"
+msgstr ""
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr ""
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr ""
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr ""
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr ""
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr ""
+
+msgid "The manual penalty of {0} was removed."
+msgstr ""
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr ""
+
+msgid "The reason is required."
+msgstr ""
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr ""

@@ -5657,3 +5657,57 @@ msgstr "目標は報酬に影響しません。"
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "{1} 人中 {0} 人が達成しました。"
+
+msgid "Previous goal not reached ({0})"
+msgstr "前回の目標未達成 ({0})"
+
+msgid "Manual penalties"
+msgstr "手動ペナルティ"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "手動ペナルティは、このサイクルのプレイヤーの目標を指定した割合だけ引き上げます。自動ペナルティがオフでも適用され、すでに自動ペナルティがある場合は加算されます。"
+
+msgid "Both goals"
+msgstr "両方の目標"
+
+msgid "Increase (%)"
+msgstr "引き上げ (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "理由 (必須、{0} 文字まで)"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "このサイクルで手動ペナルティを受けているプレイヤーはいません。"
+
+msgid "Added by"
+msgstr "追加した人"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "{0} の手動ペナルティを削除しますか？"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "手動ペナルティを追加できませんでした。もう一度お試しください。"
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "プレイヤー「{0}」はメンバーにもこのサイクルの宝箱にも見つかりませんでした。"
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "この目標は設定で 0 になっているため、引き上げるものがありません。"
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "{1} に +{0}% の手動ペナルティを追加しました。"
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "削除できるのは現在または前サイクルの手動ペナルティのみです。"
+
+msgid "The manual penalty of {0} was removed."
+msgstr "{0} の手動ペナルティを削除しました。"
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "引き上げは 0 より大きく、{0}% 以下にしてください。"
+
+msgid "The reason is required."
+msgstr "理由は必須です。"
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "このプレイヤーにはこのサイクルの手動ペナルティがすでにあります。"

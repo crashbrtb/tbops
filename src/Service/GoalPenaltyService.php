@@ -37,6 +37,17 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * Players with no chest at all in the previous cycle are not penalized: with
  * no row for them there is no telling a new member from an idle one.
  *
+ * Besides this automatic penalty, an administrator can give a player a manual
+ * one for a cycle (a row in manual_goal_penalties, always with a reason). It
+ * raises the goals it names by its own percentage, whether or not the
+ * automatic penalty is on, and adds to the automatic one when both hit the
+ * same goal: +10% automatic and +5% manual make the base goal +15%. A release
+ * only lifts the automatic penalty; a manual one is removed on its own.
+ *
+ * Every penalty carries a short reason: the manual one is typed by the
+ * administrator, the automatic one says how far the player got in the previous
+ * cycle ("Previous goal not reached (89%)").
+ *
  * The base goals come from ChestGoalService, so with goals by guard level each
  * player's goal is the one of their level, and the raised goal is that goal
  * plus the percentage. The previous cycle is judged by the goal stored in its
@@ -78,6 +89,11 @@ class GoalPenaltyService
      * How many cycles back the live fallback may go when summaries are missing.
      */
     private const MAX_FALLBACK_DEPTH = 1;
+
+    /**
+     * Longest reason a penalty can carry.
+     */
+    public const REASON_MAX_LENGTH = 100;
 
     /**
      * @var array<string, mixed>|null
@@ -246,22 +262,66 @@ class GoalPenaltyService
      * Raised goals for the cycle that starts at $cycleStart.
      *
      * Only penalized players appear in the result, each with the goals that
-     * were raised for them; every other goal is the base one. Empty when the
-     * penalty is off.
+     * were raised for them; every other goal is the base one. With the
+     * automatic penalty off only manual penalties show up.
      *
      * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
      * @return array<string, array<string, int>> Player name => target => raised goal.
      */
     public function goalsForCycle(FrozenTime $cycleStart): array
     {
-        $goals = [];
-        foreach ($this->evaluateCycle($cycleStart) as $player => $row) {
-            if ($row['status'] === self::STATUS_PENALIZED) {
-                $goals[(string)$player] = $row['raised'];
+        return array_map(fn (array $penalty): array => $penalty['goals'], $this->penaltiesForCycle($cycleStart));
+    }
+
+    /**
+     * Every player carrying a raised goal in the cycle that starts at
+     * $cycleStart, automatic and manual penalties together.
+     *
+     * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
+     * @return array<string, array{goals: array<string, int>, percent: float, automatic_reason: ?string, manual_reason: ?string}>
+     *   - `goals`: target => raised goal, only for the goals that were raised;
+     *   - `percent`: the highest increase among those goals;
+     *   - `automatic_reason` / `manual_reason`: why, null when that penalty does not apply.
+     */
+    public function penaltiesForCycle(FrozenTime $cycleStart): array
+    {
+        return $this->computePenalties($cycleStart, 0, $this->settings()['enabled']);
+    }
+
+    /**
+     * The reasons of a penalty, automatic first.
+     *
+     * @param array{automatic_reason: ?string, manual_reason: ?string} $penalty A row of penaltiesForCycle().
+     * @return list<string>
+     */
+    public static function reasonsOf(array $penalty): array
+    {
+        return array_values(array_filter(
+            [$penalty['automatic_reason'] ?? null, $penalty['manual_reason'] ?? null],
+            fn (?string $reason): bool => $reason !== null && $reason !== ''
+        ));
+    }
+
+    /**
+     * Why the automatic penalty applies: how far the player got in the previous cycle.
+     *
+     * @param array<string, array{score: int, goal: int, missed: bool}> $previous Per watched goal, the previous cycle.
+     * @return string At most REASON_MAX_LENGTH characters.
+     */
+    public static function missReason(array $previous): string
+    {
+        $labels = [self::TARGET_TOTAL => __('Total'), self::TARGET_EPIC => __('Epic')];
+        $parts = [];
+        foreach ($previous as $target => $row) {
+            if (!$row['missed']) {
+                continue;
             }
+            // Rounded down so 99.9% never reads as a goal that was reached
+            $percent = $row['goal'] > 0 ? (int)floor($row['score'] * 100 / $row['goal']) : 0;
+            $parts[] = (count($previous) > 1 ? $labels[$target] . ' ' : '') . $percent . '%';
         }
 
-        return $goals;
+        return mb_substr(__('Previous goal not reached ({0})', implode(', ', $parts)), 0, self::REASON_MAX_LENGTH);
     }
 
     /**
@@ -275,11 +335,13 @@ class GoalPenaltyService
      *
      * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
      * @param bool $preview Evaluate even when the penalty is off.
-     * @return array<string, array{status: string, previous: array<string, array{score: int, goal: int, missed: bool}>, raised: array<string, int>, goals: array<string, int>}>
+     * @return array<string, array{status: string, previous: array<string, array{score: int, goal: int, missed: bool}>, raised: array<string, int>, goals: array<string, int>, reason: string}>
      *   - `previous`: per watched goal, the score and the goal of the previous cycle;
-     *   - `raised`: the goals raised for the player, i.e. the ones missed (only
-     *     applied when the status is penalized);
-     *   - `goals`: per watched goal, the goal the player has in this cycle.
+     *   - `raised`: the goals the automatic penalty raises for the player, i.e.
+     *     the ones missed (only applied when the status is penalized);
+     *   - `goals`: per watched goal, the goal the player has in this cycle, a
+     *     manual penalty included;
+     *   - `reason`: the short reason of the automatic penalty.
      */
     public function evaluateCycle(FrozenTime $cycleStart, bool $preview = false): array
     {
@@ -294,7 +356,8 @@ class GoalPenaltyService
 
     /**
      * Bring a stored cycle summary in line with the current evaluation, after a
-     * player was released or the release was undone.
+     * player was released, the release was undone, or a manual penalty was
+     * added or removed.
      *
      * Nothing happens when that cycle has not been summarized yet: the summary
      * will be written with the right goals when the cycle is processed.
@@ -313,11 +376,13 @@ class GoalPenaltyService
             return;
         }
 
-        $raised = $this->goalsForCycle($cycleStart)[$player] ?? [];
+        $penalty = $this->penaltiesForCycle($cycleStart)[$player] ?? null;
+        $raised = $penalty['goals'] ?? [];
         foreach (self::SUMMARY_COLUMNS as $target => $column) {
             $summary->set($column, $raised[$target] ?? null);
         }
         $summary->penalty_target = self::targetLabel($raised);
+        $summary->penalty_reason = $penalty['automatic_reason'] ?? null;
 
         $requiredScore = $raised[self::TARGET_TOTAL]
             ?? $summary->baseGoalFor(self::TARGET_TOTAL, $this->baseGoal($player, self::TARGET_TOTAL));
@@ -329,7 +394,66 @@ class GoalPenaltyService
     /**
      * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
      * @param int $depth How many cycles back the live fallback already went.
-     * @return array<string, array{status: string, previous: array<string, array{score: int, goal: int, missed: bool}>, raised: array<string, int>, goals: array<string, int>}>
+     * @param bool $automatic Whether the automatic penalty counts; manual ones always do.
+     * @return array<string, array{goals: array<string, int>, percent: float, automatic_reason: ?string, manual_reason: ?string}>
+     */
+    private function computePenalties(FrozenTime $cycleStart, int $depth, bool $automatic): array
+    {
+        $settings = $this->settings();
+
+        // player => target => increase in percent
+        $percents = [];
+        $automaticReasons = [];
+        $manualReasons = [];
+        if ($automatic) {
+            foreach ($this->computeEvaluation($cycleStart, $depth) as $player => $row) {
+                if ($row['status'] !== self::STATUS_PENALIZED || $row['raised'] === []) {
+                    continue;
+                }
+                foreach (array_keys($row['raised']) as $target) {
+                    $percents[(string)$player][$target] = $settings['percent'];
+                }
+                $automaticReasons[(string)$player] = $row['reason'];
+            }
+        }
+        foreach ($this->manualPenalties($cycleStart) as $player => $manual) {
+            $player = (string)$player;
+            foreach ($manual['targets'] as $target) {
+                if ($this->baseGoal($player, $target) > 0) {
+                    $percents[$player][$target] = ($percents[$player][$target] ?? 0.0) + $manual['percent'];
+                    $manualReasons[$player] = $manual['reason'];
+                }
+            }
+        }
+
+        $penalties = [];
+        foreach ($percents as $player => $byTarget) {
+            $player = (string)$player;
+            $goals = [];
+            foreach (array_keys(self::SUMMARY_COLUMNS) as $target) {
+                if (isset($byTarget[$target])) {
+                    $goals[$target] = self::raisedGoal($this->baseGoal($player, $target), $byTarget[$target]);
+                }
+            }
+            $penalties[$player] = [
+                'goals' => $goals,
+                'percent' => (float)max($byTarget),
+                'automatic_reason' => $automaticReasons[$player] ?? null,
+                'manual_reason' => $manualReasons[$player] ?? null,
+            ];
+        }
+
+        return $penalties;
+    }
+
+    /**
+     * The automatic penalty alone: who missed a goal in the previous cycle.
+     * Manual penalties only show in `goals` (and in what the previous cycle
+     * was judged by), never in `status` or `raised`.
+     *
+     * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
+     * @param int $depth How many cycles back the live fallback already went.
+     * @return array<string, array{status: string, previous: array<string, array{score: int, goal: int, missed: bool}>, raised: array<string, int>, goals: array<string, int>, reason: string}>
      */
     private function computeEvaluation(FrozenTime $cycleStart, int $depth): array
     {
@@ -352,6 +476,7 @@ class GoalPenaltyService
 
         if (!$rows->isEmpty()) {
             $previousWaivers = $this->waivedPlayers($previousStart);
+            $previousManual = $this->manualPenalties($previousStart);
             foreach ($rows as $row) {
                 $result = ['total_score' => (int)$row->total_score, 'epic_crypt_score' => (int)$row->epic_crypt_score];
                 $waived = isset($previousWaivers[$row->player_name]);
@@ -360,7 +485,13 @@ class GoalPenaltyService
                     // Rows written before goals by guard level have no base goal; today's is the best guess
                     $base = $row->get(self::BASE_COLUMNS[$target]);
                     $base = $base !== null ? (int)$base : $this->baseGoal((string)$row->player_name, $target);
-                    $carried = $stored !== null && !$waived ? (int)$stored : $base;
+                    if ($stored !== null && !$waived) {
+                        $carried = (int)$stored;
+                    } else {
+                        // A release lifts the automatic penalty only
+                        $manualPercent = self::manualPercent($previousManual[$row->player_name] ?? null, $target);
+                        $carried = $manualPercent > 0 ? self::raisedGoal($base, $manualPercent) : $base;
+                    }
                     $previous[$row->player_name][$target] = [self::scoreFor($result, $target), $carried];
                 }
             }
@@ -369,10 +500,8 @@ class GoalPenaltyService
             $scores = $summaries->scoresForDateRange($previousStart, $previousEnd);
             $previousGoals = [];
             if ($depth < self::MAX_FALLBACK_DEPTH && $scores !== []) {
-                foreach ($this->computeEvaluation($previousStart, $depth + 1) as $player => $row) {
-                    if ($row['status'] === self::STATUS_PENALIZED) {
-                        $previousGoals[(string)$player] = $row['raised'];
-                    }
+                foreach ($this->computePenalties($previousStart, $depth + 1, true) as $player => $penalty) {
+                    $previousGoals[(string)$player] = $penalty['goals'];
                 }
             }
             foreach ($scores as $player => $result) {
@@ -400,6 +529,7 @@ class GoalPenaltyService
 
         $veterans = $this->playersActiveBefore(array_map('strval', array_keys($missed)), $previousStart);
         $waivers = $this->waivedPlayers($cycleStart);
+        $manual = $this->manualPenalties($cycleStart);
 
         $evaluation = [];
         foreach ($missed as $player => $byTarget) {
@@ -421,9 +551,11 @@ class GoalPenaltyService
                 if ($score < $goal && $base > 0) {
                     $raised[$target] = self::raisedGoal($base, $settings['percent']);
                 }
-                $goals[$target] = $status === self::STATUS_PENALIZED && isset($raised[$target])
-                    ? $raised[$target]
-                    : $base;
+                $percent = self::manualPercent($manual[$player] ?? null, $target);
+                if ($status === self::STATUS_PENALIZED && isset($raised[$target])) {
+                    $percent += $settings['percent'];
+                }
+                $goals[$target] = $percent > 0 ? self::raisedGoal($base, $percent) : $base;
             }
 
             $evaluation[$player] = [
@@ -431,10 +563,47 @@ class GoalPenaltyService
                 'previous' => $previousRows,
                 'raised' => $raised,
                 'goals' => $goals,
+                'reason' => self::missReason($previousRows),
             ];
         }
 
         return $evaluation;
+    }
+
+    /**
+     * Manual penalties administrators added to the given cycle.
+     *
+     * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
+     * @return array<string, array{percent: float, targets: list<string>, reason: string}> By player name.
+     */
+    private function manualPenalties(FrozenTime $cycleStart): array
+    {
+        $manual = [];
+        $rows = $this->fetchTable('ManualGoalPenalties')->find()
+            ->where(['cycle_start_date' => $cycleStart->format('Y-m-d')])
+            ->all();
+        /** @var \App\Model\Entity\ManualGoalPenalty $row */
+        foreach ($rows as $row) {
+            $manual[(string)$row->player_name] = [
+                'percent' => (float)$row->percent,
+                'targets' => $row->targets(),
+                'reason' => (string)$row->reason,
+            ];
+        }
+
+        return $manual;
+    }
+
+    /**
+     * How much a manual penalty raises one goal, 0 when it does not touch it.
+     *
+     * @param array{percent: float, targets: list<string>}|null $manual A row of manualPenalties().
+     * @param string $target TARGET_TOTAL or TARGET_EPIC.
+     * @return float
+     */
+    private static function manualPercent(?array $manual, string $target): float
+    {
+        return $manual !== null && in_array($target, $manual['targets'], true) ? $manual['percent'] : 0.0;
     }
 
     /**

@@ -5657,3 +5657,57 @@ msgstr "目标不影响奖励。"
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "{1} 名玩家中有 {0} 名达成。"
+
+msgid "Previous goal not reached ({0})"
+msgstr "上一周期目标未达成（{0}）"
+
+msgid "Manual penalties"
+msgstr "手动惩罚"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "手动惩罚会按你设定的百分比提高玩家在本周期的目标。即使自动惩罚已关闭也会生效；若玩家已有自动惩罚，则两者叠加。"
+
+msgid "Both goals"
+msgstr "两个目标"
+
+msgid "Increase (%)"
+msgstr "提高幅度 (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "原因（必填，最多 {0} 个字符）"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "本周期没有玩家受到手动惩罚。"
+
+msgid "Added by"
+msgstr "添加人"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "要移除 {0} 的手动惩罚吗？"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "无法添加手动惩罚，请重试。"
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "在成员和本周期的宝箱中都找不到玩家“{0}”。"
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "该目标在配置中为 0，没有可提高的内容。"
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "已为 {1} 添加 +{0}% 的手动惩罚。"
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "只能移除本周期或上一周期的手动惩罚。"
+
+msgid "The manual penalty of {0} was removed."
+msgstr "已移除 {0} 的手动惩罚。"
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "提高幅度必须大于 0 且不超过 {0}%。"
+
+msgid "The reason is required."
+msgstr "原因为必填项。"
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "该玩家在本周期已有手动惩罚。"

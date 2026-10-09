@@ -333,9 +333,16 @@ class CollectedChestsController extends AppController
         // Penalidade de meta: quem não bateu a meta no ciclo anterior tem meta maior neste
         $goalPenalty = new GoalPenaltyService($chestGoals);
         $goalPenaltySettings = $goalPenalty->settings();
+        // (automática) ou recebeu uma penalidade manual; cada uma com o seu motivo
         $penaltyGoals = [];
-        foreach ($goalPenalty->goalsForCycle($cycleStart) as $player => $raised) {
-            $penaltyGoals[$canonicalPlayer((string)$player)] = $raised;
+        $penaltyInfo = [];
+        foreach ($goalPenalty->penaltiesForCycle($cycleStart) as $player => $penalty) {
+            $player = $canonicalPlayer((string)$player);
+            $penaltyGoals[$player] = $penalty['goals'];
+            $penaltyInfo[$player] = [
+                'percent' => $penalty['percent'],
+                'reasons' => GoalPenaltyService::reasonsOf($penalty),
+            ];
         }
 
         // Buscar a data/hora da linha mais recente da tabela CollectedChests
@@ -371,6 +378,7 @@ class CollectedChestsController extends AppController
             'epicMonsterDetails',
             'goalPenaltySettings',
             'penaltyGoals',
+            'penaltyInfo',
             'goalsByGuard',
             'guardGoalTable',
             'playerGoals',
