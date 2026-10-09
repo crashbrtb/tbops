@@ -5657,3 +5657,57 @@ msgstr "Das Ziel entscheidet nicht über die Belohnungen."
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "{0} von {1} Spieler(n) haben es erreicht."
+
+msgid "Previous goal not reached ({0})"
+msgstr "Vorheriges Ziel nicht erreicht ({0})"
+
+msgid "Manual penalties"
+msgstr "Manuelle Strafen"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "Eine manuelle Strafe erhöht das Ziel des Spielers in diesem Zyklus um den angegebenen Prozentsatz. Sie gilt auch bei ausgeschalteter automatischer Strafe und kommt zu ihr hinzu, wenn der Spieler bereits eine hat."
+
+msgid "Both goals"
+msgstr "Beide Ziele"
+
+msgid "Increase (%)"
+msgstr "Erhöhung (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "Grund (erforderlich, bis zu {0} Zeichen)"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "In diesem Zyklus hat niemand eine manuelle Strafe."
+
+msgid "Added by"
+msgstr "Hinzugefügt von"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "Die manuelle Strafe von {0} entfernen?"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "Die manuelle Strafe konnte nicht hinzugefügt werden. Bitte versuche es erneut."
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "Der Spieler \"{0}\" wurde weder unter den Mitgliedern noch unter den Truhen dieses Zyklus gefunden."
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "Dieses Ziel steht in der Konfiguration auf 0, es gibt also nichts zu erhöhen."
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "Eine manuelle Strafe von +{0} % wurde {1} hinzugefügt."
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "Nur manuelle Strafen des aktuellen oder vorherigen Zyklus können entfernt werden."
+
+msgid "The manual penalty of {0} was removed."
+msgstr "Die manuelle Strafe von {0} wurde entfernt."
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "Die Erhöhung muss über 0 und höchstens {0} % betragen."
+
+msgid "The reason is required."
+msgstr "Der Grund ist erforderlich."
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "Dieser Spieler hat in diesem Zyklus bereits eine manuelle Strafe."

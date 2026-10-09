@@ -22,6 +22,7 @@ use Cake\ORM\Entity;
  * @property int|null $penalty_goal Raised chest score (total) goal carried in this cycle, null when not raised
  * @property int|null $penalty_epic_goal Raised epic chest goal carried in this cycle, null when not raised
  * @property string|null $penalty_target Which goals were raised: total, epic or both
+ * @property string|null $penalty_reason Why the automatic goal penalty applied in this cycle
  * @property bool $goal_achieved
  * @property bool $fine_due
  * @property bool $fine_paid
@@ -52,6 +53,7 @@ class PlayerCycleSummary extends Entity
         'penalty_goal' => true,
         'penalty_epic_goal' => true,
         'penalty_target' => true,
+        'penalty_reason' => true,
         'goal_achieved' => true,
         'fine_due' => true,
         'fine_paid' => true,

@@ -5657,3 +5657,57 @@ msgstr "목표는 보상을 결정하지 않습니다."
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "{1}명 중 {0}명이 달성했습니다."
+
+msgid "Previous goal not reached ({0})"
+msgstr "이전 목표 미달성 ({0})"
+
+msgid "Manual penalties"
+msgstr "수동 페널티"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "수동 페널티는 이번 주기에 플레이어의 목표를 지정한 비율만큼 올립니다. 자동 페널티가 꺼져 있어도 적용되며, 이미 자동 페널티가 있으면 거기에 더해집니다."
+
+msgid "Both goals"
+msgstr "두 목표 모두"
+
+msgid "Increase (%)"
+msgstr "증가 (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "사유(필수, 최대 {0}자)"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "이번 주기에 수동 페널티를 받은 플레이어가 없습니다."
+
+msgid "Added by"
+msgstr "추가한 사람"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "{0}의 수동 페널티를 삭제할까요?"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "수동 페널티를 추가할 수 없습니다. 다시 시도하세요."
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "플레이어 \"{0}\"을(를) 멤버나 이번 주기의 상자에서 찾을 수 없습니다."
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "이 목표는 설정에서 0이므로 올릴 것이 없습니다."
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "{1}에게 +{0}% 수동 페널티를 추가했습니다."
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "현재 또는 이전 주기의 수동 페널티만 삭제할 수 있습니다."
+
+msgid "The manual penalty of {0} was removed."
+msgstr "{0}의 수동 페널티를 삭제했습니다."
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "증가율은 0보다 크고 {0}% 이하여야 합니다."
+
+msgid "The reason is required."
+msgstr "사유는 필수입니다."
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "이 플레이어는 이번 주기에 이미 수동 페널티가 있습니다."

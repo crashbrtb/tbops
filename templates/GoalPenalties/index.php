@@ -10,6 +10,10 @@
  * @var array<string, array{status: string, previous: array<string, array{score: int, goal: int, missed: bool}>, raised: array<string, int>, goals: array<string, int>}> $evaluation
  * @var array<string, array<string, int>> $currentScores Player => target => score so far in the cycle
  * @var array<string, \App\Model\Entity\GoalPenaltyWaiver> $waivers
+ * @var array<string, array{goals: array<string, int>, percent: float, automatic_reason: ?string, manual_reason: ?string}> $penalties Player => raised goals in this cycle, automatic and manual together
+ * @var array<string, \App\Model\Entity\ManualGoalPenalty> $manualPenalties
+ * @var list<string> $manualTargets Goals a manual penalty can raise
+ * @var list<string> $playerOptions
  */
 
 use App\Service\GoalPenaltyService;
@@ -39,11 +43,11 @@ $shortNames = [
 // With both goals watched every score is labelled, otherwise the label is noise
 $labelled = count($settings['targets']) > 1;
 $number = fn (int $value): string => $this->Number->format($value);
-$scoreAgainst = function (string $target, int $score, int $goal, bool $raised = false) use ($number, $shortNames, $labelled): string {
+$scoreAgainst = function (string $target, int $score, int $goal, bool $raised = false, ?bool $label = null) use ($number, $shortNames, $labelled): string {
     $class = $score >= $goal ? 'text-success' : 'text-danger';
 
     return '<div class="text-nowrap">'
-        . ($labelled ? '<small class="text-muted mr-1">' . h($shortNames[$target]) . ':</small>' : '')
+        . ($label ?? $labelled ? '<small class="text-muted mr-1">' . h($shortNames[$target]) . ':</small>' : '')
         . '<span class="font-weight-bold ' . $class . '">' . $number($score) . '</span>'
         . ' <span class="text-muted">/ ' . $number($goal) . '</span>'
         . ($raised ? ' <i class="fas fa-arrow-up text-warning" title="' . h(__('Raised goal')) . '"></i>' : '')
@@ -67,6 +71,14 @@ $currentCell = function (string $player, array $row) use ($scoreAgainst, $curren
 
     return $html;
 };
+$targetOptions = [];
+foreach ($manualTargets as $target) {
+    $targetOptions[$target] = $goalNames[$target];
+}
+if (count($manualTargets) > 1) {
+    $targetOptions[GoalPenaltyService::TARGET_BOTH] = __('Both goals');
+}
+$reasonMaxLength = GoalPenaltyService::REASON_MAX_LENGTH;
 ?>
 
 <div class="content-page-wrap">
@@ -157,7 +169,10 @@ $currentCell = function (string $player, array $row) use ($scoreAgainst, $curren
                                     <td class="align-middle">
                                         <?= $this->Html->link($player, ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($player)]) ?>
                                     </td>
-                                    <td class="align-middle"><?= $previousCell($row) ?></td>
+                                    <td class="align-middle">
+                                        <?= $previousCell($row) ?>
+                                        <small class="text-muted"><?= h($row['reason']) ?></small>
+                                    </td>
                                     <td class="align-middle"><?= $currentCell((string)$player, $row) ?></td>
                                     <td class="align-middle text-right">
                                         <?= $this->Form->create(null, ['url' => ['action' => 'release'], 'class' => 'form-inline justify-content-end']) ?>
@@ -173,6 +188,126 @@ $currentCell = function (string $player, array $row) use ($scoreAgainst, $curren
                                             'class' => 'btn btn-sm btn-success',
                                         ]) ?>
                                         <?= $this->Form->end() ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Manual penalties -->
+        <div class="card card-danger card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold">
+                    <i class="fas fa-gavel text-danger mr-2"></i><?= __('Manual penalties') ?>
+                    <span class="badge badge-danger ml-1"><?= count($manualPenalties) ?></span>
+                </h3>
+            </div>
+            <div class="card-body border-bottom">
+                <p class="text-muted mb-2">
+                    <?= __('A manual penalty raises a player\'s goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one.') ?>
+                </p>
+                <?php if (!$manualTargets): ?>
+                    <div class="text-muted"><?= __('The goal the penalty watches is 0 in the configs, so nobody can miss it.') ?></div>
+                <?php else: ?>
+                    <?= $this->Form->create(null, ['url' => ['action' => 'addManual'], 'class' => 'form-inline']) ?>
+                    <?= $this->Form->hidden('cycle', ['value' => $cyclesAgo]) ?>
+                    <?= $this->Form->text('player_name', [
+                        'class' => 'form-control form-control-sm mr-2 mb-2',
+                        'placeholder' => __('Player'),
+                        'list' => 'manual-penalty-players',
+                        'autocomplete' => 'off',
+                        'required' => true,
+                        'maxlength' => 255,
+                    ]) ?>
+                    <datalist id="manual-penalty-players">
+                        <?php foreach ($playerOptions as $option): ?>
+                            <option value="<?= h($option) ?>"></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                    <?php if (count($targetOptions) > 1): ?>
+                        <?= $this->Form->select('target', $targetOptions, [
+                            'class' => 'form-control form-control-sm mr-2 mb-2',
+                            'empty' => false,
+                        ]) ?>
+                    <?php else: ?>
+                        <?= $this->Form->hidden('target', ['value' => $manualTargets[0]]) ?>
+                    <?php endif; ?>
+                    <div class="input-group input-group-sm mr-2 mb-2" style="width: 110px;">
+                        <div class="input-group-prepend"><span class="input-group-text">+</span></div>
+                        <?= $this->Form->number('percent', [
+                            'class' => 'form-control',
+                            'value' => $settings['percent'] > 0 ? $settings['percent'] : 10,
+                            'min' => 0.01,
+                            'max' => 1000,
+                            'step' => 'any',
+                            'required' => true,
+                            'title' => __('Increase (%)'),
+                        ]) ?>
+                        <div class="input-group-append"><span class="input-group-text">%</span></div>
+                    </div>
+                    <?= $this->Form->text('reason', [
+                        'class' => 'form-control form-control-sm mr-2 mb-2 flex-grow-1',
+                        'placeholder' => __('Reason (required, up to {0} characters)', $reasonMaxLength),
+                        'required' => true,
+                        'maxlength' => $reasonMaxLength,
+                    ]) ?>
+                    <?= $this->Form->button('<i class="fas fa-plus mr-1"></i> ' . __('Add'), [
+                        'escapeTitle' => false,
+                        'class' => 'btn btn-sm btn-danger mb-2',
+                    ]) ?>
+                    <?= $this->Form->end() ?>
+                <?php endif; ?>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <?php if (!$manualPenalties): ?>
+                    <p class="text-muted p-3 mb-0"><?= __('Nobody has a manual penalty in this cycle.') ?></p>
+                <?php else: ?>
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th><?= __('Player') ?></th>
+                                <th><?= __('Goal') ?></th>
+                                <th><?= __('This cycle (score / goal)') ?></th>
+                                <th><?= __('Reason') ?></th>
+                                <th><?= __('Added by') ?></th>
+                                <th class="text-right"><?= __('Actions') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($manualPenalties as $player => $manualPenalty): ?>
+                                <tr>
+                                    <td class="align-middle">
+                                        <?= $this->Html->link($manualPenalty->player_name, ['controller' => 'PlayerCycleSummaries', 'action' => 'playerHistory', urlencode($manualPenalty->player_name)]) ?>
+                                    </td>
+                                    <td class="align-middle text-nowrap">
+                                        <?= h($manualPenalty->target === GoalPenaltyService::TARGET_BOTH ? __('Both goals') : $goalNames[$manualPenalty->target]) ?>
+                                        <span class="badge badge-warning ml-1">+<?= $this->Number->format((float)$manualPenalty->percent) ?>%</span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <?php foreach ($manualPenalty->targets() as $target): ?>
+                                            <?php if (isset($penalties[$player]['goals'][$target])): ?>
+                                                <?= $scoreAgainst($target, $currentScores[$player][$target] ?? 0, $penalties[$player]['goals'][$target], true, count($manualTargets) > 1) ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </td>
+                                    <td class="align-middle"><?= h($manualPenalty->reason) ?></td>
+                                    <td class="align-middle">
+                                        <?= h($manualPenalty->user->name ?? '—') ?>
+                                        <small class="d-block text-muted"><?= h($manualPenalty->created?->i18nFormat('dd/MM/yyyy HH:mm')) ?></small>
+                                    </td>
+                                    <td class="align-middle text-right">
+                                        <?= $this->Form->postLink(
+                                            '<i class="fas fa-trash mr-1"></i> ' . __('Remove'),
+                                            ['action' => 'removeManual', $manualPenalty->id],
+                                            [
+                                                'escape' => false,
+                                                'class' => 'btn btn-sm btn-outline-danger',
+                                                'confirm' => __('Remove the manual penalty of {0}?', $manualPenalty->player_name),
+                                            ]
+                                        ) ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

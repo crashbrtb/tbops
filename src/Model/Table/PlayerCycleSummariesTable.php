@@ -159,9 +159,9 @@ class PlayerCycleSummariesTable extends Table
         $playerSummaries = $this->scoresForDateRange($cycleStart, $cycleEnd);
 
         // Each player's goal (by guard level when so configured); players who missed the goal
-        // in the previous cycle carry a raised one in this cycle
+        // in the previous cycle, or got a manual penalty, carry a raised one in this cycle
         $goals = new ChestGoalService();
-        $penaltyGoals = (new GoalPenaltyService($goals))->goalsForCycle($cycleStart);
+        $penalties = (new GoalPenaltyService($goals))->penaltiesForCycle($cycleStart);
 
         // Save summaries
         $processedCount = 0;
@@ -169,7 +169,7 @@ class PlayerCycleSummariesTable extends Table
 
         foreach ($playerSummaries as $playerName => $data) {
             $playerName = (string)$playerName;
-            $raised = $penaltyGoals[$playerName] ?? [];
+            $raised = $penalties[$playerName]['goals'] ?? [];
             $baseGoals = $goals->goalsFor($playerName);
             $requiredScore = $raised[GoalPenaltyService::TARGET_TOTAL] ?? $baseGoals[ChestGoalService::TARGET_TOTAL];
             $goalAchieved = $data['total_score'] >= $requiredScore;
@@ -188,6 +188,7 @@ class PlayerCycleSummariesTable extends Table
                 'penalty_goal' => $raised[GoalPenaltyService::TARGET_TOTAL] ?? null,
                 'penalty_epic_goal' => $raised[GoalPenaltyService::TARGET_EPIC] ?? null,
                 'penalty_target' => GoalPenaltyService::targetLabel($raised),
+                'penalty_reason' => $penalties[$playerName]['automatic_reason'] ?? null,
                 'goal_achieved' => $goalAchieved,
                 'fine_due' => $fineDue,
                 'fine_paid' => false,

@@ -5657,3 +5657,57 @@ msgstr "Hedef ödülleri belirlemez."
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "{1} oyuncudan {0} tanesi ulaştı."
+
+msgid "Previous goal not reached ({0})"
+msgstr "Önceki hedefe ulaşılmadı ({0})"
+
+msgid "Manual penalties"
+msgstr "Manuel cezalar"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "Manuel ceza, oyuncunun bu döngüdeki hedefini belirlediğiniz yüzde kadar artırır. Otomatik ceza kapalıyken de geçerlidir ve oyuncunun zaten bir cezası varsa ona eklenir."
+
+msgid "Both goals"
+msgstr "Her iki hedef"
+
+msgid "Increase (%)"
+msgstr "Artış (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "Gerekçe (zorunlu, en fazla {0} karakter)"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "Bu döngüde kimsenin manuel cezası yok."
+
+msgid "Added by"
+msgstr "Ekleyen"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "{0} oyuncusunun manuel cezası kaldırılsın mı?"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "Manuel ceza eklenemedi. Lütfen tekrar deneyin."
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "\"{0}\" oyuncusu üyeler arasında da bu döngünün sandıklarında da bulunamadı."
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "Bu hedef yapılandırmada 0, bu yüzden artırılacak bir şey yok."
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "{1} oyuncusuna +%{0} manuel ceza eklendi."
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "Yalnızca mevcut veya önceki döngünün manuel cezaları kaldırılabilir."
+
+msgid "The manual penalty of {0} was removed."
+msgstr "{0} oyuncusunun manuel cezası kaldırıldı."
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "Artış 0'dan büyük ve en fazla %{0} olmalıdır."
+
+msgid "The reason is required."
+msgstr "Gerekçe zorunludur."
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "Bu oyuncunun bu döngüde zaten bir manuel cezası var."

@@ -5657,3 +5657,57 @@ msgstr "L'objectif ne décide pas des récompenses."
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "{0} joueur(s) sur {1} l'ont atteint."
+
+msgid "Previous goal not reached ({0})"
+msgstr "Objectif précédent non atteint ({0})"
+
+msgid "Manual penalties"
+msgstr "Pénalités manuelles"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "Une pénalité manuelle augmente l'objectif du joueur pour ce cycle du pourcentage indiqué. Elle fonctionne même si la pénalité automatique est désactivée et s'y ajoute quand le joueur en a déjà une."
+
+msgid "Both goals"
+msgstr "Les deux objectifs"
+
+msgid "Increase (%)"
+msgstr "Augmentation (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "Motif (obligatoire, {0} caractères maximum)"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "Personne n'a de pénalité manuelle pour ce cycle."
+
+msgid "Added by"
+msgstr "Ajoutée par"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "Retirer la pénalité manuelle de {0} ?"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "La pénalité manuelle n'a pas pu être ajoutée. Veuillez réessayer."
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "Le joueur « {0} » est introuvable parmi les membres et les coffres de ce cycle."
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "Cet objectif est à 0 dans la configuration, il n'y a donc rien à augmenter."
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "Une pénalité manuelle de +{0} % a été ajoutée à {1}."
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "Seules les pénalités manuelles du cycle en cours ou du précédent peuvent être retirées."
+
+msgid "The manual penalty of {0} was removed."
+msgstr "La pénalité manuelle de {0} a été retirée."
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "L'augmentation doit être supérieure à 0 et au maximum de {0} %."
+
+msgid "The reason is required."
+msgstr "Le motif est obligatoire."
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "Ce joueur a déjà une pénalité manuelle pour ce cycle."

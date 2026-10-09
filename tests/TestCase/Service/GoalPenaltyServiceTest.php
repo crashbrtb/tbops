@@ -30,6 +30,7 @@ class GoalPenaltyServiceTest extends TestCase
         'app.CollectedChests',
         'app.StandardChests',
         'app.GoalPenaltyWaivers',
+        'app.ManualGoalPenalties',
     ];
 
     private const CYCLE = '2026-01-15 00:00:00';
@@ -254,6 +255,129 @@ class GoalPenaltyServiceTest extends TestCase
         $goals = (new GoalPenaltyService())->goalsForCycle(new FrozenTime(self::CYCLE));
 
         $this->assertSame(['Low' => ['total' => 16500], 'Short' => ['total' => 16500]], $this->sorted($goals));
+    }
+
+    public function testAutomaticPenaltyTellsHowFarThePlayerGot(): void
+    {
+        $this->configure();
+        $this->veteran('Missed');
+        // 13499 of 15000 is 89.99%: rounded down, never up to a goal that was not reached
+        $this->summary('Missed', self::PREVIOUS, 13499, 0);
+
+        $penalties = (new GoalPenaltyService())->penaltiesForCycle(new FrozenTime(self::CYCLE));
+
+        $this->assertSame('Previous goal not reached (89%)', $penalties['Missed']['automatic_reason']);
+        $this->assertNull($penalties['Missed']['manual_reason']);
+        $this->assertSame(10.0, $penalties['Missed']['percent']);
+    }
+
+    public function testAutomaticReasonNamesEachMissedGoalWhenBothAreWatched(): void
+    {
+        $this->configure(['goal_penalty_target' => 'both']);
+        $this->veteran('Player');
+        $this->summary('Player', self::PREVIOUS, 7500, 3000);
+
+        $penalties = (new GoalPenaltyService())->penaltiesForCycle(new FrozenTime(self::CYCLE));
+
+        $this->assertSame('Previous goal not reached (Total 50%, Epic 50%)', $penalties['Player']['automatic_reason']);
+    }
+
+    public function testManualPenaltyAppliesWhileTheAutomaticOneIsOff(): void
+    {
+        $this->configure(['goal_penalty_enabled' => '0']);
+        $this->veteran('Missed');
+        $this->summary('Missed', self::PREVIOUS, 100, 0);
+        $this->manual('Punished', '2026-01-15', 'epic', 20, 'Skipped the clan war');
+
+        $penalties = (new GoalPenaltyService())->penaltiesForCycle(new FrozenTime(self::CYCLE));
+
+        $this->assertSame(['Punished'], array_keys($penalties));
+        $this->assertSame(['epic' => 7200], $penalties['Punished']['goals']);
+        $this->assertNull($penalties['Punished']['automatic_reason']);
+        $this->assertSame('Skipped the clan war', $penalties['Punished']['manual_reason']);
+    }
+
+    public function testManualPenaltyAddsToTheAutomaticOne(): void
+    {
+        $this->configure();
+        $this->veteran('Player');
+        $this->summary('Player', self::PREVIOUS, 100, 0);
+        $this->manual('Player', '2026-01-15', 'both', 5, 'Rude in chat');
+
+        $service = new GoalPenaltyService();
+        $penalty = $service->penaltiesForCycle(new FrozenTime(self::CYCLE))['Player'];
+
+        // total: +10% automatic and +5% manual; epic: manual only
+        $this->assertSame(['total' => 17250, 'epic' => 6300], $penalty['goals']);
+        $this->assertSame(15.0, $penalty['percent']);
+        $this->assertSame(['Previous goal not reached (0%)', 'Rude in chat'], GoalPenaltyService::reasonsOf($penalty));
+        // The evaluation keeps telling the automatic penalty apart
+        $evaluation = $service->evaluateCycle(new FrozenTime(self::CYCLE));
+        $this->assertSame(['total' => 16500], $evaluation['Player']['raised']);
+        $this->assertSame(['total' => 17250], $evaluation['Player']['goals']);
+    }
+
+    public function testAReleaseLeavesTheManualPenaltyInPlace(): void
+    {
+        $this->configure();
+        $this->veteran('Player');
+        $this->summary('Player', self::PREVIOUS, 100, 0);
+        $this->manual('Player', '2026-01-15', 'total', 5, 'Rude in chat');
+        $this->waive('Player', '2026-01-15');
+
+        $penalty = (new GoalPenaltyService())->penaltiesForCycle(new FrozenTime(self::CYCLE))['Player'];
+
+        $this->assertSame(['total' => 15750], $penalty['goals']);
+        $this->assertNull($penalty['automatic_reason']);
+    }
+
+    public function testAManualPenaltyInThePreviousCycleIsWhatThatCycleIsJudgedBy(): void
+    {
+        $this->configure();
+        $this->veteran('Player');
+        // Reached the base goal but not the 16500 the manual penalty asked for
+        $this->summary('Player', self::PREVIOUS, 15200, 0, 16500);
+        $this->manual('Player', self::PREVIOUS, 'total', 10, 'Rude in chat');
+
+        $this->assertSame(['Player' => ['total' => 16500]], (new GoalPenaltyService())->goalsForCycle(new FrozenTime(self::CYCLE)));
+    }
+
+    public function testProcessingACycleStoresTheReasonOfTheAutomaticPenalty(): void
+    {
+        $this->configure();
+        $this->fetchTable('StandardChests')->deleteAll([]);
+        $this->fetchTable('CollectedChests')->deleteAll([]);
+        $this->fetchTable('StandardChests')->saveOrFail(
+            $this->fetchTable('StandardChests')->newEntity(['source' => 'Big Chest', 'score' => 5000, 'monster' => 0], ['validate' => false])
+        );
+        $this->veteran('Missed');
+        $this->summary('Missed', self::PREVIOUS, 7500, 0);
+        $this->chests('Missed', 1, '2026-01-16 12:00:00');
+        $this->chests('Punished', 1, '2026-01-16 12:00:00');
+        $this->manual('Punished', '2026-01-15', 'total', 20, 'Skipped the clan war');
+
+        $summaries = $this->fetchTable('PlayerCycleSummaries');
+        $summaries->processCycleForDateRange(new FrozenTime(self::CYCLE), new FrozenTime('2026-01-21 23:59:59'), 0);
+
+        $missed = $summaries->find()->where(['player_name' => 'Missed', 'cycle_start_date' => '2026-01-15'])->firstOrFail();
+        $this->assertSame(16500, $missed->penalty_goal);
+        $this->assertSame('Previous goal not reached (50%)', $missed->penalty_reason);
+        // The reason of a manual penalty stays in its own row
+        $punished = $summaries->find()->where(['player_name' => 'Punished', 'cycle_start_date' => '2026-01-15'])->firstOrFail();
+        $this->assertSame(18000, $punished->penalty_goal);
+        $this->assertNull($punished->penalty_reason);
+    }
+
+    private function manual(string $player, string $cycleStart, string $target, float $percent, string $reason): void
+    {
+        $table = $this->fetchTable('ManualGoalPenalties');
+        $table->saveOrFail($table->newEntity([
+            'player_name' => $player,
+            'cycle_start_date' => $cycleStart,
+            'target' => $target,
+            'percent' => $percent,
+            'reason' => $reason,
+        ]));
     }
 
     /**

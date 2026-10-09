@@ -5657,3 +5657,57 @@ msgstr "Цель не влияет на награды."
 
 msgid "{0} of {1} player(s) reached it."
 msgstr "Выполнили {0} из {1} игрок(ов)."
+
+msgid "Previous goal not reached ({0})"
+msgstr "Прошлая цель не достигнута ({0})"
+
+msgid "Manual penalties"
+msgstr "Ручные штрафы"
+
+msgid "A manual penalty raises a player's goal in this cycle by the percentage you set. It works even while the automatic penalty is off, and adds to it when the player already has one."
+msgstr "Ручной штраф повышает цель игрока в этом цикле на указанный процент. Он действует даже при выключенном автоматическом штрафе и прибавляется к нему, если у игрока он уже есть."
+
+msgid "Both goals"
+msgstr "Обе цели"
+
+msgid "Increase (%)"
+msgstr "Повышение (%)"
+
+msgid "Reason (required, up to {0} characters)"
+msgstr "Причина (обязательно, до {0} символов)"
+
+msgid "Nobody has a manual penalty in this cycle."
+msgstr "В этом цикле ни у кого нет ручного штрафа."
+
+msgid "Added by"
+msgstr "Добавил"
+
+msgid "Remove the manual penalty of {0}?"
+msgstr "Удалить ручной штраф игрока {0}?"
+
+msgid "The manual penalty could not be added. Please, try again."
+msgstr "Не удалось добавить ручной штраф. Попробуйте ещё раз."
+
+msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgstr "Игрок «{0}» не найден ни среди участников, ни среди сундуков этого цикла."
+
+msgid "That goal is 0 in the configs, so there is nothing to raise."
+msgstr "Эта цель в настройках равна 0, повышать нечего."
+
+msgid "A manual penalty of +{0}% was added to {1}."
+msgstr "Игроку {1} добавлен ручной штраф +{0}%."
+
+msgid "Only manual penalties of the current or the previous cycle can be removed."
+msgstr "Удалить можно только ручные штрафы текущего или прошлого цикла."
+
+msgid "The manual penalty of {0} was removed."
+msgstr "Ручной штраф игрока {0} удалён."
+
+msgid "The increase must be above 0 and at most {0}%."
+msgstr "Повышение должно быть больше 0 и не более {0}%."
+
+msgid "The reason is required."
+msgstr "Причина обязательна."
+
+msgid "This player already has a manual penalty in this cycle."
+msgstr "У этого игрока уже есть ручной штраф в этом цикле."

@@ -267,7 +267,9 @@ $guardTooltip = function (string $player) use ($playerGuardLevels, $totalGoalFor
         ? __('Guards G{0}', $level) . ' — ' . $goal
         : __('Guard level unknown (G0): highest goal') . ' — ' . $goal;
 };
-$penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyPercent): string {
+// $penaltyInfo: player => ['percent' => increase, 'reasons' => why (automatic and/or manual penalty)]
+$penaltyInfo = $penaltyInfo ?? [];
+$penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyInfo): string {
     $parts = [];
     if (isset($penaltyGoals[$player]['total'])) {
         $parts[] = __('{0} chest points', $this->Number->format($penaltyGoals[$player]['total']));
@@ -275,15 +277,17 @@ $penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyPercent)
     if (isset($penaltyGoals[$player]['epic'])) {
         $parts[] = __('{0} Epic chest points', $this->Number->format($penaltyGoals[$player]['epic']));
     }
+    $tooltip = __('Raised goal in this cycle: {0}', implode(' + ', $parts));
+    $reasons = $penaltyInfo[$player]['reasons'] ?? [];
 
-    return __('Raised goal this cycle: {0} (+{1}%), goal missed last cycle', implode(' + ', $parts), $penaltyPercent);
+    return $reasons ? $tooltip . ' — ' . implode(' · ', $reasons) : $tooltip;
 };
 $penaltyTooltipsData = [];
 foreach (array_keys($penaltyGoals) as $penalizedPlayer) {
     $penaltyTooltipsData[$penalizedPlayer] = $penaltyTooltip((string)$penalizedPlayer);
 }
 // Player name linking to the history page, flagged when the player carries a raised goal
-$playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip, $penaltyPercent, $goalsByGuard, $playerGuardLevels, $guardTooltip): string {
+$playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip, $penaltyPercent, $penaltyInfo, $goalsByGuard, $playerGuardLevels, $guardTooltip): string {
     $penalized = isset($penaltyGoals[$player]);
     $title = $penalized ? $player . ' — ' . $penaltyTooltip($player) : $player;
     $html = $this->Html->link(
@@ -298,8 +302,12 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
             . 'G' . $level . '</span>';
     }
     if ($penalized) {
+        // A manual penalty has its own percentage, so the badge shows the player's, not the configured one
+        $percent = isset($penaltyInfo[$player]['percent'])
+            ? $this->Number->format((float)$penaltyInfo[$player]['percent'])
+            : $penaltyPercent;
         $badges .= '<span class="penalty-badge" title="' . h($penaltyTooltip($player)) . '">'
-            . '<i class="fas fa-arrow-up"></i> ' . h($penaltyPercent) . '%</span>';
+            . '<i class="fas fa-arrow-up"></i> ' . h($percent) . '%</span>';
     }
     if ($badges !== '') {
         $html = '<span class="player-name-line">' . $html . $badges . '</span>';

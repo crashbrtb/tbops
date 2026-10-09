@@ -33,6 +33,8 @@ class GoalPenaltiesControllerTest extends TestCase
         'app.CollectedChests',
         'app.StandardChests',
         'app.GoalPenaltyWaivers',
+        'app.ManualGoalPenalties',
+        'app.Members',
     ];
 
     private string $current;
@@ -136,6 +138,93 @@ class GoalPenaltiesControllerTest extends TestCase
         $this->assertResponseContains('Rookie');
         // The preview is only a view: the penalty itself stays off.
         $this->assertSame([], (new GoalPenaltyService())->goalsForCycle(new DateTime($this->current)));
+    }
+
+    public function testManualPenaltyNeedsAReason(): void
+    {
+        $this->signIn(1);
+
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'Slacker', 'cycle' => '0', 'target' => 'total', 'percent' => '5', 'reason' => '  ']);
+
+        $this->assertRedirect();
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $this->fetchTable('ManualGoalPenalties')->find()->count());
+    }
+
+    public function testManualPenaltyRefusesAReasonLongerThanAHundredCharacters(): void
+    {
+        $this->signIn(1);
+
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'Slacker', 'cycle' => '0', 'target' => 'total', 'percent' => '5', 'reason' => str_repeat('x', 101)]);
+
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $this->fetchTable('ManualGoalPenalties')->find()->count());
+    }
+
+    public function testManualPenaltyIsClosedToNonAdministrators(): void
+    {
+        $this->signIn(2);
+
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'Slacker', 'cycle' => '0', 'target' => 'total', 'percent' => '5', 'reason' => 'Rude']);
+
+        $this->assertResponseCode(403);
+    }
+
+    public function testManualPenaltyWorksWhileTheAutomaticOneIsOffAndCanBeRemoved(): void
+    {
+        $config = $this->fetchTable('Config');
+        $row = $config->find()->where(['param' => 'goal_penalty_enabled'])->firstOrFail();
+        $row->value = '0';
+        $config->saveOrFail($row);
+        $this->signIn(1);
+
+        // Typed in another case: stored the way the player is known
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'slacker', 'cycle' => '0', 'target' => 'total', 'percent' => '20', 'reason' => 'Skipped the clan war']);
+
+        $this->assertRedirect();
+        $this->assertFlashElement('flash/success');
+        $penalties = $this->fetchTable('ManualGoalPenalties');
+        $penalty = $penalties->find()->firstOrFail();
+        $this->assertSame('Slacker', $penalty->player_name);
+        $this->assertSame($this->current, $penalty->cycle_start_date->format('Y-m-d'));
+        $this->assertSame('Skipped the clan war', $penalty->reason);
+        $this->assertSame(1, $penalty->user_id);
+        $this->assertSame(['Slacker' => ['total' => 18000]], (new GoalPenaltyService())->goalsForCycle(new DateTime($this->current)));
+
+        // One manual penalty per player and cycle
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'Slacker', 'cycle' => '0', 'target' => 'total', 'percent' => '5', 'reason' => 'Again']);
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(1, $penalties->find()->count());
+
+        $this->get('/goal-penalties');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Skipped the clan war');
+        $this->assertResponseContains('18,000');
+
+        $this->post('/goal-penalties/remove-manual/' . $penalty->id);
+
+        $this->assertRedirect();
+        $this->assertSame(0, $penalties->find()->count());
+        $this->assertSame([], (new GoalPenaltyService())->goalsForCycle(new DateTime($this->current)));
+    }
+
+    public function testManualPenaltyRefusesAnUnknownPlayer(): void
+    {
+        $this->signIn(1);
+
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'Nobody At All', 'cycle' => '0', 'target' => 'total', 'percent' => '5', 'reason' => 'Rude']);
+
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $this->fetchTable('ManualGoalPenalties')->find()->count());
+    }
+
+    public function testPageShowsTheReasonOfTheAutomaticPenalty(): void
+    {
+        $this->signIn(1);
+
+        $this->get('/goal-penalties');
+
+        $this->assertResponseContains('Previous goal not reached (6%)');
     }
 
     public function testReleaseAndUndo(): void

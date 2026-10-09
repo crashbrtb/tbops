@@ -266,6 +266,13 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                         $raisedParts[] = __('{0} Epic chest points', $this->Number->format($summary->penalty_epic_goal));
                                     }
                                     $penaltyTitle = $raisedParts ? __('Raised goal in this cycle: {0}', implode(' + ', $raisedParts)) : null;
+                                    $penaltyReasons = array_filter([
+                                        $summary->penalty_reason,
+                                        $manualPenaltyReasons[$cycleStartDateString][$summary->player_name] ?? null,
+                                    ]);
+                                    if ($penaltyTitle !== null && $penaltyReasons) {
+                                        $penaltyTitle .= ' — ' . implode(' · ', $penaltyReasons);
+                                    }
                                     ?>
                                     <tr>
                                         <td><span class="top-rank"><?= $idx + 1 ?></span></td>

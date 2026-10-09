@@ -102,7 +102,19 @@ class PlayerCycleSummariesController extends AppController
         // A paginação original $this->paginate($query) é removida pois estamos focando nos 3 últimos ciclos.
         $goalsByGuard = (new ChestGoalService())->isByGuard();
 
-        $this->set(compact('summariesByCycle', 'formattedCycleDates', 'minimumChestScore', 'minimumEpicChestScore', 'scoreColorsConfig', 'goalsByGuard'));
+        // Motivo das penalidades manuais dos ciclos exibidos: ciclo => jogador => motivo
+        $manualPenaltyReasons = [];
+        if (!empty($summariesByCycle)) {
+            $manualPenalties = $this->fetchTable('ManualGoalPenalties')->find()
+                ->select(['player_name', 'cycle_start_date', 'reason'])
+                ->where(['cycle_start_date IN' => array_keys($summariesByCycle)])
+                ->all();
+            foreach ($manualPenalties as $manualPenalty) {
+                $manualPenaltyReasons[$manualPenalty->cycle_start_date->toDateString()][$manualPenalty->player_name] = $manualPenalty->reason;
+            }
+        }
+
+        $this->set(compact('summariesByCycle', 'formattedCycleDates', 'minimumChestScore', 'minimumEpicChestScore', 'scoreColorsConfig', 'goalsByGuard', 'manualPenaltyReasons'));
     }
 
     public function playerHistory($playerName = null)
