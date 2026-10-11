@@ -178,9 +178,12 @@ class MembersTable extends Table
         $errorMessages = [];
         $threeWeeksAgo = FrozenTime::now()->subWeeks(3);
 
-        // Depois que um torneio do jogo enviou a lista do clan, ela e a fonte da
-        // verdade para ativo/inativo (MemberRosterService). A atividade de baus
-        // continua criando membros novos, mas nao liga nem desliga ninguem.
+        // Depois que o jogo enviou a lista do clan (um torneio, ou a lista de
+        // membros), ela e a fonte da verdade (MemberRosterService): a atividade
+        // de baus nao liga nem desliga ninguem, e tambem nao cria membros. Um
+        // nome de bau sem membro e uma leitura errada, alguem que ja saiu ou o
+        // nome antigo de quem trocou de nome no jogo - criar um membro para ele
+        // era o que enchia a tabela de duplicados inativos.
         $rosterManaged = (new \App\Service\MemberRosterService())->rosterManaged();
 
         // Indexar membros existentes por player para otimizar busca
@@ -222,11 +225,11 @@ class MembersTable extends Table
                         $updatedMembersCount++;
                     }
                 }
-            } else {
+            } elseif (!$rosterManaged) {
                 $newMember = $this->newEmptyEntity();
                 $newMember = $this->patchEntity($newMember, [
                     'player' => $playerName,
-                    'active' => $rosterManaged ? 0 : $isActive,
+                    'active' => $isActive,
                     'power' => 0,
                     'guards' => 0,
                     'specialists' => 0,
@@ -248,6 +251,10 @@ class MembersTable extends Table
                     $newMembersCount++;
                 }
             }
+        }
+
+        if (!$isDryRun) {
+            (new \App\Service\DuplicatePlayerNameService())->scanQuietly();
         }
 
         return [

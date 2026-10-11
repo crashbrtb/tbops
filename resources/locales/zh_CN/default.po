@@ -4021,451 +4021,451 @@ msgstr "新增"
 
 #: ./src/Controller/ConfigController.php:171
 msgid "The maintenance entries were removed from the crontab."
-msgstr ""
+msgstr "维护条目已从 crontab 中移除。"
 
 #: ./src/Controller/ConfigController.php:177
 msgid "Scheduled: {0} Brazil time ({1} UTC)."
-msgstr ""
+msgstr "已计划:巴西时间 {0}({1} UTC)。"
 
 #: ./src/Controller/ConfigController.php:242
 msgid "The settings were saved, but the crontab could not be rewritten: {0}"
-msgstr ""
+msgstr "设置已保存,但无法重写 crontab:{0}"
 
 #: ./src/Controller/ConfigController.php:254
 msgid "The schedule in the crontab was written by hand and this page cannot rewrite it, so the backup line was not added. Copy the block at the bottom of this page into the crontab."
-msgstr ""
+msgstr "crontab 中的计划是手工编写的,本页面无法重写它,因此没有添加备份行。请将本页面底部的代码块复制到 crontab 中。"
 
 #: ./src/Controller/ConfigController.php:261
 msgid "The nightly database backup is turned off."
-msgstr ""
+msgstr "每晚的数据库备份已关闭。"
 
 #: ./src/Controller/ConfigController.php:266
 msgid "The database is backed up every day at {0} UTC to {1}, keeping {2} day(s)."
-msgstr ""
+msgstr "数据库每天在 {0} UTC 备份到 {1},保留 {2} 天。"
 
 #: ./src/Controller/ConfigController.php:277
 msgid "Nothing is scheduled yet, so no backup will be taken. Install the schedule above."
-msgstr ""
+msgstr "尚未计划任何任务,因此不会进行备份。请安装上方的计划。"
 
 #: ./src/Controller/ConfigController.php:278
 msgid "The crontab cannot be reached from here, so nothing will take the backup until the block at the bottom of this page is installed by hand."
-msgstr ""
+msgstr "无法从这里访问 crontab,因此在手动安装本页面底部的代码块之前不会进行备份。"
 
 #: ./src/Controller/TroopCalculatorController.php:304
 msgid "From my best guardsmen"
-msgstr ""
+msgstr "按我最好的卫兵"
 
 #: ./src/Controller/TroopCalculatorController.php:306
 msgid "Tier {0}"
-msgstr ""
+msgstr "{0} 阶"
 
 #: ./src/Service/DatabaseBackupService.php:330
 msgid "The database connection does not name a database to back up."
-msgstr ""
+msgstr "数据库连接没有指定要备份的数据库。"
 
 #: ./src/Service/DatabaseBackupService.php:338
 msgid "The application is not on MySQL or MariaDB, so mysqldump cannot back it up."
-msgstr ""
+msgstr "应用程序未使用 MySQL 或 MariaDB,因此 mysqldump 无法备份它。"
 
 #: ./src/Service/DatabaseBackupService.php:362
 msgid "mysqldump was not found on this server, so no backup can be taken."
-msgstr ""
+msgstr "在此服务器上找不到 mysqldump,因此无法进行备份。"
 
 #: ./src/Service/DatabaseBackupService.php:449
 msgid "PHP on this server cannot run shell commands, so mysqldump cannot be called."
-msgstr ""
+msgstr "此服务器上的 PHP 无法运行 shell 命令,因此无法调用 mysqldump。"
 
 #: ./src/Service/DatabaseBackupService.php:454
 msgid "PHP on this server has exec() disabled, so mysqldump cannot be called."
-msgstr ""
+msgstr "此服务器上的 PHP 已禁用 exec(),因此无法调用 mysqldump。"
 
 #: ./src/Service/DatabaseBackupService.php:539
 msgid "The backup folder cannot contain line breaks."
-msgstr ""
+msgstr "备份文件夹不能包含换行符。"
 
 #: ./src/Service/DatabaseBackupService.php:548
 msgid "The backup folder has to be a full path, such as {0}, because cron does not start in the site directory."
-msgstr ""
+msgstr "备份文件夹必须是完整路径,例如 {0},因为 cron 不是在网站目录中启动的。"
 
 #: ./src/Service/DatabaseBackupService.php:558
 msgid "The backup folder path is too long (255 characters at most)."
-msgstr ""
+msgstr "备份文件夹路径过长(最多 255 个字符)。"
 
 #: ./src/Service/DatabaseBackupService.php:585
 msgid "The retention period has to be a whole number of days."
-msgstr ""
+msgstr "保留期限必须是整数天数。"
 
 #: ./src/Service/DatabaseBackupService.php:591
 msgid "The retention period has to be between {0} and {1} days."
-msgstr ""
+msgstr "保留期限必须在 {0} 到 {1} 天之间。"
 
 #: ./src/Service/DatabaseBackupService.php:720
 msgid "mysqldump failed: {0}"
-msgstr ""
+msgstr "mysqldump 失败:{0}"
 
 #: ./src/Service/DatabaseBackupService.php:722
 msgid "it exited with code {0}."
-msgstr ""
+msgstr "它以代码 {0} 退出。"
 
 #: ./src/Service/DatabaseBackupService.php:730
 msgid "The dump file was not created or came out empty, so it was deleted."
-msgstr ""
+msgstr "转储文件未创建或内容为空,因此已删除。"
 
 #: ./src/Service/DatabaseBackupService.php:760
 msgid "The dump was written but could not be compressed."
-msgstr ""
+msgstr "转储已写入,但无法压缩。"
 
 #: ./src/Service/DatabaseBackupService.php:780
 msgid "The dump was written but could not be compressed: {0}"
-msgstr ""
+msgstr "转储已写入,但无法压缩:{0}"
 
 #: ./src/Service/DatabaseBackupService.php:803
 msgid "A temporary file for the database credentials could not be created."
-msgstr ""
+msgstr "无法为数据库凭据创建临时文件。"
 
 #: ./src/Service/DatabaseBackupService.php:864
 msgid "The backup folder {0} could not be created."
-msgstr ""
+msgstr "无法创建备份文件夹 {0}。"
 
 #: ./src/Service/DatabaseBackupService.php:868
 msgid "The backup folder {0} cannot be written to."
-msgstr ""
+msgstr "无法写入备份文件夹 {0}。"
 
 #: ./src/Service/MaintenanceScheduleService.php:219
 msgid "The crontab was saved but the maintenance entries are not in it. Please add them by hand."
-msgstr ""
+msgstr "crontab 已保存,但其中没有维护条目。请手动添加。"
 
 #: ./src/Service/MaintenanceScheduleService.php:403
 msgid "\"{0}\" is not a valid time of day."
-msgstr ""
+msgstr "\"{0}\" 不是有效的时间。"
 
 #: ./src/Service/MaintenanceScheduleService.php:412
 msgid "Choose at least one time of day for the maintenance to run."
-msgstr ""
+msgstr "请至少选择一个运行维护的时间。"
 
 #: ./src/Service/MaintenanceScheduleService.php:417
 msgid "The maintenance cannot be scheduled more than {0} times a day."
-msgstr ""
+msgstr "维护每天最多只能计划 {0} 次。"
 
 #: ./src/Service/MaintenanceScheduleService.php:563
 msgid "This server runs Windows, which has no crontab. Use Task Scheduler with the command shown below."
-msgstr ""
+msgstr "此服务器运行 Windows,没有 crontab。请使用任务计划程序和下方显示的命令。"
 
 #: ./src/Service/MaintenanceScheduleService.php:569
 msgid "PHP on this server cannot run shell commands, so the crontab cannot be reached from here."
-msgstr ""
+msgstr "此服务器上的 PHP 无法运行 shell 命令,因此无法从这里访问 crontab。"
 
 #: ./src/Service/MaintenanceScheduleService.php:574
 msgid "PHP on this server has exec() disabled, so the crontab cannot be reached from here."
-msgstr ""
+msgstr "此服务器上的 PHP 已禁用 exec(),因此无法从这里访问 crontab。"
 
 #: ./src/Service/MaintenanceScheduleService.php:578
 msgid "The crontab command is not installed on this server."
-msgstr ""
+msgstr "此服务器上未安装 crontab 命令。"
 
 #: ./src/Service/MaintenanceScheduleService.php:607
 msgid "The crontab could not be read: {0}"
-msgstr ""
+msgstr "无法读取 crontab:{0}"
 
 #: ./src/Service/MaintenanceScheduleService.php:625
 msgid "A temporary file for the new crontab could not be created."
-msgstr ""
+msgstr "无法为新的 crontab 创建临时文件。"
 
 #: ./src/Service/MaintenanceScheduleService.php:638
 msgid "The crontab could not be written: {0}"
-msgstr ""
+msgstr "无法写入 crontab:{0}"
 
 #: ./src/Service/MaintenanceScheduleService.php:640
 msgid "the crontab command failed."
-msgstr ""
+msgstr "crontab 命令失败。"
 
 #: ./templates/Config/maintenance.php:28
 #: ./templates/Config/maintenance.php:32
 #: ./templates/Config/maintenance.php:49
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:148
 msgid "Maintenance"
-msgstr ""
+msgstr "维护"
 
 #: ./templates/Config/maintenance.php:52
 msgid "The scheduled tasks: archiving finished cycles, recording finished events, purging old chests and backing up the database"
-msgstr ""
+msgstr "计划任务:归档已结束的周期、记录已结束的活动、清理旧宝箱以及备份数据库"
 
 #: ./templates/Config/maintenance.php:58
 msgid "Check again"
-msgstr ""
+msgstr "重新检查"
 
 #: ./templates/Config/maintenance.php:68
 msgid "Current status"
-msgstr ""
+msgstr "当前状态"
 
 #: ./templates/Config/maintenance.php:70
 msgid "Read from the crontab of the user the web server runs as, every time this page is opened."
-msgstr ""
+msgstr "每次打开本页面时,从运行 Web 服务器的用户的 crontab 中读取。"
 
 #: ./templates/Config/maintenance.php:78
 msgid "The crontab cannot be checked from here"
-msgstr ""
+msgstr "无法从这里检查 crontab"
 
 #: ./templates/Config/maintenance.php:80
 msgid "The entry can still be installed by hand: copy the block at the bottom of this page."
-msgstr ""
+msgstr "仍然可以手动安装该条目:复制本页面底部的代码块。"
 
 #: ./templates/Config/maintenance.php:87
 msgid "The crontab could not be read"
-msgstr ""
+msgstr "无法读取 crontab"
 
 #: ./templates/Config/maintenance.php:97
 msgid "The maintenance is in the crontab and runs {0} time(s) a day."
-msgstr ""
+msgstr "维护已在 crontab 中,每天运行 {0} 次。"
 
 #: ./templates/Config/maintenance.php:102
 msgid "The database backup is in there too."
-msgstr ""
+msgstr "数据库备份也在其中。"
 
 #: ./templates/Config/maintenance.php:111
 msgid "Not scheduled"
-msgstr ""
+msgstr "未计划"
 
 #: ./templates/Config/maintenance.php:113
 msgid "Nothing is running the maintenance. Finished cycles are not being archived and old chests are not being purged. Install it below."
-msgstr ""
+msgstr "没有任何程序在运行维护。已结束的周期没有被归档,旧宝箱也没有被清理。请在下方安装。"
 
 #: ./templates/Config/maintenance.php:125
 msgid "Brazil time"
-msgstr ""
+msgstr "巴西时间"
 
 #: ./templates/Config/maintenance.php:126
 msgid "UTC"
-msgstr ""
+msgstr "UTC"
 
 #: ./templates/Config/maintenance.php:142
 msgid "The lines in the crontab:"
-msgstr ""
+msgstr "crontab 中的行:"
 
 #: ./templates/Config/maintenance.php:150
 msgid "Last cron output written {0}."
-msgstr ""
+msgstr "最近一次 cron 输出写入于 {0}。"
 
 #: ./templates/Config/maintenance.php:152
 msgid "The cron log has never been written, so the task has probably never run here."
-msgstr ""
+msgstr "cron 日志从未被写入,因此该任务很可能从未在这里运行过。"
 
 #: ./templates/Config/maintenance.php:157
 msgid "Brazil is {0} right now; {1} is written to the crontab as {2} UTC."
-msgstr ""
+msgstr "巴西现在是 {0};{1} 会以 {2} UTC 写入 crontab。"
 
 #: ./templates/Config/maintenance.php:167
 msgid "The server clock is {0}."
-msgstr ""
+msgstr "服务器时钟为 {0}。"
 
 #: ./templates/Config/maintenance.php:174
 msgid "The entries declare CRON_TZ=UTC, so this does not change when they run."
-msgstr ""
+msgstr "这些条目声明了 CRON_TZ=UTC,因此这不会改变它们的运行时间。"
 
 #: ./templates/Config/maintenance.php:183
 msgid "Entries added by hand"
-msgstr ""
+msgstr "手动添加的条目"
 
 #: ./templates/Config/maintenance.php:185
 msgid "These call the maintenance but were not installed from this page, so saving here will not change or remove them. Delete them with <code>crontab -e</code> if you do not want the task running twice."
-msgstr ""
+msgstr "这些条目会调用维护,但不是从本页面安装的,因此在这里保存不会更改或移除它们。如果不想让任务运行两次,请用 <code>crontab -e</code> 删除它们。"
 
 #: ./templates/Config/maintenance.php:198
 msgid "Schedule"
-msgstr ""
+msgstr "计划"
 
 #: ./templates/Config/maintenance.php:200
 msgid "Pick the times on the Brazil clock. They are converted to UTC before being written, so the schedule holds whatever timezone the server keeps."
-msgstr ""
+msgstr "请按巴西时间选择时间。写入前会转换为 UTC,因此无论服务器使用哪个时区,计划都保持不变。"
 
 #: ./templates/Config/maintenance.php:206
 msgid "How many times a day"
-msgstr ""
+msgstr "每天运行几次"
 
 #: ./templates/Config/maintenance.php:211
 msgid "{0} times a day (suggested)"
-msgstr ""
+msgstr "每天 {0} 次(推荐)"
 
 #: ./templates/Config/maintenance.php:212
 msgid "Once a day"
-msgstr ""
+msgstr "每天一次"
 
 #: ./templates/Config/maintenance.php:212
 msgid "{0} times a day"
-msgstr ""
+msgstr "每天 {0} 次"
 
 #: ./templates/Config/maintenance.php:217
 msgid "Twice a day is the suggestion: {0} and {1} Brazil time, quiet hours either side of the clan's active evening. Changing this fills in suggested times, which you can then edit."
-msgstr ""
+msgstr "推荐每天两次:巴西时间 {0} 和 {1},即部落活跃的晚间前后的安静时段。更改此项会填入推荐时间,之后您可以再编辑。"
 
 #: ./templates/Config/maintenance.php:230
 msgid "Run {0}"
-msgstr ""
+msgstr "第 {0} 次运行"
 
 #: ./templates/Config/maintenance.php:240
 msgid "Save schedule"
-msgstr ""
+msgstr "保存计划"
 
 #: ./templates/Config/maintenance.php:240
 msgid "Install in crontab"
-msgstr ""
+msgstr "安装到 crontab"
 
 #: ./templates/Config/maintenance.php:245
 msgid "Remove from crontab"
-msgstr ""
+msgstr "从 crontab 中移除"
 
 #: ./templates/Config/maintenance.php:252
 msgid "Remove the maintenance from the crontab? Nothing will archive cycles, purge old chests or back up the database until it is installed again."
-msgstr ""
+msgstr "要从 crontab 中移除维护吗?在重新安装之前,不会归档周期、清理旧宝箱或备份数据库。"
 
 #: ./templates/Config/maintenance.php:266
 msgid "Database backup"
-msgstr ""
+msgstr "数据库备份"
 
 #: ./templates/Config/maintenance.php:268
 msgid "A gzipped mysqldump of the whole database, taken every day at {0} UTC — the game reset — so each dump holds one cycle day exactly as the game closed it. The time is fixed for that reason; the folder and how long dumps are kept are yours to choose."
-msgstr ""
+msgstr "整个数据库的 gzip 压缩 mysqldump,每天在 {0} UTC(游戏重置时间)进行,因此每个转储都完整保存了游戏结算时的一个周期日。时间因此是固定的;文件夹和转储的保留时间由您选择。"
 
 #: ./templates/Config/maintenance.php:281
 msgid "Not backing up"
-msgstr ""
+msgstr "未在备份"
 
 #: ./templates/Config/maintenance.php:283
 msgid "Nothing is dumping the database. Turn it on below."
-msgstr ""
+msgstr "没有任何程序在转储数据库。请在下方开启。"
 
 #: ./templates/Config/maintenance.php:291
 msgid "Turned on, but not in the crontab"
-msgstr ""
+msgstr "已开启,但不在 crontab 中"
 
 #: ./templates/Config/maintenance.php:293
 msgid "The backup is turned on but nothing is calling it. Save the schedule above, or install the block by hand."
-msgstr ""
+msgstr "备份已开启,但没有任何程序调用它。请保存上方的计划,或手动安装代码块。"
 
 #: ./templates/Config/maintenance.php:302
 msgid "Backing up daily"
-msgstr ""
+msgstr "每天备份中"
 
 #: ./templates/Config/maintenance.php:304
 msgid "Every day at {0} UTC ({1} Brazil time), keeping {2} day(s) of dumps."
-msgstr ""
+msgstr "每天 {0} UTC(巴西时间 {1}),保留 {2} 天的转储。"
 
 #: ./templates/Config/maintenance.php:318
 msgid "Saving to"
-msgstr ""
+msgstr "保存到"
 
 #: ./templates/Config/maintenance.php:321
 msgid "(configured as {0})"
-msgstr ""
+msgstr "(配置为 {0})"
 
 #: ./templates/Config/maintenance.php:324
 msgid "— created on the first run."
-msgstr ""
+msgstr "— 首次运行时创建。"
 
 #: ./templates/Config/maintenance.php:326
 msgid "— this folder cannot be written to."
-msgstr ""
+msgstr "— 无法写入此文件夹。"
 
 #: ./templates/Config/maintenance.php:332
 msgid "{0} dump(s) there, {1} in all. Newest: {2}."
-msgstr ""
+msgstr "那里有 {0} 个转储,共 {1}。最新:{2}。"
 
 #: ./templates/Config/maintenance.php:339
 msgid "No dumps in that folder yet."
-msgstr ""
+msgstr "该文件夹中还没有转储。"
 
 #: ./templates/Config/maintenance.php:341
 msgid "The folder is not there yet, so there are no dumps."
-msgstr ""
+msgstr "文件夹尚不存在,因此没有转储。"
 
 #: ./templates/Config/maintenance.php:346
 msgid "Every step is appended to {0}."
-msgstr ""
+msgstr "每个步骤都会追加到 {0}。"
 
 #: ./templates/Config/maintenance.php:349
 msgid "Cron last wrote its own log {0}."
-msgstr ""
+msgstr "cron 最近一次写入自己的日志是在 {0}。"
 
 #: ./templates/Config/maintenance.php:357
 msgid "This installation is not on MySQL or MariaDB, so mysqldump cannot back it up."
-msgstr ""
+msgstr "此安装未使用 MySQL 或 MariaDB,因此 mysqldump 无法备份它。"
 
 #: ./templates/Config/maintenance.php:362
 msgid "The command may still work from a real shell, where cron runs it."
-msgstr ""
+msgstr "该命令在 cron 运行它的真实 shell 中可能仍然有效。"
 
 #: ./templates/Config/maintenance.php:365
 msgid "mysqldump found at {0}."
-msgstr ""
+msgstr "在 {0} 找到 mysqldump。"
 
 #: ./templates/Config/maintenance.php:368
 msgid "mysqldump was not found on this server. Install the MySQL/MariaDB client tools, or no backup can be taken."
-msgstr ""
+msgstr "在此服务器上找不到 mysqldump。请安装 MySQL/MariaDB 客户端工具,否则无法进行备份。"
 
 #: ./templates/Config/maintenance.php:380
 msgid "Back the database up every day"
-msgstr ""
+msgstr "每天备份数据库"
 
 #: ./templates/Config/maintenance.php:386
 msgid "Folder to save to"
-msgstr ""
+msgstr "保存到的文件夹"
 
 #: ./templates/Config/maintenance.php:390
 msgid "A full path, because cron does not start in the site directory. {0} is the home directory of the user the site runs as, so the default {1} needs nothing set up. The folder is created if it is not there."
-msgstr ""
+msgstr "必须是完整路径,因为 cron 不是在网站目录中启动的。{0} 是运行网站的用户的主目录,因此默认的 {1} 无需任何设置。文件夹不存在时会自动创建。"
 
 #: ./templates/Config/maintenance.php:399
 msgid "Keep dumps for"
-msgstr ""
+msgstr "转储保留"
 
 #: ./templates/Config/maintenance.php:405
 msgid "days"
-msgstr ""
+msgstr "天"
 
 #: ./templates/Config/maintenance.php:409
 msgid "Anything older is deleted after each backup, so the folder holds this many days and no more. Between {0} and {1} days; the old script kept {2}."
-msgstr ""
+msgstr "更早的内容会在每次备份后删除,因此文件夹中只保留这么多天的转储。范围为 {0} 到 {1} 天;旧脚本保留 {2} 天。"
 
 #: ./templates/Config/maintenance.php:421
 msgid "Save backup settings"
-msgstr ""
+msgstr "保存备份设置"
 
 #: ./templates/Config/maintenance.php:431
 msgid "Install it by hand"
-msgstr ""
+msgstr "手动安装"
 
 #: ./templates/Config/maintenance.php:433
 msgid "For the times shown in the form above. Run <code>crontab -e</code> on the server and paste this at the end of the file."
-msgstr ""
+msgstr "对应上方表单中显示的时间。在服务器上运行 <code>crontab -e</code>,并将其粘贴到文件末尾。"
 
 #: ./templates/Config/maintenance.php:441
 #: ./templates/Config/maintenance.php:530
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #: ./templates/Config/maintenance.php:444
 msgid "This block is what the buttons above write. Saving the schedule here rewrites everything between the two marker comments and leaves the rest of the crontab alone."
-msgstr ""
+msgstr "此代码块就是上方按钮写入的内容。在这里保存计划会重写两个标记注释之间的所有内容,crontab 的其余部分保持不变。"
 
 #: ./templates/Config/maintenance.php:451
 msgid "You can also run the task yourself at any time: {0} from the application directory, or add {1} to see what it would do without touching the database."
-msgstr ""
+msgstr "您也可以随时自己运行该任务:在应用程序目录中运行 {0},或加上 {1} 查看它会做什么而不改动数据库。"
 
 #: ./templates/Config/maintenance.php:457
 msgid "The backup is the same: {0} takes one now, and {1} takes one even while the nightly backup is turned off."
-msgstr ""
+msgstr "备份也是一样:{0} 立即进行一次备份,{1} 即使每晚备份已关闭也会进行一次备份。"
 
 #: ./templates/Config/maintenance.php:492
 msgid "= {0} UTC"
-msgstr ""
+msgstr "= {0} UTC"
 
 #: ./templates/TroopCalculator/index.php:348
 msgid "Mercenary tier"
-msgstr ""
+msgstr "雇佣兵阶级"
 
 #: ./templates/TroopCalculator/index.php:354
 msgid "Only one band is for hire at a time, and it follows your best guardsmen. Set it here if the game offers you a different one."
-msgstr ""
+msgstr "同一时间只能雇佣一支队伍,它取决于您最好的卫兵。如果游戏提供的是另一支队伍,请在这里设置。"
 
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:6
 msgid "Scoreboard"
@@ -5711,3 +5711,298 @@ msgstr "原因为必填项。"
 
 msgid "This player already has a manual penalty in this cycle."
 msgstr "该玩家在本周期已有手动惩罚。"
+
+# Config parameter descriptions (stored in the database, translated at display)
+msgid "Select a reference date for the start/end of the count. For example: If it is a weekly count, select a date that represents the day of the week that the count will start/end. If the count is for the Rise of Ancients event, select a date that represents the day of the event. Always use the format (YYYY-MM-DD hh:mm:ss) with UTC time (ex: \"2025-05-13 17:00:00\")"
+msgstr "选择统计开始/结束的参考日期。例如:如果按周统计,请选择一个代表统计开始/结束是星期几的日期。如果统计的是“远古崛起”活动,请选择代表活动当天的日期。请始终使用 UTC 时间的 (YYYY-MM-DD hh:mm:ss) 格式(例如:\"2025-05-13 17:00:00\")"
+
+msgid "Every how many days: Sets how many days each counting period lasts. Suggestion: 6 to start counting every elder 7 for a weekly count"
+msgstr "每隔多少天:设置每个统计周期持续多少天。建议:6 表示每个长老开始一次统计,7 表示按周统计"
+
+msgid "Minimum Chest Score"
+msgstr "宝箱最低分数"
+
+msgid "Minimum points for collecting MONSTER epic chests."
+msgstr "收集怪物史诗宝箱的最低分数。"
+
+msgid "Clan name"
+msgstr "部落名称"
+
+msgid "clan acronym"
+msgstr "部落简称"
+
+msgid "kingdom number kxxx"
+msgstr "王国编号 (kxxx)"
+
+msgid "R (Red) value of the initial color for low score (0-255)."
+msgstr "低分起始颜色的 R(红)值 (0-255)。"
+
+msgid "G (Green) value of the starting color for low score (0-255)."
+msgstr "低分起始颜色的 G(绿)值 (0-255)。"
+
+msgid "Starting color B (Blue) value for low score (0-255)."
+msgstr "低分起始颜色的 B(蓝)值 (0-255)。"
+
+msgid "R (Red) value of the final color for high score (0-255)."
+msgstr "高分结束颜色的 R(红)值 (0-255)。"
+
+msgid "G (Green) value of the final color for high score (0-255)."
+msgstr "高分结束颜色的 G(绿)值 (0-255)。"
+
+msgid "Final color B (Blue) value for high score (0-255)."
+msgstr "高分结束颜色的 B(蓝)值 (0-255)。"
+
+msgid "Value between 0 and 1 (e.g. 0.9 for 90%) that defines the point at which the score color starts to change from the initial color to the final color."
+msgstr "介于 0 和 1 之间的值(例如 0.9 表示 90%),用于确定分数颜色从起始颜色开始变为结束颜色的位置。"
+
+msgid "Minimum epic chest score"
+msgstr "史诗宝箱最低分数"
+
+msgid "Fixed deposit fee in millions of Silver"
+msgstr "固定存款手续费,以百万白银为单位"
+
+msgid "Fixed withdrawal fee in millions of Silver"
+msgstr "固定取款手续费,以百万白银为单位"
+
+msgid "Fixed transfer fee in millions of Silver"
+msgstr "固定转账手续费,以百万白银为单位"
+
+msgid "Caravan fee percentage for deposits"
+msgstr "存款的商队手续费百分比"
+
+msgid "1 = Bank active / 0 = no Bank"
+msgstr "1 = 启用银行 / 0 = 无银行"
+
+msgid "Retention time in days for old collected chests. Minimum retention time must be greater than 7 days, and default is 30 days. Setting to 0 disables automatic purge."
+msgstr "旧的已收集宝箱的保留天数。最短保留时间必须大于 7 天,默认值为 30 天。设置为 0 将停用自动清理。"
+
+msgid "Logo shown in the navbar. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "导航栏中显示的标志。webroot/img/branding/presets 中某个预设的标识,或者使用上传的图片时为 \"custom\"。在 Admin > 品牌外观 中更改。"
+
+msgid "Icon shown in the browser tab. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "浏览器标签页中显示的图标。webroot/img/branding/presets 中某个预设的标识,或者使用上传的图片时为 \"custom\"。在 Admin > 品牌外观 中更改。"
+
+msgid "Colour scheme for the whole site: morning-light, deepest-dark, wildflowers or twilight. Change it under Admin > Theme."
+msgstr "整个网站的配色方案:morning-light、deepest-dark、wildflowers 或 twilight。在 Admin > 主题 中更改。"
+
+msgid "Whether the nightly database backup runs. Managed under Admin > Maintenance."
+msgstr "是否运行每晚的数据库备份。在 Admin > 维护 中管理。"
+
+msgid "Folder the nightly database dumps are written to. \"~\" is the home directory of the user the site runs as. Managed under Admin > Maintenance."
+msgstr "每晚数据库转储写入的文件夹。\"~\" 是运行网站的用户的主目录。在 Admin > 维护 中管理。"
+
+msgid "How many days of database dumps to keep. Older dumps are deleted after each backup. Managed under Admin > Maintenance."
+msgstr "数据库转储保留多少天。较旧的转储会在每次备份后删除。在 Admin > 维护 中管理。"
+
+msgid "1 = Troop Calculator active / 0 = no Troop Calculator"
+msgstr "1 = 启用部队计算器 / 0 = 无部队计算器"
+
+msgid "Read-only key the external monitor sends to /api/v1/health. Managed under Admin > Monitoring."
+msgstr "外部监控发送到 /api/v1/health 的只读密钥。在 Admin > 监控 中管理。"
+
+msgid "1 = Goal penalty active / 0 = no goal penalty. A player who misses the goal gets a higher goal in the next cycle."
+msgstr "1 = 启用目标惩罚 / 0 = 无目标惩罚。未达成目标的玩家在下一个周期会得到更高的目标。"
+
+msgid "Goal penalty: how much the goal grows, in percent, for a player who missed it in the previous cycle (e.g. 10 = +10%). The raised goal is rounded up."
+msgstr "目标惩罚:对于上一个周期未达成目标的玩家,目标按百分比提高多少(例如 10 = +10%)。提高后的目标向上取整。"
+
+msgid "Goal penalty: which goal it applies to. \"total\" = Chest Score Goal (minimum_chest_score) / \"epic\" = Epic Chest Goal (minimum_epic_chest_score) / \"both\" = both goals: missing either one is a miss, and only the goal that was missed is raised."
+msgstr "目标惩罚:适用于哪个目标。\"total\" = 宝箱分数目标 (minimum_chest_score) / \"epic\" = 史诗宝箱目标 (minimum_epic_chest_score) / \"both\" = 两个目标:任意一个未达成都算未达成,并且只提高未达成的那个目标。"
+
+msgid "Times of day (UTC) the daily maintenance runs. Managed under Admin > Maintenance."
+msgstr "每日维护运行的时间 (UTC)。在 Admin > 维护 中管理。"
+
+msgid "Chest goals: \"global\" = the same goal for everyone (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = the goal set for the player's guard level (G1 to G9). G0 means the level is unknown and gets the highest goal."
+msgstr "宝箱目标:\"global\" = 所有人使用相同的目标 (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = 为玩家的卫兵等级(G1 到 G9)设置的目标。G0 表示等级未知,使用最高的目标。"
+
+msgid "Chest Score Goal per guard level, as JSON ({\"1\": 5000, ..., \"9\": 20000}). A level left out uses minimum_chest_score. Edited in Configs > Chests."
+msgstr "按卫兵等级设置的宝箱分数目标,JSON 格式 ({\"1\": 5000, ..., \"9\": 20000})。未列出的等级使用 minimum_chest_score。在 配置 > 宝箱 中编辑。"
+
+msgid "Epic Chest Goal per guard level, as JSON ({\"1\": 2000, ..., \"9\": 8000}). A level left out uses minimum_epic_chest_score. Edited in Configs > Chests."
+msgstr "按卫兵等级设置的史诗宝箱目标,JSON 格式 ({\"1\": 2000, ..., \"9\": 8000})。未列出的等级使用 minimum_epic_chest_score。在 配置 > 宝箱 中编辑。"
+
+msgid "Scheduled: {0} UTC."
+msgstr "已计划:{0} UTC。"
+
+msgid "Scheduled times (UTC)"
+msgstr "计划时间 (UTC)"
+
+msgid "All maintenance schedules and tasks follow UTC (Coordinated Universal Time)."
+msgstr "所有维护计划和任务都遵循 UTC(协调世界时)。"
+
+msgid "Pick the times in UTC. The schedule holds whatever timezone the server keeps."
+msgstr "请按 UTC 选择时间。无论服务器使用哪个时区,计划都保持不变。"
+
+msgid "Twice a day is the suggestion: {0} and {1} UTC, quiet hours spaced across the day. Changing this fills in suggested times, which you can then edit."
+msgstr "推荐每天两次:{0} 和 {1} UTC,即分布在一天中的安静时段。更改此项会填入推荐时间,之后您可以再编辑。"
+
+msgid "Run {0} (UTC)"
+msgstr "第 {0} 次运行 (UTC)"
+
+msgid "Every day at {0} UTC, keeping {1} day(s) of dumps."
+msgstr "每天 {0} UTC,保留 {1} 天的转储。"
+
+msgid "Deselect all"
+msgstr "取消全选"
+
+msgid "chests selected"
+msgstr "个宝箱已选择"
+
+msgid "Mark selected as not recoverable"
+msgstr "将所选标记为无法恢复"
+
+msgid "Mark all {0} pending as not recoverable"
+msgstr "将全部 {0} 个待处理标记为无法恢复"
+
+msgid "Please select at least one chest."
+msgstr "请至少选择一个宝箱。"
+
+msgid "Are you sure you want to mark the selected chests as not recoverable?"
+msgstr "确定要将所选宝箱标记为无法恢复吗?"
+
+msgid "Are you sure you want to mark ALL {0} pending chests as not recoverable? This action will update all pending chests across all pages."
+msgstr "确定要将全部 {0} 个待处理宝箱标记为无法恢复吗?此操作将更新所有页面上的全部待处理宝箱。"
+
+msgid "{0} pending chest(s) marked as not recoverable."
+msgstr "已将 {0} 个待处理宝箱标记为无法恢复。"
+
+msgid "No pending chests were found to update."
+msgstr "没有找到需要更新的待处理宝箱。"
+
+msgid "No chests selected."
+msgstr "未选择任何宝箱。"
+
+msgid "{0} chest(s) marked as not recoverable."
+msgstr "已将 {0} 个宝箱标记为无法恢复。"
+
+msgid "No pending chests were updated."
+msgstr "没有待处理宝箱被更新。"
+
+msgid "This tournament has no reward: the result is published with the ranking only. Rewards can be added later by editing the event; the points stay as they are."
+msgstr "此锦标赛没有奖励:结果仅随排名发布。之后可以通过编辑活动来添加奖励;积分保持不变。"
+
+msgid "The result of event #{0} is not published."
+msgstr "活动 #{0} 的结果尚未发布。"
+
+msgid "The rewards were not saved: {0}"
+msgstr "奖励未保存:{0}"
+
+msgid "The rewards were split again over the published result; the points did not change."
+msgstr "奖励已按已发布的结果重新分配;积分没有变化。"
+
+msgid "The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody's points change."
+msgstr "此锦标赛的结果已发布。您可以在这里添加或更改奖励:奖励会按已发布的排名重新分配,任何人的积分都不会改变。"
+
+msgid "This tournament has no rewards"
+msgstr "此锦标赛没有奖励"
+
+msgid "The result is published with the ranking only. Rewards can still be added later, even after it is published."
+msgstr "结果仅随排名发布。之后仍可添加奖励,即使在发布之后。"
+
+msgid "No rewards: the result is published with the ranking only. Edit the event to add rewards, even after it is published; the points do not change."
+msgstr "没有奖励:结果仅随排名发布。即使在发布之后,也可以编辑活动来添加奖励;积分不会改变。"
+
+msgid "This tournament has no rewards."
+msgstr "此锦标赛没有奖励。"
+
+msgid "Edit rewards"
+msgstr "编辑奖励"
+
+msgid "The ranking of event #{0} was received from the game; a file cannot replace it."
+msgstr "活动 #{0} 的排名已从游戏接收;文件无法替换它。"
+
+msgid "The points of event #{0} were already received from the game and cannot change."
+msgstr "活动 #{0} 的积分已从游戏接收,无法更改。"
+
+msgid "The points come from the game and cannot be changed."
+msgstr "积分来自游戏,无法更改。"
+
+msgid "Change the member or the prize checkbox, then recalculate to see the new shares. The points come from the game and cannot be changed."
+msgstr "更改成员或奖品复选框,然后重新计算以查看新的份额。积分来自游戏,无法更改。"
+
+msgid "Send result_uids as a list of at most {0} ids."
+msgstr "请将 result_uids 作为最多包含 {0} 个 ID 的列表发送。"
+
+msgid "Send the search as a JSON body."
+msgstr "请以 JSON 正文发送搜索。"
+
+msgid "started_at is not a valid date."
+msgstr "started_at 不是有效的日期。"
+
+msgid "The member list must have at least one player."
+msgstr "成员列表必须至少有一名玩家。"
+
+msgid "A member list has at most {0} players; {1} were sent."
+msgstr "成员列表最多 {0} 名玩家;发送了 {1} 名。"
+
+msgid "Line {0}: the player has no name."
+msgstr "第 {0} 行:玩家没有名称。"
+
+msgid "Line {0}: the power must be a whole number of 0 or more."
+msgstr "第 {0} 行:战力必须是大于等于 0 的整数。"
+
+msgid "read_at is not a valid date."
+msgstr "read_at 不是有效的日期。"
+
+msgid "Send the member list as a JSON body."
+msgstr "请以 JSON 正文发送成员列表。"
+
+msgid "The member list was not accepted."
+msgstr "成员列表未被接受。"
+
+msgid "A member list needs at least {0} players."
+msgstr "成员列表至少需要 {0} 名玩家。"
+
+msgid "This list is of another clan than the one this site follows."
+msgstr "此列表属于另一个部落,而不是本网站跟踪的部落。"
+
+msgid "The site already has a newer list of the clan."
+msgstr "网站已有更新的部落列表。"
+
+msgid "Notifications"
+msgstr "通知"
+
+msgid "Notification"
+msgstr "通知"
+
+msgid "Possible duplicate player: \"{0}\" and \"{1}\""
+msgstr "可能重复的玩家：\"{0}\" 和 \"{1}\""
+
+msgid "Mark as read"
+msgstr "标记为已读"
+
+msgid "Mark all as read"
+msgstr "全部标记为已读"
+
+msgid "All notifications"
+msgstr "所有通知"
+
+msgid "{0} notification(s)"
+msgstr "{0} 条通知"
+
+msgid "Notification marked as read."
+msgstr "通知已标记为已读。"
+
+msgid "All notifications marked as read."
+msgstr "所有通知已标记为已读。"
+
+msgid "Check now"
+msgstr "立即检查"
+
+msgid "Check finished: {0} new notification(s)."
+msgstr "检查完成：{0} 条新通知。"
+
+msgid "Unread"
+msgstr "未读"
+
+msgid "Read by {0} on {1}"
+msgstr "{0} 已读于 {1}"
+
+msgid "No longer applies since {0}"
+msgstr "自 {0} 起不再适用"
+
+msgid "No notifications yet."
+msgstr "暂无通知。"
+
+msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
+msgstr "发送给管理员的所有提醒。每当成员发生变化时，都会检查宝箱计数器无法区分的玩家名称。"

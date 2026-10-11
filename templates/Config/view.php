@@ -61,7 +61,7 @@ $this->Breadcrumbs->add([
                     </tr>
                     <tr>
                         <th class="bg-light"><?= __('Description') ?></th>
-                        <td><?= h($config->description) ?></td>
+                        <td><?= h(__($config->description)) ?></td>
                     </tr>
                     <tr>
                         <th class="bg-light"><?= __('Internal ID') ?></th>

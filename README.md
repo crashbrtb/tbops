@@ -324,6 +324,7 @@ row per run, opened as `running` and closed as `success`, `partial`, `failed` or
 | `daily_maintenance` | `daily_maintenance` | yes, 780 min |
 | `database_backup` | `database_backup` | yes, 1500 min |
 | `tournament_import` | the EventUploader API | no (uploads are manual) |
+| `member_list` | the Uploader API, at each Members list applied | no (not in the monitored jobs) |
 
 A job is **down** when it has had no good run within its limit, or when its last
 run never closed. A run that found no chests is still a good run: this watches
@@ -669,6 +670,7 @@ once; only their sha256 is stored. Only active administrators' tokens work.
 | `POST` | `/api/v1/tournament-catalog` | Name (and image) of tournament types, from the mapper |
 | `GET` | `/api/v1/events/awaiting` | Hand-made game events waiting for a ranking |
 | `POST` | `/api/v1/events/{id}/imports` | Send a ranking to a hand-made game event |
+| `POST` | `/api/v1/members` | Send the clan's Members list: who is in it is active, everyone else inactive |
 
 Send the token as `Authorization: Bearer cct_...`. Hosts that run PHP as
 FastCGI may drop that header; send `X-Api-Token: cct_...` too (the uploader
@@ -711,6 +713,75 @@ Answers are JSON. `POST /api/v1/tournaments` returns `201` new event or
 new draft, `200` identical to what is already there, `401` bad token, `403` not
 an administrator, `409` result already published, `422` invalid data (with the
 reason per field or line). The answer includes `review_url`.
+
+`POST /api/v1/members` body — the clan's Members list as the collector's
+*Clan members* module reads it from the game (at most 500 players, each with
+a game id and a name; other fields are ignored):
+
+```json
+{
+  "clan": {"id": 936302870583, "tag": "LPL", "name": "LION PRIDE LEGION"},
+  "read_at": "2026-10-11T13:09:05Z",
+  "client_version": "1.0.0",
+  "members": [
+    {"player_id": 644245120340, "name": "Alok BR", "power": 1660747555}
+  ]
+}
+```
+
+Every player in the list becomes an **active** member — created if new, linked
+to their game id, renamed and their power updated — and every member **not** in it becomes
+**inactive**. From the first list on, chest activity no longer turns members on
+or off. It answers `200` with what changed (`members`), `received` and
+`active_members`; `422` for invalid data or fewer than 5 players; and `409`
+with a `reason`, changing nothing, when the list is not the newest truth:
+
+- `older` — a list read later, or a tournament that ended later, was already
+  applied. The same goes the other way: a tournament ranking that ended before
+  the last list was read no longer changes who is active.
+- `other_clan` — the clan id differs from the last list applied, so a profile
+  pointed at the wrong site cannot empty this clan.
+
+The last list applied is kept as the `member_list` job in `job_runs`.
+
+A player is matched to a member, in this order (rankings sent to
+`/api/v1/tournaments` follow the same rules):
+
+1. by **game id**;
+2. by **name**, when exactly one member without a game id carries it (case and
+   repeated spaces aside). Two such members are reported as `ambiguous` and
+   left alone;
+3. by a **similar name**: the one member without a game id whose name is the
+   same once spaces, accents, punctuation and case are set aside — how a name
+   the chest collector read off the screen (`TonyStanna`, `Malvadao`) differs
+   from the game's (`Tony Stanna`, `Malvadão`). Only when one member and one
+   player fit; counted in `similar`. Nobody reviews this link: the member
+   takes the game's id and spelling, and a wrong one is undone by merging
+   players on the chests page.
+
+A player none of these finds is created as a new member.
+
+**A change of name takes the history along.** Chests carry only the player's
+name, and scores, goals and penalties are added up by it. When a list renames a
+member — the same game id under another name, which is how a change of name in
+the game shows, or a similar-name link — the site does by itself what *Merge
+Player Names* does by hand (answered as `chests_moved`):
+
+- the chests under the old name, in that exact spelling, go to the new one;
+- the old name is mapped to the new one (`player_name_mappings`), and mappings
+  that pointed at the old name now point at the new;
+- the cycle records kept by name (summaries, manual penalties, releases)
+  follow, wherever the new name has none of its own for that cycle.
+
+Nothing is moved while another member still carries the old name, and a
+mapping from a name somebody in the list carries now is removed, so one
+player's chests are never sent to another.
+
+**Chest names no longer create members.** Once a list from the game has been
+applied, the daily maintenance (and *Update from Chests*) neither turns members
+on or off nor creates them: a chest name without a member is a misreading,
+someone who left, or an old name — it still scores under that name, and is
+joined to the right player with *Merge Player Names*.
 
 ---
 

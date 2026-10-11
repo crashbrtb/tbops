@@ -70,7 +70,7 @@ $configTable = function (array $rows): string {
                                 <?= h($c->value) ?>
                             </span>
                         </td>
-                        <td class="text-muted small text-wrap text-left"><?= h($c->description) ?></td>
+                        <td class="text-muted small text-wrap text-left"><?= h(__($c->description)) ?></td>
                         <td class="actions text-right text-nowrap">
                             <?= $this->Html->link(
                                 '<i class="fas fa-eye"></i>',

@@ -57,6 +57,7 @@ class UploaderController extends Controller
         $this->loadComponent('Authentication.Authentication');
         $this->Authentication->allowUnauthenticated([
             'me', 'awaiting', 'import', 'tournament', 'known', 'catalog', 'lookup', 'searchState', 'searchReport',
+            'members',
         ]);
     }
 
@@ -492,6 +493,55 @@ class UploaderController extends Controller
         (new JobRunRecorder())->record(JobRunRecorder::JOB_TOURNAMENT_SEARCH, $status, $summary, $this->token?->name);
 
         return $this->json(['recorded' => true, 'status' => $status, 'covered_until' => $summary['covered_until'] ?? null]);
+    }
+
+    /**
+     * Receive the clan's Members list, as the collector's members module reads
+     * it from the game.
+     *
+     * Body (JSON): `{clan: {id, tag, name}, read_at, client_version,
+     * members: [{player_id, name, power}]}`. Every player in the list becomes an
+     * active member - created if new, linked to their game id, renamed and
+     * their power updated - and every member not in it becomes inactive.
+     *
+     * Answers `{members: {...what changed...}, received, active_members}`. A
+     * list that is not applied changes nothing and answers 409 with `reason`:
+     * `older` (something newer was already applied) or `other_clan`.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function members(): Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $data = $this->request->getData();
+        if (!is_array($data) || $data === []) {
+            return $this->json(['error' => __('Send the member list as a JSON body.')], 422);
+        }
+
+        $service = new MemberRosterService();
+        $checked = $service->validateMemberList($data);
+        if ($checked['errors']) {
+            return $this->json(['error' => __('The member list was not accepted.'), 'errors' => $checked['errors']], 422);
+        }
+
+        $summary = $service->applyMemberList($checked['rows'], $checked['read_at'], $checked['clan'], $this->token?->name);
+        if (!$summary['applied']) {
+            [$status, $message] = match ($summary['reason']) {
+                'too_few_ids' => [422, __('A member list needs at least {0} players.', MemberRosterService::MIN_ROSTER_SIZE)],
+                'other_clan' => [409, __('This list is of another clan than the one this site follows.')],
+                'older' => [409, __('The site already has a newer list of the clan.')],
+                default => [409, __('The member list was not accepted.')],
+            };
+
+            return $this->json(['error' => $message, 'reason' => $summary['reason'], 'members' => $summary], $status);
+        }
+
+        return $this->json([
+            'members' => $summary,
+            'received' => count($checked['rows']),
+            'active_members' => $this->fetchTable('Members')->find()->where(['active' => 1])->count(),
+        ]);
     }
 
     /**

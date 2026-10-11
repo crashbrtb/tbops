@@ -4021,451 +4021,451 @@ msgstr "Neu"
 
 #: ./src/Controller/ConfigController.php:171
 msgid "The maintenance entries were removed from the crontab."
-msgstr ""
+msgstr "Die Wartungseinträge wurden aus der Crontab entfernt."
 
 #: ./src/Controller/ConfigController.php:177
 msgid "Scheduled: {0} Brazil time ({1} UTC)."
-msgstr ""
+msgstr "Geplant: {0} brasilianische Zeit ({1} UTC)."
 
 #: ./src/Controller/ConfigController.php:242
 msgid "The settings were saved, but the crontab could not be rewritten: {0}"
-msgstr ""
+msgstr "Die Einstellungen wurden gespeichert, aber die Crontab konnte nicht neu geschrieben werden: {0}"
 
 #: ./src/Controller/ConfigController.php:254
 msgid "The schedule in the crontab was written by hand and this page cannot rewrite it, so the backup line was not added. Copy the block at the bottom of this page into the crontab."
-msgstr ""
+msgstr "Der Zeitplan in der Crontab wurde von Hand geschrieben und diese Seite kann ihn nicht neu schreiben, daher wurde die Sicherungszeile nicht hinzugefügt. Kopieren Sie den Block am Ende dieser Seite in die Crontab."
 
 #: ./src/Controller/ConfigController.php:261
 msgid "The nightly database backup is turned off."
-msgstr ""
+msgstr "Die nächtliche Datenbanksicherung ist ausgeschaltet."
 
 #: ./src/Controller/ConfigController.php:266
 msgid "The database is backed up every day at {0} UTC to {1}, keeping {2} day(s)."
-msgstr ""
+msgstr "Die Datenbank wird jeden Tag um {0} UTC nach {1} gesichert, wobei {2} Tag(e) aufbewahrt werden."
 
 #: ./src/Controller/ConfigController.php:277
 msgid "Nothing is scheduled yet, so no backup will be taken. Install the schedule above."
-msgstr ""
+msgstr "Es ist noch nichts geplant, daher wird keine Sicherung erstellt. Installieren Sie den Zeitplan oben."
 
 #: ./src/Controller/ConfigController.php:278
 msgid "The crontab cannot be reached from here, so nothing will take the backup until the block at the bottom of this page is installed by hand."
-msgstr ""
+msgstr "Die Crontab ist von hier aus nicht erreichbar, daher erstellt nichts die Sicherung, bis der Block am Ende dieser Seite von Hand installiert wird."
 
 #: ./src/Controller/TroopCalculatorController.php:304
 msgid "From my best guardsmen"
-msgstr ""
+msgstr "Von meinen besten Gardisten"
 
 #: ./src/Controller/TroopCalculatorController.php:306
 msgid "Tier {0}"
-msgstr ""
+msgstr "Stufe {0}"
 
 #: ./src/Service/DatabaseBackupService.php:330
 msgid "The database connection does not name a database to back up."
-msgstr ""
+msgstr "Die Datenbankverbindung nennt keine Datenbank, die gesichert werden soll."
 
 #: ./src/Service/DatabaseBackupService.php:338
 msgid "The application is not on MySQL or MariaDB, so mysqldump cannot back it up."
-msgstr ""
+msgstr "Die Anwendung läuft nicht auf MySQL oder MariaDB, daher kann mysqldump sie nicht sichern."
 
 #: ./src/Service/DatabaseBackupService.php:362
 msgid "mysqldump was not found on this server, so no backup can be taken."
-msgstr ""
+msgstr "mysqldump wurde auf diesem Server nicht gefunden, daher kann keine Sicherung erstellt werden."
 
 #: ./src/Service/DatabaseBackupService.php:449
 msgid "PHP on this server cannot run shell commands, so mysqldump cannot be called."
-msgstr ""
+msgstr "PHP kann auf diesem Server keine Shell-Befehle ausführen, daher kann mysqldump nicht aufgerufen werden."
 
 #: ./src/Service/DatabaseBackupService.php:454
 msgid "PHP on this server has exec() disabled, so mysqldump cannot be called."
-msgstr ""
+msgstr "In PHP ist auf diesem Server exec() deaktiviert, daher kann mysqldump nicht aufgerufen werden."
 
 #: ./src/Service/DatabaseBackupService.php:539
 msgid "The backup folder cannot contain line breaks."
-msgstr ""
+msgstr "Der Sicherungsordner darf keine Zeilenumbrüche enthalten."
 
 #: ./src/Service/DatabaseBackupService.php:548
 msgid "The backup folder has to be a full path, such as {0}, because cron does not start in the site directory."
-msgstr ""
+msgstr "Der Sicherungsordner muss ein vollständiger Pfad sein, etwa {0}, weil cron nicht im Verzeichnis der Website startet."
 
 #: ./src/Service/DatabaseBackupService.php:558
 msgid "The backup folder path is too long (255 characters at most)."
-msgstr ""
+msgstr "Der Pfad des Sicherungsordners ist zu lang (höchstens 255 Zeichen)."
 
 #: ./src/Service/DatabaseBackupService.php:585
 msgid "The retention period has to be a whole number of days."
-msgstr ""
+msgstr "Die Aufbewahrungsdauer muss eine ganze Zahl von Tagen sein."
 
 #: ./src/Service/DatabaseBackupService.php:591
 msgid "The retention period has to be between {0} and {1} days."
-msgstr ""
+msgstr "Die Aufbewahrungsdauer muss zwischen {0} und {1} Tagen liegen."
 
 #: ./src/Service/DatabaseBackupService.php:720
 msgid "mysqldump failed: {0}"
-msgstr ""
+msgstr "mysqldump ist fehlgeschlagen: {0}"
 
 #: ./src/Service/DatabaseBackupService.php:722
 msgid "it exited with code {0}."
-msgstr ""
+msgstr "es wurde mit Code {0} beendet."
 
 #: ./src/Service/DatabaseBackupService.php:730
 msgid "The dump file was not created or came out empty, so it was deleted."
-msgstr ""
+msgstr "Die Dump-Datei wurde nicht erstellt oder war leer und wurde deshalb gelöscht."
 
 #: ./src/Service/DatabaseBackupService.php:760
 msgid "The dump was written but could not be compressed."
-msgstr ""
+msgstr "Der Dump wurde geschrieben, konnte aber nicht komprimiert werden."
 
 #: ./src/Service/DatabaseBackupService.php:780
 msgid "The dump was written but could not be compressed: {0}"
-msgstr ""
+msgstr "Der Dump wurde geschrieben, konnte aber nicht komprimiert werden: {0}"
 
 #: ./src/Service/DatabaseBackupService.php:803
 msgid "A temporary file for the database credentials could not be created."
-msgstr ""
+msgstr "Eine temporäre Datei für die Datenbank-Zugangsdaten konnte nicht erstellt werden."
 
 #: ./src/Service/DatabaseBackupService.php:864
 msgid "The backup folder {0} could not be created."
-msgstr ""
+msgstr "Der Sicherungsordner {0} konnte nicht erstellt werden."
 
 #: ./src/Service/DatabaseBackupService.php:868
 msgid "The backup folder {0} cannot be written to."
-msgstr ""
+msgstr "In den Sicherungsordner {0} kann nicht geschrieben werden."
 
 #: ./src/Service/MaintenanceScheduleService.php:219
 msgid "The crontab was saved but the maintenance entries are not in it. Please add them by hand."
-msgstr ""
+msgstr "Die Crontab wurde gespeichert, aber die Wartungseinträge stehen nicht darin. Bitte fügen Sie sie von Hand hinzu."
 
 #: ./src/Service/MaintenanceScheduleService.php:403
 msgid "\"{0}\" is not a valid time of day."
-msgstr ""
+msgstr "\"{0}\" ist keine gültige Uhrzeit."
 
 #: ./src/Service/MaintenanceScheduleService.php:412
 msgid "Choose at least one time of day for the maintenance to run."
-msgstr ""
+msgstr "Wählen Sie mindestens eine Uhrzeit, zu der die Wartung laufen soll."
 
 #: ./src/Service/MaintenanceScheduleService.php:417
 msgid "The maintenance cannot be scheduled more than {0} times a day."
-msgstr ""
+msgstr "Die Wartung kann nicht öfter als {0}-mal pro Tag geplant werden."
 
 #: ./src/Service/MaintenanceScheduleService.php:563
 msgid "This server runs Windows, which has no crontab. Use Task Scheduler with the command shown below."
-msgstr ""
+msgstr "Dieser Server läuft unter Windows, das keine Crontab hat. Verwenden Sie die Aufgabenplanung mit dem unten gezeigten Befehl."
 
 #: ./src/Service/MaintenanceScheduleService.php:569
 msgid "PHP on this server cannot run shell commands, so the crontab cannot be reached from here."
-msgstr ""
+msgstr "PHP kann auf diesem Server keine Shell-Befehle ausführen, daher ist die Crontab von hier aus nicht erreichbar."
 
 #: ./src/Service/MaintenanceScheduleService.php:574
 msgid "PHP on this server has exec() disabled, so the crontab cannot be reached from here."
-msgstr ""
+msgstr "In PHP ist auf diesem Server exec() deaktiviert, daher ist die Crontab von hier aus nicht erreichbar."
 
 #: ./src/Service/MaintenanceScheduleService.php:578
 msgid "The crontab command is not installed on this server."
-msgstr ""
+msgstr "Der Befehl crontab ist auf diesem Server nicht installiert."
 
 #: ./src/Service/MaintenanceScheduleService.php:607
 msgid "The crontab could not be read: {0}"
-msgstr ""
+msgstr "Die Crontab konnte nicht gelesen werden: {0}"
 
 #: ./src/Service/MaintenanceScheduleService.php:625
 msgid "A temporary file for the new crontab could not be created."
-msgstr ""
+msgstr "Eine temporäre Datei für die neue Crontab konnte nicht erstellt werden."
 
 #: ./src/Service/MaintenanceScheduleService.php:638
 msgid "The crontab could not be written: {0}"
-msgstr ""
+msgstr "Die Crontab konnte nicht geschrieben werden: {0}"
 
 #: ./src/Service/MaintenanceScheduleService.php:640
 msgid "the crontab command failed."
-msgstr ""
+msgstr "der Befehl crontab ist fehlgeschlagen."
 
 #: ./templates/Config/maintenance.php:28
 #: ./templates/Config/maintenance.php:32
 #: ./templates/Config/maintenance.php:49
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:148
 msgid "Maintenance"
-msgstr ""
+msgstr "Wartung"
 
 #: ./templates/Config/maintenance.php:52
 msgid "The scheduled tasks: archiving finished cycles, recording finished events, purging old chests and backing up the database"
-msgstr ""
+msgstr "Die geplanten Aufgaben: abgeschlossene Zyklen archivieren, abgeschlossene Events erfassen, alte Truhen bereinigen und die Datenbank sichern"
 
 #: ./templates/Config/maintenance.php:58
 msgid "Check again"
-msgstr ""
+msgstr "Erneut prüfen"
 
 #: ./templates/Config/maintenance.php:68
 msgid "Current status"
-msgstr ""
+msgstr "Aktueller Status"
 
 #: ./templates/Config/maintenance.php:70
 msgid "Read from the crontab of the user the web server runs as, every time this page is opened."
-msgstr ""
+msgstr "Wird bei jedem Öffnen dieser Seite aus der Crontab des Benutzers gelesen, unter dem der Webserver läuft."
 
 #: ./templates/Config/maintenance.php:78
 msgid "The crontab cannot be checked from here"
-msgstr ""
+msgstr "Die Crontab kann von hier aus nicht geprüft werden"
 
 #: ./templates/Config/maintenance.php:80
 msgid "The entry can still be installed by hand: copy the block at the bottom of this page."
-msgstr ""
+msgstr "Der Eintrag kann trotzdem von Hand installiert werden: Kopieren Sie den Block am Ende dieser Seite."
 
 #: ./templates/Config/maintenance.php:87
 msgid "The crontab could not be read"
-msgstr ""
+msgstr "Die Crontab konnte nicht gelesen werden"
 
 #: ./templates/Config/maintenance.php:97
 msgid "The maintenance is in the crontab and runs {0} time(s) a day."
-msgstr ""
+msgstr "Die Wartung steht in der Crontab und läuft {0}-mal pro Tag."
 
 #: ./templates/Config/maintenance.php:102
 msgid "The database backup is in there too."
-msgstr ""
+msgstr "Die Datenbanksicherung steht ebenfalls darin."
 
 #: ./templates/Config/maintenance.php:111
 msgid "Not scheduled"
-msgstr ""
+msgstr "Nicht geplant"
 
 #: ./templates/Config/maintenance.php:113
 msgid "Nothing is running the maintenance. Finished cycles are not being archived and old chests are not being purged. Install it below."
-msgstr ""
+msgstr "Nichts führt die Wartung aus. Abgeschlossene Zyklen werden nicht archiviert und alte Truhen werden nicht bereinigt. Installieren Sie sie unten."
 
 #: ./templates/Config/maintenance.php:125
 msgid "Brazil time"
-msgstr ""
+msgstr "Brasilianische Zeit"
 
 #: ./templates/Config/maintenance.php:126
 msgid "UTC"
-msgstr ""
+msgstr "UTC"
 
 #: ./templates/Config/maintenance.php:142
 msgid "The lines in the crontab:"
-msgstr ""
+msgstr "Die Zeilen in der Crontab:"
 
 #: ./templates/Config/maintenance.php:150
 msgid "Last cron output written {0}."
-msgstr ""
+msgstr "Letzte Cron-Ausgabe geschrieben {0}."
 
 #: ./templates/Config/maintenance.php:152
 msgid "The cron log has never been written, so the task has probably never run here."
-msgstr ""
+msgstr "Das Cron-Protokoll wurde nie geschrieben, die Aufgabe ist hier also vermutlich nie gelaufen."
 
 #: ./templates/Config/maintenance.php:157
 msgid "Brazil is {0} right now; {1} is written to the crontab as {2} UTC."
-msgstr ""
+msgstr "In Brasilien ist es gerade {0}; {1} wird als {2} UTC in die Crontab geschrieben."
 
 #: ./templates/Config/maintenance.php:167
 msgid "The server clock is {0}."
-msgstr ""
+msgstr "Die Serveruhr zeigt {0}."
 
 #: ./templates/Config/maintenance.php:174
 msgid "The entries declare CRON_TZ=UTC, so this does not change when they run."
-msgstr ""
+msgstr "Die Einträge deklarieren CRON_TZ=UTC, daher ändert das nichts daran, wann sie laufen."
 
 #: ./templates/Config/maintenance.php:183
 msgid "Entries added by hand"
-msgstr ""
+msgstr "Von Hand hinzugefügte Einträge"
 
 #: ./templates/Config/maintenance.php:185
 msgid "These call the maintenance but were not installed from this page, so saving here will not change or remove them. Delete them with <code>crontab -e</code> if you do not want the task running twice."
-msgstr ""
+msgstr "Diese rufen die Wartung auf, wurden aber nicht über diese Seite installiert; Speichern hier ändert oder entfernt sie also nicht. Löschen Sie sie mit <code>crontab -e</code>, wenn die Aufgabe nicht doppelt laufen soll."
 
 #: ./templates/Config/maintenance.php:198
 msgid "Schedule"
-msgstr ""
+msgstr "Zeitplan"
 
 #: ./templates/Config/maintenance.php:200
 msgid "Pick the times on the Brazil clock. They are converted to UTC before being written, so the schedule holds whatever timezone the server keeps."
-msgstr ""
+msgstr "Wählen Sie die Zeiten nach brasilianischer Uhr. Sie werden vor dem Schreiben in UTC umgerechnet, sodass der Zeitplan unabhängig von der Zeitzone des Servers gilt."
 
 #: ./templates/Config/maintenance.php:206
 msgid "How many times a day"
-msgstr ""
+msgstr "Wie oft pro Tag"
 
 #: ./templates/Config/maintenance.php:211
 msgid "{0} times a day (suggested)"
-msgstr ""
+msgstr "{0}-mal pro Tag (empfohlen)"
 
 #: ./templates/Config/maintenance.php:212
 msgid "Once a day"
-msgstr ""
+msgstr "Einmal pro Tag"
 
 #: ./templates/Config/maintenance.php:212
 msgid "{0} times a day"
-msgstr ""
+msgstr "{0}-mal pro Tag"
 
 #: ./templates/Config/maintenance.php:217
 msgid "Twice a day is the suggestion: {0} and {1} Brazil time, quiet hours either side of the clan's active evening. Changing this fills in suggested times, which you can then edit."
-msgstr ""
+msgstr "Empfohlen wird zweimal pro Tag: {0} und {1} brasilianische Zeit, ruhige Stunden vor und nach dem aktiven Abend des Clans. Eine Änderung trägt empfohlene Zeiten ein, die Sie anschließend bearbeiten können."
 
 #: ./templates/Config/maintenance.php:230
 msgid "Run {0}"
-msgstr ""
+msgstr "Lauf {0}"
 
 #: ./templates/Config/maintenance.php:240
 msgid "Save schedule"
-msgstr ""
+msgstr "Zeitplan speichern"
 
 #: ./templates/Config/maintenance.php:240
 msgid "Install in crontab"
-msgstr ""
+msgstr "In Crontab installieren"
 
 #: ./templates/Config/maintenance.php:245
 msgid "Remove from crontab"
-msgstr ""
+msgstr "Aus Crontab entfernen"
 
 #: ./templates/Config/maintenance.php:252
 msgid "Remove the maintenance from the crontab? Nothing will archive cycles, purge old chests or back up the database until it is installed again."
-msgstr ""
+msgstr "Die Wartung aus der Crontab entfernen? Bis zur erneuten Installation werden keine Zyklen archiviert, keine alten Truhen bereinigt und die Datenbank nicht gesichert."
 
 #: ./templates/Config/maintenance.php:266
 msgid "Database backup"
-msgstr ""
+msgstr "Datenbanksicherung"
 
 #: ./templates/Config/maintenance.php:268
 msgid "A gzipped mysqldump of the whole database, taken every day at {0} UTC — the game reset — so each dump holds one cycle day exactly as the game closed it. The time is fixed for that reason; the folder and how long dumps are kept are yours to choose."
-msgstr ""
+msgstr "Ein gzip-komprimierter mysqldump der gesamten Datenbank, jeden Tag um {0} UTC erstellt – dem Reset des Spiels –, sodass jeder Dump genau einen Zyklustag so enthält, wie das Spiel ihn abgeschlossen hat. Die Uhrzeit ist deshalb fest; den Ordner und die Aufbewahrungsdauer der Dumps bestimmen Sie."
 
 #: ./templates/Config/maintenance.php:281
 msgid "Not backing up"
-msgstr ""
+msgstr "Keine Sicherung"
 
 #: ./templates/Config/maintenance.php:283
 msgid "Nothing is dumping the database. Turn it on below."
-msgstr ""
+msgstr "Nichts erstellt einen Dump der Datenbank. Schalten Sie die Sicherung unten ein."
 
 #: ./templates/Config/maintenance.php:291
 msgid "Turned on, but not in the crontab"
-msgstr ""
+msgstr "Eingeschaltet, aber nicht in der Crontab"
 
 #: ./templates/Config/maintenance.php:293
 msgid "The backup is turned on but nothing is calling it. Save the schedule above, or install the block by hand."
-msgstr ""
+msgstr "Die Sicherung ist eingeschaltet, aber nichts ruft sie auf. Speichern Sie den Zeitplan oben oder installieren Sie den Block von Hand."
 
 #: ./templates/Config/maintenance.php:302
 msgid "Backing up daily"
-msgstr ""
+msgstr "Tägliche Sicherung"
 
 #: ./templates/Config/maintenance.php:304
 msgid "Every day at {0} UTC ({1} Brazil time), keeping {2} day(s) of dumps."
-msgstr ""
+msgstr "Jeden Tag um {0} UTC ({1} brasilianische Zeit), wobei Dumps von {2} Tag(en) aufbewahrt werden."
 
 #: ./templates/Config/maintenance.php:318
 msgid "Saving to"
-msgstr ""
+msgstr "Speicherort"
 
 #: ./templates/Config/maintenance.php:321
 msgid "(configured as {0})"
-msgstr ""
+msgstr "(konfiguriert als {0})"
 
 #: ./templates/Config/maintenance.php:324
 msgid "— created on the first run."
-msgstr ""
+msgstr "– wird beim ersten Lauf erstellt."
 
 #: ./templates/Config/maintenance.php:326
 msgid "— this folder cannot be written to."
-msgstr ""
+msgstr "– in diesen Ordner kann nicht geschrieben werden."
 
 #: ./templates/Config/maintenance.php:332
 msgid "{0} dump(s) there, {1} in all. Newest: {2}."
-msgstr ""
+msgstr "{0} Dump(s) dort, insgesamt {1}. Neuester: {2}."
 
 #: ./templates/Config/maintenance.php:339
 msgid "No dumps in that folder yet."
-msgstr ""
+msgstr "Noch keine Dumps in diesem Ordner."
 
 #: ./templates/Config/maintenance.php:341
 msgid "The folder is not there yet, so there are no dumps."
-msgstr ""
+msgstr "Der Ordner existiert noch nicht, daher gibt es keine Dumps."
 
 #: ./templates/Config/maintenance.php:346
 msgid "Every step is appended to {0}."
-msgstr ""
+msgstr "Jeder Schritt wird an {0} angehängt."
 
 #: ./templates/Config/maintenance.php:349
 msgid "Cron last wrote its own log {0}."
-msgstr ""
+msgstr "Cron hat sein eigenes Protokoll zuletzt {0} geschrieben."
 
 #: ./templates/Config/maintenance.php:357
 msgid "This installation is not on MySQL or MariaDB, so mysqldump cannot back it up."
-msgstr ""
+msgstr "Diese Installation läuft nicht auf MySQL oder MariaDB, daher kann mysqldump sie nicht sichern."
 
 #: ./templates/Config/maintenance.php:362
 msgid "The command may still work from a real shell, where cron runs it."
-msgstr ""
+msgstr "Der Befehl funktioniert möglicherweise trotzdem in einer echten Shell, in der cron ihn ausführt."
 
 #: ./templates/Config/maintenance.php:365
 msgid "mysqldump found at {0}."
-msgstr ""
+msgstr "mysqldump gefunden unter {0}."
 
 #: ./templates/Config/maintenance.php:368
 msgid "mysqldump was not found on this server. Install the MySQL/MariaDB client tools, or no backup can be taken."
-msgstr ""
+msgstr "mysqldump wurde auf diesem Server nicht gefunden. Installieren Sie die MySQL/MariaDB-Client-Werkzeuge, sonst kann keine Sicherung erstellt werden."
 
 #: ./templates/Config/maintenance.php:380
 msgid "Back the database up every day"
-msgstr ""
+msgstr "Datenbank jeden Tag sichern"
 
 #: ./templates/Config/maintenance.php:386
 msgid "Folder to save to"
-msgstr ""
+msgstr "Zielordner"
 
 #: ./templates/Config/maintenance.php:390
 msgid "A full path, because cron does not start in the site directory. {0} is the home directory of the user the site runs as, so the default {1} needs nothing set up. The folder is created if it is not there."
-msgstr ""
+msgstr "Ein vollständiger Pfad, weil cron nicht im Verzeichnis der Website startet. {0} ist das Home-Verzeichnis des Benutzers, unter dem die Website läuft, sodass für den Standard {1} nichts eingerichtet werden muss. Der Ordner wird erstellt, falls er nicht existiert."
 
 #: ./templates/Config/maintenance.php:399
 msgid "Keep dumps for"
-msgstr ""
+msgstr "Dumps aufbewahren für"
 
 #: ./templates/Config/maintenance.php:405
 msgid "days"
-msgstr ""
+msgstr "Tage"
 
 #: ./templates/Config/maintenance.php:409
 msgid "Anything older is deleted after each backup, so the folder holds this many days and no more. Between {0} and {1} days; the old script kept {2}."
-msgstr ""
+msgstr "Alles Ältere wird nach jeder Sicherung gelöscht, der Ordner enthält also genau so viele Tage und nicht mehr. Zwischen {0} und {1} Tagen; das alte Skript behielt {2}."
 
 #: ./templates/Config/maintenance.php:421
 msgid "Save backup settings"
-msgstr ""
+msgstr "Sicherungseinstellungen speichern"
 
 #: ./templates/Config/maintenance.php:431
 msgid "Install it by hand"
-msgstr ""
+msgstr "Von Hand installieren"
 
 #: ./templates/Config/maintenance.php:433
 msgid "For the times shown in the form above. Run <code>crontab -e</code> on the server and paste this at the end of the file."
-msgstr ""
+msgstr "Für die im Formular oben gezeigten Zeiten. Führen Sie auf dem Server <code>crontab -e</code> aus und fügen Sie dies am Ende der Datei ein."
 
 #: ./templates/Config/maintenance.php:441
 #: ./templates/Config/maintenance.php:530
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: ./templates/Config/maintenance.php:444
 msgid "This block is what the buttons above write. Saving the schedule here rewrites everything between the two marker comments and leaves the rest of the crontab alone."
-msgstr ""
+msgstr "Diesen Block schreiben die Schaltflächen oben. Das Speichern des Zeitplans hier schreibt alles zwischen den beiden Markierungskommentaren neu und lässt den Rest der Crontab unberührt."
 
 #: ./templates/Config/maintenance.php:451
 msgid "You can also run the task yourself at any time: {0} from the application directory, or add {1} to see what it would do without touching the database."
-msgstr ""
+msgstr "Sie können die Aufgabe auch jederzeit selbst ausführen: {0} im Anwendungsverzeichnis, oder fügen Sie {1} hinzu, um zu sehen, was sie tun würde, ohne die Datenbank anzufassen."
 
 #: ./templates/Config/maintenance.php:457
 msgid "The backup is the same: {0} takes one now, and {1} takes one even while the nightly backup is turned off."
-msgstr ""
+msgstr "Für die Sicherung gilt dasselbe: {0} erstellt jetzt eine, und {1} erstellt eine, auch wenn die nächtliche Sicherung ausgeschaltet ist."
 
 #: ./templates/Config/maintenance.php:492
 msgid "= {0} UTC"
-msgstr ""
+msgstr "= {0} UTC"
 
 #: ./templates/TroopCalculator/index.php:348
 msgid "Mercenary tier"
-msgstr ""
+msgstr "Söldnerstufe"
 
 #: ./templates/TroopCalculator/index.php:354
 msgid "Only one band is for hire at a time, and it follows your best guardsmen. Set it here if the game offers you a different one."
-msgstr ""
+msgstr "Es kann immer nur ein Trupp angeheuert werden, und er richtet sich nach Ihren besten Gardisten. Stellen Sie ihn hier ein, wenn das Spiel Ihnen einen anderen anbietet."
 
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:6
 msgid "Scoreboard"
@@ -5711,3 +5711,298 @@ msgstr "Der Grund ist erforderlich."
 
 msgid "This player already has a manual penalty in this cycle."
 msgstr "Dieser Spieler hat in diesem Zyklus bereits eine manuelle Strafe."
+
+# Config parameter descriptions (stored in the database, translated at display)
+msgid "Select a reference date for the start/end of the count. For example: If it is a weekly count, select a date that represents the day of the week that the count will start/end. If the count is for the Rise of Ancients event, select a date that represents the day of the event. Always use the format (YYYY-MM-DD hh:mm:ss) with UTC time (ex: \"2025-05-13 17:00:00\")"
+msgstr "Wählen Sie ein Referenzdatum für den Beginn/das Ende der Zählung. Beispiel: Bei einer wöchentlichen Zählung wählen Sie ein Datum, das dem Wochentag entspricht, an dem die Zählung beginnt/endet. Gilt die Zählung für das Event „Aufstieg der Ältesten“, wählen Sie ein Datum, das dem Tag des Events entspricht. Verwenden Sie immer das Format (JJJJ-MM-TT hh:mm:ss) in UTC-Zeit (z. B. \"2025-05-13 17:00:00\")"
+
+msgid "Every how many days: Sets how many days each counting period lasts. Suggestion: 6 to start counting every elder 7 for a weekly count"
+msgstr "Alle wie viele Tage: legt fest, wie viele Tage jeder Zählzeitraum dauert. Empfehlung: 6, um die Zählung mit jedem Ältesten zu beginnen, 7 für eine wöchentliche Zählung"
+
+msgid "Minimum Chest Score"
+msgstr "Mindestpunktzahl für Truhen"
+
+msgid "Minimum points for collecting MONSTER epic chests."
+msgstr "Mindestpunktzahl für das Sammeln epischer MONSTER-Truhen."
+
+msgid "Clan name"
+msgstr "Clanname"
+
+msgid "clan acronym"
+msgstr "Clankürzel"
+
+msgid "kingdom number kxxx"
+msgstr "Königreichsnummer (kxxx)"
+
+msgid "R (Red) value of the initial color for low score (0-255)."
+msgstr "R-Wert (Rot) der Anfangsfarbe für niedrige Punktzahl (0-255)."
+
+msgid "G (Green) value of the starting color for low score (0-255)."
+msgstr "G-Wert (Grün) der Anfangsfarbe für niedrige Punktzahl (0-255)."
+
+msgid "Starting color B (Blue) value for low score (0-255)."
+msgstr "B-Wert (Blau) der Anfangsfarbe für niedrige Punktzahl (0-255)."
+
+msgid "R (Red) value of the final color for high score (0-255)."
+msgstr "R-Wert (Rot) der Endfarbe für hohe Punktzahl (0-255)."
+
+msgid "G (Green) value of the final color for high score (0-255)."
+msgstr "G-Wert (Grün) der Endfarbe für hohe Punktzahl (0-255)."
+
+msgid "Final color B (Blue) value for high score (0-255)."
+msgstr "B-Wert (Blau) der Endfarbe für hohe Punktzahl (0-255)."
+
+msgid "Value between 0 and 1 (e.g. 0.9 for 90%) that defines the point at which the score color starts to change from the initial color to the final color."
+msgstr "Wert zwischen 0 und 1 (z. B. 0.9 für 90 %), der den Punkt festlegt, ab dem die Farbe der Punktzahl von der Anfangsfarbe zur Endfarbe wechselt."
+
+msgid "Minimum epic chest score"
+msgstr "Mindestpunktzahl für epische Truhen"
+
+msgid "Fixed deposit fee in millions of Silver"
+msgstr "Feste Einzahlungsgebühr in Millionen Silber"
+
+msgid "Fixed withdrawal fee in millions of Silver"
+msgstr "Feste Auszahlungsgebühr in Millionen Silber"
+
+msgid "Fixed transfer fee in millions of Silver"
+msgstr "Feste Überweisungsgebühr in Millionen Silber"
+
+msgid "Caravan fee percentage for deposits"
+msgstr "Prozentsatz der Karawanengebühr bei Einzahlungen"
+
+msgid "1 = Bank active / 0 = no Bank"
+msgstr "1 = Bank aktiv / 0 = keine Bank"
+
+msgid "Retention time in days for old collected chests. Minimum retention time must be greater than 7 days, and default is 30 days. Setting to 0 disables automatic purge."
+msgstr "Aufbewahrungszeit in Tagen für alte gesammelte Truhen. Die Mindestaufbewahrungszeit muss mehr als 7 Tage betragen, der Standard sind 30 Tage. Der Wert 0 deaktiviert die automatische Bereinigung."
+
+msgid "Logo shown in the navbar. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "Logo in der Navigationsleiste. Der Bezeichner einer der Vorlagen in webroot/img/branding/presets oder \"custom\" für ein hochgeladenes Bild. Änderbar unter Admin > Erscheinungsbild."
+
+msgid "Icon shown in the browser tab. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "Symbol im Browser-Tab. Der Bezeichner einer der Vorlagen in webroot/img/branding/presets oder \"custom\" für ein hochgeladenes Bild. Änderbar unter Admin > Erscheinungsbild."
+
+msgid "Colour scheme for the whole site: morning-light, deepest-dark, wildflowers or twilight. Change it under Admin > Theme."
+msgstr "Farbschema der gesamten Website: morning-light, deepest-dark, wildflowers oder twilight. Änderbar unter Admin > Thema."
+
+msgid "Whether the nightly database backup runs. Managed under Admin > Maintenance."
+msgstr "Legt fest, ob die nächtliche Datenbanksicherung ausgeführt wird. Verwaltet unter Admin > Wartung."
+
+msgid "Folder the nightly database dumps are written to. \"~\" is the home directory of the user the site runs as. Managed under Admin > Maintenance."
+msgstr "Ordner, in den die nächtlichen Datenbank-Dumps geschrieben werden. \"~\" ist das Home-Verzeichnis des Benutzers, unter dem die Website läuft. Verwaltet unter Admin > Wartung."
+
+msgid "How many days of database dumps to keep. Older dumps are deleted after each backup. Managed under Admin > Maintenance."
+msgstr "Wie viele Tage Datenbank-Dumps aufbewahrt werden. Ältere Dumps werden nach jeder Sicherung gelöscht. Verwaltet unter Admin > Wartung."
+
+msgid "1 = Troop Calculator active / 0 = no Troop Calculator"
+msgstr "1 = Truppenrechner aktiv / 0 = kein Truppenrechner"
+
+msgid "Read-only key the external monitor sends to /api/v1/health. Managed under Admin > Monitoring."
+msgstr "Schreibgeschützter Schlüssel, den der externe Monitor an /api/v1/health sendet. Verwaltet unter Admin > Überwachung."
+
+msgid "1 = Goal penalty active / 0 = no goal penalty. A player who misses the goal gets a higher goal in the next cycle."
+msgstr "1 = Zielstrafe aktiv / 0 = keine Zielstrafe. Ein Spieler, der das Ziel verfehlt, erhält im nächsten Zyklus ein höheres Ziel."
+
+msgid "Goal penalty: how much the goal grows, in percent, for a player who missed it in the previous cycle (e.g. 10 = +10%). The raised goal is rounded up."
+msgstr "Zielstrafe: um wie viel Prozent das Ziel für einen Spieler steigt, der es im vorherigen Zyklus verfehlt hat (z. B. 10 = +10 %). Das erhöhte Ziel wird aufgerundet."
+
+msgid "Goal penalty: which goal it applies to. \"total\" = Chest Score Goal (minimum_chest_score) / \"epic\" = Epic Chest Goal (minimum_epic_chest_score) / \"both\" = both goals: missing either one is a miss, and only the goal that was missed is raised."
+msgstr "Zielstrafe: für welches Ziel sie gilt. \"total\" = Truhenpunkte-Ziel (minimum_chest_score) / \"epic\" = Ziel für epische Truhen (minimum_epic_chest_score) / \"both\" = beide Ziele: Wird eines davon verfehlt, zählt das als Verfehlung, und nur das verfehlte Ziel wird erhöht."
+
+msgid "Times of day (UTC) the daily maintenance runs. Managed under Admin > Maintenance."
+msgstr "Tageszeiten (UTC), zu denen die tägliche Wartung läuft. Verwaltet unter Admin > Wartung."
+
+msgid "Chest goals: \"global\" = the same goal for everyone (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = the goal set for the player's guard level (G1 to G9). G0 means the level is unknown and gets the highest goal."
+msgstr "Truhenziele: \"global\" = dasselbe Ziel für alle (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = das Ziel, das für die Gardistenstufe des Spielers festgelegt ist (G1 bis G9). G0 bedeutet, dass die Stufe unbekannt ist, und erhält das höchste Ziel."
+
+msgid "Chest Score Goal per guard level, as JSON ({\"1\": 5000, ..., \"9\": 20000}). A level left out uses minimum_chest_score. Edited in Configs > Chests."
+msgstr "Truhenpunkte-Ziel pro Gardistenstufe, als JSON ({\"1\": 5000, ..., \"9\": 20000}). Eine ausgelassene Stufe verwendet minimum_chest_score. Bearbeitung unter Konfigurationen > Truhen."
+
+msgid "Epic Chest Goal per guard level, as JSON ({\"1\": 2000, ..., \"9\": 8000}). A level left out uses minimum_epic_chest_score. Edited in Configs > Chests."
+msgstr "Ziel für epische Truhen pro Gardistenstufe, als JSON ({\"1\": 2000, ..., \"9\": 8000}). Eine ausgelassene Stufe verwendet minimum_epic_chest_score. Bearbeitung unter Konfigurationen > Truhen."
+
+msgid "Scheduled: {0} UTC."
+msgstr "Geplant: {0} UTC."
+
+msgid "Scheduled times (UTC)"
+msgstr "Geplante Zeiten (UTC)"
+
+msgid "All maintenance schedules and tasks follow UTC (Coordinated Universal Time)."
+msgstr "Alle Wartungszeitpläne und -aufgaben richten sich nach UTC (koordinierte Weltzeit)."
+
+msgid "Pick the times in UTC. The schedule holds whatever timezone the server keeps."
+msgstr "Wählen Sie die Zeiten in UTC. Der Zeitplan gilt unabhängig von der Zeitzone des Servers."
+
+msgid "Twice a day is the suggestion: {0} and {1} UTC, quiet hours spaced across the day. Changing this fills in suggested times, which you can then edit."
+msgstr "Empfohlen wird zweimal pro Tag: {0} und {1} UTC, ruhige Stunden über den Tag verteilt. Eine Änderung trägt empfohlene Zeiten ein, die Sie anschließend bearbeiten können."
+
+msgid "Run {0} (UTC)"
+msgstr "Lauf {0} (UTC)"
+
+msgid "Every day at {0} UTC, keeping {1} day(s) of dumps."
+msgstr "Jeden Tag um {0} UTC, wobei Dumps von {1} Tag(en) aufbewahrt werden."
+
+msgid "Deselect all"
+msgstr "Alle abwählen"
+
+msgid "chests selected"
+msgstr "Truhen ausgewählt"
+
+msgid "Mark selected as not recoverable"
+msgstr "Ausgewählte als nicht wiederherstellbar markieren"
+
+msgid "Mark all {0} pending as not recoverable"
+msgstr "Alle {0} offenen als nicht wiederherstellbar markieren"
+
+msgid "Please select at least one chest."
+msgstr "Bitte wählen Sie mindestens eine Truhe aus."
+
+msgid "Are you sure you want to mark the selected chests as not recoverable?"
+msgstr "Möchten Sie die ausgewählten Truhen wirklich als nicht wiederherstellbar markieren?"
+
+msgid "Are you sure you want to mark ALL {0} pending chests as not recoverable? This action will update all pending chests across all pages."
+msgstr "Möchten Sie wirklich ALLE {0} offenen Truhen als nicht wiederherstellbar markieren? Diese Aktion aktualisiert alle offenen Truhen auf allen Seiten."
+
+msgid "{0} pending chest(s) marked as not recoverable."
+msgstr "{0} offene Truhe(n) als nicht wiederherstellbar markiert."
+
+msgid "No pending chests were found to update."
+msgstr "Es wurden keine offenen Truhen zum Aktualisieren gefunden."
+
+msgid "No chests selected."
+msgstr "Keine Truhen ausgewählt."
+
+msgid "{0} chest(s) marked as not recoverable."
+msgstr "{0} Truhe(n) als nicht wiederherstellbar markiert."
+
+msgid "No pending chests were updated."
+msgstr "Es wurden keine offenen Truhen aktualisiert."
+
+msgid "This tournament has no reward: the result is published with the ranking only. Rewards can be added later by editing the event; the points stay as they are."
+msgstr "Dieses Turnier hat keine Belohnung: Das Ergebnis wird nur mit der Rangliste veröffentlicht. Belohnungen können später durch Bearbeiten des Events hinzugefügt werden; die Punkte bleiben, wie sie sind."
+
+msgid "The result of event #{0} is not published."
+msgstr "Das Ergebnis von Event #{0} ist nicht veröffentlicht."
+
+msgid "The rewards were not saved: {0}"
+msgstr "Die Belohnungen wurden nicht gespeichert: {0}"
+
+msgid "The rewards were split again over the published result; the points did not change."
+msgstr "Die Belohnungen wurden auf das veröffentlichte Ergebnis neu verteilt; die Punkte haben sich nicht geändert."
+
+msgid "The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody's points change."
+msgstr "Das Ergebnis dieses Turniers ist veröffentlicht. Sie können hier seine Belohnungen hinzufügen oder ändern: Sie werden auf die veröffentlichte Rangliste neu verteilt, und niemandes Punkte ändern sich."
+
+msgid "This tournament has no rewards"
+msgstr "Dieses Turnier hat keine Belohnungen"
+
+msgid "The result is published with the ranking only. Rewards can still be added later, even after it is published."
+msgstr "Das Ergebnis wird nur mit der Rangliste veröffentlicht. Belohnungen können auch später noch hinzugefügt werden, selbst nach der Veröffentlichung."
+
+msgid "No rewards: the result is published with the ranking only. Edit the event to add rewards, even after it is published; the points do not change."
+msgstr "Keine Belohnungen: Das Ergebnis wird nur mit der Rangliste veröffentlicht. Bearbeiten Sie das Event, um Belohnungen hinzuzufügen, auch nach der Veröffentlichung; die Punkte ändern sich nicht."
+
+msgid "This tournament has no rewards."
+msgstr "Dieses Turnier hat keine Belohnungen."
+
+msgid "Edit rewards"
+msgstr "Belohnungen bearbeiten"
+
+msgid "The ranking of event #{0} was received from the game; a file cannot replace it."
+msgstr "Die Rangliste von Event #{0} wurde vom Spiel empfangen; eine Datei kann sie nicht ersetzen."
+
+msgid "The points of event #{0} were already received from the game and cannot change."
+msgstr "Die Punkte von Event #{0} wurden bereits vom Spiel empfangen und können nicht geändert werden."
+
+msgid "The points come from the game and cannot be changed."
+msgstr "Die Punkte stammen aus dem Spiel und können nicht geändert werden."
+
+msgid "Change the member or the prize checkbox, then recalculate to see the new shares. The points come from the game and cannot be changed."
+msgstr "Ändern Sie das Mitglied oder das Preis-Kontrollkästchen und berechnen Sie dann neu, um die neuen Anteile zu sehen. Die Punkte stammen aus dem Spiel und können nicht geändert werden."
+
+msgid "Send result_uids as a list of at most {0} ids."
+msgstr "Senden Sie result_uids als Liste mit höchstens {0} IDs."
+
+msgid "Send the search as a JSON body."
+msgstr "Senden Sie die Suche als JSON-Body."
+
+msgid "started_at is not a valid date."
+msgstr "started_at ist kein gültiges Datum."
+
+msgid "The member list must have at least one player."
+msgstr "Die Mitgliederliste muss mindestens einen Spieler enthalten."
+
+msgid "A member list has at most {0} players; {1} were sent."
+msgstr "Eine Mitgliederliste hat höchstens {0} Spieler; {1} wurden gesendet."
+
+msgid "Line {0}: the player has no name."
+msgstr "Zeile {0}: Der Spieler hat keinen Namen."
+
+msgid "Line {0}: the power must be a whole number of 0 or more."
+msgstr "Zeile {0}: Die Macht muss eine ganze Zahl ab 0 sein."
+
+msgid "read_at is not a valid date."
+msgstr "read_at ist kein gültiges Datum."
+
+msgid "Send the member list as a JSON body."
+msgstr "Senden Sie die Mitgliederliste als JSON-Body."
+
+msgid "The member list was not accepted."
+msgstr "Die Mitgliederliste wurde nicht akzeptiert."
+
+msgid "A member list needs at least {0} players."
+msgstr "Eine Mitgliederliste braucht mindestens {0} Spieler."
+
+msgid "This list is of another clan than the one this site follows."
+msgstr "Diese Liste gehört zu einem anderen Clan als dem, dem diese Website folgt."
+
+msgid "The site already has a newer list of the clan."
+msgstr "Die Website hat bereits eine neuere Liste des Clans."
+
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+msgid "Notification"
+msgstr "Benachrichtigung"
+
+msgid "Possible duplicate player: \"{0}\" and \"{1}\""
+msgstr "Möglicherweise doppelter Spieler: \"{0}\" und \"{1}\""
+
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+msgid "Mark all as read"
+msgstr "Alle als gelesen markieren"
+
+msgid "All notifications"
+msgstr "Alle Benachrichtigungen"
+
+msgid "{0} notification(s)"
+msgstr "{0} Benachrichtigung(en)"
+
+msgid "Notification marked as read."
+msgstr "Benachrichtigung als gelesen markiert."
+
+msgid "All notifications marked as read."
+msgstr "Alle Benachrichtigungen wurden als gelesen markiert."
+
+msgid "Check now"
+msgstr "Jetzt prüfen"
+
+msgid "Check finished: {0} new notification(s)."
+msgstr "Prüfung abgeschlossen: {0} neue Benachrichtigung(en)."
+
+msgid "Unread"
+msgstr "Ungelesen"
+
+msgid "Read by {0} on {1}"
+msgstr "Gelesen von {0} am {1}"
+
+msgid "No longer applies since {0}"
+msgstr "Trifft seit {0} nicht mehr zu"
+
+msgid "No notifications yet."
+msgstr "Noch keine Benachrichtigungen."
+
+msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
+msgstr "Alle Hinweise, die an die Administratoren gesendet wurden. Spielernamen, die der Truhenzähler nicht unterscheiden kann, werden geprüft, sobald sich die Mitglieder ändern."

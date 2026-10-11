@@ -4053,99 +4053,99 @@ msgstr "No se puede acceder al crontab desde aquí, por lo que nada realizará l
 
 #: ./src/Controller/TroopCalculatorController.php:304
 msgid "From my best guardsmen"
-msgstr ""
+msgstr "De mis mejores guardias"
 
 #: ./src/Controller/TroopCalculatorController.php:306
 msgid "Tier {0}"
-msgstr ""
+msgstr "Nivel {0}"
 
 #: ./src/Service/DatabaseBackupService.php:330
 msgid "The database connection does not name a database to back up."
-msgstr ""
+msgstr "La conexión de la base de datos no indica ninguna base de datos que respaldar."
 
 #: ./src/Service/DatabaseBackupService.php:338
 msgid "The application is not on MySQL or MariaDB, so mysqldump cannot back it up."
-msgstr ""
+msgstr "La aplicación no usa MySQL ni MariaDB, así que mysqldump no puede respaldarla."
 
 #: ./src/Service/DatabaseBackupService.php:362
 msgid "mysqldump was not found on this server, so no backup can be taken."
-msgstr ""
+msgstr "No se encontró mysqldump en este servidor, así que no se puede hacer ninguna copia de seguridad."
 
 #: ./src/Service/DatabaseBackupService.php:449
 msgid "PHP on this server cannot run shell commands, so mysqldump cannot be called."
-msgstr ""
+msgstr "PHP no puede ejecutar comandos de shell en este servidor, así que no se puede llamar a mysqldump."
 
 #: ./src/Service/DatabaseBackupService.php:454
 msgid "PHP on this server has exec() disabled, so mysqldump cannot be called."
-msgstr ""
+msgstr "PHP tiene exec() desactivado en este servidor, así que no se puede llamar a mysqldump."
 
 #: ./src/Service/DatabaseBackupService.php:539
 msgid "The backup folder cannot contain line breaks."
-msgstr ""
+msgstr "La carpeta de copias de seguridad no puede contener saltos de línea."
 
 #: ./src/Service/DatabaseBackupService.php:548
 msgid "The backup folder has to be a full path, such as {0}, because cron does not start in the site directory."
-msgstr ""
+msgstr "La carpeta de copias de seguridad tiene que ser una ruta completa, como {0}, porque cron no se inicia en el directorio del sitio."
 
 #: ./src/Service/DatabaseBackupService.php:558
 msgid "The backup folder path is too long (255 characters at most)."
-msgstr ""
+msgstr "La ruta de la carpeta de copias de seguridad es demasiado larga (255 caracteres como máximo)."
 
 #: ./src/Service/DatabaseBackupService.php:585
 msgid "The retention period has to be a whole number of days."
-msgstr ""
+msgstr "El periodo de retención tiene que ser un número entero de días."
 
 #: ./src/Service/DatabaseBackupService.php:591
 msgid "The retention period has to be between {0} and {1} days."
-msgstr ""
+msgstr "El periodo de retención tiene que estar entre {0} y {1} días."
 
 #: ./src/Service/DatabaseBackupService.php:720
 msgid "mysqldump failed: {0}"
-msgstr ""
+msgstr "mysqldump falló: {0}"
 
 #: ./src/Service/DatabaseBackupService.php:722
 msgid "it exited with code {0}."
-msgstr ""
+msgstr "terminó con el código {0}."
 
 #: ./src/Service/DatabaseBackupService.php:730
 msgid "The dump file was not created or came out empty, so it was deleted."
-msgstr ""
+msgstr "El archivo de volcado no se creó o quedó vacío, así que se eliminó."
 
 #: ./src/Service/DatabaseBackupService.php:760
 msgid "The dump was written but could not be compressed."
-msgstr ""
+msgstr "El volcado se escribió, pero no se pudo comprimir."
 
 #: ./src/Service/DatabaseBackupService.php:780
 msgid "The dump was written but could not be compressed: {0}"
-msgstr ""
+msgstr "El volcado se escribió, pero no se pudo comprimir: {0}"
 
 #: ./src/Service/DatabaseBackupService.php:803
 msgid "A temporary file for the database credentials could not be created."
-msgstr ""
+msgstr "No se pudo crear un archivo temporal para las credenciales de la base de datos."
 
 #: ./src/Service/DatabaseBackupService.php:864
 msgid "The backup folder {0} could not be created."
-msgstr ""
+msgstr "No se pudo crear la carpeta de copias de seguridad {0}."
 
 #: ./src/Service/DatabaseBackupService.php:868
 msgid "The backup folder {0} cannot be written to."
-msgstr ""
+msgstr "No se puede escribir en la carpeta de copias de seguridad {0}."
 
 #: ./src/Service/MaintenanceScheduleService.php:219
 msgid "The crontab was saved but the maintenance entries are not in it. Please add them by hand."
-msgstr ""
+msgstr "El crontab se guardó, pero las entradas de mantenimiento no están en él. Añádalas a mano."
 
 #: ./src/Service/MaintenanceScheduleService.php:403
 msgid "\"{0}\" is not a valid time of day."
-msgstr ""
+msgstr "\"{0}\" no es una hora del día válida."
 
 #: ./src/Service/MaintenanceScheduleService.php:412
 msgid "Choose at least one time of day for the maintenance to run."
-msgstr ""
+msgstr "Elija al menos una hora del día para ejecutar el mantenimiento."
 
 #: ./src/Service/MaintenanceScheduleService.php:417
 msgid "The maintenance cannot be scheduled more than {0} times a day."
-msgstr ""
+msgstr "El mantenimiento no se puede programar más de {0} veces al día."
 
 #: ./src/Service/MaintenanceScheduleService.php:563
 msgid "This server runs Windows, which has no crontab. Use Task Scheduler with the command shown below."
@@ -4153,31 +4153,31 @@ msgstr "Este servidor ejecuta Windows, que no tiene crontab. Use el Programador 
 
 #: ./src/Service/MaintenanceScheduleService.php:569
 msgid "PHP on this server cannot run shell commands, so the crontab cannot be reached from here."
-msgstr ""
+msgstr "PHP no puede ejecutar comandos de shell en este servidor, así que no se puede acceder al crontab desde aquí."
 
 #: ./src/Service/MaintenanceScheduleService.php:574
 msgid "PHP on this server has exec() disabled, so the crontab cannot be reached from here."
-msgstr ""
+msgstr "PHP tiene exec() desactivado en este servidor, así que no se puede acceder al crontab desde aquí."
 
 #: ./src/Service/MaintenanceScheduleService.php:578
 msgid "The crontab command is not installed on this server."
-msgstr ""
+msgstr "El comando crontab no está instalado en este servidor."
 
 #: ./src/Service/MaintenanceScheduleService.php:607
 msgid "The crontab could not be read: {0}"
-msgstr ""
+msgstr "No se pudo leer el crontab: {0}"
 
 #: ./src/Service/MaintenanceScheduleService.php:625
 msgid "A temporary file for the new crontab could not be created."
-msgstr ""
+msgstr "No se pudo crear un archivo temporal para el nuevo crontab."
 
 #: ./src/Service/MaintenanceScheduleService.php:638
 msgid "The crontab could not be written: {0}"
-msgstr ""
+msgstr "No se pudo escribir el crontab: {0}"
 
 #: ./src/Service/MaintenanceScheduleService.php:640
 msgid "the crontab command failed."
-msgstr ""
+msgstr "el comando crontab falló."
 
 #: ./templates/Config/maintenance.php:28
 #: ./templates/Config/maintenance.php:32
@@ -4461,11 +4461,11 @@ msgstr "= {0} UTC"
 
 #: ./templates/TroopCalculator/index.php:348
 msgid "Mercenary tier"
-msgstr ""
+msgstr "Nivel de mercenarios"
 
 #: ./templates/TroopCalculator/index.php:354
 msgid "Only one band is for hire at a time, and it follows your best guardsmen. Set it here if the game offers you a different one."
-msgstr ""
+msgstr "Solo se puede contratar una banda a la vez, y sigue a sus mejores guardias. Ajústela aquí si el juego le ofrece otra."
 
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php:6
 msgid "Scoreboard"
@@ -5711,3 +5711,298 @@ msgstr "El motivo es obligatorio."
 
 msgid "This player already has a manual penalty in this cycle."
 msgstr "Este jugador ya tiene una penalización manual en este ciclo."
+
+# Config parameter descriptions (stored in the database, translated at display)
+msgid "Select a reference date for the start/end of the count. For example: If it is a weekly count, select a date that represents the day of the week that the count will start/end. If the count is for the Rise of Ancients event, select a date that represents the day of the event. Always use the format (YYYY-MM-DD hh:mm:ss) with UTC time (ex: \"2025-05-13 17:00:00\")"
+msgstr "Seleccione una fecha de referencia para el inicio/fin del recuento. Por ejemplo: si el recuento es semanal, seleccione una fecha que represente el día de la semana en que el recuento empieza/termina. Si el recuento es para el evento Ascenso de los Ancianos, seleccione una fecha que represente el día del evento. Use siempre el formato (AAAA-MM-DD hh:mm:ss) en hora UTC (p. ej.: \"2025-05-13 17:00:00\")"
+
+msgid "Every how many days: Sets how many days each counting period lasts. Suggestion: 6 to start counting every elder 7 for a weekly count"
+msgstr "Cada cuántos días: define cuántos días dura cada periodo de recuento. Sugerencia: 6 para iniciar el recuento con cada anciano, 7 para un recuento semanal"
+
+msgid "Minimum Chest Score"
+msgstr "Puntuación mínima de cofres"
+
+msgid "Minimum points for collecting MONSTER epic chests."
+msgstr "Puntuación mínima por recoger cofres épicos de MONSTRUOS."
+
+msgid "Clan name"
+msgstr "Nombre del clan"
+
+msgid "clan acronym"
+msgstr "Siglas del clan"
+
+msgid "kingdom number kxxx"
+msgstr "Número del reino (kxxx)"
+
+msgid "R (Red) value of the initial color for low score (0-255)."
+msgstr "Valor R (rojo) del color inicial para puntuación baja (0-255)."
+
+msgid "G (Green) value of the starting color for low score (0-255)."
+msgstr "Valor G (verde) del color inicial para puntuación baja (0-255)."
+
+msgid "Starting color B (Blue) value for low score (0-255)."
+msgstr "Valor B (azul) del color inicial para puntuación baja (0-255)."
+
+msgid "R (Red) value of the final color for high score (0-255)."
+msgstr "Valor R (rojo) del color final para puntuación alta (0-255)."
+
+msgid "G (Green) value of the final color for high score (0-255)."
+msgstr "Valor G (verde) del color final para puntuación alta (0-255)."
+
+msgid "Final color B (Blue) value for high score (0-255)."
+msgstr "Valor B (azul) del color final para puntuación alta (0-255)."
+
+msgid "Value between 0 and 1 (e.g. 0.9 for 90%) that defines the point at which the score color starts to change from the initial color to the final color."
+msgstr "Valor entre 0 y 1 (p. ej., 0.9 para el 90 %) que define el punto en el que el color de la puntuación empieza a cambiar del color inicial al color final."
+
+msgid "Minimum epic chest score"
+msgstr "Puntuación mínima de cofres épicos"
+
+msgid "Fixed deposit fee in millions of Silver"
+msgstr "Comisión fija de depósito, en millones de Plata"
+
+msgid "Fixed withdrawal fee in millions of Silver"
+msgstr "Comisión fija de retirada, en millones de Plata"
+
+msgid "Fixed transfer fee in millions of Silver"
+msgstr "Comisión fija de transferencia, en millones de Plata"
+
+msgid "Caravan fee percentage for deposits"
+msgstr "Porcentaje de la comisión de caravana en los depósitos"
+
+msgid "1 = Bank active / 0 = no Bank"
+msgstr "1 = Banco activo / 0 = sin Banco"
+
+msgid "Retention time in days for old collected chests. Minimum retention time must be greater than 7 days, and default is 30 days. Setting to 0 disables automatic purge."
+msgstr "Tiempo de retención, en días, de los cofres recogidos antiguos. El tiempo mínimo de retención debe ser superior a 7 días, y el valor predeterminado es 30 días. El valor 0 desactiva la limpieza automática."
+
+msgid "Logo shown in the navbar. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "Logotipo mostrado en la barra de navegación. El identificador de uno de los modelos de webroot/img/branding/presets, o \"custom\" para una imagen subida. Cámbielo en Admin > Identidad Visual."
+
+msgid "Icon shown in the browser tab. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "Icono mostrado en la pestaña del navegador. El identificador de uno de los modelos de webroot/img/branding/presets, o \"custom\" para una imagen subida. Cámbielo en Admin > Identidad Visual."
+
+msgid "Colour scheme for the whole site: morning-light, deepest-dark, wildflowers or twilight. Change it under Admin > Theme."
+msgstr "Esquema de colores de todo el sitio: morning-light, deepest-dark, wildflowers o twilight. Cámbielo en Admin > Tema."
+
+msgid "Whether the nightly database backup runs. Managed under Admin > Maintenance."
+msgstr "Indica si se ejecuta la copia de seguridad nocturna de la base de datos. Se gestiona en Admin > Mantenimiento."
+
+msgid "Folder the nightly database dumps are written to. \"~\" is the home directory of the user the site runs as. Managed under Admin > Maintenance."
+msgstr "Carpeta donde se escriben los volcados nocturnos de la base de datos. \"~\" es el directorio personal del usuario con el que se ejecuta el sitio. Se gestiona en Admin > Mantenimiento."
+
+msgid "How many days of database dumps to keep. Older dumps are deleted after each backup. Managed under Admin > Maintenance."
+msgstr "Cuántos días se conservan los volcados de la base de datos. Los volcados más antiguos se eliminan después de cada copia de seguridad. Se gestiona en Admin > Mantenimiento."
+
+msgid "1 = Troop Calculator active / 0 = no Troop Calculator"
+msgstr "1 = Calculadora de Tropas activa / 0 = sin Calculadora de Tropas"
+
+msgid "Read-only key the external monitor sends to /api/v1/health. Managed under Admin > Monitoring."
+msgstr "Clave de solo lectura que el monitor externo envía a /api/v1/health. Se gestiona en Admin > Monitorización."
+
+msgid "1 = Goal penalty active / 0 = no goal penalty. A player who misses the goal gets a higher goal in the next cycle."
+msgstr "1 = Penalización de meta activa / 0 = sin penalización de meta. El jugador que no cumple la meta recibe una meta más alta en el ciclo siguiente."
+
+msgid "Goal penalty: how much the goal grows, in percent, for a player who missed it in the previous cycle (e.g. 10 = +10%). The raised goal is rounded up."
+msgstr "Penalización de meta: cuánto aumenta la meta, en porcentaje, para el jugador que no la cumplió en el ciclo anterior (p. ej., 10 = +10 %). La meta aumentada se redondea hacia arriba."
+
+msgid "Goal penalty: which goal it applies to. \"total\" = Chest Score Goal (minimum_chest_score) / \"epic\" = Epic Chest Goal (minimum_epic_chest_score) / \"both\" = both goals: missing either one is a miss, and only the goal that was missed is raised."
+msgstr "Penalización de meta: a qué meta se aplica. \"total\" = Meta de puntos de cofres (minimum_chest_score) / \"epic\" = Meta de cofres épicos (minimum_epic_chest_score) / \"both\" = ambas metas: no cumplir cualquiera de ellas cuenta como incumplimiento, y solo se aumenta la meta no cumplida."
+
+msgid "Times of day (UTC) the daily maintenance runs. Managed under Admin > Maintenance."
+msgstr "Horas del día (UTC) en las que se ejecuta el mantenimiento diario. Se gestiona en Admin > Mantenimiento."
+
+msgid "Chest goals: \"global\" = the same goal for everyone (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = the goal set for the player's guard level (G1 to G9). G0 means the level is unknown and gets the highest goal."
+msgstr "Metas de cofres: \"global\" = la misma meta para todos (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = la meta definida para el nivel de guardia del jugador (G1 a G9). G0 significa que el nivel es desconocido y recibe la meta más alta."
+
+msgid "Chest Score Goal per guard level, as JSON ({\"1\": 5000, ..., \"9\": 20000}). A level left out uses minimum_chest_score. Edited in Configs > Chests."
+msgstr "Meta de puntos de cofres por nivel de guardia, en JSON ({\"1\": 5000, ..., \"9\": 20000}). Un nivel omitido usa minimum_chest_score. Se edita en Configuraciones > Cofres."
+
+msgid "Epic Chest Goal per guard level, as JSON ({\"1\": 2000, ..., \"9\": 8000}). A level left out uses minimum_epic_chest_score. Edited in Configs > Chests."
+msgstr "Meta de cofres épicos por nivel de guardia, en JSON ({\"1\": 2000, ..., \"9\": 8000}). Un nivel omitido usa minimum_epic_chest_score. Se edita en Configuraciones > Cofres."
+
+msgid "Scheduled: {0} UTC."
+msgstr "Programado: {0} UTC."
+
+msgid "Scheduled times (UTC)"
+msgstr "Horas programadas (UTC)"
+
+msgid "All maintenance schedules and tasks follow UTC (Coordinated Universal Time)."
+msgstr "Todos los horarios y tareas de mantenimiento siguen UTC (Tiempo Universal Coordinado)."
+
+msgid "Pick the times in UTC. The schedule holds whatever timezone the server keeps."
+msgstr "Elija las horas en UTC. La programación se mantiene sea cual sea la zona horaria del servidor."
+
+msgid "Twice a day is the suggestion: {0} and {1} UTC, quiet hours spaced across the day. Changing this fills in suggested times, which you can then edit."
+msgstr "Se sugiere dos veces al día: {0} y {1} UTC, horas tranquilas repartidas a lo largo del día. Al cambiar esto se rellenan las horas sugeridas, que luego puede editar."
+
+msgid "Run {0} (UTC)"
+msgstr "Ejecución {0} (UTC)"
+
+msgid "Every day at {0} UTC, keeping {1} day(s) of dumps."
+msgstr "Todos los días a las {0} UTC, conservando {1} día(s) de volcados."
+
+msgid "Deselect all"
+msgstr "Deseleccionar todo"
+
+msgid "chests selected"
+msgstr "cofres seleccionados"
+
+msgid "Mark selected as not recoverable"
+msgstr "Marcar los seleccionados como no recuperables"
+
+msgid "Mark all {0} pending as not recoverable"
+msgstr "Marcar los {0} pendientes como no recuperables"
+
+msgid "Please select at least one chest."
+msgstr "Seleccione al menos un cofre."
+
+msgid "Are you sure you want to mark the selected chests as not recoverable?"
+msgstr "¿Seguro que quiere marcar los cofres seleccionados como no recuperables?"
+
+msgid "Are you sure you want to mark ALL {0} pending chests as not recoverable? This action will update all pending chests across all pages."
+msgstr "¿Seguro que quiere marcar TODOS los {0} cofres pendientes como no recuperables? Esta acción actualizará todos los cofres pendientes de todas las páginas."
+
+msgid "{0} pending chest(s) marked as not recoverable."
+msgstr "{0} cofre(s) pendiente(s) marcado(s) como no recuperable(s)."
+
+msgid "No pending chests were found to update."
+msgstr "No se encontraron cofres pendientes que actualizar."
+
+msgid "No chests selected."
+msgstr "No hay cofres seleccionados."
+
+msgid "{0} chest(s) marked as not recoverable."
+msgstr "{0} cofre(s) marcado(s) como no recuperable(s)."
+
+msgid "No pending chests were updated."
+msgstr "No se actualizó ningún cofre pendiente."
+
+msgid "This tournament has no reward: the result is published with the ranking only. Rewards can be added later by editing the event; the points stay as they are."
+msgstr "Este torneo no tiene recompensa: el resultado se publica solo con la clasificación. Las recompensas se pueden añadir más tarde editando el evento; los puntos se quedan como están."
+
+msgid "The result of event #{0} is not published."
+msgstr "El resultado del evento #{0} no está publicado."
+
+msgid "The rewards were not saved: {0}"
+msgstr "Las recompensas no se guardaron: {0}"
+
+msgid "The rewards were split again over the published result; the points did not change."
+msgstr "Las recompensas se repartieron de nuevo sobre el resultado publicado; los puntos no cambiaron."
+
+msgid "The result of this tournament is published. You can add or change its rewards here: they are split again over the published ranking, and nobody's points change."
+msgstr "El resultado de este torneo está publicado. Aquí puede añadir o cambiar sus recompensas: se reparten de nuevo sobre la clasificación publicada, y los puntos de nadie cambian."
+
+msgid "This tournament has no rewards"
+msgstr "Este torneo no tiene recompensas"
+
+msgid "The result is published with the ranking only. Rewards can still be added later, even after it is published."
+msgstr "El resultado se publica solo con la clasificación. Las recompensas se pueden añadir más tarde, incluso después de publicado."
+
+msgid "No rewards: the result is published with the ranking only. Edit the event to add rewards, even after it is published; the points do not change."
+msgstr "Sin recompensas: el resultado se publica solo con la clasificación. Edite el evento para añadir recompensas, incluso después de publicado; los puntos no cambian."
+
+msgid "This tournament has no rewards."
+msgstr "Este torneo no tiene recompensas."
+
+msgid "Edit rewards"
+msgstr "Editar recompensas"
+
+msgid "The ranking of event #{0} was received from the game; a file cannot replace it."
+msgstr "La clasificación del evento #{0} se recibió del juego; un archivo no puede sustituirla."
+
+msgid "The points of event #{0} were already received from the game and cannot change."
+msgstr "Los puntos del evento #{0} ya se recibieron del juego y no pueden cambiar."
+
+msgid "The points come from the game and cannot be changed."
+msgstr "Los puntos vienen del juego y no se pueden cambiar."
+
+msgid "Change the member or the prize checkbox, then recalculate to see the new shares. The points come from the game and cannot be changed."
+msgstr "Cambie el miembro o la casilla de premio y luego recalcule para ver los nuevos repartos. Los puntos vienen del juego y no se pueden cambiar."
+
+msgid "Send result_uids as a list of at most {0} ids."
+msgstr "Envíe result_uids como una lista de {0} ids como máximo."
+
+msgid "Send the search as a JSON body."
+msgstr "Envíe la búsqueda como cuerpo JSON."
+
+msgid "started_at is not a valid date."
+msgstr "started_at no es una fecha válida."
+
+msgid "The member list must have at least one player."
+msgstr "La lista de miembros debe tener al menos un jugador."
+
+msgid "A member list has at most {0} players; {1} were sent."
+msgstr "Una lista de miembros tiene como máximo {0} jugadores; se enviaron {1}."
+
+msgid "Line {0}: the player has no name."
+msgstr "Línea {0}: el jugador no tiene nombre."
+
+msgid "Line {0}: the power must be a whole number of 0 or more."
+msgstr "Línea {0}: el poder debe ser un número entero igual o mayor que 0."
+
+msgid "read_at is not a valid date."
+msgstr "read_at no es una fecha válida."
+
+msgid "Send the member list as a JSON body."
+msgstr "Envíe la lista de miembros como cuerpo JSON."
+
+msgid "The member list was not accepted."
+msgstr "La lista de miembros no fue aceptada."
+
+msgid "A member list needs at least {0} players."
+msgstr "Una lista de miembros necesita al menos {0} jugadores."
+
+msgid "This list is of another clan than the one this site follows."
+msgstr "Esta lista es de otro clan, no del que sigue este sitio."
+
+msgid "The site already has a newer list of the clan."
+msgstr "El sitio ya tiene una lista más reciente del clan."
+
+msgid "Notifications"
+msgstr "Notificaciones"
+
+msgid "Notification"
+msgstr "Notificación"
+
+msgid "Possible duplicate player: \"{0}\" and \"{1}\""
+msgstr "Posible jugador duplicado: \"{0}\" y \"{1}\""
+
+msgid "Mark as read"
+msgstr "Marcar como leída"
+
+msgid "Mark all as read"
+msgstr "Marcar todas como leídas"
+
+msgid "All notifications"
+msgstr "Todas las notificaciones"
+
+msgid "{0} notification(s)"
+msgstr "{0} notificación(es)"
+
+msgid "Notification marked as read."
+msgstr "Notificación marcada como leída."
+
+msgid "All notifications marked as read."
+msgstr "Todas las notificaciones se marcaron como leídas."
+
+msgid "Check now"
+msgstr "Comprobar ahora"
+
+msgid "Check finished: {0} new notification(s)."
+msgstr "Comprobación terminada: {0} notificación(es) nueva(s)."
+
+msgid "Unread"
+msgstr "No leída"
+
+msgid "Read by {0} on {1}"
+msgstr "Leída por {0} el {1}"
+
+msgid "No longer applies since {0}"
+msgstr "Ya no se aplica desde {0}"
+
+msgid "No notifications yet."
+msgstr "Aún no hay notificaciones."
+
+msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
+msgstr "Todas las alertas enviadas a los administradores. Los nombres de jugadores que el contador de cofres no puede distinguir se comprueban cada vez que cambian los miembros."
