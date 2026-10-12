@@ -73,6 +73,8 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/searches', ['controller' => 'Uploader', 'action' => 'searchReport']);
         // The tournament mapper reports the names it reads off the Journal.
         $builder->connect('/tournament-catalog', ['controller' => 'Uploader', 'action' => 'catalog']);
+        // The clan's Members list: who is in it is active, everyone else is not.
+        $builder->connect('/members', ['controller' => 'Uploader', 'action' => 'members']);
         $builder->connect(
             '/events/{id}/imports',
             ['controller' => 'Uploader', 'action' => 'import'],

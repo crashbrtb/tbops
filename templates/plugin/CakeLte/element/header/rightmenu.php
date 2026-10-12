@@ -161,6 +161,9 @@ if ($isAdmin):
                 <li>
                     <?= $this->Html->link(__('Maintenance'), ['controller' => 'Config', 'action' => 'maintenance'], ['class' => 'dropdown-item']) ?>
                 </li>
+                <li>
+                    <?= $this->Html->link(__('Notifications'), ['controller' => 'Notifications', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                </li>
             </ul>
         </li>
 
@@ -183,10 +186,20 @@ endif;
     $pendingCount = $pendingApprovalsCount ?? 0;
     $hasPendingApprovals = $pendingCount > 0;
     $iconClass = 'fas fa-user-circle nav-icon' . ($hasPendingApprovals ? ' pending-approvals-icon' : '');
+    // Unread alerts for the administrators (AppController::beforeRender()).
+    $unreadNotifications = $adminNotifications ?? [];
+    $unreadNotificationsCount = $adminNotificationsCount ?? 0;
     ?>
     <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-            <i class="<?= $iconClass ?>"></i>
+            <span class="user-menu-icon">
+                <i class="<?= $iconClass ?>"></i>
+                <?php if ($unreadNotificationsCount > 0): ?>
+                    <span class="admin-notifications-mark" title="<?= h(__('{0} notification(s)', $unreadNotificationsCount)) ?>">
+                        <i class="fas fa-exclamation"></i>
+                    </span>
+                <?php endif; ?>
+            </span>
             <span class="d-none d-md-inline"><?= h($identity->get('username')) ?></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -196,14 +209,67 @@ endif;
                     <?= h($identity->get('username')) ?>
                     <?php if ($hasPendingApprovals): ?>
                         <small class="text-warning" style="font-weight: bold;">
-                            <i class="fas fa-exclamation-circle"></i> 
+                            <i class="fas fa-exclamation-circle"></i>
                             <?= __('{0} pending approval(s)', $pendingCount) ?>
                         </small>
                     <?php else: ?>
                         <small><?= __('Member since {0}', $identity->get('created')->nice()) ?></small>
                     <?php endif; ?>
+                    <?php if ($unreadNotificationsCount > 0): ?>
+                        <small>
+                            <span class="badge badge-danger">
+                                <i class="fas fa-exclamation"></i>
+                                <?= __('{0} notification(s)', $unreadNotificationsCount) ?>
+                            </span>
+                        </small>
+                    <?php endif; ?>
                 </p>
             </li>
+
+            <?php if ($unreadNotificationsCount > 0): ?>
+            <li class="user-body admin-notifications">
+                <?php foreach ($unreadNotifications as $notification): ?>
+                    <div class="admin-notification">
+                        <div class="admin-notification-text">
+                            <i class="fas fa-exclamation-circle text-danger"></i>
+                            <?= h($notification->message()) ?>
+                            <div class="text-muted small">
+                                <?php foreach ($notification->members() as $member): ?>
+                                    <?= $this->Html->link(
+                                        $member['player'],
+                                        ['controller' => 'Members', 'action' => 'view', $member['id']],
+                                        ['class' => 'mr-2']
+                                    ) ?>
+                                <?php endforeach; ?>
+                                <?= h($notification->created?->nice()) ?>
+                            </div>
+                        </div>
+                        <?= $this->Form->postLink(
+                            '<i class="fas fa-check"></i>',
+                            ['controller' => 'Notifications', 'action' => 'markRead', $notification->id],
+                            [
+                                'class' => 'btn btn-xs btn-outline-secondary',
+                                'escapeTitle' => false,
+                                'title' => __('Mark as read'),
+                                'aria-label' => __('Mark as read'),
+                            ]
+                        ) ?>
+                    </div>
+                <?php endforeach; ?>
+                <div class="admin-notifications-actions">
+                    <?= $this->Form->postLink(
+                        __('Mark all as read'),
+                        ['controller' => 'Notifications', 'action' => 'markAllRead'],
+                        ['class' => 'small']
+                    ) ?>
+                    <?= $this->Html->link(
+                        __('All notifications'),
+                        ['controller' => 'Notifications', 'action' => 'index'],
+                        ['class' => 'small']
+                    ) ?>
+                </div>
+            </li>
+            <?php endif; ?>
 
             <!-- Menu Footer-->
             <li class="user-footer">
@@ -220,6 +286,48 @@ endif;
 
         </ul>
     </li>
+    <style>
+        .user-menu-icon {
+            position: relative;
+            display: inline-block;
+        }
+        .admin-notifications-mark {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #dc3545;
+            color: #fff;
+            font-size: 8px;
+            line-height: 14px;
+            text-align: center;
+        }
+        .user-menu .admin-notifications {
+            max-height: 50vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .admin-notification {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+            white-space: normal;
+        }
+        .admin-notification-text {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+        .admin-notifications-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 8px;
+        }
+    </style>
     <?php if ($hasPendingApprovals): ?>
     <style>
         .pending-approvals-icon {

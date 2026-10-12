@@ -106,6 +106,23 @@ class AppController extends Controller
         }
 
         $this->set('pendingApprovalsCount', $pendingApprovalsCount);
+
+        // Unread alerts for the user menu of an administrator.
+        $adminNotifications = [];
+        $adminNotificationsCount = 0;
+        if ($userId && $this->isAdmin($userId)) {
+            try {
+                $unread = TableRegistry::getTableLocator()->get('AdminNotifications')->find('unread');
+                $adminNotificationsCount = $unread->count();
+                $adminNotifications = $adminNotificationsCount > 0 ? $unread->limit(5)->all()->toList() : [];
+            } catch (\Throwable $e) {
+                // A menu must not take the page down with it.
+                $adminNotifications = [];
+                $adminNotificationsCount = 0;
+            }
+        }
+
+        $this->set(compact('adminNotifications', 'adminNotificationsCount'));
     }
 
     /**

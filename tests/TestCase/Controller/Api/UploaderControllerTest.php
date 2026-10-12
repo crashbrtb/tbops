@@ -39,6 +39,12 @@ class UploaderControllerTest extends TestCase
         'app.EventStandings',
         'app.EventRewardAllocations',
         'app.GameTournaments',
+        // The last member list applied is remembered here.
+        'app.JobRuns',
+        // Kept by player name: they follow a member the game renames.
+        'app.PlayerCycleSummaries',
+        'app.ManualGoalPenalties',
+        'app.GoalPenaltyWaivers',
     ];
 
     protected string $adminToken;
@@ -699,11 +705,302 @@ class UploaderControllerTest extends TestCase
             'collected_at' => DateTime::now()->subWeeks(6),
         ], ['accessibleFields' => ['*' => true]]));
 
-        $members->updateFromCollectedChests();
+        $result = $members->updateFromCollectedChests();
 
-        $this->assertSame(0, (int)$members->find()->where(['player' => 'Somebody New'])->firstOrFail()->active);
+        $this->assertSame(0, $result['newMembersCount']);
+        $this->assertSame(0, $members->find()->where(['player' => 'Somebody New'])->count(),
+            'a chest name the roster does not know is not made a member: it is a misreading, or someone who left');
         $this->assertSame(1, (int)$members->find()->where(['game_player_id' => 201])->firstOrFail()->active,
             'an old chest does not deactivate a player the roster says is in the clan');
+    }
+
+    public function testAMemberRenamedInTheGameTakesTheirChestsAndCycleRecordsAlong(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+        $make = function (array $data) use ($members): void {
+            $members->saveOrFail($members->newEntity($data + ['active' => 1, 'power' => 1]));
+        };
+        $make(['player' => 'Dumau', 'game_player_id' => 101]);
+        // Two members called Lion; the game renames one of them.
+        $make(['player' => 'Lion', 'game_player_id' => 102]);
+        $make(['player' => 'Lion']);
+
+        $connection = $members->getConnection();
+        $chests = $this->fetchTable('CollectedChests');
+        foreach (['Dumau', 'Dumau', 'Dumau', 'DUMAU', 'Lion', 'Lion', 'Xandovsky'] as $player) {
+            $chests->saveOrFail($chests->newEntity([
+                'name' => 'Chest', 'player' => $player, 'source' => 'Crypt', 'type' => 0, 'collected_at' => DateTime::now(),
+            ], ['accessibleFields' => ['*' => true]]));
+        }
+        // Counted here rather than by the database, which may not tell "Dumau" from "DUMAU".
+        $under = fn (string $player): int => count(array_filter(
+            $connection->execute('SELECT player FROM collected_chests')->fetchAll('assoc'),
+            fn (array $row): bool => $row['player'] === $player
+        ));
+
+        $summaries = $this->fetchTable('PlayerCycleSummaries');
+        foreach ([['Dumau', '2026-09-01'], ['Dumau', '2026-09-08'], ['Xandovsky', '2026-09-08']] as [$player, $cycle]) {
+            $summaries->saveOrFail($summaries->newEntity([
+                'player_name' => $player, 'cycle_start_date' => $cycle, 'cycle_end_date' => $cycle,
+                'total_chests' => 1, 'total_score' => 1, 'epic_crypt_score' => 0,
+                'goal_achieved' => false, 'fine_due' => true, 'fine_paid' => false,
+            ], ['accessibleFields' => ['*' => true]]));
+        }
+        $cyclesOf = fn (string $player): array => $summaries->find()
+            ->where(['player_name' => $player])->orderBy(['cycle_start_date' => 'ASC'])->all()
+            ->map(fn ($row): string => $row->cycle_start_date->format('Y-m-d'))->toList();
+
+        $mappings = $this->fetchTable('PlayerNameMappings');
+        $mappings->deleteAll([]);
+        // A reading corrected to the old name, and a name somebody in the clan now carries.
+        $mappings->saveOrFail($mappings->newEntity(['ocr_text' => 'Dumal', 'correct_name' => 'Dumau']));
+        $mappings->saveOrFail($mappings->newEntity(['ocr_text' => 'Player 105', 'correct_name' => 'Somebody Else']));
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120), [101 => 'Xandovsky', 102 => 'Leo'])));
+
+        $this->assertResponseOk();
+        $this->assertSame(2, $this->body()['members']['renamed']);
+        $this->assertSame(3, $this->body()['members']['chests_moved']);
+
+        $this->assertSame([0, 4], [$under('Dumau'), $under('Xandovsky')]);
+        $this->assertSame(1, $under('DUMAU'), 'only the exact spelling is moved');
+        $this->assertSame([2, 0], [$under('Lion'), $under('Leo')], 'another member is still called Lion: those chests may be theirs');
+
+        $map = $mappings->find()->all()->combine('ocr_text', 'correct_name')->toArray();
+        $this->assertSame(['Dumal' => 'Xandovsky', 'Dumau' => 'Xandovsky'], $map);
+
+        // The cycle the new name has no record of follows; the one it has stays as it was.
+        $this->assertSame(['2026-09-01', '2026-09-08'], $cyclesOf('Xandovsky'));
+        $this->assertSame(['2026-09-08'], $cyclesOf('Dumau'));
+
+        // Once the roster is in charge, the daily maintenance does not bring "Dumau" back as a member.
+        $members->updateFromCollectedChests();
+        $this->assertSame(0, $members->find()->where(['player' => 'DUMAU'])->count());
+    }
+
+    /**
+     * The clan's Members list, as the collector sends it.
+     *
+     * @param list<int> $ids Game ids.
+     * @param array<int, string> $names Names by game id.
+     * @param array<string, mixed> $overrides Fields of the body.
+     * @return array<string, mixed>
+     */
+    private function memberList(array $ids, array $names = [], array $overrides = []): array
+    {
+        return $overrides + [
+            'clan' => ['id' => 936302870583, 'tag' => 'LPL', 'name' => 'LION PRIDE LEGION'],
+            'read_at' => '2026-09-20T10:00:00Z',
+            'client_version' => '1.0.0',
+            'members' => array_map(fn (int $id): array => [
+                'player_id' => $id,
+                'name' => $names[$id] ?? "Player {$id}",
+                'power' => 2_500_000_000 + $id,
+                'rank' => 3,
+                'level' => 400,
+            ], $ids),
+        ];
+    }
+
+    public function testTheMemberListMakesItsPlayersActiveAndEveryoneElseInactive(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+        $make = function (array $data) use ($members) {
+            $member = $members->newEntity($data + ['active' => 1, 'power' => 1]);
+            $members->saveOrFail($member);
+
+            return $member;
+        };
+        $byId = $make(['player' => 'Old Name', 'game_player_id' => 101]);
+        $byName = $make(['player' => 'Brunilda', 'active' => 0]);
+        $left = $make(['player' => 'Gone', 'game_player_id' => 999]);
+        $chestOnly = $make(['player' => 'Typo From OCR']);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120), [101 => 'New Name', 102 => 'Brunilda'])));
+
+        $this->assertResponseOk();
+        $body = $this->body();
+        $this->assertTrue($body['members']['applied']);
+        $this->assertSame(20, $body['received']);
+        $this->assertSame(20, $body['active_members']);
+        $this->assertSame(18, $body['members']['created']);
+        $this->assertSame(1, $body['members']['renamed']);
+        $this->assertSame(1, $body['members']['linked']);
+        $this->assertSame(1, $body['members']['activated']);
+        $this->assertSame(2, $body['members']['deactivated'], 'Gone and the name only the chests know');
+
+        $this->assertSame('New Name', $members->get($byId->id)->player);
+        $this->assertSame(2_500_000_101, $members->get($byId->id)->power);
+        $this->assertSame(102, $members->get($byName->id)->game_player_id);
+        $this->assertSame(1, (int)$members->get($byName->id)->active);
+        $this->assertSame(0, (int)$members->get($left->id)->active);
+        $this->assertSame(0, (int)$members->get($chestOnly->id)->active);
+        $this->assertSame(20, $members->find()->where(['active' => 1])->count());
+        $this->assertSame(0, $members->find()->where(['active' => 1, 'game_player_id IS' => null])->count());
+
+        // The same list again changes nothing.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120), [101 => 'New Name', 102 => 'Brunilda'])));
+        $this->assertResponseOk();
+        $this->assertSame([0, 0, 0], [
+            $this->body()['members']['created'], $this->body()['members']['activated'], $this->body()['members']['deactivated'],
+        ]);
+
+        // Next day: one player left, one came back.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(
+            array_merge([999], range(102, 120)),
+            [102 => 'Brunilda'],
+            ['read_at' => '2026-09-21T10:00:00Z']
+        )));
+        $this->assertResponseOk();
+        $this->assertSame(1, (int)$members->get($left->id)->active);
+        $this->assertSame(0, (int)$members->get($byId->id)->active);
+        $this->assertSame(20, $this->body()['active_members']);
+    }
+
+    public function testAMemberWhoseNameWasReadOffTheScreenIsFoundByASimilarName(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+        $make = function (string $player) use ($members) {
+            $member = $members->newEntity(['player' => $player, 'active' => 1, 'power' => 1]);
+            $members->saveOrFail($member);
+
+            return $member;
+        };
+        $glued = $make('TonyStanna');
+        $unaccented = $make('Malvadao');
+        $punctuated = $make('|IMPERATOR');
+        // Two members that could both be KALEL: neither is taken.
+        $twinA = $make('Ka-Lel');
+        $twinB = $make('Ka Lel');
+        // Rocco is in the list under his own name: "Roc co" does not get him.
+        $exact = $make('Rocco');
+        // One member, two players that look like it: not guessed either.
+        $shared = $make('Zi co');
+        $other = $make('Somebody Else');
+
+        $names = [
+            101 => 'Tony Stanna', 102 => 'Malvadão', 103 => 'Imperator', 104 => 'KALEL',
+            105 => 'Roc co', 106 => 'Rocco', 107 => 'ZICO', 108 => 'Zico.',
+        ];
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120), $names)));
+
+        $this->assertResponseOk();
+        $summary = $this->body()['members'];
+        $this->assertSame(3, $summary['similar']);
+        $this->assertSame(4, $summary['linked'], 'the three similar names and Rocco');
+        $this->assertSame(16, $summary['created']);
+        $this->assertSame(4, $summary['deactivated'], 'the two Ka Lel, Zi co and Somebody Else');
+        $this->assertSame([], $summary['ambiguous']);
+
+        // The member keeps its history and takes the game's id and spelling.
+        foreach ([[$glued, 101, 'Tony Stanna'], [$unaccented, 102, 'Malvadão'], [$punctuated, 103, 'Imperator']] as [$member, $id, $name]) {
+            $now = $members->get($member->id);
+            $this->assertSame([$id, $name, 1], [$now->game_player_id, $now->player, (int)$now->active]);
+        }
+        $this->assertSame(106, $members->get($exact->id)->game_player_id);
+        foreach ([$twinA, $twinB, $shared, $other] as $member) {
+            $this->assertNull($members->get($member->id)->game_player_id);
+            $this->assertSame(0, (int)$members->get($member->id)->active);
+        }
+        $this->assertSame(20, $this->body()['active_members']);
+    }
+
+    public function testTheMemberListAndTheTournamentsAreAppliedInTheOrderOfTheGame(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120))));
+        $this->assertResponseOk();
+
+        // A list read before the one already applied is refused whole.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(201, 220), [], ['read_at' => '2026-09-19T10:00:00Z'])));
+        $this->assertResponseCode(409);
+        $this->assertSame('older', $this->body()['reason']);
+        $this->assertSame(0, $members->find()->where(['game_player_id' => 201])->count());
+
+        // A tournament that ended before the list was read does not undo it...
+        $upload = $this->tournamentUpload();
+        $upload['rows'] = $this->rosterRows(array_merge([999], range(101, 119)));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertResponseCode(201);
+        $this->assertSame('older', $this->body()['members']['reason']);
+        $this->assertSame(1, (int)$members->find()->where(['game_player_id' => 120])->firstOrFail()->active);
+        $this->assertSame(0, $members->find()->where(['game_player_id' => 999])->count());
+        // ...and its players are still linked to the members the list created.
+        $this->assertSame(19, $this->body()['linked']);
+
+        // One that ended after it is the newer truth, and then outranks an older list.
+        $later = $this->tournamentUpload(['result_uid' => '11111111-2222-4333-8444-555555555555', 'ended_at' => '2026-09-25T17:00:00Z']);
+        $later['rows'] = $this->rosterRows(range(102, 121));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($later));
+        $this->assertTrue($this->body()['members']['applied']);
+        $this->assertSame(0, (int)$members->find()->where(['game_player_id' => 101])->firstOrFail()->active);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120), [], ['read_at' => '2026-09-24T10:00:00Z'])));
+        $this->assertResponseCode(409);
+        $this->assertSame('older', $this->body()['reason']);
+    }
+
+    public function testAMemberListOfAnotherClanOrWithBadLinesChangesNothing(): void
+    {
+        $members = $this->fetchTable('Members');
+        $members->deleteAll([]);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120))));
+        $this->assertResponseOk();
+
+        // A profile of another clan pointed at this site must not empty the clan.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(501, 520), [], [
+            'clan' => ['id' => 111, 'tag' => 'XXX', 'name' => 'Someone Else'],
+            'read_at' => '2026-09-21T10:00:00Z',
+        ])));
+        $this->assertResponseCode(409);
+        $this->assertSame('other_clan', $this->body()['reason']);
+
+        $bad = $this->memberList(range(101, 120), [], ['read_at' => 'yesterday-ish']);
+        $bad['members'][0]['name'] = ' ';
+        $bad['members'][1]['player_id'] = 'abc';
+        $bad['members'][3]['player_id'] = $bad['members'][2]['player_id'];
+        $bad['members'][4]['power'] = -5;
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($bad));
+        $this->assertResponseCode(422);
+        $this->assertSame(
+            ['members.1.name', 'members.2.player_id', 'members.4.player_id', 'members.5.power', 'read_at'],
+            array_keys($this->body()['errors'])
+        );
+
+        // Too short to be a clan: nobody is deactivated on the word of four players.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 104), [], ['read_at' => '2026-09-22T10:00:00Z'])));
+        $this->assertResponseCode(422);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode([]));
+        $this->assertResponseCode(422);
+
+        $this->authorize(null);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120))));
+        $this->assertResponseCode(401);
+
+        $this->assertSame(20, $members->find()->where(['active' => 1])->count());
+        $this->assertSame(20, $members->find()->count());
     }
 
     public function testTheMapperFillsTheCatalogue(): void

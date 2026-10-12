@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\DuplicatePlayerNameService;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenTime;
 
@@ -53,6 +54,7 @@ class MembersController extends AppController
         if ($this->request->is('post')) {
             $member = $this->Members->patchEntity($member, $this->request->getData());
             if ($this->Members->save($member)) {
+                (new DuplicatePlayerNameService())->scanQuietly();
                 $this->Flash->success(__('The member has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -77,6 +79,7 @@ class MembersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $member = $this->Members->patchEntity($member, $this->request->getData());
             if ($this->Members->save($member)) {
+                (new DuplicatePlayerNameService())->scanQuietly();
                 $this->Flash->success(__('The member has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -100,6 +103,7 @@ class MembersController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $member = $this->Members->get($id);
         if ($this->Members->delete($member)) {
+            (new DuplicatePlayerNameService())->scanQuietly();
             $this->Flash->success(__('The member has been deleted.'));
         } else {
             $this->Flash->error(__('The member could not be deleted. Please, try again.'));

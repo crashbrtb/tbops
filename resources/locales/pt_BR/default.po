@@ -4053,11 +4053,11 @@ msgstr "O crontab não pode ser acessado a partir daqui, portanto nenhum backup 
 
 #: ./src/Controller/TroopCalculatorController.php:304
 msgid "From my best guardsmen"
-msgstr ""
+msgstr "Dos meus melhores guardas"
 
 #: ./src/Controller/TroopCalculatorController.php:306
 msgid "Tier {0}"
-msgstr ""
+msgstr "Nível {0}"
 
 #: ./src/Service/DatabaseBackupService.php:330
 msgid "The database connection does not name a database to back up."
@@ -5889,3 +5889,191 @@ msgstr "A justificativa é obrigatória."
 
 msgid "This player already has a manual penalty in this cycle."
 msgstr "Este jogador já tem uma penalidade manual neste ciclo."
+
+#. Members list sent by the collector (POST /api/v1/members)
+msgid "The member list must have at least one player."
+msgstr "A lista de membros deve ter pelo menos um jogador."
+
+msgid "A member list has at most {0} players; {1} were sent."
+msgstr "Uma lista de membros tem no máximo {0} jogadores; {1} foram enviados."
+
+msgid "Line {0}: the player has no name."
+msgstr "Linha {0}: o jogador está sem nome."
+
+msgid "Line {0}: the power must be a whole number of 0 or more."
+msgstr "Linha {0}: o poder deve ser um número inteiro de 0 ou mais."
+
+msgid "read_at is not a valid date."
+msgstr "read_at não é uma data válida."
+
+msgid "Send the member list as a JSON body."
+msgstr "Envie a lista de membros como corpo JSON."
+
+msgid "The member list was not accepted."
+msgstr "A lista de membros não foi aceita."
+
+msgid "A member list needs at least {0} players."
+msgstr "Uma lista de membros precisa de pelo menos {0} jogadores."
+
+msgid "This list is of another clan than the one this site follows."
+msgstr "Esta lista é de outro clã, não do clã que este site acompanha."
+
+msgid "The site already has a newer list of the clan."
+msgstr "O site já tem uma lista mais recente do clã."
+
+# Config parameter descriptions (stored in the database, translated at display)
+msgid "Select a reference date for the start/end of the count. For example: If it is a weekly count, select a date that represents the day of the week that the count will start/end. If the count is for the Rise of Ancients event, select a date that represents the day of the event. Always use the format (YYYY-MM-DD hh:mm:ss) with UTC time (ex: \"2025-05-13 17:00:00\")"
+msgstr "Selecione uma data de referência para o início/fim da contagem. Por exemplo: se a contagem for semanal, selecione uma data que represente o dia da semana em que a contagem começa/termina. Se a contagem for para o evento Ascensão dos Anciões, selecione uma data que represente o dia do evento. Use sempre o formato (AAAA-MM-DD hh:mm:ss) no horário UTC (ex.: \"2025-05-13 17:00:00\")"
+
+msgid "Every how many days: Sets how many days each counting period lasts. Suggestion: 6 to start counting every elder 7 for a weekly count"
+msgstr "A cada quantos dias: define quantos dias dura cada período de contagem. Sugestão: 6 para iniciar a contagem a cada ancião, 7 para uma contagem semanal"
+
+msgid "Minimum Chest Score"
+msgstr "Pontuação mínima de baús"
+
+msgid "Minimum points for collecting MONSTER epic chests."
+msgstr "Pontuação mínima para a coleta de baús épicos de MONSTROS."
+
+msgid "Clan name"
+msgstr "Nome do clã"
+
+msgid "clan acronym"
+msgstr "Sigla do clã"
+
+msgid "kingdom number kxxx"
+msgstr "Número do reino (kxxx)"
+
+msgid "R (Red) value of the initial color for low score (0-255)."
+msgstr "Valor R (vermelho) da cor inicial para pontuação baixa (0-255)."
+
+msgid "G (Green) value of the starting color for low score (0-255)."
+msgstr "Valor G (verde) da cor inicial para pontuação baixa (0-255)."
+
+msgid "Starting color B (Blue) value for low score (0-255)."
+msgstr "Valor B (azul) da cor inicial para pontuação baixa (0-255)."
+
+msgid "R (Red) value of the final color for high score (0-255)."
+msgstr "Valor R (vermelho) da cor final para pontuação alta (0-255)."
+
+msgid "G (Green) value of the final color for high score (0-255)."
+msgstr "Valor G (verde) da cor final para pontuação alta (0-255)."
+
+msgid "Final color B (Blue) value for high score (0-255)."
+msgstr "Valor B (azul) da cor final para pontuação alta (0-255)."
+
+msgid "Value between 0 and 1 (e.g. 0.9 for 90%) that defines the point at which the score color starts to change from the initial color to the final color."
+msgstr "Valor entre 0 e 1 (ex.: 0.9 para 90%) que define o ponto em que a cor da pontuação começa a mudar da cor inicial para a cor final."
+
+msgid "Minimum epic chest score"
+msgstr "Pontuação mínima de baús épicos"
+
+msgid "Fixed deposit fee in millions of Silver"
+msgstr "Taxa fixa de depósito, em milhões de Prata"
+
+msgid "Fixed withdrawal fee in millions of Silver"
+msgstr "Taxa fixa de saque, em milhões de Prata"
+
+msgid "Fixed transfer fee in millions of Silver"
+msgstr "Taxa fixa de transferência, em milhões de Prata"
+
+msgid "Caravan fee percentage for deposits"
+msgstr "Percentual da taxa de caravana nos depósitos"
+
+msgid "1 = Bank active / 0 = no Bank"
+msgstr "1 = Banco ativo / 0 = sem Banco"
+
+msgid "Retention time in days for old collected chests. Minimum retention time must be greater than 7 days, and default is 30 days. Setting to 0 disables automatic purge."
+msgstr "Tempo de retenção, em dias, dos baús coletados antigos. O tempo mínimo de retenção deve ser maior que 7 dias, e o padrão é 30 dias. O valor 0 desativa a limpeza automática."
+
+msgid "Logo shown in the navbar. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "Logo exibido na barra de navegação. O identificador de um dos modelos em webroot/img/branding/presets, ou \"custom\" para uma imagem enviada. Altere em Admin > Identidade Visual."
+
+msgid "Icon shown in the browser tab. The slug of one of the presets in webroot/img/branding/presets, or \"custom\" for an uploaded image. Change it under Admin > Branding."
+msgstr "Ícone exibido na aba do navegador. O identificador de um dos modelos em webroot/img/branding/presets, ou \"custom\" para uma imagem enviada. Altere em Admin > Identidade Visual."
+
+msgid "Colour scheme for the whole site: morning-light, deepest-dark, wildflowers or twilight. Change it under Admin > Theme."
+msgstr "Esquema de cores de todo o site: morning-light, deepest-dark, wildflowers ou twilight. Altere em Admin > Tema."
+
+msgid "Whether the nightly database backup runs. Managed under Admin > Maintenance."
+msgstr "Define se o backup noturno do banco de dados é executado. Gerenciado em Admin > Manutenção."
+
+msgid "Folder the nightly database dumps are written to. \"~\" is the home directory of the user the site runs as. Managed under Admin > Maintenance."
+msgstr "Pasta onde os dumps noturnos do banco de dados são gravados. \"~\" é o diretório pessoal do usuário com que o site é executado. Gerenciado em Admin > Manutenção."
+
+msgid "How many days of database dumps to keep. Older dumps are deleted after each backup. Managed under Admin > Maintenance."
+msgstr "Por quantos dias manter os dumps do banco de dados. Os dumps mais antigos são apagados após cada backup. Gerenciado em Admin > Manutenção."
+
+msgid "1 = Troop Calculator active / 0 = no Troop Calculator"
+msgstr "1 = Calculadora de Tropas ativa / 0 = sem Calculadora de Tropas"
+
+msgid "Read-only key the external monitor sends to /api/v1/health. Managed under Admin > Monitoring."
+msgstr "Chave somente leitura que o monitor externo envia para /api/v1/health. Gerenciada em Admin > Monitoramento."
+
+msgid "1 = Goal penalty active / 0 = no goal penalty. A player who misses the goal gets a higher goal in the next cycle."
+msgstr "1 = Penalidade de meta ativa / 0 = sem penalidade de meta. O jogador que não cumpre a meta recebe uma meta maior no ciclo seguinte."
+
+msgid "Goal penalty: how much the goal grows, in percent, for a player who missed it in the previous cycle (e.g. 10 = +10%). The raised goal is rounded up."
+msgstr "Penalidade de meta: quanto a meta aumenta, em percentual, para o jogador que não a cumpriu no ciclo anterior (ex.: 10 = +10%). A meta aumentada é arredondada para cima."
+
+msgid "Goal penalty: which goal it applies to. \"total\" = Chest Score Goal (minimum_chest_score) / \"epic\" = Epic Chest Goal (minimum_epic_chest_score) / \"both\" = both goals: missing either one is a miss, and only the goal that was missed is raised."
+msgstr "Penalidade de meta: a qual meta se aplica. \"total\" = Meta de pontos de baús (minimum_chest_score) / \"epic\" = Meta de baús épicos (minimum_epic_chest_score) / \"both\" = as duas metas: não cumprir qualquer uma delas conta como falha, e só a meta não cumprida é aumentada."
+
+msgid "Times of day (UTC) the daily maintenance runs. Managed under Admin > Maintenance."
+msgstr "Horários do dia (UTC) em que a manutenção diária é executada. Gerenciado em Admin > Manutenção."
+
+msgid "Chest goals: \"global\" = the same goal for everyone (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = the goal set for the player's guard level (G1 to G9). G0 means the level is unknown and gets the highest goal."
+msgstr "Metas de baús: \"global\" = a mesma meta para todos (minimum_chest_score / minimum_epic_chest_score) / \"guard\" = a meta definida para o nível de guarda do jogador (G1 a G9). G0 significa que o nível é desconhecido e recebe a meta mais alta."
+
+msgid "Chest Score Goal per guard level, as JSON ({\"1\": 5000, ..., \"9\": 20000}). A level left out uses minimum_chest_score. Edited in Configs > Chests."
+msgstr "Meta de pontos de baús por nível de guarda, em JSON ({\"1\": 5000, ..., \"9\": 20000}). Um nível omitido usa minimum_chest_score. Editado em Configurações > Baús."
+
+msgid "Epic Chest Goal per guard level, as JSON ({\"1\": 2000, ..., \"9\": 8000}). A level left out uses minimum_epic_chest_score. Edited in Configs > Chests."
+msgstr "Meta de baús épicos por nível de guarda, em JSON ({\"1\": 2000, ..., \"9\": 8000}). Um nível omitido usa minimum_epic_chest_score. Editado em Configurações > Baús."
+
+msgid "Notifications"
+msgstr "Notificações"
+
+msgid "Notification"
+msgstr "Notificação"
+
+msgid "Possible duplicate player: \"{0}\" and \"{1}\""
+msgstr "Possível jogador duplicado: \"{0}\" e \"{1}\""
+
+msgid "Mark as read"
+msgstr "Marcar como lida"
+
+msgid "Mark all as read"
+msgstr "Marcar todas como lidas"
+
+msgid "All notifications"
+msgstr "Todas as notificações"
+
+msgid "{0} notification(s)"
+msgstr "{0} notificação(ões)"
+
+msgid "Notification marked as read."
+msgstr "Notificação marcada como lida."
+
+msgid "All notifications marked as read."
+msgstr "Todas as notificações foram marcadas como lidas."
+
+msgid "Check now"
+msgstr "Verificar agora"
+
+msgid "Check finished: {0} new notification(s)."
+msgstr "Verificação concluída: {0} nova(s) notificação(ões)."
+
+msgid "Unread"
+msgstr "Não lida"
+
+msgid "Read by {0} on {1}"
+msgstr "Lida por {0} em {1}"
+
+msgid "No longer applies since {0}"
+msgstr "Não se aplica mais desde {0}"
+
+msgid "No notifications yet."
+msgstr "Nenhuma notificação ainda."
+
+msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
+msgstr "Todos os alertas enviados aos administradores. Nomes de jogadores que o contador de baús não consegue distinguir são verificados sempre que os membros mudam."

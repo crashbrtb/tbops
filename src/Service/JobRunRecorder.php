@@ -26,6 +26,8 @@ class JobRunRecorder
     public const JOB_TOURNAMENT_IMPORT = 'tournament_import';
     /** The EventUploader's automatic walk through the Journal (scheduled task). */
     public const JOB_TOURNAMENT_SEARCH = 'tournament_search';
+    /** The clan's Members list sent by the collector; its last run is what MemberRosterService goes by. */
+    public const JOB_MEMBER_LIST = 'member_list';
 
     /**
      * Mark a job as started.
