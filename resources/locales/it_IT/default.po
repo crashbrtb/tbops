@@ -6006,3 +6006,9 @@ msgstr "Ancora nessuna notifica."
 
 msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
 msgstr "Tutti gli avvisi inviati agli amministratori. I nomi di giocatori che il contatore dei forzieri non riesce a distinguere vengono controllati ogni volta che i membri cambiano."
+
+msgid "Show Inactive"
+msgstr "Mostra inattivi"
+
+msgid "Hide Inactive"
+msgstr "Nascondi inattivi"

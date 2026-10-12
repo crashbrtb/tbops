@@ -133,9 +133,6 @@ if ($isAdmin):
                     <?= $this->Html->link(__('Tournament Catalogue'), ['controller' => 'GameTournaments', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
-                    <?= $this->Html->link(__('API Tokens'), ['controller' => 'ApiTokens', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                </li>
-                <li>
                     <?= $this->Html->link(__('Event Banners'), ['controller' => 'Events', 'action' => 'settings'], ['class' => 'dropdown-item']) ?>
                 </li>
             </ul>
@@ -163,6 +160,9 @@ if ($isAdmin):
                 </li>
                 <li>
                     <?= $this->Html->link(__('Notifications'), ['controller' => 'Notifications', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(__('API Tokens'), ['controller' => 'ApiTokens', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
             </ul>
         </li>

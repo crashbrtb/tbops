@@ -6077,3 +6077,9 @@ msgstr "Nenhuma notificação ainda."
 
 msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
 msgstr "Todos os alertas enviados aos administradores. Nomes de jogadores que o contador de baús não consegue distinguir são verificados sempre que os membros mudam."
+
+msgid "Show Inactive"
+msgstr "Mostrar inativos"
+
+msgid "Hide Inactive"
+msgstr "Ocultar inativos"

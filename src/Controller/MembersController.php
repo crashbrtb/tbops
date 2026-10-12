@@ -22,10 +22,14 @@ class MembersController extends AppController
     public function index()
     {
         $this->requireAdmin();
+        $showInactive = (bool)$this->request->getQuery('inactive');
         $query = $this->Members->find();
-        $members = $this->paginate($query);
+        if (!$showInactive) {
+            $query->where(['Members.active' => true]);
+        }
+        $members = $this->paginate($query, ['limit' => 100]);
 
-        $this->set(compact('members'));
+        $this->set(compact('members', 'showInactive'));
     }
 
     /**
