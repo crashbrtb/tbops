@@ -6006,3 +6006,9 @@ msgstr "아직 알림이 없습니다."
 
 msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
 msgstr "관리자에게 보낸 모든 알림입니다. 구성원이 바뀔 때마다 상자 카운터가 구분하지 못하는 플레이어 이름을 확인합니다."
+
+msgid "Show Inactive"
+msgstr "비활성 표시"
+
+msgid "Hide Inactive"
+msgstr "비활성 숨기기"

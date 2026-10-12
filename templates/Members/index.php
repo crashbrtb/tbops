@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Member[]|\Cake\Collection\CollectionInterface $members
+ * @var bool $showInactive
  */
 
 $this->assign('title', __('Members'));
@@ -56,6 +57,13 @@ $this->Breadcrumbs->add([
                 <i class="fas fa-list-alt text-primary mr-2"></i><?= __('Clan Members Roster') ?>
             </h3>
             <div class="d-flex align-items-center">
+                <?= $this->Html->link(
+                    $showInactive
+                        ? '<i class="fas fa-user-check mr-1"></i> ' . __('Hide Inactive')
+                        : '<i class="fas fa-user-slash mr-1"></i> ' . __('Show Inactive'),
+                    ['action' => 'index', '?' => $showInactive ? [] : ['inactive' => 1]],
+                    ['class' => 'btn btn-default btn-sm mr-3', 'escape' => false]
+                ) ?>
                 <span class="mr-2 small text-muted"><?= __('Show:') ?></span>
                 <?= $this->Paginator->limitControl([], null, [
                     'label' => false,

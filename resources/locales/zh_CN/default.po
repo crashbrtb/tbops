@@ -6006,3 +6006,9 @@ msgstr "暂无通知。"
 
 msgid "Every alert sent to the administrators. Player names the chest counter cannot tell apart are checked whenever the members change."
 msgstr "发送给管理员的所有提醒。每当成员发生变化时，都会检查宝箱计数器无法区分的玩家名称。"
+
+msgid "Show Inactive"
+msgstr "显示非活跃成员"
+
+msgid "Hide Inactive"
+msgstr "隐藏非活跃成员"

@@ -51,7 +51,9 @@
     pointer-events: none;
 }
 
-.tier-pill {
+/* Two classes, so the theme's blanket `.form-group label` rule does not win and
+   push the pills off the row's centre line. */
+.tier-pills .tier-pill {
     flex: 0 0 auto;
     min-width: 2.15rem;
     margin: 0 0.2rem 0 0;
@@ -95,20 +97,39 @@
  * label has to give way so the inputs stay wide enough to read a value in.
  */
 
-.bonus-table th[scope="row"] {
-    width: 40%;
-    padding-left: 0;
+/* The theme keeps every table heading on one line, which suits a column title
+   but not a row label: "Caçadores de Monstros Épicos" alone is wider than the
+   room the card has for it and pushed the grid into a sideways scroll on a
+   desktop. Fixed columns keep the three grids aligned with each other, and the
+   label wraps instead of widening the table. */
+.troop-calculator .bonus-table {
+    table-layout: fixed;
+    /* The theme zeroes every table's bottom margin, which glued each grid to
+       the next one's heading. */
+    margin-bottom: 1rem !important;
 }
 
-.bonus-table td,
-.bonus-table th {
-    padding: 0.3rem 0.25rem;
+/* A fixed table takes its column widths from the first row. */
+.troop-calculator .bonus-table thead th:first-child {
+    width: 40%;
+}
+
+.troop-calculator .bonus-table th[scope="row"] {
+    padding-left: 0 !important;
+    white-space: normal;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.troop-calculator .bonus-table td,
+.troop-calculator .bonus-table th {
+    padding: 0.3rem 0.25rem !important;
     vertical-align: middle;
 }
 
-.bonus-table td:last-child,
-.bonus-table th:last-child {
-    padding-right: 0;
+.troop-calculator .bonus-table td:last-child,
+.troop-calculator .bonus-table th:last-child {
+    padding-right: 0 !important;
 }
 
 .bonus-table input[type="number"] {
