@@ -90,7 +90,8 @@ class StandardChestsTable extends Table
             ->notEmptyString('score');
 
         $validator
-            ->boolean('monster');
+            ->boolean('monster')
+            ->allowEmptyString('monster');
 
         $validator
             ->integer('qty_chest')
