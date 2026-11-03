@@ -151,7 +151,7 @@ Both steps are required — migrations only create empty tables.
 php bin/cake.php migrations migrate
 
 # 2. Insert roles, configuration parameters, standard chest types and the
-#    tournament catalogue this clan already mapped
+#    tournament and game chest type catalogues this clan already mapped
 php bin/cake.php migrations seed
 ```
 
@@ -427,8 +427,8 @@ skipped.
 # Apply any migration that is still pending
 php bin/cake.php migrations migrate
 
-# Insert new roles, config parameters, standard chests and any tournament
-# added to the catalogue since this file was last generated
+# Insert new roles, config parameters, standard chests and any tournament or
+# game chest type added to the catalogues since they were last generated
 php bin/cake.php migrations seed
 ```
 
