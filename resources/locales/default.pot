@@ -5718,3 +5718,90 @@ msgstr ""
 
 msgid "This player already has a manual penalty in this cycle."
 msgstr ""
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr ""
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr ""
+
+msgid "New chest types"
+msgstr ""
+
+msgid "The game has chests the system does not know yet. Copy the name and the source from the picture and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr ""
+
+msgid "Picture"
+msgstr ""
+
+msgid "Chests waiting"
+msgstr ""
+
+msgid "Name it"
+msgstr ""
+
+msgid "Picture of the chest"
+msgstr ""
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr ""
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr ""
+
+msgid "Code {0}"
+msgstr ""
+
+msgid "Save and record the chests"
+msgstr ""
+
+msgid "Cannot be identified"
+msgstr ""
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr ""
+
+msgid "Fill in the chest name and the source."
+msgstr ""
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr ""
+
+msgid "Chest code"
+msgstr ""
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr ""
+
+msgid "Pending Tournaments"
+msgstr ""
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr ""
+
+msgid "The Journal page of this tournament"
+msgstr ""
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr ""
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr ""
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr ""
+
+msgid "Save the name"
+msgstr ""
+
+msgid "No tournament is waiting for a name."
+msgstr ""
+
+msgid "Fill in the name of the tournament."
+msgstr ""
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr ""
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr ""

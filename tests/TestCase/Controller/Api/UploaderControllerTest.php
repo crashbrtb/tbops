@@ -1041,6 +1041,32 @@ class UploaderControllerTest extends TestCase
         unset($png);
     }
 
+    public function testANewTournamentWaitsWithItsPictureAndTheUploaderKnowsIt(): void
+    {
+        $tiny = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournament-catalog', json_encode(['entries' => [
+            ['tournament_key' => '1040:1', 'ended_at' => '2026-09-12T17:00:26Z', 'picture' => $tiny],
+        ]]));
+        $this->assertResponseOk();
+
+        $catalogue = $this->fetchTable('GameTournaments');
+        // Selected by name: the table's cached schema may be older than the column.
+        $entry = $catalogue->find()->select(['name', 'pending_picture'])->where(['game_type' => 1040])->firstOrFail();
+        $this->assertNull($entry->name);
+        $picture = $entry->get('pending_picture');
+        $this->assertSame(base64_decode($tiny), is_resource($picture) ? stream_get_contents($picture) : $picture);
+
+        $this->authorize($this->adminToken);
+        $this->get('/api/v1/tournaments/known');
+        $this->assertTrue($this->body()['tournaments'][0]['has_picture']);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournament-catalog', json_encode(['entries' => [['tournament_key' => '1041:1', 'picture' => 'not an image']]]));
+        $this->assertResponseCode(422);
+    }
+
     public function testEachRankingOfATournamentHasItsOwnNameAndRewards(): void
     {
         $damage = 'clan_members_item_gain_tracking_final_tracker_statistic_entry:omens_damage';

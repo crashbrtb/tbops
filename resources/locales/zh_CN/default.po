@@ -6012,3 +6012,30 @@ msgstr "显示非活跃成员"
 
 msgid "Hide Inactive"
 msgstr "隐藏非活跃成员"
+
+msgid "Tournaments and Goals"
+msgstr "锦标赛与目标"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "游戏中的锦标赛以及每位玩家在其中的目标"
+
+msgid "Required for rewards"
+msgstr "获得奖励的必要条件"
+
+msgid "Does not decide rewards"
+msgstr "不影响奖励"
+
+msgid "No goal set for this tournament."
+msgstr "此锦标赛未设置目标。"
+
+msgid "Goal by guard level"
+msgstr "按卫兵等级的目标"
+
+msgid "Goal for every player"
+msgstr "所有玩家的目标"
+
+msgid "Last result"
+msgstr "最近结果"
+
+msgid "No tournament is registered yet."
+msgstr "尚未登记任何锦标赛。"

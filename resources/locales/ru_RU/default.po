@@ -6012,3 +6012,30 @@ msgstr "Показать неактивных"
 
 msgid "Hide Inactive"
 msgstr "Скрыть неактивных"
+
+msgid "Tournaments and Goals"
+msgstr "Турниры и цели"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "Турниры игры и цель каждого игрока в них"
+
+msgid "Required for rewards"
+msgstr "Обязательна для получения наград"
+
+msgid "Does not decide rewards"
+msgstr "Не влияет на награды"
+
+msgid "No goal set for this tournament."
+msgstr "Для этого турнира цель не задана."
+
+msgid "Goal by guard level"
+msgstr "Цель по уровню стражников"
+
+msgid "Goal for every player"
+msgstr "Цель для всех игроков"
+
+msgid "Last result"
+msgstr "Последний результат"
+
+msgid "No tournament is registered yet."
+msgstr "Пока не зарегистрировано ни одного турнира."

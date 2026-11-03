@@ -5,6 +5,7 @@
  * @var list<string> $knownPlayers
  * @var list<string> $knownChests
  * @var list<string> $knownSources
+ * @var int|null $pictureId
  */
 ?>
 
@@ -56,9 +57,9 @@ $label = $labels[$incompleteChest->status] ?? $labels['pending'];
                 </div>
             </div>
             <div class="card-body text-center">
-                <?php if ($incompleteChest->has_screenshot) : ?>
+                <?php if ($pictureId) : ?>
                     <?= $this->Html->image(
-                        ['action' => 'image', $incompleteChest->id],
+                        ['action' => 'image', $pictureId],
                         [
                             'alt' => __('Screenshot of the chest'),
                             'class' => 'img-fluid border rounded',
@@ -79,6 +80,10 @@ $label = $labels[$incompleteChest->status] ?? $labels['pending'];
                 <dl class="row mb-0">
                     <dt class="col-sm-4"><?= __('Collected at') ?></dt>
                     <dd class="col-sm-8"><?= h($incompleteChest->collected_at) ?></dd>
+                    <?php if ($incompleteChest->game_type_id !== null) : ?>
+                        <dt class="col-sm-4"><?= __('Chest code') ?></dt>
+                        <dd class="col-sm-8"><?= h($incompleteChest->game_type_id) ?></dd>
+                    <?php endif; ?>
                     <dt class="col-sm-4"><?= __('Read as chest') ?></dt>
                     <dd class="col-sm-8"><?= $incompleteChest->name ? h($incompleteChest->name) : '<em class="text-muted">' . __('nothing') . '</em>' ?></dd>
                     <dt class="col-sm-4"><?= __('Read as player') ?></dt>

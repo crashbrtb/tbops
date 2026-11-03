@@ -123,6 +123,7 @@ return function (RouteBuilder $routes): void {
         // reading routes have to resolve for anonymous visitors too.
         $builder->connect('/events', ['controller' => 'Events', 'action' => 'index']);
         $builder->connect('/events/history', ['controller' => 'Events', 'action' => 'history']);
+        $builder->connect('/events/tournaments', ['controller' => 'Events', 'action' => 'tournaments']);
         $builder->connect('/events/banner/*', ['controller' => 'Events', 'action' => 'banner']);
         $builder->connect('/events/asset/*', ['controller' => 'Events', 'action' => 'asset']);
 

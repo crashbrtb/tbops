@@ -13,10 +13,10 @@ use Throwable;
  * Fills the tournament catalogue from what the mapper reads off the Journal.
  *
  * The game only ever sends a tournament's type; its name exists on screen, in
- * the title "Your Clanmates' results in <name>". The mapper opens each result,
- * sees which type the game sends for it and reports the pair here. A type can
- * have several rankings with different goals (the Dark Omens has two); each is
- * its own entry.
+ * the title "Your Clanmates' results in <name>". For a type the catalogue does
+ * not name the uploader sends a picture of the Journal page, kept until someone
+ * names it (GameTournamentsController::pending). A type can have several rankings
+ * with different goals (the Dark Omens has two); each is its own entry.
  *
  * Names chosen by an administrator are never overwritten, and an image is only
  * added where the catalogue has none, so running the mapper again is harmless.
@@ -27,6 +27,7 @@ class TournamentCatalogService
 
     public const MAX_ENTRIES = 200;
     public const MAX_IMAGE_BYTES = 524288;
+    public const MAX_PICTURE_BYTES = 4194304;
 
     /**
      * Image types accepted, by what getimagesizefromstring() reports.
@@ -41,7 +42,7 @@ class TournamentCatalogService
     ];
 
     /**
-     * @param array<string, mixed> $data Body: `{entries: [{tournament_key|game_type, ranking, name, ended_at, image}]}`.
+     * @param array<string, mixed> $data Body: `{entries: [{tournament_key|game_type, ranking, name, ended_at, image, picture}]}`.
      * @return array{errors: array<string, string>, results: list<array<string, mixed>>}
      */
     public function register(array $data): array
@@ -96,7 +97,15 @@ class TournamentCatalogService
                     continue;
                 }
             }
-            $clean[] = compact('type', 'variant', 'ranking', 'name', 'endedAt', 'image');
+            $picture = null;
+            if (!empty($entry['picture']) && is_string($entry['picture'])) {
+                $picture = $this->decodeImage($entry['picture'], self::MAX_PICTURE_BYTES);
+                if ($picture === null) {
+                    $errors["entries.{$line}.picture"] = __('The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB.', (int)(self::MAX_PICTURE_BYTES / 1024));
+                    continue;
+                }
+            }
+            $clean[] = compact('type', 'variant', 'ranking', 'name', 'endedAt', 'image', 'picture');
         }
 
         if ($errors) {
@@ -121,6 +130,11 @@ class TournamentCatalogService
                     $imageSaved = true;
                 }
 
+                // A named tournament has nothing left to be read off a picture.
+                if ($item['picture'] !== null && (string)$entry->name === '') {
+                    $catalogue->updateAll(['pending_picture' => $item['picture'][0]], ['id' => $entry->id]);
+                }
+
                 $results[] = [
                     'game_type' => $item['type'],
                     'ranking' => $item['ranking'],
@@ -141,13 +155,14 @@ class TournamentCatalogService
      * Bytes and mime type of a base64 image, or null when it is not one.
      *
      * @param string $base64 Image, optionally as a data URI.
+     * @param int $maxBytes The most it may weigh.
      * @return array{0: string, 1: string}|null
      */
-    public function decodeImage(string $base64): ?array
+    public function decodeImage(string $base64, int $maxBytes = self::MAX_IMAGE_BYTES): ?array
     {
         $base64 = preg_replace('/^data:[^;]+;base64,/', '', trim($base64)) ?? '';
         $bytes = base64_decode($base64, true);
-        if ($bytes === false || $bytes === '' || strlen($bytes) > self::MAX_IMAGE_BYTES) {
+        if ($bytes === false || $bytes === '' || strlen($bytes) > $maxBytes) {
             return null;
         }
 

@@ -25,6 +25,8 @@ class IncompleteChestsControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.IncompleteChests',
+        'app.CollectedChests',
+        'app.StandardChests',
         'app.Users',
         'app.Roles',
         'app.RolesUsers',
@@ -37,6 +39,8 @@ class IncompleteChestsControllerTest extends TestCase
     {
         parent::setUp();
 
+        // As on the web: a table without its own class is an error, not a generic table.
+        $this->getTableLocator()->allowFallbackClass(false);
         $this->enableCsrfToken();
         $this->enableRetainFlashMessages();
     }
@@ -147,5 +151,112 @@ class IncompleteChestsControllerTest extends TestCase
 
         $this->assertRedirect(['action' => 'index', '?' => ['status' => 'pending']]);
         $this->assertFlashMessage('No chests selected.');
+    }
+
+    /**
+     * Naming a chest of a new type names the type and the others waiting.
+     */
+    public function testCorrectingANewTypeNamesItsOtherChests(): void
+    {
+        $this->signIn(1);
+        $incomplete = $this->fetchTable('IncompleteChests');
+        $types = $this->fetchTable('GameChestTypes');
+        $types->deleteAll(['game_type_id' => 9999]);
+        $incomplete->updateAll(['name' => '', 'source' => '', 'game_type_id' => 9999, 'game_gift_id' => 7], ['id IN' => [1, 2]]);
+
+        $this->post('/incomplete-chests/correct/1', ['name' => 'Mimic', 'player' => 'Player One', 'source' => 'Crypt']);
+
+        $this->assertFlashMessageAt(1, '1 other chest(s) of this type were recorded with the same name.');
+        $other = $incomplete->get(2);
+        $this->assertSame('corrected', $other->status);
+        $this->assertSame('Mimic', $other->name);
+
+        $row = $this->fetchTable('CollectedChests')->get($other->collected_chest_id);
+        $this->assertSame('Player Two', $row->player);
+        $this->assertSame(9999, $row->get('game_type_id'));
+        $this->assertSame(7, $row->get('game_gift_id'));
+
+        $named = $types->get(9999);
+        $this->assertSame(['Mimic', 'Crypt'], [$named->get('name'), $named->get('source')]);
+        $types->deleteAll(['game_type_id' => 9999]);
+    }
+
+    /**
+     * A chest with no game type is corrected alone, as always.
+     */
+    public function testCorrectingAChestWithoutATypeTouchesNoOther(): void
+    {
+        $this->signIn(1);
+
+        $this->post('/incomplete-chests/correct/1', ['name' => 'Mimic', 'player' => 'Player One', 'source' => 'Crypt']);
+
+        $this->assertSame('corrected', $this->fetchTable('IncompleteChests')->get(1)->status);
+        $this->assertSame('pending', $this->fetchTable('IncompleteChests')->get(2)->status);
+    }
+
+    /**
+     * A new type is one line on the queue, and its chests are not reviewed one by one.
+     */
+    public function testANewTypeIsOneLineAndItsChestsAreNotListed(): void
+    {
+        $this->signIn(1);
+        $table = $this->fetchTable('IncompleteChests');
+        $table->updateAll(['name' => '', 'game_type_id' => 9999], ['id IN' => [1, 2]]);
+        $table->updateAll(['screenshot' => 'png'], ['id' => 2]);
+
+        $this->get('/incomplete-chests');
+        $this->assertResponseOk();
+        $this->assertResponseContains('id="typesToName"');
+        $this->assertResponseContains('Code 9999');
+        $this->assertResponseContains('incomplete-chests/image/2');
+        $this->assertResponseContains('must be from Player Two');
+        $this->assertResponseNotContains('Player One');
+
+        $this->get('/incomplete-chests/view/1');
+        $this->assertRedirect(['action' => 'index']);
+    }
+
+    /**
+     * Naming a type from the queue records every chest with its own player.
+     */
+    public function testNamingACodeRecordsEveryChestWithItsOwnPlayer(): void
+    {
+        $this->signIn(1);
+        $incomplete = $this->fetchTable('IncompleteChests');
+        $types = $this->fetchTable('GameChestTypes');
+        $types->deleteAll(['game_type_id' => 9999]);
+        $incomplete->updateAll(['name' => '', 'source' => '', 'game_type_id' => 9999], ['id IN' => [1, 2]]);
+
+        $this->post('/incomplete-chests/name-code', ['game_type_id' => 9999, 'name' => 'Mimic', 'source' => 'Crypt']);
+
+        $this->assertFlashMessage('2 chest(s) recorded as "Mimic".');
+        $players = [];
+        foreach ([1, 2] as $id) {
+            $chest = $incomplete->get($id);
+            $this->assertSame('corrected', $chest->status);
+            $row = $this->fetchTable('CollectedChests')->get($chest->collected_chest_id);
+            $players[] = [$row->player, $row->name, $row->source, $row->get('game_type_id')];
+        }
+        $this->assertSame([['Player One', 'Mimic', 'Crypt', 9999], ['Player Two', 'Mimic', 'Crypt', 9999]], $players);
+        $this->assertSame('Mimic', $types->get(9999)->get('name'));
+        $types->deleteAll(['game_type_id' => 9999]);
+    }
+
+    /**
+     * A type that cannot be identified leaves the queue whole; marking everything
+     * pending as not recoverable does not reach the chests of a new type.
+     */
+    public function testDroppingACodeAndMarkingAllPending(): void
+    {
+        $this->signIn(1);
+        $incomplete = $this->fetchTable('IncompleteChests');
+        $incomplete->updateAll(['name' => '', 'game_type_id' => 9999], ['id' => 1]);
+
+        $this->post('/incomplete-chests/bulk-unresolved', ['mark_all_pending' => 1]);
+        $this->assertSame('pending', $incomplete->get(1)->status);
+        $this->assertSame('unresolved', $incomplete->get(2)->status);
+
+        $this->post('/incomplete-chests/drop-code', ['game_type_id' => 9999]);
+        $this->assertSame('unresolved', $incomplete->get(1)->status);
     }
 }

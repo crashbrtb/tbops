@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\IncompleteChest;
+use App\Model\Table\IncompleteChestsTable;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\DateTime;
@@ -12,9 +13,10 @@ use Cake\ORM\TableRegistry;
 /**
  * IncompleteChests Controller
  *
- * The review queue for chests the collector opened but could not read. Each row
- * carries a picture of the chest as it was on screen, which is the only thing
- * left of it: the chest itself was consumed in the game.
+ * The review queue for chests the collector opened but could not name. The first
+ * of a new game type carries a picture of the chest as it was on screen, and the
+ * type is named once on the index, for all its chests (see
+ * IncompleteChestsTable::nameCode). Those chests are not reviewed one by one.
  *
  * From here a chest is either finished by hand - which creates the
  * collected_chests row it should have become - or marked as examined and not
@@ -60,20 +62,89 @@ class IncompleteChestsController extends AppController
         if ($status !== 'all') {
             $query = $query->where(['status' => $status]);
         }
+        if ($status === IncompleteChest::STATUS_PENDING) {
+            $query = $query->where(['NOT' => IncompleteChestsTable::AWAITING_NAME]);
+        }
 
         $query = $query->orderBy(['collected_at' => 'DESC']);
 
         $incompleteChests = $this->paginate($query, ['limit' => 25]);
         $counts = [
             IncompleteChest::STATUS_PENDING => $this->IncompleteChests->find()
-                ->where(['status' => IncompleteChest::STATUS_PENDING])->count(),
+                ->where(['status' => IncompleteChest::STATUS_PENDING, 'NOT' => IncompleteChestsTable::AWAITING_NAME])->count(),
             IncompleteChest::STATUS_CORRECTED => $this->IncompleteChests->find()
                 ->where(['status' => IncompleteChest::STATUS_CORRECTED])->count(),
             IncompleteChest::STATUS_UNRESOLVED => $this->IncompleteChests->find()
                 ->where(['status' => IncompleteChest::STATUS_UNRESOLVED])->count(),
         ];
 
-        $this->set(compact('incompleteChests', 'status', 'counts'));
+        $typesToName = $this->IncompleteChests->typesToName();
+        $knownChests = $knownSources = [];
+        if ($typesToName) {
+            [$knownChests, $knownSources] = $this->knownNames();
+        }
+
+        $this->set(compact('incompleteChests', 'status', 'counts', 'typesToName', 'knownChests', 'knownSources'));
+    }
+
+    /**
+     * Names a new game type: every chest waiting with it is recorded.
+     *
+     * @return \Cake\Http\Response|null Redirects.
+     */
+    public function nameCode()
+    {
+        $this->requireAdmin();
+        $this->request->allowMethod(['post']);
+
+        $typeId = (int)$this->request->getData('game_type_id');
+        $name = trim((string)$this->request->getData('name'));
+        $source = trim((string)$this->request->getData('source'));
+
+        if ($name === '' || $source === '' || mb_strlen($name) > 50 || mb_strlen($source) > 50) {
+            $this->Flash->error(__('Fill in the chest name and the source.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+
+        $recorded = $this->IncompleteChests->nameCode($typeId, $name, $source, $this->currentUserId());
+        $this->Flash->success(__('{0} chest(s) recorded as "{1}".', $recorded, $name));
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Gives up on a new game type: its chests are marked as not recoverable.
+     *
+     * @return \Cake\Http\Response|null Redirects.
+     */
+    public function dropCode()
+    {
+        $this->requireAdmin();
+        $this->request->allowMethod(['post']);
+
+        $count = $this->IncompleteChests->dropCode((int)$this->request->getData('game_type_id'), $this->currentUserId());
+        $this->Flash->success(__('{0} chest(s) marked as not recoverable.', $count));
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Offered as suggestions in the forms: the names already in use, so a correction
+     * lands on an existing spelling instead of inventing a variant to merge later.
+     *
+     * @return array{0: list<string>, 1: list<string>} Chest names and sources.
+     */
+    private function knownNames(): array
+    {
+        $knownChests = TableRegistry::getTableLocator()->get('CollectedChests')->find()
+            ->select(['name'])->distinct(['name'])->orderBy(['name' => 'ASC'])
+            ->all()->extract('name')->toList();
+        $knownSources = TableRegistry::getTableLocator()->get('StandardChests')->find()
+            ->select(['source'])->distinct(['source'])->orderBy(['source' => 'ASC'])
+            ->all()->extract('source')->toList();
+
+        return [$knownChests, $knownSources];
     }
 
     /**
@@ -91,25 +162,24 @@ class IncompleteChestsController extends AppController
         // through the `image` action, so pulling a hundred kilobytes of blob
         // into this request only to ask whether it exists would be waste.
         $incompleteChest = $this->IncompleteChests->find('withoutImage')
-            ->select(['screenshot_bytes' => 'OCTET_LENGTH(screenshot)'])
+            ->select(['screenshot_bytes' => 'LENGTH(screenshot)'])
             ->where(['IncompleteChests.id' => $id])
             ->firstOrFail();
 
-        // Offered as suggestions in the form: the names already in use, so a
-        // correction lands on an existing spelling instead of inventing a
-        // variant that will need merging later.
-        $collectedChests = TableRegistry::getTableLocator()->get('CollectedChests');
-        $knownPlayers = $collectedChests->find()
+        // A chest of a type without a name is settled with its type, on the index.
+        if ($incompleteChest->is_pending && $incompleteChest->game_type_id !== null && !$incompleteChest->name) {
+            return $this->redirect(['action' => 'index']);
+        }
+
+        $knownPlayers = TableRegistry::getTableLocator()->get('CollectedChests')->find()
             ->select(['player'])->distinct(['player'])->orderBy(['player' => 'ASC'])
             ->all()->extract('player')->toList();
-        $knownChests = $collectedChests->find()
-            ->select(['name'])->distinct(['name'])->orderBy(['name' => 'ASC'])
-            ->all()->extract('name')->toList();
-        $knownSources = TableRegistry::getTableLocator()->get('StandardChests')->find()
-            ->select(['source'])->distinct(['source'])->orderBy(['source' => 'ASC'])
-            ->all()->extract('source')->toList();
+        [$knownChests, $knownSources] = $this->knownNames();
 
-        $this->set(compact('incompleteChest', 'knownPlayers', 'knownChests', 'knownSources'));
+        // A chest's own picture only: another's would show other players.
+        $pictureId = $incompleteChest->has_screenshot ? $incompleteChest->id : null;
+
+        $this->set(compact('incompleteChest', 'knownPlayers', 'knownChests', 'knownSources', 'pictureId'));
     }
 
     /**
@@ -179,18 +249,7 @@ class IncompleteChestsController extends AppController
         }
 
         $collectedChests = TableRegistry::getTableLocator()->get('CollectedChests');
-        $chest = $collectedChests->newEntity([
-            'name' => $candidate->name,
-            'player' => $candidate->player,
-            'source' => $candidate->source,
-            // `type` is documented in the schema as 0 = auto, 1 = Manual, and
-            // until now every one of the 275 000 rows was 0: nothing had ever
-            // been entered by hand. A chest recovered from a screenshot is
-            // exactly the case the column was made for, and marking it keeps
-            // the two kinds of row tellable apart afterwards.
-            'type' => 1,
-            'collected_at' => $incompleteChest->collected_at,
-        ]);
+        $chest = IncompleteChestsTable::asCollected($collectedChests, $incompleteChest, $candidate->player, $candidate->name, $candidate->source);
 
         if (!$collectedChests->save($chest)) {
             $this->Flash->error(__('The chest could not be saved into collected chests.'));
@@ -215,6 +274,10 @@ class IncompleteChestsController extends AppController
                 $candidate->player,
                 $chest->id
             ));
+            $others = $this->IncompleteChests->nameType($incompleteChest, $candidate->name, $candidate->source, $this->currentUserId());
+            if ($others > 0) {
+                $this->Flash->success(__('{0} other chest(s) of this type were recorded with the same name.', $others));
+            }
         } else {
             // The chest is already in collected_chests; say so plainly rather
             // than letting it look as though nothing happened.
@@ -288,6 +351,7 @@ class IncompleteChestsController extends AppController
                 ],
                 [
                     'status' => IncompleteChest::STATUS_PENDING,
+                    'NOT' => IncompleteChestsTable::AWAITING_NAME,
                 ]
             );
 

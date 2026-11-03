@@ -35,6 +35,11 @@ try {
             ['controller' => 'Events', 'action' => 'history'],
             ['class' => 'dropdown-item', 'escape' => false]
         ) ?>
+        <?= $this->Html->link(
+            '<i class="fas fa-bullseye mr-2 text-primary"></i>' . __('Tournaments and Goals'),
+            ['controller' => 'Events', 'action' => 'tournaments'],
+            ['class' => 'dropdown-item', 'escape' => false]
+        ) ?>
     </div>
 </li>
 

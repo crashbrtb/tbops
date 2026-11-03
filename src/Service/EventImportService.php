@@ -596,6 +596,9 @@ class EventImportService
     public function knownTournaments(): array
     {
         $known = [];
+        $pictured = $this->fetchTable('GameTournaments')->find()
+            ->select(['id'])->where(['pending_picture IS NOT' => null])
+            ->all()->extract('id')->toList();
         foreach ($this->fetchTable('GameTournaments')->find('withoutImage')->orderBy(['game_type' => 'ASC'])->all() as $entry) {
             $previous = $this->previousTournament(null, $entry->id);
             $known[] = [
@@ -606,6 +609,7 @@ class EventImportService
                 'name_source' => $entry->name_source,
                 'duration_days' => $entry->duration_days,
                 'has_image' => $entry->has_image,
+                'has_picture' => in_array($entry->id, $pictured, true),
                 'last_ended_at' => $entry->last_seen_at?->toIso8601String(),
                 'rewards' => array_map(fn (EventReward $r): array => [
                     'item_name' => $r->item_name,

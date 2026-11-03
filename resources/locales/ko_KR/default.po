@@ -6012,3 +6012,30 @@ msgstr "비활성 표시"
 
 msgid "Hide Inactive"
 msgstr "비활성 숨기기"
+
+msgid "Tournaments and Goals"
+msgstr "토너먼트와 목표"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "게임의 토너먼트와 각 토너먼트에서 플레이어별 목표"
+
+msgid "Required for rewards"
+msgstr "보상을 받으려면 필수"
+
+msgid "Does not decide rewards"
+msgstr "보상을 결정하지 않음"
+
+msgid "No goal set for this tournament."
+msgstr "이 토너먼트에는 설정된 목표가 없습니다."
+
+msgid "Goal by guard level"
+msgstr "근위병 레벨별 목표"
+
+msgid "Goal for every player"
+msgstr "모든 플레이어의 목표"
+
+msgid "Last result"
+msgstr "최근 결과"
+
+msgid "No tournament is registered yet."
+msgstr "아직 등록된 토너먼트가 없습니다."

@@ -6083,3 +6083,117 @@ msgstr "Mostrar inativos"
 
 msgid "Hide Inactive"
 msgstr "Ocultar inativos"
+
+msgid "Tournaments and Goals"
+msgstr "Torneios e Metas"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "Os torneios do jogo e a meta de cada jogador em cada um"
+
+msgid "Required for rewards"
+msgstr "Obrigatória para receber prêmios"
+
+msgid "Does not decide rewards"
+msgstr "Não decide os prêmios"
+
+msgid "No goal set for this tournament."
+msgstr "Nenhuma meta definida para este torneio."
+
+msgid "Goal by guard level"
+msgstr "Meta por nível dos guardas"
+
+msgid "Goal for every player"
+msgstr "Meta para todos os jogadores"
+
+msgid "Last result"
+msgstr "Último resultado"
+
+msgid "No tournament is registered yet."
+msgstr "Nenhum torneio cadastrado ainda."
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "{0} outro(s) baú(s) deste tipo foram registrados com o mesmo nome."
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "O baú deste código está destacado. Confira se a linha dele mostra o jogador informado pelo jogo."
+
+msgid "New chest types"
+msgstr "Novos tipos de baú"
+
+msgid "The game has chests the system does not know yet. Copy the name and the source from the picture and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "O jogo tem baús que o sistema ainda não conhece. Copie o nome e a origem da imagem e salve: todos os baús desse tipo são registrados, cada um com o seu jogador, e os próximos serão reconhecidos sozinhos."
+
+msgid "Picture"
+msgstr "Imagem"
+
+msgid "Chests waiting"
+msgstr "Baús aguardando"
+
+msgid "Name it"
+msgstr "Dar nome"
+
+msgid "Picture of the chest"
+msgstr "Imagem do baú"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "Confira: a primeira linha da imagem deve ser de {0}."
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "Sem imagem. Dê nome só se souber qual é o baú."
+
+msgid "Code {0}"
+msgstr "Código {0}"
+
+msgid "Save and record the chests"
+msgstr "Salvar e registrar os baús"
+
+msgid "Cannot be identified"
+msgstr "Não dá para identificar"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "Marcar estes {0} baú(s) como não recuperáveis? Eles não vão contar para ninguém."
+
+msgid "Fill in the chest name and the source."
+msgstr "Preencha o nome do baú e a origem."
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "{0} baú(s) registrado(s) como \"{1}\"."
+
+msgid "Chest code"
+msgstr "Código do baú"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "Isto dá nome ao código {0} em definitivo: o(s) {1} outro(s) baú(s) na fila e todos os próximos deste código ficarão com este nome e esta origem."
+
+msgid "Pending Tournaments"
+msgstr "Torneios pendentes"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "O jogo só envia um número para o torneio. Leia o nome na foto: os rankings dele não são enviados enquanto ele não tiver nome, e a busca só volta até o limite de \"Dias para olhar para trás\" do programa."
+
+msgid "The Journal page of this tournament"
+msgstr "A página do Diário deste torneio"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "O card deste torneio está destacado. Confira se a data dele é a que aparece ao lado da foto e se é um card de resultados."
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "O programa ainda não conseguiu tirar a foto: ele tenta de novo na próxima busca."
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "Este nome será usado em todos os torneios deste código a partir de agora."
+
+msgid "Save the name"
+msgstr "Salvar o nome"
+
+msgid "No tournament is waiting for a name."
+msgstr "Nenhum torneio está esperando um nome."
+
+msgid "Fill in the name of the tournament."
+msgstr "Preencha o nome do torneio."
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "Torneio \"{0}\" nomeado. Os rankings dele chegam na próxima busca."
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "A foto deve ser PNG, JPEG, WebP ou GIF com no máximo {0} KB."
