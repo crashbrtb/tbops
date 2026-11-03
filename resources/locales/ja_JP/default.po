@@ -6012,3 +6012,30 @@ msgstr "非アクティブを表示"
 
 msgid "Hide Inactive"
 msgstr "非アクティブを非表示"
+
+msgid "Tournaments and Goals"
+msgstr "トーナメントと目標"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "ゲームのトーナメントと、それぞれでの各プレイヤーの目標"
+
+msgid "Required for rewards"
+msgstr "報酬の受け取りに必須"
+
+msgid "Does not decide rewards"
+msgstr "報酬に影響しません"
+
+msgid "No goal set for this tournament."
+msgstr "このトーナメントには目標が設定されていません。"
+
+msgid "Goal by guard level"
+msgstr "衛兵レベル別の目標"
+
+msgid "Goal for every player"
+msgstr "全プレイヤー共通の目標"
+
+msgid "Last result"
+msgstr "最新の結果"
+
+msgid "No tournament is registered yet."
+msgstr "トーナメントはまだ登録されていません。"

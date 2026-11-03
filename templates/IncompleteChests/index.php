@@ -4,6 +4,9 @@
  * @var iterable<\App\Model\Entity\IncompleteChest> $incompleteChests
  * @var string $status
  * @var array<string, int> $counts
+ * @var list<array<string, mixed>> $typesToName
+ * @var list<string> $knownChests
+ * @var list<string> $knownSources
  */
 ?>
 
@@ -46,6 +49,90 @@ $pendingCount = (int)($counts['pending'] ?? 0);
             ) ?>
         </div>
     </div>
+
+<?php if ($typesToName) : ?>
+<div class="card card-warning card-outline shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title font-weight-bold mb-0">
+            <i class="fas fa-tag text-warning mr-2"></i><?= __('New chest types') ?>
+        </h3>
+    </div>
+    <div class="card-body pb-2 pt-3">
+        <p class="text-muted mb-0 small">
+            <?= __('The game has chests the system does not know yet. Copy the name and the source from the picture and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own.') ?>
+        </p>
+    </div>
+    <div class="card-body table-responsive p-0">
+        <table class="table mb-0" id="typesToName">
+            <thead class="thead-light">
+                <tr>
+                    <th><?= __('Picture') ?></th>
+                    <th style="width: 130px; text-align: center;"><?= __('Chests waiting') ?></th>
+                    <th style="min-width: 280px;"><?= __('Name it') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($typesToName as $type) : ?>
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <?php if ($type['picture_id']) : ?>
+                                <?= $this->Html->image(
+                                    ['action' => 'image', $type['picture_id']],
+                                    ['alt' => __('Picture of the chest'), 'class' => 'img-fluid border rounded', 'style' => 'max-width: 420px;']
+                                ) ?>
+                                <?php if ($type['picture_player']) : ?>
+                                    <div class="text-muted small mt-1">
+                                        <?= __('Check: the top line of the picture must be from {0}.', h($type['picture_player'])) ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                <span class="text-muted font-italic"><?= __('No picture. Name it only if you know which chest it is.') ?></span>
+                            <?php endif; ?>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <span class="badge badge-warning px-2 py-1" style="font-size: 1rem;"><?= $this->Number->format($type['waiting']) ?></span>
+                            <div class="text-muted small mt-1"><?= __('Code {0}', h($type['game_type_id'])) ?></div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <?= $this->Form->create(null, ['url' => ['action' => 'nameCode']]) ?>
+                            <?= $this->Form->hidden('game_type_id', ['value' => $type['game_type_id']]) ?>
+                            <?= $this->Form->control('name', [
+                                'label' => __('Chest'), 'class' => 'form-control form-control-sm', 'list' => 'known-chests',
+                                'maxlength' => 50, 'required' => true, 'id' => 'name-' . $type['game_type_id'],
+                            ]) ?>
+                            <?= $this->Form->control('source', [
+                                'label' => __('Source'), 'class' => 'form-control form-control-sm', 'list' => 'known-sources',
+                                'maxlength' => 50, 'required' => true, 'id' => 'source-' . $type['game_type_id'],
+                            ]) ?>
+                            <?= $this->Form->button(__('Save and record the chests'), ['class' => 'btn btn-success btn-sm']) ?>
+                            <?= $this->Form->end() ?>
+                            <?= $this->Form->postLink(
+                                __('Cannot be identified'),
+                                ['action' => 'dropCode'],
+                                [
+                                    'data' => ['game_type_id' => $type['game_type_id']],
+                                    'class' => 'btn btn-link btn-sm text-muted p-0 mt-2',
+                                    'confirm' => __('Mark these {0} chest(s) as not recoverable? They will not count for anyone.', $type['waiting']),
+                                ]
+                            ) ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <datalist id="known-chests">
+        <?php foreach ($knownChests as $option) : ?>
+            <option value="<?= h($option) ?>"></option>
+        <?php endforeach; ?>
+    </datalist>
+    <datalist id="known-sources">
+        <?php foreach ($knownSources as $option) : ?>
+            <option value="<?= h($option) ?>"></option>
+        <?php endforeach; ?>
+    </datalist>
+</div>
+<?php endif; ?>
 
 <div class="card card-primary card-outline shadow-sm">
     <div class="card-header d-flex flex-wrap align-items-center justify-content-between">

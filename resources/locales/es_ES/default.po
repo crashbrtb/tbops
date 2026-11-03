@@ -6012,3 +6012,30 @@ msgstr "Mostrar inactivos"
 
 msgid "Hide Inactive"
 msgstr "Ocultar inactivos"
+
+msgid "Tournaments and Goals"
+msgstr "Torneos y Metas"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "Los torneos del juego y la meta de cada jugador en ellos"
+
+msgid "Required for rewards"
+msgstr "Obligatoria para recibir recompensas"
+
+msgid "Does not decide rewards"
+msgstr "No decide las recompensas"
+
+msgid "No goal set for this tournament."
+msgstr "No hay meta definida para este torneo."
+
+msgid "Goal by guard level"
+msgstr "Meta por nivel de guardias"
+
+msgid "Goal for every player"
+msgstr "Meta para todos los jugadores"
+
+msgid "Last result"
+msgstr "Último resultado"
+
+msgid "No tournament is registered yet."
+msgstr "Todavía no hay ningún torneo registrado."

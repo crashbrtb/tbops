@@ -28,6 +28,11 @@ $sourceLabels = [
         </div>
         <div class="toolbar-actions">
             <?= $this->Html->link(
+                '<i class="fas fa-question-circle mr-1"></i>' . __('Pending Tournaments'),
+                ['action' => 'pending'],
+                ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
+            ) ?>
+            <?= $this->Html->link(
                 '<i class="fas fa-list mr-1"></i>' . __('Manage Events'),
                 ['controller' => 'Events', 'action' => 'manage'],
                 ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]

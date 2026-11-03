@@ -156,4 +156,59 @@ class GameTournamentsControllerTest extends TestCase
         $this->assertFlashElement('flash/error');
         $this->assertSame('2026-09-08 00:00', $events->get($event->id)->starts_at->format('Y-m-d H:i'));
     }
+
+    public function testPendingShowsWhatHasNoNameAndNamingItClearsThePicture(): void
+    {
+        $this->loginAdmin();
+        $catalogue = $this->fetchTable('GameTournaments');
+        $pending = $catalogue->touchType(1040);
+        $catalogue->updateAll(['pending_picture' => base64_decode(self::PNG)], ['id' => $pending->id]);
+        $named = $catalogue->touchType(1024);
+        $named->set('name', 'Rise of the Ancients');
+        $catalogue->saveOrFail($named);
+
+        $this->get('/game-tournaments/pending');
+        $this->assertResponseOk();
+        $this->assertResponseContains('1040');
+        $this->assertResponseContains('/game-tournaments/picture/' . $pending->id);
+        $this->assertResponseNotContains('Rise of the Ancients');
+
+        $this->get('/game-tournaments/picture/' . $pending->id);
+        $this->assertResponseOk();
+        $this->assertContentType('image/png');
+
+        $this->post('/game-tournaments/assign-name/' . $pending->id, ['name' => ' Epic Hunt ']);
+        $this->assertRedirect(['action' => 'pending']);
+
+        $saved = $catalogue->get($pending->id);
+        $this->assertSame('Epic Hunt', $saved->name);
+        $this->assertSame(GameTournament::SOURCE_MANUAL, $saved->name_source);
+        $this->assertSame(0, $catalogue->find()->where(['id' => $pending->id, 'pending_picture IS NOT' => null])->count());
+        $this->assertSame(0, $catalogue->namelessCount());
+    }
+
+    public function testAnEmptyNameIsRefused(): void
+    {
+        $this->loginAdmin();
+        $catalogue = $this->fetchTable('GameTournaments');
+        $pending = $catalogue->touchType(1040);
+
+        $this->post('/game-tournaments/assign-name/' . $pending->id, ['name' => '  ']);
+
+        $this->assertFlashMessage('Fill in the name of the tournament.');
+        $this->assertNull($catalogue->get($pending->id)->name);
+    }
+
+    public function testThePendingPagesAreForAdministrators(): void
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $pending = $catalogue->touchType(1040);
+        $catalogue->updateAll(['pending_picture' => base64_decode(self::PNG)], ['id' => $pending->id]);
+
+        foreach (['pending', 'picture/' . $pending->id] as $page) {
+            $this->get('/game-tournaments/' . $page);
+            $this->assertResponseNotContains('PNG');
+            $this->assertResponseCode(302);
+        }
+    }
 }

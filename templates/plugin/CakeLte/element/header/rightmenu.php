@@ -133,6 +133,23 @@ if ($isAdmin):
                     <?= $this->Html->link(__('Tournament Catalogue'), ['controller' => 'GameTournaments', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
+                    <?php
+                    try {
+                        $pendingTournaments = \Cake\ORM\TableRegistry::getTableLocator()
+                            ->get('GameTournaments')->namelessCount();
+                    } catch (\Throwable $e) {
+                        $pendingTournaments = 0;
+                    }
+                    ?>
+                    <?= $this->Html->link(
+                        __('Pending Tournaments') . ($pendingTournaments
+                            ? ' <span class="badge badge-warning">' . $pendingTournaments . '</span>'
+                            : ''),
+                        ['controller' => 'GameTournaments', 'action' => 'pending'],
+                        ['class' => 'dropdown-item', 'escape' => false]
+                    ) ?>
+                </li>
+                <li>
                     <?= $this->Html->link(__('Event Banners'), ['controller' => 'Events', 'action' => 'settings'], ['class' => 'dropdown-item']) ?>
                 </li>
             </ul>

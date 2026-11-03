@@ -63,6 +63,33 @@ class GameTournamentsTable extends Table
     }
 
     /**
+     * The tournaments nobody has named yet, newest first, with the size of their picture.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query Query.
+     * @return \Cake\ORM\Query\SelectQuery
+     */
+    public function findNameless(SelectQuery $query): SelectQuery
+    {
+        return $query
+            ->select($query->aliasFields(self::LIST_FIELDS, $this->getAlias()))
+            ->select(['picture_bytes' => 'LENGTH(GameTournaments.pending_picture)'])
+            ->where(['OR' => [['GameTournaments.name IS' => null], ['GameTournaments.name' => '']]])
+            ->orderBy(['GameTournaments.last_seen_at' => 'DESC']);
+    }
+
+    /**
+     * How many tournaments are waiting for a name.
+     *
+     * @return int
+     */
+    public function namelessCount(): int
+    {
+        return $this->find()
+            ->where(['OR' => [['GameTournaments.name IS' => null], ['GameTournaments.name' => '']]])
+            ->count();
+    }
+
+    /**
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */

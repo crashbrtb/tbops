@@ -24,6 +24,9 @@ use Cake\ORM\Entity;
  * @property int|null $reviewed_by
  * @property \Cake\I18n\DateTime|null $reviewed_at
  * @property \Cake\I18n\DateTime $collected_at
+ * @property int|null $game_gift_id
+ * @property int|null $game_type_id
+ * @property int|null $game_player_id
  */
 class IncompleteChest extends Entity
 {

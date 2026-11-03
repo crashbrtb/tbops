@@ -6012,3 +6012,30 @@ msgstr "Pasifleri göster"
 
 msgid "Hide Inactive"
 msgstr "Pasifleri gizle"
+
+msgid "Tournaments and Goals"
+msgstr "Turnuvalar ve Hedefler"
+
+msgid "The game's tournaments and the goal each player has in them"
+msgstr "Oyunun turnuvaları ve her oyuncunun bunlardaki hedefi"
+
+msgid "Required for rewards"
+msgstr "Ödüller için zorunlu"
+
+msgid "Does not decide rewards"
+msgstr "Ödülleri belirlemez"
+
+msgid "No goal set for this tournament."
+msgstr "Bu turnuva için hedef belirlenmedi."
+
+msgid "Goal by guard level"
+msgstr "Muhafız seviyesine göre hedef"
+
+msgid "Goal for every player"
+msgstr "Tüm oyuncular için hedef"
+
+msgid "Last result"
+msgstr "Son sonuç"
+
+msgid "No tournament is registered yet."
+msgstr "Henüz kayıtlı bir turnuva yok."

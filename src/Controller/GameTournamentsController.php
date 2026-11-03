@@ -12,9 +12,9 @@ use Psr\Http\Message\UploadedFileInterface;
 /**
  * Administration of the game's tournament catalogue.
  *
- * The mapper fills in names and ids; here an administrator sets what the game
- * does not say: the duration in days (an event's start is its end minus that)
- * and the image, and may correct a name - which the mapper then leaves alone.
+ * The uploader registers the tournaments it meets, and here an administrator sets
+ * what the game does not say: the name, from a picture of the Journal, the duration
+ * in days (an event's start is its end minus that) and the image.
  *
  * @property \App\Model\Table\GameTournamentsTable $GameTournaments
  */
@@ -103,6 +103,9 @@ class GameTournamentsController extends AppController
                 } elseif ($image !== null) {
                     $this->GameTournaments->updateAll(['image' => $image[0], 'image_mime' => $image[1]], ['id' => $tournament->id]);
                 }
+                if ($tournament->name) {
+                    $this->GameTournaments->updateAll(['pending_picture' => null], ['id' => $tournament->id]);
+                }
                 $this->Flash->success(__('Tournament "{0}" saved.', $tournament->displayName()));
 
                 return $this->redirect(['action' => 'index']);
@@ -118,6 +121,74 @@ class GameTournamentsController extends AppController
             ->all();
 
         $this->set(compact('tournament', 'events'));
+    }
+
+    /**
+     * The tournaments waiting for a name, each with the picture the uploader sent.
+     *
+     * @return \Cake\Http\Response|null|void
+     */
+    public function pending()
+    {
+        $this->requireAdmin();
+
+        $this->set('tournaments', $this->GameTournaments->find('nameless')->all());
+    }
+
+    /**
+     * The picture of a tournament waiting for a name.
+     *
+     * @param string|null $id Catalogue entry id.
+     * @return \Cake\Http\Response
+     */
+    public function picture(?string $id = null): Response
+    {
+        $this->requireAdmin();
+
+        $tournament = $this->GameTournaments->find()
+            ->select(['id', 'pending_picture'])
+            ->where(['id' => (int)$id, 'pending_picture IS NOT' => null])
+            ->first();
+        if ($tournament === null) {
+            return $this->response->withStatus(404);
+        }
+
+        $bytes = $tournament->get('pending_picture');
+        $bytes = is_resource($bytes) ? (string)stream_get_contents($bytes) : (string)$bytes;
+
+        return $this->response->withType('png')->withStringBody($bytes);
+    }
+
+    /**
+     * Names a tournament from its picture. The name is final, and the uploader's
+     * next search sends the rankings that were waiting for it.
+     *
+     * @param string|null $id Catalogue entry id.
+     * @return \Cake\Http\Response|null
+     */
+    public function assignName(?string $id = null): ?Response
+    {
+        $this->requireAdmin();
+        $this->request->allowMethod(['post', 'put']);
+
+        $tournament = $this->GameTournaments->find('withoutImage')->where(['GameTournaments.id' => $id])->firstOrFail();
+        $name = trim((string)$this->request->getData('name'));
+        if ($name === '') {
+            $this->Flash->error(__('Fill in the name of the tournament.'));
+
+            return $this->redirect(['action' => 'pending']);
+        }
+
+        $tournament = $this->GameTournaments->patchEntity($tournament, ['name' => $name]);
+        $tournament->set('name_source', GameTournament::SOURCE_MANUAL, ['guard' => false]);
+        if ($this->GameTournaments->save($tournament)) {
+            $this->GameTournaments->updateAll(['pending_picture' => null], ['id' => $tournament->id]);
+            $this->Flash->success(__('Tournament "{0}" named. Its rankings arrive with the next search.', $name));
+        } else {
+            $this->Flash->error(__('The tournament could not be saved. Please check the fields below.'));
+        }
+
+        return $this->redirect(['action' => 'pending']);
     }
 
     /**

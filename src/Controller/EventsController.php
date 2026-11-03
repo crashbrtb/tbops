@@ -60,7 +60,7 @@ class EventsController extends AppController
         // The score page is public and the banner lives on it, so the pages the
         // banner leads to have to be readable without an account.
         $this->Authentication->allowUnauthenticated([
-            'index', 'view', 'history', 'banner', 'asset',
+            'index', 'view', 'history', 'tournaments', 'banner', 'asset',
         ]);
     }
 
@@ -131,6 +131,37 @@ class EventsController extends AppController
         $running = $this->Events->find('running')->all()->toList();
 
         $this->set(compact('events', 'upcoming', 'running'));
+    }
+
+    /**
+     * The game's tournaments and the goal each one starts with.
+     *
+     * The goal shown is the catalogue's default, the one the next tournament
+     * of that type is created with; a past event keeps its own on its page.
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function tournaments()
+    {
+        $tournaments = $this->fetchTable('GameTournaments')->find('withoutImage')
+            ->where(['GameTournaments.name IS NOT' => null, 'GameTournaments.name !=' => ''])
+            ->orderBy(['GameTournaments.name' => 'ASC', 'GameTournaments.game_type' => 'ASC'])
+            ->all()
+            ->toList();
+
+        // The newest published result of each tournament, to link to.
+        $lastResults = [];
+        $published = $this->Events->find('withoutBanner')
+            ->where(['Events.game_tournament_id IS NOT' => null, 'Events.published_at IS NOT' => null])
+            ->orderBy(['Events.ends_at' => 'DESC'])
+            ->all();
+        foreach ($published as $event) {
+            $lastResults[(int)$event->game_tournament_id] ??= $event;
+        }
+
+        $isAdmin = $this->isAdmin();
+
+        $this->set(compact('tournaments', 'lastResults', 'isAdmin'));
     }
 
     /**
