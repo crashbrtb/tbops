@@ -32,13 +32,23 @@ class StandardChestsController extends AppController
         $filters = $this->indexFilters();
         $query = $this->applyIndexFilters($this->StandardChests->find(), $filters);
 
+        // "Default" in the per-page box sends an empty limit, which the paginator
+        // reads as one row per page: only the sizes offered are passed on.
+        if (!in_array((string)$this->request->getQuery('limit'), ['20', '50', '100'], true)) {
+            $this->request = $this->request->withQueryParams(
+                array_diff_key($this->request->getQueryParams(), ['limit' => true])
+            );
+        }
+
         $this->paginate = [
             'sortableFields' => ['source', 'alias', 'score', 'monster', 'qty_chest'],
-            'order' => ['StandardChests.source' => 'ASC'],
+            // Named as in sortableFields, or the paginator drops it as not sortable.
+            'order' => ['source' => 'ASC'],
         ];
         $standardChests = $this->paginate($query);
+        $chestNames = $this->fetchTable('GameChestTypes')->namesFor($standardChests);
 
-        $this->set(compact('standardChests', 'filters'));
+        $this->set(compact('standardChests', 'filters', 'chestNames'));
     }
 
     /**
@@ -76,10 +86,11 @@ class StandardChestsController extends AppController
         if ($filters['q'] !== '') {
             // Escape the LIKE wildcards so they are searched literally.
             $like = '%' . addcslashes($filters['q'], '\%_') . '%';
+            // A chest name finds the source that gives it.
             $query->where(['OR' => [
                 'StandardChests.source LIKE' => $like,
                 'StandardChests.alias LIKE' => $like,
-            ]]);
+            ] + $this->fetchTable('GameChestTypes')->standardChestsNamed($like)]);
         }
 
         if ($filters['type'] === 'monster') {

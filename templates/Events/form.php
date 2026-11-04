@@ -10,6 +10,7 @@
  * @var \App\Model\Entity\Event $event
  * @var array<\App\Model\Entity\StandardChest> $scoredChests
  * @var list<int> $selectedChestIds
+ * @var array<int, list<string>> $chestNames Chest names each source gives, by its id
  * @var array<string, string> $criteriaOptions
  * @var array<string, string> $criteriaHints
  * @var array<string, string> $ruleOptions
@@ -321,7 +322,7 @@ $fieldError = function (string $field) use ($event) {
             <div class="chest-picker-toolbar">
                 <div class="event-search" style="flex: 1 1 240px;">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="chestSearch" placeholder="<?= __('Filter chests...') ?>"
+                    <input type="text" id="chestSearch" placeholder="<?= __('Filter by source or chest name...') ?>"
                            onkeyup="filterChests(this.value)">
                 </div>
                 <div class="d-flex align-items-center" style="gap: 8px;">
@@ -343,15 +344,26 @@ $fieldError = function (string $field) use ($event) {
             <?php else: ?>
                 <div class="chest-picker" id="chestPicker">
                     <?php foreach ($scoredChests as $chest): ?>
-                        <label class="chest-option" data-name="<?= h(mb_strtolower($chest->display_name . ' ' . $chest->source)) ?>">
+                        <?php
+                        // The source and the chests it gives, both visible and both searched.
+                        $names = implode(', ', $chestNames[$chest->id] ?? []);
+                        $detail = implode(' · ', array_filter([
+                            $chest->display_name !== $chest->source ? $chest->source : '',
+                            $names,
+                        ]));
+                        ?>
+                        <label class="chest-option" data-name="<?= h(mb_strtolower($chest->display_name . ' ' . $chest->source . ' ' . $names)) ?>">
                             <input type="checkbox" name="chest_ids[]" value="<?= (int)$chest->id ?>"
                                    <?= in_array((int)$chest->id, $selectedChestIds, true) ? 'checked' : '' ?>
                                    onchange="updateChestCount()">
                             <?php if (!empty($chest->monster)): ?>
                                 <i class="fas fa-dragon chest-option-monster" title="<?= __('Epic monster chest') ?>"></i>
                             <?php endif; ?>
-                            <span class="chest-option-name" title="<?= h($chest->source) ?>">
+                            <span class="chest-option-name" title="<?= h(trim($chest->display_name . "\n" . $detail)) ?>">
                                 <?= h($chest->display_name) ?>
+                                <?php if ($detail !== '') : ?>
+                                    <small class="chest-option-detail"><?= h($detail) ?></small>
+                                <?php endif; ?>
                             </span>
                             <span class="chest-option-score"><?= $this->Number->format($chest->score) ?></span>
                         </label>

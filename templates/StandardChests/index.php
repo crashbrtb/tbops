@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\StandardChest[]|\Cake\Collection\CollectionInterface $standardChests
  * @var array<string, string> $filters
+ * @var array<int, list<string>> $chestNames Chest names each source gives, by its id
  */
 ?>
 
@@ -69,7 +70,7 @@ $this->Paginator->options(['url' => ['?' => $activeFilters]]);
                 <?= $this->Form->control('q', [
                     'type' => 'text',
                     'label' => __('Search'),
-                    'placeholder' => __('Source or alias...'),
+                    'placeholder' => __('Source, alias or chest name...'),
                     'value' => $filters['q'],
                     'class' => 'form-control form-control-sm',
                 ]) ?>
@@ -145,6 +146,7 @@ $this->Paginator->options(['url' => ['?' => $activeFilters]]);
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('source', 'Source') ?></th>
+                    <th><?= __('Chests') ?></th>
                     <th><?= $this->Paginator->sort('alias', __('Alias')) ?></th>
                     <th><?= $this->Paginator->sort('score', 'Score') ?></th>
                     <th><?= $this->Paginator->sort('monster', 'Epic Monster') ?></th>
@@ -156,7 +158,12 @@ $this->Paginator->options(['url' => ['?' => $activeFilters]]);
                 <?php $isEmpty = true; ?>
                 <?php foreach ($standardChests as $standardChest): $isEmpty = false; ?>
                 <tr>
-                    <td><?= h($standardChest->source) ?></td>
+                    <td class="font-weight-bold"><?= h($standardChest->source) ?></td>
+                    <td class="small text-muted text-left" style="white-space: normal; min-width: 220px; max-width: 420px;">
+                        <?= isset($chestNames[$standardChest->id])
+                            ? h(implode(', ', $chestNames[$standardChest->id]))
+                            : '<span class="text-muted">&mdash;</span>' ?>
+                    </td>
                     <td><?= $standardChest->alias ? h($standardChest->alias) : '<span class="text-muted">&mdash;</span>' ?></td>
                     <td><?= $this->Number->format($standardChest->score) ?></td>
                     <td><?= $standardChest->monster ? __('Yes') : __('No') ?></td>
@@ -170,7 +177,7 @@ $this->Paginator->options(['url' => ['?' => $activeFilters]]);
                 <?php endforeach; ?>
                 <?php if ($isEmpty) : ?>
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">
+                    <td colspan="7" class="text-center text-muted py-4">
                         <i class="fas fa-search mb-2 d-block" style="font-size: 1.5rem;"></i>
                         <?= $hasFilters
                             ? __('No standard chest matches the selected filters.')
