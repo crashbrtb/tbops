@@ -6197,3 +6197,9 @@ msgstr "Torneio \"{0}\" nomeado. Os rankings dele chegam na próxima busca."
 
 msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
 msgstr "A foto deve ser PNG, JPEG, WebP ou GIF com no máximo {0} KB."
+
+msgid "Source, alias or chest name..."
+msgstr "Origem, apelido ou nome do baú..."
+
+msgid "Filter by source or chest name..."
+msgstr "Filtrar por origem ou nome do baú..."

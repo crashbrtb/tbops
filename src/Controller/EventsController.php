@@ -667,7 +667,9 @@ class EventsController extends AppController
             $selectedChestIds[] = (int)$chest->standard_chest_id;
         }
 
-        $this->set(compact('event', 'scoredChests', 'selectedChestIds'));
+        $chestNames = $this->fetchTable('GameChestTypes')->namesFor($scoredChests);
+
+        $this->set(compact('event', 'scoredChests', 'selectedChestIds', 'chestNames'));
         $this->set('criteriaOptions', Event::criteriaOptions());
         $this->set('criteriaHints', Event::criteriaHints());
         $this->set('ruleOptions', EventReward::ruleOptions());

@@ -5805,3 +5805,9 @@ msgstr ""
 
 msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
 msgstr ""
+
+msgid "Source, alias or chest name..."
+msgstr ""
+
+msgid "Filter by source or chest name..."
+msgstr ""
