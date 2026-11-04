@@ -561,9 +561,18 @@ class EventsController extends AppController
             ->where(['id IN' => $ids])
             ->toArray();
 
+        // Ranked by score, a chest without one would only add nothing.
+        $unscored = [];
+        if (($data['custom_metric'] ?? Event::METRIC_SCORE) !== Event::METRIC_COUNT) {
+            $unscored = TableRegistry::getTableLocator()->get('StandardChests')
+                ->find('list', keyField: 'id', valueField: 'id')
+                ->where(['id IN' => $ids, 'score' => 0])
+                ->toArray();
+        }
+
         $rows = [];
         foreach ($ids as $id) {
-            if (!isset($sources[$id])) {
+            if (!isset($sources[$id]) || isset($unscored[$id])) {
                 continue;
             }
             $rows[] = ['standard_chest_id' => $id, 'source' => $sources[$id]];
@@ -653,12 +662,12 @@ class EventsController extends AppController
      */
     private function prepareForm(Event $event): void
     {
-        // Only chests that are worth something can be picked: a chest with no
-        // score cannot decide a ranking, and listing every unscored source would
-        // bury the ones that matter.
-        $scoredChests = TableRegistry::getTableLocator()->get('StandardChests')->find()
-            ->where(['score !=' => 0])
-            ->orderBy(['monster' => 'DESC', 'score' => 'DESC', 'source' => 'ASC'])
+        // Every chest, the scored ones first: an event ranked by score offers only
+        // those (the form hides the others), one ranked by number offers them all,
+        // since a new event's chest arrives without a score.
+        $chests = TableRegistry::getTableLocator()->get('StandardChests')->find();
+        $chests = $chests
+            ->orderBy([$chests->newExpr('score = 0'), 'monster' => 'DESC', 'score' => 'DESC', 'source' => 'ASC'])
             ->all()
             ->toList();
 
@@ -667,9 +676,9 @@ class EventsController extends AppController
             $selectedChestIds[] = (int)$chest->standard_chest_id;
         }
 
-        $chestNames = $this->fetchTable('GameChestTypes')->namesFor($scoredChests);
+        $chestNames = $this->fetchTable('GameChestTypes')->namesFor($chests);
 
-        $this->set(compact('event', 'scoredChests', 'selectedChestIds', 'chestNames'));
+        $this->set(compact('event', 'chests', 'selectedChestIds', 'chestNames'));
         $this->set('criteriaOptions', Event::criteriaOptions());
         $this->set('criteriaHints', Event::criteriaHints());
         $this->set('ruleOptions', EventReward::ruleOptions());

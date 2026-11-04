@@ -8,7 +8,7 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Event $event
- * @var array<\App\Model\Entity\StandardChest> $scoredChests
+ * @var array<\App\Model\Entity\StandardChest> $chests Scored ones first
  * @var list<int> $selectedChestIds
  * @var array<int, list<string>> $chestNames Chest names each source gives, by its id
  * @var array<string, string> $criteriaOptions
@@ -300,19 +300,19 @@ $fieldError = function (string $field) use ($event) {
             <hr>
             <h2 class="mt-3"><i class="fas fa-box-open text-primary"></i> <?= __('Chests in this event') ?></h2>
             <p class="section-hint">
-                <?= __('Only chests that carry a score can be picked, because a chest worth nothing cannot decide a ranking. Choose as many as you like.') ?>
+                <?= __('Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like.') ?>
             </p>
 
             <div class="form-group">
                 <label><?= __('Rank players by') ?></label>
                 <div class="d-flex flex-wrap" style="gap: 18px;">
                     <label class="form-check-label" style="cursor: pointer;">
-                        <input type="radio" name="custom_metric" value="<?= Event::METRIC_SCORE ?>"
+                        <input type="radio" name="custom_metric" value="<?= Event::METRIC_SCORE ?>" onchange="onMetricChange()"
                                <?= ($event->custom_metric ?? Event::METRIC_SCORE) !== Event::METRIC_COUNT ? 'checked' : '' ?>>
                         <?= __('Total score of the chosen chests') ?>
                     </label>
                     <label class="form-check-label" style="cursor: pointer;">
-                        <input type="radio" name="custom_metric" value="<?= Event::METRIC_COUNT ?>"
+                        <input type="radio" name="custom_metric" value="<?= Event::METRIC_COUNT ?>" onchange="onMetricChange()"
                                <?= ($event->custom_metric ?? '') === Event::METRIC_COUNT ? 'checked' : '' ?>>
                         <?= __('Number of the chosen chests collected') ?>
                     </label>
@@ -336,14 +336,14 @@ $fieldError = function (string $field) use ($event) {
                 </div>
             </div>
 
-            <?php if (empty($scoredChests)): ?>
+            <?php if (empty($chests)): ?>
                 <div class="alert alert-warning mb-0">
                     <i class="fas fa-exclamation-triangle mr-1"></i>
-                    <?= __('No chest has a score yet. Set chest scores before creating a custom chest event.') ?>
+                    <?= __('No standard chest registered yet.') ?>
                 </div>
             <?php else: ?>
                 <div class="chest-picker" id="chestPicker">
-                    <?php foreach ($scoredChests as $chest): ?>
+                    <?php foreach ($chests as $chest): ?>
                         <?php
                         // The source and the chests it gives, both visible and both searched.
                         $names = implode(', ', $chestNames[$chest->id] ?? []);
@@ -352,7 +352,7 @@ $fieldError = function (string $field) use ($event) {
                             $names,
                         ]));
                         ?>
-                        <label class="chest-option" data-name="<?= h(mb_strtolower($chest->display_name . ' ' . $chest->source . ' ' . $names)) ?>">
+                        <label class="chest-option" data-unscored="<?= (int)$chest->score === 0 ? '1' : '0' ?>" data-name="<?= h(mb_strtolower($chest->display_name . ' ' . $chest->source . ' ' . $names)) ?>">
                             <input type="checkbox" name="chest_ids[]" value="<?= (int)$chest->id ?>"
                                    <?= in_array((int)$chest->id, $selectedChestIds, true) ? 'checked' : '' ?>
                                    onchange="updateChestCount()">
@@ -572,12 +572,31 @@ $fieldError = function (string $field) use ($event) {
         }
     }
 
+    // Ranked by score, a chest without one adds nothing, so it is neither listed
+    // nor kept; ranked by number, every chest counts.
+    function byScore() {
+        var metric = document.querySelector('input[name="custom_metric"]:checked');
+        return !metric || metric.value !== '<?= Event::METRIC_COUNT ?>';
+    }
+
     function filterChests(term) {
         var needle = (term || '').toLowerCase().trim();
+        var hideUnscored = byScore();
         document.querySelectorAll('#chestPicker .chest-option').forEach(function (option) {
             var name = option.getAttribute('data-name') || '';
-            option.style.display = needle === '' || name.indexOf(needle) !== -1 ? '' : 'none';
+            var unscored = option.getAttribute('data-unscored') === '1';
+            option.style.display = (needle === '' || name.indexOf(needle) !== -1) && !(hideUnscored && unscored) ? '' : 'none';
         });
+    }
+
+    function onMetricChange() {
+        if (byScore()) {
+            document.querySelectorAll('#chestPicker .chest-option[data-unscored="1"] input[type="checkbox"]').forEach(function (box) {
+                box.checked = false;
+            });
+        }
+        filterChests(document.getElementById('chestSearch').value);
+        updateChestCount();
     }
 
     // Acts on what is visible: with a filter applied, "select all shown" should
@@ -634,7 +653,7 @@ $fieldError = function (string $field) use ($event) {
 
     document.addEventListener('DOMContentLoaded', function () {
         onCriteriaChange();
-        updateChestCount();
+        onMetricChange();
         updateDuration();
         document.getElementById('starts-at').addEventListener('change', updateDuration);
         document.getElementById('ends-at').addEventListener('change', updateDuration);

@@ -5811,3 +5811,6 @@ msgstr ""
 
 msgid "Filter by source or chest name..."
 msgstr ""
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr ""
