@@ -561,9 +561,18 @@ class EventsController extends AppController
             ->where(['id IN' => $ids])
             ->toArray();
 
+        // Ranked by score, a chest without one would only add nothing.
+        $unscored = [];
+        if (($data['custom_metric'] ?? Event::METRIC_SCORE) !== Event::METRIC_COUNT) {
+            $unscored = TableRegistry::getTableLocator()->get('StandardChests')
+                ->find('list', keyField: 'id', valueField: 'id')
+                ->where(['id IN' => $ids, 'score' => 0])
+                ->toArray();
+        }
+
         $rows = [];
         foreach ($ids as $id) {
-            if (!isset($sources[$id])) {
+            if (!isset($sources[$id]) || isset($unscored[$id])) {
                 continue;
             }
             $rows[] = ['standard_chest_id' => $id, 'source' => $sources[$id]];
@@ -653,9 +662,9 @@ class EventsController extends AppController
      */
     private function prepareForm(Event $event): void
     {
-        // Scored chests first, so they are not buried; the unscored ones after,
-        // because a new event's chest arrives without a score and an event
-        // counting chests needs none.
+        // Every chest, the scored ones first: an event ranked by score offers only
+        // those (the form hides the others), one ranked by number offers them all,
+        // since a new event's chest arrives without a score.
         $chests = TableRegistry::getTableLocator()->get('StandardChests')->find();
         $chests = $chests
             ->orderBy([$chests->newExpr('score = 0'), 'monster' => 'DESC', 'score' => 'DESC', 'source' => 'ASC'])

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Entity\Event;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -81,22 +82,63 @@ class EventChestPickerTest extends TestCase
     }
 
     /**
-     * A chest without a score can still be picked, after the scored ones, with the chests it gives.
+     * Every chest is listed, the scored ones first; the form hides the unscored
+     * ones while the event is ranked by score.
      */
-    public function testAChestWithoutAScoreIsListedAfterTheScoredOnes(): void
+    public function testEveryChestIsListedAndTheUnscoredOnesAreMarked(): void
     {
         $this->get('/events/add');
 
         $this->assertResponseOk();
         $body = (string)$this->_response->getBody();
-        $this->assertStringContainsString('name="chest_ids[]" value="3"', $body);
-        $this->assertStringContainsString('Legendary Ashen Chest', $body);
-        $this->assertStringContainsString('epic ashen squad legendary ashen chest', $body, 'searched by its chest name');
+        $this->assertMatchesRegularExpression('/data-unscored="1" data-name="[^"]*legendary ashen chest"/', $body);
+        $this->assertMatchesRegularExpression('/data-unscored="0" data-name="[^"]*scarab chest"/', $body);
         $this->assertLessThan(
             strpos($body, 'name="chest_ids[]" value="3"'),
             strpos($body, 'name="chest_ids[]" value="2"'),
             'the scored chest comes first',
         );
-        $this->assertSame(1, substr_count($body, 'class="chest-option-unscored"'));
+    }
+
+    /**
+     * Ranked by number, a chest without a score is kept; ranked by score, it is dropped.
+     */
+    public function testAChestWithoutAScoreIsKeptOnlyWhenRankingByNumber(): void
+    {
+        $this->assertSame([2, 3], $this->savedChests(Event::METRIC_COUNT));
+        $this->assertSame([2], $this->savedChests(Event::METRIC_SCORE));
+    }
+
+    /**
+     * Create a custom chest event with both chests ticked.
+     *
+     * @param string $metric What ranks the players.
+     * @return list<int> The standard chests the event was saved with.
+     */
+    private function savedChests(string $metric): array
+    {
+        $this->enableCsrfToken();
+        $this->post('/events/add', [
+            'name' => 'Ashen week ' . $metric,
+            'criteria' => Event::CRITERIA_CUSTOM_CHESTS,
+            'custom_metric' => $metric,
+            'chest_ids' => ['2', '3'],
+            'starts_at' => DateTime::now()->addHours(1)->format('Y-m-d\TH:i'),
+            'ends_at' => DateTime::now()->addDays(3)->format('Y-m-d\TH:i'),
+            'prize' => '',
+            'contact_player' => 'Naughtius',
+            'event_rewards' => [
+                ['item_name' => 'Gold', 'quantity' => '90', 'rule' => 'proportional', 'min_points' => '1', 'remainder' => 'top_ranked'],
+            ],
+            'goal' => ['mode' => 'none'],
+        ]);
+        $this->assertRedirect();
+
+        $event = $this->fetchTable('Events')->find()->where(['name' => 'Ashen week ' . $metric])
+            ->contain(['EventChests'])->firstOrFail();
+        $ids = array_map(fn ($chest) => (int)$chest->standard_chest_id, $event->event_chests);
+        sort($ids);
+
+        return $ids;
     }
 }
