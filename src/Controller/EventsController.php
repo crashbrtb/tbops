@@ -653,12 +653,12 @@ class EventsController extends AppController
      */
     private function prepareForm(Event $event): void
     {
-        // Only chests that are worth something can be picked: a chest with no
-        // score cannot decide a ranking, and listing every unscored source would
-        // bury the ones that matter.
-        $scoredChests = TableRegistry::getTableLocator()->get('StandardChests')->find()
-            ->where(['score !=' => 0])
-            ->orderBy(['monster' => 'DESC', 'score' => 'DESC', 'source' => 'ASC'])
+        // Scored chests first, so they are not buried; the unscored ones after,
+        // because a new event's chest arrives without a score and an event
+        // counting chests needs none.
+        $chests = TableRegistry::getTableLocator()->get('StandardChests')->find();
+        $chests = $chests
+            ->orderBy([$chests->newExpr('score = 0'), 'monster' => 'DESC', 'score' => 'DESC', 'source' => 'ASC'])
             ->all()
             ->toList();
 
@@ -667,9 +667,9 @@ class EventsController extends AppController
             $selectedChestIds[] = (int)$chest->standard_chest_id;
         }
 
-        $chestNames = $this->fetchTable('GameChestTypes')->namesFor($scoredChests);
+        $chestNames = $this->fetchTable('GameChestTypes')->namesFor($chests);
 
-        $this->set(compact('event', 'scoredChests', 'selectedChestIds', 'chestNames'));
+        $this->set(compact('event', 'chests', 'selectedChestIds', 'chestNames'));
         $this->set('criteriaOptions', Event::criteriaOptions());
         $this->set('criteriaHints', Event::criteriaHints());
         $this->set('ruleOptions', EventReward::ruleOptions());

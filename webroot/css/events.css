@@ -914,6 +914,18 @@
     overflow: hidden;
 }
 
+/* A chest that adds nothing to a total score, though it counts when ranking by number */
+.chest-option-unscored {
+    display: inline-block;
+    margin-top: 2px;
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: var(--text-muted, #6b7280);
+    border: 1px dashed var(--line, #e5e7eb);
+    border-radius: var(--radius-pill, 999px);
+    padding: 1px 7px;
+}
+
 .chest-option-monster {
     flex: none;
     color: #ec4899;

@@ -6203,3 +6203,6 @@ msgstr "Origem, apelido ou nome do baú..."
 
 msgid "Filter by source or chest name..."
 msgstr "Filtrar por origem ou nome do baú..."
+
+msgid "Chests with a score come first. One without a score adds nothing to the total score, but counts when ranking by the number collected. Choose as many as you like."
+msgstr "Baús com pontuação aparecem primeiro. Um baú sem pontuação não soma na pontuação total, mas conta na classificação por quantidade coletada. Escolha quantos quiser."

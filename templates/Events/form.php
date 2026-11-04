@@ -8,7 +8,7 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Event $event
- * @var array<\App\Model\Entity\StandardChest> $scoredChests
+ * @var array<\App\Model\Entity\StandardChest> $chests Scored ones first
  * @var list<int> $selectedChestIds
  * @var array<int, list<string>> $chestNames Chest names each source gives, by its id
  * @var array<string, string> $criteriaOptions
@@ -300,7 +300,7 @@ $fieldError = function (string $field) use ($event) {
             <hr>
             <h2 class="mt-3"><i class="fas fa-box-open text-primary"></i> <?= __('Chests in this event') ?></h2>
             <p class="section-hint">
-                <?= __('Only chests that carry a score can be picked, because a chest worth nothing cannot decide a ranking. Choose as many as you like.') ?>
+                <?= __('Chests with a score come first. One without a score adds nothing to the total score, but counts when ranking by the number collected. Choose as many as you like.') ?>
             </p>
 
             <div class="form-group">
@@ -336,14 +336,14 @@ $fieldError = function (string $field) use ($event) {
                 </div>
             </div>
 
-            <?php if (empty($scoredChests)): ?>
+            <?php if (empty($chests)): ?>
                 <div class="alert alert-warning mb-0">
                     <i class="fas fa-exclamation-triangle mr-1"></i>
-                    <?= __('No chest has a score yet. Set chest scores before creating a custom chest event.') ?>
+                    <?= __('No standard chest registered yet.') ?>
                 </div>
             <?php else: ?>
                 <div class="chest-picker" id="chestPicker">
-                    <?php foreach ($scoredChests as $chest): ?>
+                    <?php foreach ($chests as $chest): ?>
                         <?php
                         // The source and the chests it gives, both visible and both searched.
                         $names = implode(', ', $chestNames[$chest->id] ?? []);
@@ -363,6 +363,9 @@ $fieldError = function (string $field) use ($event) {
                                 <?= h($chest->display_name) ?>
                                 <?php if ($detail !== '') : ?>
                                     <small class="chest-option-detail"><?= h($detail) ?></small>
+                                <?php endif; ?>
+                                <?php if ((int)$chest->score === 0) : ?>
+                                    <small class="chest-option-unscored"><?= __('Without score') ?></small>
                                 <?php endif; ?>
                             </span>
                         </label>

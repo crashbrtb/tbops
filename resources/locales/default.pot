@@ -5811,3 +5811,6 @@ msgstr ""
 
 msgid "Filter by source or chest name..."
 msgstr ""
+
+msgid "Chests with a score come first. One without a score adds nothing to the total score, but counts when ranking by the number collected. Choose as many as you like."
+msgstr ""
