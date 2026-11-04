@@ -365,7 +365,6 @@ $fieldError = function (string $field) use ($event) {
                                     <small class="chest-option-detail"><?= h($detail) ?></small>
                                 <?php endif; ?>
                             </span>
-                            <span class="chest-option-score"><?= $this->Number->format($chest->score) ?></span>
                         </label>
                     <?php endforeach; ?>
                 </div>

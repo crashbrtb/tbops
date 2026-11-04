@@ -901,28 +901,17 @@
     white-space: nowrap;
 }
 
-/* The chests a source gives: two lines at most, the whole list in the title */
+/* The chests a source gives: two lines at most, the whole list in the title.
+   A plain block cut by its height: line-clamp left it zero high in Chrome. */
 .chest-option-detail {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    display: block;
     font-size: 0.74rem;
     font-weight: 400;
+    line-height: 1.3;
+    max-height: 2.6em;
     color: var(--text-muted, #6b7280);
     white-space: normal;
     overflow: hidden;
-}
-
-.chest-option-score {
-    flex: none;
-    font-size: 0.76rem;
-    font-weight: 700;
-    color: var(--accent, #4f46e5);
-    background: var(--surface, #fff);
-    border: 1px solid var(--line, #e5e7eb);
-    border-radius: var(--radius-pill, 999px);
-    padding: 1px 8px;
 }
 
 .chest-option-monster {

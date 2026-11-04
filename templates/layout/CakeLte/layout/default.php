@@ -27,7 +27,7 @@
     <?= $this->Html->css('CakeLte.style') ?>
     <?= $this->Html->css('theme-score') ?>
     <?= $this->Html->css('themes') ?>
-    <?= $this->Html->css('events') ?>
+    <?= $this->Html->css('events', ['timestamp' => true]) ?>
     <?= $this->element('CakeLte.extra/css') ?>
     <?= $this->fetch('css') ?>
 </head>
