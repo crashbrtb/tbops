@@ -109,3 +109,23 @@ $bankFunctionEnabled = $bankFunctionConfig && (int)$bankFunctionConfig->value ==
 </li>
 <?php endif; ?>
 
+<?php
+// Off by default: with it on, everyone sees the clan's data, signed in or not.
+$clanDataEnabled = $configTable->isOn('clan_data_function');
+?>
+
+<?php if ($clanDataEnabled): ?>
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="clanDataDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <?= __('Clan Data') ?>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="clanDataDropdown">
+        <?= $this->Html->link(
+            '<i class="fas fa-chart-line mr-2 text-primary"></i>' . __('Power History'),
+            ['controller' => 'Members', 'action' => 'history'],
+            ['class' => 'dropdown-item', 'escape' => false]
+        ) ?>
+    </div>
+</li>
+<?php endif; ?>
+

@@ -6261,3 +6261,7 @@ msgstr "Variação"
 
 msgid "Change %"
 msgstr "Variação %"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php
+msgid "Clan Data"
+msgstr "Dados do clã"

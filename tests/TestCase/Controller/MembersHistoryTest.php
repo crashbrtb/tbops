@@ -63,10 +63,52 @@ class MembersHistoryTest extends TestCase
         return (int)$member->id;
     }
 
-    public function testOnlyAdministratorsSeeTheHistory(): void
+    /**
+     * @param string $value '1' or '0'.
+     * @return void
+     */
+    private function clanData(string $value): void
+    {
+        $config = $this->fetchTable('Config');
+        $row = $config->find()->where(['param' => 'clan_data_function'])->first()
+            ?? $config->newEntity(['param' => 'clan_data_function', 'description' => 'Clan Data menu']);
+        $row->set('value', $value);
+        $config->saveOrFail($row);
+    }
+
+    public function testWithClanDataOffOnlyAdministratorsSeeTheHistory(): void
     {
         $this->get('/members/history');
-        $this->assertResponseCode(403);
+        $this->assertResponseCode(404);
+
+        $this->session(['Auth' => ['id' => 2, 'email' => 'member@example.com', 'created' => new DateTime('2026-01-01')]]);
+        $this->get('/members/history');
+        $this->assertResponseCode(404);
+
+        $this->loginAdmin();
+        $this->get('/members/history');
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('clanDataDropdown', 'no Clan Data menu while it is off');
+    }
+
+    public function testWithClanDataOnEveryoneSeesTheHistoryFromItsMenu(): void
+    {
+        $this->clanData('1');
+        $this->memberWith('Brunilda', [5 => 1_000, 0 => 2_000]);
+
+        // Signed in or not.
+        $this->get('/members/history');
+        $this->assertResponseOk();
+        $this->assertResponseContains('clanDataDropdown');
+        $this->assertResponseContains('Brunilda');
+        $this->assertResponseNotContains('/members/view/');
+
+        $this->session(['Auth' => ['id' => 2, 'email' => 'member@example.com', 'created' => new DateTime('2026-01-01')]]);
+        $this->get('/members/history');
+        $this->assertResponseOk();
+        $this->assertResponseContains('clanDataDropdown');
+        $this->assertResponseContains('Brunilda');
+        $this->assertResponseNotContains('/members/view/', 'members\' profiles stay with the administrators');
     }
 
     public function testThePageSaysWhenThereIsNoHistoryYet(): void

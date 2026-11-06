@@ -89,6 +89,20 @@ class ConfigTable extends Table
     }
 
     /**
+     * Whether an on/off parameter (`1` / `0`, like bank_function) is on.
+     *
+     * @param string $param Parameter name.
+     * @param bool $default When the parameter does not exist.
+     * @return bool
+     */
+    public function isOn(string $param, bool $default = false): bool
+    {
+        $row = $this->find()->select(['value'])->where(['param' => $param])->first();
+
+        return $row === null ? $default : (int)$row->value === 1;
+    }
+
+    /**
      * Initialize method
      *
      * @param array<string, mixed> $config The configuration for the Table.

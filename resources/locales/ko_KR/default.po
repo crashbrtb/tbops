@@ -6094,3 +6094,7 @@ msgstr "변화"
 
 msgid "Change %"
 msgstr "변화 %"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php
+msgid "Clan Data"
+msgstr "클랜 데이터"
