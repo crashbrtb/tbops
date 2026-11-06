@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Model\Entity\Member;
+use Cake\Chronos\ChronosDate;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -28,6 +29,12 @@ class MemberPowerHistoryService
     public const PERIODS = [30, 90, 180, 365, 0];
 
     public const DEFAULT_PERIOD = 90;
+
+    /**
+     * A day counts as a reading of the whole clan when it has at least this
+     * share of the most players any day of the period has.
+     */
+    public const WHOLE_CLAN_SHARE = 0.8;
 
     /**
      * Keep the power of these members as their reading of the day `$at` falls on.
@@ -94,7 +101,12 @@ class MemberPowerHistoryService
     }
 
     /**
-     * The clan's power on each day with readings.
+     * The clan's power on each day with a reading of the whole clan.
+     *
+     * A day whose reading covers far fewer players than the clan has - an old
+     * tournament where only some players were linked to a member - is not the
+     * clan's power and is left out: summed, it would make the clan look like it
+     * grew from almost nothing. Each member's own readings are not affected.
      *
      * @param \Cake\I18n\Date|null $from First day, or null for everything.
      * @return list<array{date: string, power: int, players: int}>
@@ -123,7 +135,10 @@ class MemberPowerHistoryService
             ];
         }
 
-        return $series;
+        $most = $series !== [] ? max(array_column($series, 'players')) : 0;
+        $least = (int)ceil($most * self::WHOLE_CLAN_SHARE);
+
+        return array_values(array_filter($series, fn (array $day): bool => $day['players'] >= $least));
     }
 
     /**
@@ -215,7 +230,9 @@ class MemberPowerHistoryService
      */
     private function day(mixed $value): string
     {
-        if ($value instanceof DateTimeInterface) {
+        // Cake's Date is not a DateTimeInterface, and cast to a string it takes
+        // the reader's format ("05/11/2026" in pt_BR), which reads back as May.
+        if ($value instanceof DateTimeInterface || $value instanceof ChronosDate) {
             return $value->format('Y-m-d');
         }
 
