@@ -6039,3 +6039,58 @@ msgstr "Son sonuç"
 
 msgid "No tournament is registered yet."
 msgstr "Henüz kayıtlı bir turnuva yok."
+
+#: ./templates/Members/history.php
+msgid "Clan Power History"
+msgstr "Klan Güç Geçmişi"
+
+msgid "Power History"
+msgstr "Güç Geçmişi"
+
+msgid "{0} days"
+msgstr "{0} gün"
+
+msgid "How the power of the clan and of each member changed, one reading a day from the game's member list and tournaments"
+msgstr "Klanın ve her üyenin gücünün nasıl değiştiği; oyunun üye listesinden ve turnuvalardan günde bir okuma"
+
+msgid "Period"
+msgstr "Dönem"
+
+msgid "There is no power history for this period yet. It starts with the next member list or tournament ranking the site receives."
+msgstr "Bu dönem için henüz güç geçmişi yok. Sitenin alacağı bir sonraki üye listesi veya turnuva sıralamasıyla başlar."
+
+msgid "Clan power"
+msgstr "Klan gücü"
+
+msgid "{0} players on {1}"
+msgstr "{1} tarihinde {0} oyuncu"
+
+msgid "Change in the period"
+msgstr "Dönemdeki değişim"
+
+msgid "Days with readings"
+msgstr "Okuma olan günler"
+
+msgid "Since {0}"
+msgstr "{0} tarihinden beri"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "No readings of this player in the period."
+msgstr "Bu dönemde bu oyuncuya ait okuma yok."
+
+msgid "Growth of each member"
+msgstr "Her üyenin büyümesi"
+
+msgid "Start"
+msgstr "Başlangıç"
+
+msgid "Now"
+msgstr "Şimdi"
+
+msgid "Change"
+msgstr "Değişim"
+
+msgid "Change %"
+msgstr "Değişim %"

@@ -6206,3 +6206,58 @@ msgstr "Filtrar por origem ou nome do baú..."
 
 msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
 msgstr "Por pontuação, só aparecem os baús que têm pontuação; por quantidade coletada, aparecem todos, porque a pontuação não importa. Escolha quantos quiser."
+
+#: ./templates/Members/history.php
+msgid "Clan Power History"
+msgstr "Histórico de Poder do Clã"
+
+msgid "Power History"
+msgstr "Histórico de Poder"
+
+msgid "{0} days"
+msgstr "{0} dias"
+
+msgid "How the power of the clan and of each member changed, one reading a day from the game's member list and tournaments"
+msgstr "Como o poder do clã e de cada membro mudou, com uma leitura por dia da lista de membros do jogo e dos torneios"
+
+msgid "Period"
+msgstr "Período"
+
+msgid "There is no power history for this period yet. It starts with the next member list or tournament ranking the site receives."
+msgstr "Ainda não há histórico de poder para este período. Ele começa com a próxima lista de membros ou ranking de torneio que o site receber."
+
+msgid "Clan power"
+msgstr "Poder do clã"
+
+msgid "{0} players on {1}"
+msgstr "{0} jogadores em {1}"
+
+msgid "Change in the period"
+msgstr "Variação no período"
+
+msgid "Days with readings"
+msgstr "Dias com leituras"
+
+msgid "Since {0}"
+msgstr "Desde {0}"
+
+msgid "Profile"
+msgstr "Perfil"
+
+msgid "No readings of this player in the period."
+msgstr "Nenhuma leitura deste jogador no período."
+
+msgid "Growth of each member"
+msgstr "Crescimento de cada membro"
+
+msgid "Start"
+msgstr "Início"
+
+msgid "Now"
+msgstr "Agora"
+
+msgid "Change"
+msgstr "Variação"
+
+msgid "Change %"
+msgstr "Variação %"

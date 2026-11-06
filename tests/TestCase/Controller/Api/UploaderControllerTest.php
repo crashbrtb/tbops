@@ -45,6 +45,8 @@ class UploaderControllerTest extends TestCase
         'app.PlayerCycleSummaries',
         'app.ManualGoalPenalties',
         'app.GoalPenaltyWaivers',
+        // One reading of each member's power a day.
+        'app.MemberPowerSnapshots',
     ];
 
     protected string $adminToken;
@@ -861,6 +863,67 @@ class UploaderControllerTest extends TestCase
         $this->assertSame(1, (int)$members->get($left->id)->active);
         $this->assertSame(0, (int)$members->get($byId->id)->active);
         $this->assertSame(20, $this->body()['active_members']);
+    }
+
+    public function testTheMemberListKeepsTheDaysPowerOfEachPlayer(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $snapshots = $this->fetchTable('MemberPowerSnapshots');
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 110))));
+        $this->assertResponseOk();
+        $this->assertSame(10, $snapshots->find()->count());
+        $first = $snapshots->find()->contain(['Members'])->where(['Members.game_player_id' => 101])->firstOrFail();
+        $this->assertSame('2026-09-20', $first->snapshot_date->format('Y-m-d'));
+        $this->assertSame(2_500_000_101, $first->power);
+        $this->assertSame('member_list', $first->source);
+        $this->assertSame(101, $first->game_player_id);
+
+        // Later the same day: the reading of the day is replaced, not repeated.
+        $later = $this->memberList(range(101, 110), [], ['read_at' => '2026-09-20T18:00:00Z']);
+        $later['members'][0]['power'] = 2_600_000_000;
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($later));
+        $this->assertResponseOk();
+        $this->assertSame(10, $snapshots->find()->count());
+        $this->assertSame(2_600_000_000, $snapshots->get($first->id)->power);
+
+        // Next day: a new reading.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 110), [], ['read_at' => '2026-09-21T10:00:00Z'])));
+        $this->assertResponseOk();
+        $this->assertSame(20, $snapshots->find()->count());
+
+        // A list that is not applied keeps nothing.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 110), [], [
+            'read_at' => '2026-09-22T10:00:00Z',
+            'clan' => ['id' => 1, 'tag' => 'XX', 'name' => 'Other'],
+        ])));
+        $this->assertResponseCode(409);
+        $this->assertSame(20, $snapshots->find()->count());
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/members', json_encode($this->memberList(range(101, 110), [], ['read_at' => '2026-09-01T10:00:00Z'])));
+        $this->assertResponseCode(409);
+        $this->assertSame(0, $snapshots->find()->where(['snapshot_date' => '2026-09-01'])->count());
+    }
+
+    public function testATournamentRankingKeepsThePowerOfTheDayItEnded(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $upload = $this->tournamentUpload();
+        $upload['rows'] = $this->rosterRows(range(101, 110));
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertResponseCode(201);
+
+        $snapshots = $this->fetchTable('MemberPowerSnapshots')->find()->all()->toList();
+        $this->assertCount(10, $snapshots);
+        $this->assertSame(['2026-09-12'], array_values(array_unique(array_map(fn ($s) => $s->snapshot_date->format('Y-m-d'), $snapshots))));
+        $this->assertSame(['tournament'], array_values(array_unique(array_map(fn ($s) => $s->source, $snapshots))));
     }
 
     public function testAMemberWhoseNameWasReadOffTheScreenIsFoundByASimilarName(): void

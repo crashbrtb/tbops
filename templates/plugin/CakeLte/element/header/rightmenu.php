@@ -41,6 +41,9 @@ if ($isAdmin):
                     <?= $this->Html->link(__('List'), ['controller' => 'Members', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
+                    <?= $this->Html->link(__('Power History'), ['controller' => 'Members', 'action' => 'history'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
                     <?= $this->Html->link(__('Update'), ['controller' => 'Members', 'action' => 'updateFromCollectedChests'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
