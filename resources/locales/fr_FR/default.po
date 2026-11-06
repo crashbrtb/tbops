@@ -6094,3 +6094,7 @@ msgstr "Évolution"
 
 msgid "Change %"
 msgstr "Évolution %"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php
+msgid "Clan Data"
+msgstr "Données du clan"

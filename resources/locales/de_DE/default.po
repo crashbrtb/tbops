@@ -6094,3 +6094,7 @@ msgstr "Veränderung"
 
 msgid "Change %"
 msgstr "Veränderung %"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php
+msgid "Clan Data"
+msgstr "Clandaten"

@@ -180,6 +180,11 @@ class InitialDataSeed extends AbstractSeed
                 'description' => '1 = Troop Calculator active / 0 = no Troop Calculator',
             ],
             [
+                'param' => 'clan_data_function',
+                'value' => '0',
+                'description' => '1 = Clan Data menu (power history) shown to everyone, signed in or not / 0 = administrators only',
+            ],
+            [
                 'param' => 'collected_chests_retention_days',
                 'value' => '30',
                 'description' => 'Retention time in days for old collected chests. Minimum retention time must be greater than 7 days, and default is 30 days. Setting to 0 disables automatic purge.',

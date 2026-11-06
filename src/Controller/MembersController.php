@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Service\DuplicatePlayerNameService;
 use App\Service\MemberPowerHistoryService;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenTime;
 
@@ -53,11 +54,18 @@ class MembersController extends AppController
      * Query: `period` (days, one of MemberPowerHistoryService::PERIODS; 0 is
      * everything) and `player` (a member id, to draw their line too).
      *
+     * The administrators always see it. With `clan_data_function` on, so does
+     * everyone else, signed in or not, from the Clan Data menu.
+     *
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function history()
     {
-        $this->requireAdmin();
+        $isAdmin = $this->isAdmin();
+        if (!$isAdmin && !$this->fetchTable('Config')->isOn('clan_data_function')) {
+            throw new NotFoundException();
+        }
+        $this->set('isAdmin', $isAdmin);
 
         $period = (int)$this->request->getQuery('period', MemberPowerHistoryService::DEFAULT_PERIOD);
         if (!in_array($period, MemberPowerHistoryService::PERIODS, true)) {

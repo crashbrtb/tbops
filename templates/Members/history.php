@@ -7,14 +7,15 @@
  * @var list<array{member_id: int, player: string, first_date: string, first: int, last_date: string, last: int, change: int, percent: float|null, readings: int}> $growth
  * @var \App\Model\Entity\Member|null $player
  * @var list<array{date: string, power: int}> $playerSeries
+ * @var bool $isAdmin Members' pages are linked for administrators only.
  */
 
 $this->assign('title', __('Clan Power History'));
-$this->Breadcrumbs->add([
-    ['title' => __('Home'), 'url' => '/'],
-    ['title' => __('List Members'), 'url' => ['action' => 'index']],
-    ['title' => __('Power History')],
-]);
+$this->Breadcrumbs->add(array_merge(
+    [['title' => __('Home'), 'url' => '/']],
+    $isAdmin ? [['title' => __('List Members'), 'url' => ['action' => 'index']]] : [['title' => __('Clan Data')]],
+    [['title' => __('Power History')]],
+));
 
 $periodLabel = fn (int $days): string => $days > 0 ? __('{0} days', $days) : __('All');
 $signed = fn (int|float $n, ?int $precision = null): string => ($n > 0 ? '+' : '')
@@ -89,11 +90,13 @@ $chartData = [
                     ) ?>
                 <?php endforeach; ?>
             </div>
-            <?= $this->Html->link(
-                '<i class="fas fa-list mr-1"></i> ' . __('List Members'),
-                ['action' => 'index'],
-                ['class' => 'btn btn-default btn-sm', 'escape' => false]
-            ) ?>
+            <?php if ($isAdmin): ?>
+                <?= $this->Html->link(
+                    '<i class="fas fa-list mr-1"></i> ' . __('List Members'),
+                    ['action' => 'index'],
+                    ['class' => 'btn btn-default btn-sm', 'escape' => false]
+                ) ?>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -155,11 +158,13 @@ $chartData = [
                         <i class="fas fa-user text-info mr-2"></i><?= h($player->player) ?>
                     </h3>
                     <div class="ml-auto">
-                        <?= $this->Html->link(
-                            '<i class="fas fa-id-card mr-1"></i>' . __('Profile'),
-                            ['action' => 'view', $player->id],
-                            ['class' => 'btn btn-default btn-xs', 'escape' => false]
-                        ) ?>
+                        <?php if ($isAdmin): ?>
+                            <?= $this->Html->link(
+                                '<i class="fas fa-id-card mr-1"></i>' . __('Profile'),
+                                ['action' => 'view', $player->id],
+                                ['class' => 'btn btn-default btn-xs', 'escape' => false]
+                            ) ?>
+                        <?php endif; ?>
                         <?= $this->Html->link(
                             '<i class="fas fa-times"></i>',
                             ['action' => 'history', '?' => ['period' => $period]],

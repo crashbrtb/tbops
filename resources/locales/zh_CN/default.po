@@ -6094,3 +6094,7 @@ msgstr "变化"
 
 msgid "Change %"
 msgstr "变化 %"
+
+#: ./templates/plugin/CakeLte/element/header/leftmenu.php
+msgid "Clan Data"
+msgstr "联盟数据"
