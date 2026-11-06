@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Service\MemberPowerHistoryService;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Cake\I18n\I18n;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -89,9 +90,10 @@ class MembersHistoryTest extends TestCase
         $service = new MemberPowerHistoryService();
         $from = $service->periodStart(90);
 
+        // Only the day that read the whole clan (3 players) is the clan's power.
         $clan = $service->clanSeries($from);
-        $this->assertSame([8_000_000, 1_200_000, 3_400_000], array_column($clan, 'power'));
-        $this->assertSame([3, 1, 2], array_column($clan, 'players'));
+        $this->assertSame([8_000_000], array_column($clan, 'power'));
+        $this->assertSame([3], array_column($clan, 'players'));
 
         $growth = $service->growth($from);
         $this->assertSame(['Brunilda', 'Naughtius'], array_column($growth, 'player'), 'active members, biggest growth first');
@@ -100,7 +102,7 @@ class MembersHistoryTest extends TestCase
         $this->assertSame(3, $growth[0]['readings']);
         $this->assertSame(-100_000, $growth[1]['change']);
 
-        $this->assertCount(4, $service->clanSeries($service->periodStart(0)), 'everything');
+        $this->assertCount(1, $service->clanSeries($service->periodStart(0)), 'everything');
 
         $this->loginAdmin();
         $this->get('/members/history?period=90&player=' . $brunilda);
@@ -109,6 +111,50 @@ class MembersHistoryTest extends TestCase
         $this->assertResponseContains('playerPowerChart');
         $this->assertResponseContains('Brunilda');
         $this->assertResponseNotContains('Ancient');
+    }
+
+    public function testADayThatReadOnlyPartOfTheClanIsNotTheClansPower(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        // An old tournament linked 2 of the 10 players; the Members list read all 10 since.
+        for ($i = 1; $i <= 10; $i++) {
+            $readings = [10 => 1_000 * $i, 0 => 1_100 * $i];
+            if ($i <= 2) {
+                $readings[30] = 900 * $i;
+            }
+            $this->memberWith("Player {$i}", $readings);
+        }
+
+        $service = new MemberPowerHistoryService();
+        $clan = $service->clanSeries($service->periodStart(90));
+        $this->assertSame([55_000, 60_500], array_column($clan, 'power'), 'the 2-player day is left out');
+
+        // Each member still grows from their own first reading.
+        $growth = array_column($service->growth($service->periodStart(90)), null, 'player');
+        $this->assertSame(900, $growth['Player 1']['first']);
+        $this->assertSame(3, $growth['Player 1']['readings']);
+        $this->assertSame(3_000, $growth['Player 3']['first']);
+    }
+
+    public function testDatesAreRightWhateverTheLanguage(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $this->memberWith('Brunilda', [1 => 1_000]);
+        $expected = Date::today()->subDays(1)->format('Y-m-d');
+
+        $locale = I18n::getLocale();
+        I18n::setLocale('pt_BR');
+        try {
+            $service = new MemberPowerHistoryService();
+            $this->assertSame($expected, $service->clanSeries(null)[0]['date']);
+            $this->assertSame($expected, $service->playerSeries(
+                (int)$this->fetchTable('Members')->find()->firstOrFail()->id,
+                null
+            )[0]['date']);
+            $this->assertSame($expected, $service->growth(null)[0]['last_date']);
+        } finally {
+            I18n::setLocale($locale);
+        }
     }
 
     public function testAnUnknownPeriodFallsBackToTheDefault(): void
