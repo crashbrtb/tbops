@@ -6039,3 +6039,58 @@ msgstr "最新の結果"
 
 msgid "No tournament is registered yet."
 msgstr "トーナメントはまだ登録されていません。"
+
+#: ./templates/Members/history.php
+msgid "Clan Power History"
+msgstr "クラン戦力の履歴"
+
+msgid "Power History"
+msgstr "戦力の履歴"
+
+msgid "{0} days"
+msgstr "{0}日"
+
+msgid "How the power of the clan and of each member changed, one reading a day from the game's member list and tournaments"
+msgstr "クランと各メンバーの戦力の推移。ゲームのメンバー一覧とトーナメントから1日1回記録します"
+
+msgid "Period"
+msgstr "期間"
+
+msgid "There is no power history for this period yet. It starts with the next member list or tournament ranking the site receives."
+msgstr "この期間の戦力履歴はまだありません。サイトが次にメンバー一覧またはトーナメントのランキングを受信したときに記録が始まります。"
+
+msgid "Clan power"
+msgstr "クラン戦力"
+
+msgid "{0} players on {1}"
+msgstr "{1}時点で{0}人"
+
+msgid "Change in the period"
+msgstr "期間中の変化"
+
+msgid "Days with readings"
+msgstr "記録のある日数"
+
+msgid "Since {0}"
+msgstr "{0}から"
+
+msgid "Profile"
+msgstr "プロフィール"
+
+msgid "No readings of this player in the period."
+msgstr "この期間にこのプレイヤーの記録はありません。"
+
+msgid "Growth of each member"
+msgstr "各メンバーの成長"
+
+msgid "Start"
+msgstr "開始"
+
+msgid "Now"
+msgstr "現在"
+
+msgid "Change"
+msgstr "変化"
+
+msgid "Change %"
+msgstr "変化 %"

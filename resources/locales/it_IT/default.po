@@ -6039,3 +6039,58 @@ msgstr "Ultimo risultato"
 
 msgid "No tournament is registered yet."
 msgstr "Nessun torneo ancora registrato."
+
+#: ./templates/Members/history.php
+msgid "Clan Power History"
+msgstr "Storico della Potenza del Clan"
+
+msgid "Power History"
+msgstr "Storico della Potenza"
+
+msgid "{0} days"
+msgstr "{0} giorni"
+
+msgid "How the power of the clan and of each member changed, one reading a day from the game's member list and tournaments"
+msgstr "Come è cambiata la potenza del clan e di ogni membro, con una lettura al giorno dall'elenco dei membri del gioco e dai tornei"
+
+msgid "Period"
+msgstr "Periodo"
+
+msgid "There is no power history for this period yet. It starts with the next member list or tournament ranking the site receives."
+msgstr "Non c'è ancora uno storico della potenza per questo periodo. Inizia con il prossimo elenco dei membri o classifica di torneo ricevuti dal sito."
+
+msgid "Clan power"
+msgstr "Potenza del clan"
+
+msgid "{0} players on {1}"
+msgstr "{0} giocatori il {1}"
+
+msgid "Change in the period"
+msgstr "Variazione nel periodo"
+
+msgid "Days with readings"
+msgstr "Giorni con letture"
+
+msgid "Since {0}"
+msgstr "Dal {0}"
+
+msgid "Profile"
+msgstr "Profilo"
+
+msgid "No readings of this player in the period."
+msgstr "Nessuna lettura di questo giocatore nel periodo."
+
+msgid "Growth of each member"
+msgstr "Crescita di ogni membro"
+
+msgid "Start"
+msgstr "Inizio"
+
+msgid "Now"
+msgstr "Ora"
+
+msgid "Change"
+msgstr "Variazione"
+
+msgid "Change %"
+msgstr "Variazione %"

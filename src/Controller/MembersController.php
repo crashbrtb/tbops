@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\DuplicatePlayerNameService;
+use App\Service\MemberPowerHistoryService;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenTime;
 
@@ -44,6 +45,42 @@ class MembersController extends AppController
         $this->requireAdmin();
         $member = $this->Members->get($id, contain: ['Users']);
         $this->set(compact('member'));
+    }
+
+    /**
+     * The clan's power over time, and how much each member grew.
+     *
+     * Query: `period` (days, one of MemberPowerHistoryService::PERIODS; 0 is
+     * everything) and `player` (a member id, to draw their line too).
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function history()
+    {
+        $this->requireAdmin();
+
+        $period = (int)$this->request->getQuery('period', MemberPowerHistoryService::DEFAULT_PERIOD);
+        if (!in_array($period, MemberPowerHistoryService::PERIODS, true)) {
+            $period = MemberPowerHistoryService::DEFAULT_PERIOD;
+        }
+
+        $service = new MemberPowerHistoryService();
+        $from = $service->periodStart($period);
+        $clanSeries = $service->clanSeries($from);
+        $growth = $service->growth($from);
+
+        $player = null;
+        $playerSeries = [];
+        $playerId = (int)$this->request->getQuery('player');
+        if ($playerId > 0) {
+            $player = $this->Members->find()->where(['Members.id' => $playerId])->first();
+            if ($player !== null) {
+                $playerSeries = $service->playerSeries((int)$player->id, $from);
+            }
+        }
+
+        $this->set(compact('period', 'clanSeries', 'growth', 'player', 'playerSeries'));
+        $this->set('periods', MemberPowerHistoryService::PERIODS);
     }
 
     /**

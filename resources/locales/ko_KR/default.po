@@ -6039,3 +6039,58 @@ msgstr "최근 결과"
 
 msgid "No tournament is registered yet."
 msgstr "아직 등록된 토너먼트가 없습니다."
+
+#: ./templates/Members/history.php
+msgid "Clan Power History"
+msgstr "클랜 전투력 기록"
+
+msgid "Power History"
+msgstr "전투력 기록"
+
+msgid "{0} days"
+msgstr "{0}일"
+
+msgid "How the power of the clan and of each member changed, one reading a day from the game's member list and tournaments"
+msgstr "게임의 멤버 목록과 토너먼트에서 하루 한 번 기록한 클랜과 각 멤버의 전투력 변화"
+
+msgid "Period"
+msgstr "기간"
+
+msgid "There is no power history for this period yet. It starts with the next member list or tournament ranking the site receives."
+msgstr "이 기간의 전투력 기록이 아직 없습니다. 사이트가 다음 멤버 목록이나 토너먼트 순위를 받으면 기록이 시작됩니다."
+
+msgid "Clan power"
+msgstr "클랜 전투력"
+
+msgid "{0} players on {1}"
+msgstr "{1} 기준 {0}명"
+
+msgid "Change in the period"
+msgstr "기간 중 변화"
+
+msgid "Days with readings"
+msgstr "기록된 일수"
+
+msgid "Since {0}"
+msgstr "{0}부터"
+
+msgid "Profile"
+msgstr "프로필"
+
+msgid "No readings of this player in the period."
+msgstr "이 기간에 이 플레이어의 기록이 없습니다."
+
+msgid "Growth of each member"
+msgstr "각 멤버의 성장"
+
+msgid "Start"
+msgstr "시작"
+
+msgid "Now"
+msgstr "현재"
+
+msgid "Change"
+msgstr "변화"
+
+msgid "Change %"
+msgstr "변화 %"

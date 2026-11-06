@@ -72,6 +72,11 @@ class MembersTable extends Table
             'foreignKey' => 'destination_member_id',
             'className' => 'BankTransactions',
         ]);
+
+        $this->hasMany('MemberPowerSnapshots', [
+            'foreignKey' => 'member_id',
+            'dependent' => true,
+        ]);
     }
 
     /**

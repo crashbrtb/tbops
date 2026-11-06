@@ -6039,3 +6039,58 @@ msgstr "最近结果"
 
 msgid "No tournament is registered yet."
 msgstr "尚未登记任何锦标赛。"
+
+#: ./templates/Members/history.php
+msgid "Clan Power History"
+msgstr "联盟战力历史"
+
+msgid "Power History"
+msgstr "战力历史"
+
+msgid "{0} days"
+msgstr "{0} 天"
+
+msgid "How the power of the clan and of each member changed, one reading a day from the game's member list and tournaments"
+msgstr "联盟及每位成员的战力变化，每天从游戏成员列表和锦标赛中记录一次"
+
+msgid "Period"
+msgstr "时间段"
+
+msgid "There is no power history for this period yet. It starts with the next member list or tournament ranking the site receives."
+msgstr "此时间段内还没有战力历史。网站收到下一份成员列表或锦标赛排名后开始记录。"
+
+msgid "Clan power"
+msgstr "联盟战力"
+
+msgid "{0} players on {1}"
+msgstr "{1} 时 {0} 名玩家"
+
+msgid "Change in the period"
+msgstr "时间段内变化"
+
+msgid "Days with readings"
+msgstr "有记录的天数"
+
+msgid "Since {0}"
+msgstr "自 {0} 起"
+
+msgid "Profile"
+msgstr "资料"
+
+msgid "No readings of this player in the period."
+msgstr "此时间段内没有该玩家的记录。"
+
+msgid "Growth of each member"
+msgstr "每位成员的增长"
+
+msgid "Start"
+msgstr "开始"
+
+msgid "Now"
+msgstr "当前"
+
+msgid "Change"
+msgstr "变化"
+
+msgid "Change %"
+msgstr "变化 %"

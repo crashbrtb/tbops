@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Model\Entity\Event;
 use App\Model\Entity\EventImport;
 use App\Model\Entity\JobRun;
+use App\Model\Entity\MemberPowerSnapshot;
 use Cake\Database\Driver\Mysql;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
@@ -99,7 +100,7 @@ class MemberRosterService
             return $summary;
         }
 
-        return $this->sync($withId, $summary);
+        return $this->sync($withId, $summary, $event->ends_at, MemberPowerSnapshot::SOURCE_TOURNAMENT);
     }
 
     /**
@@ -232,7 +233,7 @@ class MemberRosterService
         // older tournament undo it.
         return $runs->getConnection()->transactional(
             function () use ($runs, $rows, $summary, $readAt, $clan, $clanId, $host): array {
-                $summary = $this->sync($rows, $summary);
+                $summary = $this->sync($rows, $summary, $readAt, MemberPowerSnapshot::SOURCE_MEMBER_LIST);
                 if (!$summary['applied']) {
                     return $summary;
                 }
@@ -265,9 +266,11 @@ class MemberRosterService
      *
      * @param list<array{name: string, game_player_id: int|null, power: int|null}> $withId Players, each with a game id.
      * @param array<string, mixed> $summary The counters to fill.
+     * @param \Cake\I18n\DateTime $at The moment the list describes: its power is that day's reading.
+     * @param string $source MemberPowerSnapshot::SOURCE_* the list came from.
      * @return array{applied: bool, reason: string|null, created: int, linked: int, renamed: int, power_updated: int, activated: int, deactivated: int, ambiguous: list<string>, unnamed: int, similar: int, chests_moved: int}
      */
-    private function sync(array $withId, array $summary): array
+    private function sync(array $withId, array $summary, DateTime $at, string $source): array
     {
         $members = $this->fetchTable('Members');
         $all = $members->find()->all()->toList();
@@ -415,10 +418,20 @@ class MemberRosterService
         }
 
         $summary['chests_moved'] = $members->getConnection()->transactional(
-            function () use ($members, $changed, $renames, $carried, $inList): int {
+            function () use ($members, $changed, $renames, $carried, $inList, $withId, $byId, $at, $source): int {
                 foreach ($changed as $member) {
                     $members->saveOrFail($member);
                 }
+
+                // The power each player has now is kept as the day's reading.
+                $readings = [];
+                foreach ($withId as $row) {
+                    $member = $byId[(int)$row['game_player_id']] ?? null;
+                    if ($member !== null && $row['power'] !== null) {
+                        $readings[] = [$member, (int)$row['power']];
+                    }
+                }
+                (new MemberPowerHistoryService())->record($readings, $at, $source);
 
                 return $this->followRenames($renames, $carried, $inList);
             }
