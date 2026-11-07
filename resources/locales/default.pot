@@ -608,7 +608,7 @@ msgid "The standard chest could not be saved. Please, try again."
 msgstr ""
 
 #: ./src/Controller/StandardChestsController.php:326
-msgid "{0} lost chest(s) successfully added to Standard Chests."
+msgid "{0} new chest(s) successfully added to Standard Chests."
 msgstr ""
 
 #: ./src/Controller/StandardChestsController.php:328
@@ -3219,7 +3219,7 @@ msgid "All"
 msgstr ""
 
 #: ./templates/IncompleteChests/index.php:48
-msgid "Chests the collector opened but could not read. The screenshot of each one was kept so it can be filled in by hand — the chest itself is no longer in the game."
+msgid "Chests the collector opened but could not record, such as one whose player the game did not name. Fill them in by hand — the chest itself is no longer in the game."
 msgstr ""
 
 #: ./templates/IncompleteChests/index.php:56
@@ -3323,7 +3323,7 @@ msgid "Cannot be recovered"
 msgstr ""
 
 #: ./templates/IncompleteChests/view.php:153
-msgid "Use this when the picture does not show enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
+msgid "Use this when there is not enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
 msgstr ""
 
 #: ./templates/IncompleteChests/view.php:156
@@ -3789,7 +3789,7 @@ msgstr ""
 #: ./templates/StandardChests/lost_chests.php:9
 #: ./templates/StandardChests/lost_chests.php:13
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:76
-msgid "Lost Chests"
+msgid "New Chests"
 msgstr ""
 
 #: ./templates/StandardChests/lost_chests.php:25
@@ -3809,7 +3809,7 @@ msgid "Configure score & monster status, select and add to Standard Chests."
 msgstr ""
 
 #: ./templates/StandardChests/lost_chests.php:57
-msgid "Lost Chests Detected in Collected History"
+msgid "New Chests Found in the Collection"
 msgstr ""
 
 #: ./templates/StandardChests/lost_chests.php:59
@@ -3914,7 +3914,7 @@ msgid "Add only this chest"
 msgstr ""
 
 #: ./templates/StandardChests/lost_chests.php:196
-msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in the lost list."
+msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in this list."
 msgstr ""
 
 #: ./templates/StandardChests/lost_chests.php:246
@@ -5728,7 +5728,7 @@ msgstr ""
 msgid "New chest types"
 msgstr ""
 
-msgid "The game has chests the system does not know yet. Copy the name and the source from the picture and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
 msgstr ""
 
 msgid "Picture"

@@ -40,7 +40,7 @@ use Throwable;
  * Failing both, a player takes the one member without a game id whose name
  * differs only in spaces, accents, punctuation or case - the marks a name read
  * off the screen loses. That one is unreviewed by design (many clans run this
- * unattended); a wrong link is undone by merging players on the chests page.
+ * unattended); a wrong link is undone by correcting the member's game id.
  *
  * A member the list renames - the same game id under another name, which is
  * how a change of name in the game shows - takes their chests and their cycle
@@ -404,7 +404,7 @@ class MemberRosterService
             }
         }
 
-        // Every name a member carries once this is saved, and every name in the list.
+        // Every name a member carries once this is saved.
         $carried = [];
         foreach ($all as $member) {
             $carried[(string)$member->player] = true;
@@ -412,13 +412,8 @@ class MemberRosterService
         foreach ($changed as $member) {
             $carried[(string)$member->player] = true;
         }
-        $inList = [];
-        foreach ($withId as $row) {
-            $inList[mb_substr(trim($row['name']), 0, self::MAX_PLAYER_NAME)] = true;
-        }
-
         $summary['chests_moved'] = $members->getConnection()->transactional(
-            function () use ($members, $changed, $renames, $carried, $inList, $withId, $byId, $at, $source): int {
+            function () use ($members, $changed, $renames, $carried, $withId, $byId, $at, $source): int {
                 foreach ($changed as $member) {
                     $members->saveOrFail($member);
                 }
@@ -433,7 +428,7 @@ class MemberRosterService
                 }
                 (new MemberPowerHistoryService())->record($readings, $at, $source);
 
-                return $this->followRenames($renames, $carried, $inList);
+                return $this->followRenames($renames, $carried);
             }
         );
         $summary['applied'] = true;
@@ -450,29 +445,23 @@ class MemberRosterService
      * Chests carry the player's name and nothing else, and the scores, the
      * goals and the penalties are all added up by that name. So when the game
      * says a member is now called something else, what was recorded under the
-     * old name is moved - what "Merge Player Names" does by hand:
+     * old name is moved:
      *
      * - the chests under the old name (that exact spelling) go to the new one;
-     * - the old name is mapped to the new one, so a chest still read with it
-     *   lands on the right player, and mappings that pointed at the old name
-     *   point at the new;
      * - the cycle records kept by name (summaries, manual penalties, releases)
      *   follow, wherever the new name has none of its own for that cycle - or
      *   the player would look like a newcomer with no past goals.
      *
      * Nothing is moved while another member carries the old name: those chests
-     * may be theirs. And a name somebody in the list carries now is never
-     * mapped away: that would send that player's chests to someone else.
+     * may be theirs.
      *
      * @param list<array{0: string, 1: string}> $renames Old name, new name.
      * @param array<string, true> $carried The names the members carry now.
-     * @param array<string, true> $listed The names in the list being applied.
      * @return int Chests moved.
      */
-    private function followRenames(array $renames, array $carried, array $listed): int
+    private function followRenames(array $renames, array $carried): int
     {
-        $mappings = $this->fetchTable('PlayerNameMappings');
-        $connection = $mappings->getConnection();
+        $connection = $this->fetchTable('CollectedChests')->getConnection();
         $moved = 0;
 
         // MySQL compares these columns without telling case or accents apart:
@@ -509,18 +498,6 @@ class MemberRosterService
                     // past cycle (one of these tables cannot even hold every name).
                     Log::warning(sprintf('Could not move %s from "%s" to "%s": %s', $table, $old, $new, $e->getMessage()));
                 }
-            }
-
-            $mappings->updateAll(['correct_name' => $new], ['correct_name' => $old]);
-            $mapping = $mappings->find()->where(['ocr_text' => $old])->first()
-                ?? $mappings->newEntity(['ocr_text' => $old, 'correct_name' => $new]);
-            $mapping->set('correct_name', $new);
-            $mappings->saveOrFail($mapping);
-        }
-
-        foreach ($mappings->find()->all() as $mapping) {
-            if (isset($listed[(string)$mapping->ocr_text]) && $mapping->correct_name !== $mapping->ocr_text) {
-                $mappings->deleteOrFail($mapping);
             }
         }
 

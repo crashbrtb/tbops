@@ -5,7 +5,6 @@
  * @var list<string> $knownPlayers
  * @var list<string> $knownChests
  * @var list<string> $knownSources
- * @var int|null $pictureId
  */
 ?>
 
@@ -33,7 +32,7 @@ $label = $labels[$incompleteChest->status] ?? $labels['pending'];
                 <span class="text-muted small ml-1">#<?= $this->Number->format($incompleteChest->id) ?></span>
             </h1>
             <p class="cycle-subtitle">
-                <?= __('Manually identify and register collected chest from screenshot') ?>
+                <?= __('Complete and record a chest the collector could not finish') ?>
             </p>
         </div>
         <div class="toolbar-actions">
@@ -50,33 +49,13 @@ $label = $labels[$incompleteChest->status] ?? $labels['pending'];
         <div class="card card-primary card-outline">
             <div class="card-header d-flex flex-column flex-md-row">
                 <h2 class="card-title">
-                    <?= __('Chest as it was on screen') ?>
+                    <?= __('Chest') ?>
                 </h2>
                 <div class="d-flex ml-auto">
                     <span class="<?= $label['class'] ?>"><?= $label['text'] ?></span>
                 </div>
             </div>
-            <div class="card-body text-center">
-                <?php if ($pictureId) : ?>
-                    <?= $this->Html->image(
-                        ['action' => 'image', $pictureId],
-                        [
-                            'alt' => __('Screenshot of the chest'),
-                            'class' => 'img-fluid border rounded',
-                            'style' => 'background:#12161c;max-width:100%',
-                        ]
-                    ) ?>
-                    <p class="text-muted mt-2 mb-0">
-                        <?= __('Read the text in the picture and fill in the fields beside it.') ?>
-                    </p>
-                <?php else : ?>
-                    <div class="p-5 text-muted">
-                        <i class="fas fa-image fa-2x mb-2"></i><br>
-                        <?= __('This record has no screenshot — it was collected before the screenshot was kept.') ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="card-footer">
+            <div class="card-body">
                 <dl class="row mb-0">
                     <dt class="col-sm-4"><?= __('Collected at') ?></dt>
                     <dd class="col-sm-8"><?= h($incompleteChest->collected_at) ?></dd>
@@ -84,11 +63,11 @@ $label = $labels[$incompleteChest->status] ?? $labels['pending'];
                         <dt class="col-sm-4"><?= __('Chest code') ?></dt>
                         <dd class="col-sm-8"><?= h($incompleteChest->game_type_id) ?></dd>
                     <?php endif; ?>
-                    <dt class="col-sm-4"><?= __('Read as chest') ?></dt>
+                    <dt class="col-sm-4"><?= __('Chest') ?></dt>
                     <dd class="col-sm-8"><?= $incompleteChest->name ? h($incompleteChest->name) : '<em class="text-muted">' . __('nothing') . '</em>' ?></dd>
-                    <dt class="col-sm-4"><?= __('Read as player') ?></dt>
+                    <dt class="col-sm-4"><?= __('Player') ?></dt>
                     <dd class="col-sm-8"><?= $incompleteChest->player ? h($incompleteChest->player) : '<em class="text-muted">' . __('nothing') . '</em>' ?></dd>
-                    <dt class="col-sm-4"><?= __('Read as source') ?></dt>
+                    <dt class="col-sm-4"><?= __('Source') ?></dt>
                     <dd class="col-sm-8"><?= $incompleteChest->source ? h($incompleteChest->source) : '<em class="text-muted">' . __('nothing') . '</em>' ?></dd>
                     <?php if (!$incompleteChest->is_pending) : ?>
                         <dt class="col-sm-4"><?= __('Reviewed at') ?></dt>
@@ -175,7 +154,7 @@ $label = $labels[$incompleteChest->status] ?? $labels['pending'];
                 <?= $this->Form->create(null, ['url' => ['action' => 'unresolved', $incompleteChest->id]]) ?>
                 <div class="card-body">
                     <p class="text-muted">
-                        <?= __('Use this when the picture does not show enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue.') ?>
+                        <?= __('Use this when there is not enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue.') ?>
                     </p>
                     <?= $this->Form->control('review_notes', [
                         'label' => __('Note (optional)'),

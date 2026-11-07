@@ -32,7 +32,6 @@ class EventsControllerImportedTest extends TestCase
         'app.RolesUsers',
         'app.Config',
         'app.Members',
-        'app.PlayerNameMappings',
         'app.CollectedChests',
         'app.StandardChests',
         'app.Events',

@@ -59,14 +59,14 @@ $pendingCount = (int)($counts['pending'] ?? 0);
     </div>
     <div class="card-body pb-2 pt-3">
         <p class="text-muted mb-0 small">
-            <?= __('The game has chests the system does not know yet. Copy the name and the source from the picture and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own.') ?>
+            <?= __('The game has chests that neither the system nor the game\'s own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own.') ?>
         </p>
     </div>
     <div class="card-body table-responsive p-0">
         <table class="table mb-0" id="typesToName">
             <thead class="thead-light">
                 <tr>
-                    <th><?= __('Picture') ?></th>
+                    <th><?= __('Activity Window') ?></th>
                     <th style="width: 130px; text-align: center;"><?= __('Chests waiting') ?></th>
                     <th style="min-width: 280px;"><?= __('Name it') ?></th>
                 </tr>
@@ -75,19 +75,10 @@ $pendingCount = (int)($counts['pending'] ?? 0);
                 <?php foreach ($typesToName as $type) : ?>
                     <tr>
                         <td style="vertical-align: middle;">
-                            <?php if ($type['picture_id']) : ?>
-                                <?= $this->Html->image(
-                                    ['action' => 'image', $type['picture_id']],
-                                    ['alt' => __('Picture of the chest'), 'class' => 'img-fluid border rounded', 'style' => 'max-width: 420px;']
-                                ) ?>
-                                <?php if ($type['picture_player']) : ?>
-                                    <div class="text-muted small mt-1">
-                                        <?= __('Check: the top line of the picture must be from {0}.', h($type['picture_player'])) ?>
-                                    </div>
-                                <?php endif; ?>
-                            <?php else : ?>
-                                <span class="text-muted font-italic"><?= __('No picture. Name it only if you know which chest it is.') ?></span>
-                            <?php endif; ?>
+                            <div class="small text-muted">
+                                <div><i class="far fa-calendar-alt mr-1"></i> <?= __('First:') ?> <?= h($type['first_seen']) ?></div>
+                                <div><i class="far fa-clock mr-1"></i> <?= __('Last:') ?> <?= h($type['last_seen']) ?></div>
+                            </div>
                         </td>
                         <td style="text-align: center; vertical-align: middle;">
                             <span class="badge badge-warning px-2 py-1" style="font-size: 1rem;"><?= $this->Number->format($type['waiting']) ?></span>
@@ -154,7 +145,7 @@ $pendingCount = (int)($counts['pending'] ?? 0);
 
     <div class="card-body pb-2 pt-3">
         <p class="text-muted mb-0 small">
-            <?= __('Chests the collector opened but could not read. The screenshot of each one was kept so it can be filled in by hand — the chest itself is no longer in the game.') ?>
+            <?= __('Chests the collector opened but could not record, such as one whose player the game did not name. Fill them in by hand — the chest itself is no longer in the game.') ?>
         </p>
     </div>
 

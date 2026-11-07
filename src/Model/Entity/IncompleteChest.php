@@ -8,15 +8,15 @@ use Cake\ORM\Entity;
 /**
  * IncompleteChest Entity
  *
- * A chest the collector opened but could not read completely. The screenshot is
- * the part that matters: it is what lets a person finish the record by hand,
- * since the chest itself is already gone from the game.
+ * A chest the collector opened but could not record: its type had no name, the
+ * game did not name its player, or the database refused the row. A person
+ * finishes it by hand, since the chest itself is already gone from the game.
  *
  * @property int $id
  * @property string|null $name
  * @property string|null $player
  * @property string|null $source
- * @property string|null $screenshot PNG of the chest panel as it was on screen
+ * @property string|null $screenshot PNG of the chest panel, from when the collector read the screen; no longer written
  * @property int|null $type
  * @property string $status pending | corrected | unresolved
  * @property int|null $collected_chest_id
@@ -37,7 +37,7 @@ class IncompleteChest extends Entity
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
-     * `screenshot` is deliberately absent: it is written by the collector and
+     * `screenshot` is deliberately absent: old rows may still hold one, and it
      * must never be replaced by a form post.
      *
      * @var array<string, bool>
@@ -58,8 +58,8 @@ class IncompleteChest extends Entity
     /**
      * Fields hidden when the entity is serialised.
      *
-     * The image is hundreds of kilobytes and is served by its own action; it has
-     * no business inside a JSON payload or a debug dump.
+     * An old row's image is hundreds of kilobytes; it has no business inside a
+     * JSON payload or a debug dump.
      *
      * @var list<string>
      */
@@ -75,23 +75,5 @@ class IncompleteChest extends Entity
     protected function _getIsPending(): bool
     {
         return ($this->status ?? self::STATUS_PENDING) === self::STATUS_PENDING;
-    }
-
-    /**
-     * Whether there is a picture to show.
-     *
-     * Answers from `screenshot_bytes` when the row was loaded without the blob -
-     * which is how the review screen loads it, since the image is fetched by its
-     * own request and there is no reason to carry it twice.
-     *
-     * @return bool
-     */
-    protected function _getHasScreenshot(): bool
-    {
-        if ($this->has('screenshot_bytes')) {
-            return (int)$this->get('screenshot_bytes') > 0;
-        }
-
-        return !empty($this->screenshot);
     }
 }

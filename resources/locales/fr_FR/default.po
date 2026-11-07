@@ -573,8 +573,8 @@ msgid "The standard chest could not be saved. Please, try again."
 msgstr "Le coffre standard n'a pas pu être enregistré. Réessayez."
 
 #: ./src/Controller/StandardChestsController.php:326
-msgid "{0} lost chest(s) successfully added to Standard Chests."
-msgstr "{0} coffre(s) perdu(s) ajouté(s) aux Coffres Standard."
+msgid "{0} new chest(s) successfully added to Standard Chests."
+msgstr "{0} nouveau(x) coffre(s) ajouté(s) aux Coffres Standard."
 
 #: ./src/Controller/StandardChestsController.php:328
 msgid "Failed to add selected chest(s). Please check values and try again."
@@ -2768,8 +2768,8 @@ msgid "All"
 msgstr "Tous"
 
 #: ./templates/IncompleteChests/index.php:48
-msgid "Chests the collector opened but could not read. The screenshot of each one was kept so it can be filled in by hand — the chest itself is no longer in the game."
-msgstr "Coffres que le collecteur a ouverts mais n'a pas pu lire. La capture d'écran de chacun a été conservée pour pouvoir le compléter à la main — le coffre lui-même n'est plus dans le jeu."
+msgid "Chests the collector opened but could not record, such as one whose player the game did not name. Fill them in by hand — the chest itself is no longer in the game."
+msgstr "Coffres que le collecteur a ouverts sans pouvoir les enregistrer, par exemple quand le jeu n'a pas donné le joueur. Complétez-les à la main — le coffre n'est plus dans le jeu."
 
 #: ./templates/IncompleteChests/index.php:56
 #: ./templates/IncompleteChests/view.php:60
@@ -2872,8 +2872,8 @@ msgid "Cannot be recovered"
 msgstr "Impossible à récupérer"
 
 #: ./templates/IncompleteChests/view.php:153
-msgid "Use this when the picture does not show enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
-msgstr "Utilisez ceci quand l'image ne montre pas assez pour remplir les champs. L'enregistrement reste, marqué comme examiné, et quitte la file."
+msgid "Use this when there is not enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
+msgstr "Utilisez ceci quand il n'y a pas assez d'éléments pour remplir les champs. L'enregistrement reste, marqué comme examiné, et quitte la file."
 
 #: ./templates/IncompleteChests/view.php:156
 msgid "Note (optional)"
@@ -3338,8 +3338,8 @@ msgstr "Aucun coffre standard enregistré pour le moment."
 #: ./templates/StandardChests/lost_chests.php:9
 #: ./templates/StandardChests/lost_chests.php:13
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:76
-msgid "Lost Chests"
-msgstr "Coffres perdus"
+msgid "New Chests"
+msgstr "Nouveaux coffres"
 
 #: ./templates/StandardChests/lost_chests.php:25
 msgid "Unregistered Chest Types"
@@ -3358,8 +3358,8 @@ msgid "Configure score & monster status, select and add to Standard Chests."
 msgstr "Réglez le score et le statut de monstre, sélectionnez et ajoutez aux Coffres Standard."
 
 #: ./templates/StandardChests/lost_chests.php:57
-msgid "Lost Chests Detected in Collected History"
-msgstr "Coffres perdus détectés dans l'historique des collectes"
+msgid "New Chests Found in the Collection"
+msgstr "Nouveaux coffres trouvés dans les collectes"
 
 #: ./templates/StandardChests/lost_chests.php:59
 msgid "types"
@@ -3463,8 +3463,8 @@ msgid "Add only this chest"
 msgstr "Ajouter seulement ce coffre"
 
 #: ./templates/StandardChests/lost_chests.php:196
-msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in the lost list."
-msgstr "Astuce : renseignez les points et choisissez les coffres à enregistrer. Les coffres non sélectionnés resteront dans la liste des perdus."
+msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in this list."
+msgstr "Astuce : renseignez les points et choisissez les coffres à enregistrer. Les coffres non sélectionnés resteront dans cette liste."
 
 #: ./templates/StandardChests/lost_chests.php:246
 #: ./templates/StandardChests/lost_chests.php:250

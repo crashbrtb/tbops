@@ -162,36 +162,6 @@ class MembersController extends AppController
     }
 
     /**
-     * Update members from collected chests
-     * Sincroniza players da tabela collectedchests com a tabela members
-     * e atualiza o status active baseado na última atividade (3 semanas)
-     *
-     * @return \Cake\Http\Response|null Redirects to index with flash message
-     */
-    public function updateFromCollectedChests()
-    {
-        $this->requireAdmin();
-        $result = $this->Members->updateFromCollectedChests();
-
-        if (!empty($result['errors'])) {
-            foreach ($result['errors'] as $errorMsg) {
-                $this->Flash->error($errorMsg);
-            }
-        }
-
-        $message = __('Update completed. Found {0} players (samples: {1}). {2} new members added, {3} members updated.', 
-            $result['playersCount'],
-            implode(', ', $result['samplePlayerNames']),
-            $result['newMembersCount'], 
-            $result['updatedMembersCount']
-        );
-        
-        $this->Flash->success($message);
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-    /**
      * Marca ou desmarca a conta como administrativa.
      *
      * Contas administrativas aparecem nos rankings dos torneios importados, mas

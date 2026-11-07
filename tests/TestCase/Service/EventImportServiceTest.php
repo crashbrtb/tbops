@@ -25,7 +25,6 @@ class EventImportServiceTest extends TestCase
     protected array $fixtures = [
         'app.Users',
         'app.Members',
-        'app.PlayerNameMappings',
         'app.Events',
         'app.EventChests',
         'app.EventRewards',
@@ -49,7 +48,6 @@ class EventImportServiceTest extends TestCase
 
         $members = $this->fetchTable('Members');
         $members->deleteAll([]);
-        $this->fetchTable('PlayerNameMappings')->deleteAll([]);
 
         // Two members called Lion: only the one whose game id is known can be
         // matched, the other has to be linked by hand.
@@ -176,20 +174,15 @@ class EventImportServiceTest extends TestCase
         $this->assertSame($this->members['lion'], $otherLion->member_id);
     }
 
-    public function testNameCorrectionsAreUsedWhenNothingElseMatches(): void
+    public function testANameNoMemberCarriesIsLeftUnmatched(): void
     {
-        $mappings = $this->fetchTable('PlayerNameMappings');
-        $mappings->saveOrFail($mappings->newEntity(['ocr_text' => 'Brunhilda', 'correct_name' => 'Brunilda']));
-
         $rows = $this->service->matchRows([
             ['position' => 1, 'name' => 'Brunhilda', 'points' => 5, 'game_player_id' => null, 'power' => null],
-            ['position' => 2, 'name' => 'Nobody', 'points' => 1, 'game_player_id' => null, 'power' => null],
         ]);
 
-        $this->assertSame(EventImportRow::MATCH_MAPPING, $rows[0]['match_type']);
-        $this->assertSame($this->members['Brunilda'], $rows[0]['member_id']);
-        $this->assertSame(EventImportRow::MATCH_NONE, $rows[1]['match_type']);
-        $this->assertTrue($rows[1]['eligible']);
+        $this->assertSame(EventImportRow::MATCH_NONE, $rows[0]['match_type']);
+        $this->assertNull($rows[0]['member_id']);
+        $this->assertTrue($rows[0]['eligible']);
     }
 
     public function testSameUploadTwiceIsStoredOnceAndANewOneSupersedesTheDraft(): void
