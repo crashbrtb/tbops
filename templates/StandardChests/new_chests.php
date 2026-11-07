@@ -1,27 +1,27 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array $lostChests
+ * @var array $newChests
  */
 ?>
 
 <?php
-$this->assign('title', __('Lost Chests'));
+$this->assign('title', __('New Chests'));
 $this->Breadcrumbs->add([
     ['title' => __('Home'), 'url' => '/'],
     ['title' => __('Standard Chests'), 'url' => ['action' => 'index']],
-    ['title' => __('Lost Chests')],
+    ['title' => __('New Chests')],
 ]);
 
-$totalLostTypes = count($lostChests);
-$totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
+$totalNewTypes = count($newChests);
+$totalNewChestsCount = array_sum(array_column($newChests, 'total_count'));
 ?>
 
 <div class="content-page-wrap">
     <div class="score-toolbar">
         <div class="score-title-group">
             <h1 class="score-title">
-                <i class="fas fa-question-circle text-warning mr-2"></i><?= __('Lost Chests') ?>
+                <i class="fas fa-question-circle text-warning mr-2"></i><?= __('New Chests') ?>
             </h1>
             <p class="cycle-subtitle">
                 <?= __('Review unregistered chests found in collection records and promote them to Standard Chests') ?>
@@ -42,7 +42,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
             <span class="info-box-icon bg-warning text-dark"><i class="fas fa-question-circle"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text"><?= __('Unregistered Chest Types') ?></span>
-                <span class="info-box-number"><?= number_format($totalLostTypes) ?></span>
+                <span class="info-box-number"><?= number_format($totalNewTypes) ?></span>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
             <span class="info-box-icon bg-danger"><i class="fas fa-boxes"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text"><?= __('Total Unregistered Collections') ?></span>
-                <span class="info-box-number"><?= number_format($totalLostChestsCount) ?></span>
+                <span class="info-box-number"><?= number_format($totalNewChestsCount) ?></span>
             </div>
         </div>
     </div>
@@ -73,14 +73,14 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
         <div class="d-flex align-items-center my-1">
             <h3 class="card-title font-weight-bold mb-0">
                 <i class="fas fa-search-location text-warning mr-2"></i>
-                <?= __('Lost Chests Detected in Collected History') ?>
+                <?= __('New Chests Found in the Collection') ?>
             </h3>
-            <span class="badge badge-warning ml-2 font-weight-normal"><?= $totalLostTypes ?> <?= __('types') ?></span>
+            <span class="badge badge-warning ml-2 font-weight-normal"><?= $totalNewTypes ?> <?= __('types') ?></span>
         </div>
 
         <div class="d-flex align-items-center my-1">
             <div class="input-group input-group-sm mr-2" style="width: 220px;">
-                <input type="text" id="tableFilterInput" class="form-control" placeholder="<?= __('Filter chest names...') ?>" onkeyup="filterLostTable(this.value)">
+                <input type="text" id="tableFilterInput" class="form-control" placeholder="<?= __('Filter chest names...') ?>" onkeyup="filterNewTable(this.value)">
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                 </div>
@@ -89,7 +89,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
         </div>
     </div>
 
-    <?php if (empty($lostChests)): ?>
+    <?php if (empty($newChests)): ?>
         <div class="card-body py-5 text-center">
             <div class="text-success mb-3">
                 <i class="fas fa-check-circle fa-4x"></i>
@@ -101,7 +101,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
             <?= $this->Html->link('<i class="fas fa-th-list mr-1"></i> ' . __('View Standard Chests'), ['controller' => 'StandardChests', 'action' => 'index'], ['class' => 'btn btn-primary', 'escape' => false]) ?>
         </div>
     <?php else: ?>
-        <?= $this->Form->create(null, ['id' => 'bulkAddForm', 'url' => ['controller' => 'StandardChests', 'action' => 'lostChests']]) ?>
+        <?= $this->Form->create(null, ['id' => 'bulkAddForm', 'url' => ['controller' => 'StandardChests', 'action' => 'newChests']]) ?>
         
         <div class="bg-light p-3 border-bottom d-flex flex-wrap align-items-center justify-content-between">
             <div class="d-flex align-items-center my-1 flex-wrap">
@@ -125,7 +125,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
         </div>
 
         <div class="card-body table-responsive p-0">
-            <table class="table table-hover table-striped mb-0" id="lostChestsTable">
+            <table class="table table-hover table-striped mb-0" id="newChestsTable">
                 <thead class="thead-light">
                     <tr>
                         <th style="width: 40px; text-align: center;">
@@ -143,7 +143,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($lostChests as $i => $row): ?>
+                    <?php foreach ($newChests as $i => $row): ?>
                         <?php
                         $source = (string)$row['source'];
                         $totalCount = (int)$row['total_count'];
@@ -212,7 +212,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
 
         <div class="card-footer d-flex align-items-center justify-content-between bg-light">
             <div class="text-muted small">
-                <?= __('Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in the lost list.') ?>
+                <?= __('Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in this list.') ?>
             </div>
             <button type="submit" class="btn btn-success font-weight-bold" id="btnSubmitSelectedBottom" disabled>
                 <i class="fas fa-plus-circle mr-1"></i> <?= __('Add Selected to Standard Chests') ?>
@@ -222,7 +222,7 @@ $totalLostChestsCount = array_sum(array_column($lostChests, 'total_count'));
         <?= $this->Form->end() ?>
 
         <!-- Hidden form for quick single-row submission -->
-        <?= $this->Form->create(null, ['id' => 'singleAddForm', 'url' => ['controller' => 'StandardChests', 'action' => 'lostChests'], 'style' => 'display:none;']) ?>
+        <?= $this->Form->create(null, ['id' => 'singleAddForm', 'url' => ['controller' => 'StandardChests', 'action' => 'newChests'], 'style' => 'display:none;']) ?>
             <input type="hidden" name="single_source" id="singleSourceInput">
             <input type="hidden" name="alias" id="singleAliasInput">
             <input type="hidden" name="score" id="singleScoreInput">
@@ -282,9 +282,9 @@ function toggleSelectAll(checked) {
     updateSelectedCount();
 }
 
-function filterLostTable(query) {
+function filterNewTable(query) {
     var filter = (query || '').toLowerCase().trim();
-    var table = document.getElementById('lostChestsTable');
+    var table = document.getElementById('newChestsTable');
     if (!table) return;
 
     var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');

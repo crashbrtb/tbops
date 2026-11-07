@@ -43,12 +43,6 @@ if ($isAdmin):
                 <li>
                     <?= $this->Html->link(__('Power History'), ['controller' => 'Members', 'action' => 'history'], ['class' => 'dropdown-item']) ?>
                 </li>
-                <li>
-                    <?= $this->Html->link(__('Update'), ['controller' => 'Members', 'action' => 'updateFromCollectedChests'], ['class' => 'dropdown-item']) ?>
-                </li>
-                <li>
-                    <?= $this->Html->link(__('Names Mapping'), ['controller' => 'PlayerNameMappings', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                </li>
             </ul>
         </li>
         <li class="dropdown-submenu dropdown-hover">
@@ -76,10 +70,7 @@ if ($isAdmin):
                     <?= $this->Html->link(__('Standard Chests'), ['controller' => 'StandardChests', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
-                    <?= $this->Html->link(__('Lost Chests'), ['controller' => 'StandardChests', 'action' => 'lostChests'], ['class' => 'dropdown-item']) ?>
-                </li>
-                <li>
-                    <?= $this->Html->link(__('Merge Players'), ['controller' => 'CollectedChests', 'action' => 'mergePlayers'], ['class' => 'dropdown-item']) ?>
+                    <?= $this->Html->link(__('New Chests'), ['controller' => 'StandardChests', 'action' => 'newChests'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
                     <?php

@@ -573,8 +573,8 @@ msgid "The standard chest could not be saved. Please, try again."
 msgstr "No se ha podido guardar el cofre estándar. Inténtalo de nuevo."
 
 #: ./src/Controller/StandardChestsController.php:326
-msgid "{0} lost chest(s) successfully added to Standard Chests."
-msgstr "{0} cofre(s) perdido(s) añadido(s) a Cofres Estándar."
+msgid "{0} new chest(s) successfully added to Standard Chests."
+msgstr "{0} cofre(s) nuevo(s) añadido(s) a Cofres Estándar."
 
 #: ./src/Controller/StandardChestsController.php:328
 msgid "Failed to add selected chest(s). Please check values and try again."
@@ -2768,8 +2768,8 @@ msgid "All"
 msgstr "Todos"
 
 #: ./templates/IncompleteChests/index.php:48
-msgid "Chests the collector opened but could not read. The screenshot of each one was kept so it can be filled in by hand — the chest itself is no longer in the game."
-msgstr "Cofres que el recolector abrió pero no pudo leer. Se guardó la captura de pantalla de cada uno para poder rellenarlos a mano: el cofre en sí ya no está en el juego."
+msgid "Chests the collector opened but could not record, such as one whose player the game did not name. Fill them in by hand — the chest itself is no longer in the game."
+msgstr "Cofres que el recolector abrió pero no pudo registrar, por ejemplo porque el juego no indicó el jugador. Complétalos a mano: el cofre ya no está en el juego."
 
 #: ./templates/IncompleteChests/index.php:56
 #: ./templates/IncompleteChests/view.php:60
@@ -2872,8 +2872,8 @@ msgid "Cannot be recovered"
 msgstr "No se puede recuperar"
 
 #: ./templates/IncompleteChests/view.php:153
-msgid "Use this when the picture does not show enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
-msgstr "Usa esto cuando la imagen no muestre lo suficiente para rellenar los campos. El registro se queda, marcado como revisado, y sale de la cola."
+msgid "Use this when there is not enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
+msgstr "Usa esto cuando no haya datos suficientes para rellenar los campos. El registro se queda, marcado como revisado, y sale de la cola."
 
 #: ./templates/IncompleteChests/view.php:156
 msgid "Note (optional)"
@@ -3338,8 +3338,8 @@ msgstr "Todavía no hay ningún cofre estándar registrado."
 #: ./templates/StandardChests/lost_chests.php:9
 #: ./templates/StandardChests/lost_chests.php:13
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:76
-msgid "Lost Chests"
-msgstr "Cofres Perdidos"
+msgid "New Chests"
+msgstr "Cofres Nuevos"
 
 #: ./templates/StandardChests/lost_chests.php:25
 msgid "Unregistered Chest Types"
@@ -3358,8 +3358,8 @@ msgid "Configure score & monster status, select and add to Standard Chests."
 msgstr "Configura la puntuación y la condición de monstruo, selecciona y añade a Cofres Estándar."
 
 #: ./templates/StandardChests/lost_chests.php:57
-msgid "Lost Chests Detected in Collected History"
-msgstr "Cofres Perdidos Detectados en el Historial de Recogidas"
+msgid "New Chests Found in the Collection"
+msgstr "Cofres Nuevos Encontrados en las Recogidas"
 
 #: ./templates/StandardChests/lost_chests.php:59
 msgid "types"
@@ -3463,8 +3463,8 @@ msgid "Add only this chest"
 msgstr "Añadir solo este cofre"
 
 #: ./templates/StandardChests/lost_chests.php:196
-msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in the lost list."
-msgstr "Consejo: rellena los puntos y elige qué cofres quieres registrar. Los cofres no seleccionados seguirán en la lista de perdidos."
+msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in this list."
+msgstr "Consejo: rellena los puntos y elige qué cofres quieres registrar. Los cofres no seleccionados seguirán en esta lista."
 
 #: ./templates/StandardChests/lost_chests.php:246
 #: ./templates/StandardChests/lost_chests.php:250

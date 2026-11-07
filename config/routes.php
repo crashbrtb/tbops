@@ -110,7 +110,9 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/bank/:action/*', ['controller' => 'Bank']);
 
         // Standard Chests routes
-        $builder->connect('/standard-chests/lost-chests', ['controller' => 'StandardChests', 'action' => 'lostChests']);
+        $builder->connect('/standard-chests/new-chests', ['controller' => 'StandardChests', 'action' => 'newChests']);
+        // The page was called Lost Chests; an old bookmark lands on the new one.
+        $builder->redirect('/standard-chests/lost-chests', '/standard-chests/new-chests', ['status' => 301]);
 
         // Troop calculator
         $builder->connect('/calculator', ['controller' => 'TroopCalculator', 'action' => 'index']);

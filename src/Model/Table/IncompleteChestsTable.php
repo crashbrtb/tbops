@@ -141,11 +141,10 @@ class IncompleteChestsTable extends Table
     }
 
     /**
-     * Every column except the image.
+     * Every column except the image old rows may still carry.
      *
-     * Listing screens must never select the blob: a page of twenty rows would
-     * drag megabytes out of the database to show none of it. The image has its
-     * own action, which fetches one row.
+     * Nothing shows that image any more, and a page of twenty rows would drag
+     * megabytes out of the database for nothing.
      *
      * @param \Cake\ORM\Query\SelectQuery $query The query to modify.
      * @return \Cake\ORM\Query\SelectQuery
@@ -199,7 +198,7 @@ class IncompleteChestsTable extends Table
 
     /**
      * The game types waiting for a name, one entry each: how many chests wait, and
-     * the picture of the first one with the player the game gave for that chest.
+     * when the first and the last of them were collected.
      *
      * @return list<array<string, mixed>>
      */
@@ -217,12 +216,6 @@ class IncompleteChestsTable extends Table
             ->orderBy(['first_seen' => 'ASC'])
             ->disableHydration()
             ->all()->toList();
-
-        foreach ($rows as &$row) {
-            $row['picture_id'] = $this->pictureOfType((int)$row['game_type_id']);
-            $row['picture_player'] = $row['picture_id'] === null ? null
-                : $this->find()->select(['player'])->where(['id' => $row['picture_id']])->first()?->player;
-        }
 
         return $rows;
     }
@@ -269,24 +262,6 @@ class IncompleteChestsTable extends Table
             ],
             ['game_type_id' => $typeId] + self::AWAITING_NAME
         );
-    }
-
-    /**
-     * The id of a row of this game type with a picture, if any.
-     *
-     * @param int|null $typeId Game type.
-     * @return int|null
-     */
-    public function pictureOfType(?int $typeId): ?int
-    {
-        if ($typeId === null) {
-            return null;
-        }
-        $row = $this->find()->select(['id'])
-            ->where(['game_type_id' => $typeId, 'screenshot IS NOT' => null])
-            ->orderBy(['id' => 'ASC'])->first();
-
-        return $row?->id;
     }
 
     /**

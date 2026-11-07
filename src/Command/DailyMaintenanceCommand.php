@@ -25,10 +25,12 @@ use Throwable;
  *
  * Orchestrates daily automated maintenance tasks:
  * 1. Process pending/unprocessed completed cycle summaries.
- * 2. Update members from collected chests (activity & new players).
- * 3. Purge old collected chests based on retention configuration.
- * 4. Record the results of events whose window has closed.
- * 5. Delete monitoring history past its retention.
+ * 2. Purge old collected chests based on retention configuration.
+ * 3. Record the results of events whose window has closed.
+ * 4. Delete monitoring history past its retention.
+ *
+ * Who is in the clan is no longer worked out from the chests: the game's own
+ * list of members (MemberRosterService) decides it.
  *
  * Every run writes its heartbeat to `job_runs`. A step that fails no longer
  * passes for success: the run is recorded as partial or failed and the command
@@ -55,7 +57,7 @@ class DailyMaintenanceCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
-        $parser->setDescription('Runs daily automated maintenance tasks (cycle summaries, members update, purge, and events).')
+        $parser->setDescription('Runs daily automated maintenance tasks (cycle summaries, purge, and events).')
             ->addOption('dry-run', [
                 'boolean' => true,
                 'help' => 'Perform a dry run without modifying the database.',
@@ -66,7 +68,7 @@ class DailyMaintenanceCommand extends Command
             ])
             ->addOption('skip-members', [
                 'boolean' => true,
-                'help' => 'Skip members update step.',
+                'help' => 'No longer used: the members are not updated from the chests any more. Accepted so existing schedules keep working.',
             ])
             ->addOption('skip-purge', [
                 'boolean' => true,
@@ -105,8 +107,6 @@ class DailyMaintenanceCommand extends Command
         $steps = [
             'summaries' => ['skip-summaries', 'Processing pending cycle summaries...', 'cycle summaries processing',
                 fn (): bool => $this->runProcessCycleSummaries($io, $isDryRun)],
-            'members' => ['skip-members', 'Updating members from collected chests...', 'members update',
-                fn (): bool => $this->runUpdateMembers($io, $isDryRun)],
             'purge' => ['skip-purge', 'Purging old collected chests...', 'old chests purge',
                 fn (): bool => $this->runPurgeCollectedChests($io, $isDryRun)],
             'events' => ['skip-events', 'Recording results for events that have ended...', 'event results recording',
@@ -174,52 +174,6 @@ class DailyMaintenanceCommand extends Command
     {
         $io->error($message);
         $this->problems[] = $message;
-    }
-
-    /**
-     * Synchronizes players from collected chests into the members table
-     * and updates active status based on recent activity (last 3 weeks).
-     *
-     * @param \Cake\Console\ConsoleIo $io Console io.
-     * @param bool $isDryRun Whether to report without writing.
-     * @return bool Whether the step went through without errors.
-     */
-    protected function runUpdateMembers(ConsoleIo $io, bool $isDryRun): bool
-    {
-        try {
-            /** @var \App\Model\Table\MembersTable $membersTable */
-            $membersTable = $this->fetchTable('Members');
-        } catch (Throwable $e) {
-            $io->warning('Members module is not available; skipping. (' . $e->getMessage() . ')');
-
-            return true;
-        }
-
-        $result = $membersTable->updateFromCollectedChests($isDryRun);
-
-        if ($isDryRun) {
-            $io->out(sprintf(
-                '[DRY-RUN] Found %d player(s). Would add %d new member(s) and update %d member(s).',
-                $result['playersCount'],
-                $result['newMembersCount'],
-                $result['updatedMembersCount']
-            ));
-
-            return true;
-        }
-
-        $io->success(sprintf(
-            'Members updated: %d new member(s) added, %d member(s) updated (%d players evaluated).',
-            $result['newMembersCount'],
-            $result['updatedMembersCount'],
-            $result['playersCount']
-        ));
-
-        foreach ((array)($result['errors'] ?? []) as $error) {
-            $this->problem($io, 'members: ' . $error);
-        }
-
-        return empty($result['errors']);
     }
 
     /**

@@ -13,9 +13,9 @@ use Cake\ORM\TableRegistry;
 /**
  * IncompleteChests Controller
  *
- * The review queue for chests the collector opened but could not name. The first
- * of a new game type carries a picture of the chest as it was on screen, and the
- * type is named once on the index, for all its chests (see
+ * The review queue for chests the collector opened but could not record. A game
+ * type that neither `game_chest_types` nor the game's own chest catalogue names
+ * is named once on the index, for all its chests (see
  * IncompleteChestsTable::nameCode). Those chests are not reviewed one by one.
  *
  * From here a chest is either finished by hand - which creates the
@@ -148,7 +148,7 @@ class IncompleteChestsController extends AppController
     }
 
     /**
-     * View method - the picture, the fields as read, and what to do about it.
+     * View method - what the game said about the chest, and what to do about it.
      *
      * @param string|null $id Incomplete Chest id.
      * @return \Cake\Http\Response|null|void Renders view
@@ -158,11 +158,7 @@ class IncompleteChestsController extends AppController
     {
         $this->requireAdmin();
 
-        // Everything except the image, plus its size. The page shows the picture
-        // through the `image` action, so pulling a hundred kilobytes of blob
-        // into this request only to ask whether it exists would be waste.
         $incompleteChest = $this->IncompleteChests->find('withoutImage')
-            ->select(['screenshot_bytes' => 'LENGTH(screenshot)'])
             ->where(['IncompleteChests.id' => $id])
             ->firstOrFail();
 
@@ -176,40 +172,7 @@ class IncompleteChestsController extends AppController
             ->all()->extract('player')->toList();
         [$knownChests, $knownSources] = $this->knownNames();
 
-        // A chest's own picture only: another's would show other players.
-        $pictureId = $incompleteChest->has_screenshot ? $incompleteChest->id : null;
-
-        $this->set(compact('incompleteChest', 'knownPlayers', 'knownChests', 'knownSources', 'pictureId'));
-    }
-
-    /**
-     * Image method - serves the stored PNG.
-     *
-     * Its own action rather than a data URI in the page: the images are hundreds
-     * of kilobytes, and this way the browser caches them and a listing never has
-     * to carry them.
-     *
-     * @param string|null $id Incomplete Chest id.
-     * @return \Cake\Http\Response
-     */
-    public function image($id = null)
-    {
-        $this->requireAdmin();
-
-        $incompleteChest = $this->IncompleteChests->get($id, fields: ['id', 'screenshot']);
-        if (empty($incompleteChest->screenshot)) {
-            throw new NotFoundException(__('This record has no screenshot.'));
-        }
-
-        $data = $incompleteChest->screenshot;
-        if (is_resource($data)) {
-            $data = stream_get_contents($data);
-        }
-
-        return $this->response
-            ->withType('png')
-            ->withHeader('Cache-Control', 'private, max-age=3600')
-            ->withStringBody($data);
+        $this->set(compact('incompleteChest', 'knownPlayers', 'knownChests', 'knownSources'));
     }
 
     /**

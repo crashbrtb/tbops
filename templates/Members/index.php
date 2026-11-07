@@ -38,16 +38,6 @@ $this->Breadcrumbs->add([
                 ['action' => 'add'],
                 ['class' => 'btn btn-primary btn-sm', 'escape' => false]
             ) ?>
-            <?= $this->Html->link(
-                '<i class="fas fa-sync-alt mr-1"></i> ' . __('Update from Chests'),
-                ['action' => 'updateFromCollectedChests'],
-                ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
-            ) ?>
-            <?= $this->Html->link(
-                '<i class="fas fa-exchange-alt mr-1"></i> ' . __('Names Mapping'),
-                ['controller' => 'PlayerNameMappings', 'action' => 'index'],
-                ['class' => 'btn btn-default btn-sm', 'escape' => false]
-            ) ?>
         </div>
     </div>
 

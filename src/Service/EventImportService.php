@@ -311,11 +311,6 @@ class EventImportService
             $byName[$this->normalize((string)$member->player)][] = $member;
         }
 
-        $mappings = [];
-        foreach ($this->fetchTable('PlayerNameMappings')->find()->all() as $mapping) {
-            $mappings[$this->normalize((string)$mapping->ocr_text)] = $this->normalize((string)$mapping->correct_name);
-        }
-
         $out = [];
         foreach ($rows as $row) {
             $member = null;
@@ -331,12 +326,6 @@ class EventImportService
                 if ($candidate !== null) {
                     $member = $candidate;
                     $type = EventImportRow::MATCH_NAME;
-                } elseif (isset($mappings[$key])) {
-                    $candidate = $this->uniqueNameMatch($byName[$mappings[$key]] ?? [], $playerId);
-                    if ($candidate !== null) {
-                        $member = $candidate;
-                        $type = EventImportRow::MATCH_MAPPING;
-                    }
                 }
             }
 

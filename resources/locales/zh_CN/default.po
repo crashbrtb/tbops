@@ -573,8 +573,8 @@ msgid "The standard chest could not be saved. Please, try again."
 msgstr "无法保存标准宝箱。请重试。"
 
 #: ./src/Controller/StandardChestsController.php:326
-msgid "{0} lost chest(s) successfully added to Standard Chests."
-msgstr "已将 {0} 个遗漏宝箱添加到标准宝箱。"
+msgid "{0} new chest(s) successfully added to Standard Chests."
+msgstr "已将 {0} 个新宝箱添加到标准宝箱。"
 
 #: ./src/Controller/StandardChestsController.php:328
 msgid "Failed to add selected chest(s). Please check values and try again."
@@ -2768,8 +2768,8 @@ msgid "All"
 msgstr "全部"
 
 #: ./templates/IncompleteChests/index.php:48
-msgid "Chests the collector opened but could not read. The screenshot of each one was kept so it can be filled in by hand — the chest itself is no longer in the game."
-msgstr "采集程序打开了但无法识别的宝箱。每个宝箱的截图都被保留下来，以便手工补录——宝箱本身已经不在游戏里了。"
+msgid "Chests the collector opened but could not record, such as one whose player the game did not name. Fill them in by hand — the chest itself is no longer in the game."
+msgstr "收集器已打开但未能记录的宝箱，例如游戏没有给出玩家的宝箱。请手动填写——宝箱本身已不在游戏中。"
 
 #: ./templates/IncompleteChests/index.php:56
 #: ./templates/IncompleteChests/view.php:60
@@ -2872,8 +2872,8 @@ msgid "Cannot be recovered"
 msgstr "无法恢复"
 
 #: ./templates/IncompleteChests/view.php:153
-msgid "Use this when the picture does not show enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
-msgstr "当图片信息不足以填写字段时使用此项。记录会保留并标记为已审阅，同时离开队列。"
+msgid "Use this when there is not enough to fill the fields in. The record stays, marked as reviewed, and leaves the queue."
+msgstr "当信息不足以填写各字段时使用此项。记录会保留并标记为已审核，同时移出队列。"
 
 #: ./templates/IncompleteChests/view.php:156
 msgid "Note (optional)"
@@ -3338,8 +3338,8 @@ msgstr "尚未登记任何标准宝箱。"
 #: ./templates/StandardChests/lost_chests.php:9
 #: ./templates/StandardChests/lost_chests.php:13
 #: ./templates/plugin/CakeLte/element/header/rightmenu.php:76
-msgid "Lost Chests"
-msgstr "遗漏的宝箱"
+msgid "New Chests"
+msgstr "新宝箱"
 
 #: ./templates/StandardChests/lost_chests.php:25
 msgid "Unregistered Chest Types"
@@ -3358,8 +3358,8 @@ msgid "Configure score & monster status, select and add to Standard Chests."
 msgstr "设置分值与怪物属性，选中后添加到标准宝箱。"
 
 #: ./templates/StandardChests/lost_chests.php:57
-msgid "Lost Chests Detected in Collected History"
-msgstr "在收集历史中发现的遗漏宝箱"
+msgid "New Chests Found in the Collection"
+msgstr "在收集记录中发现的新宝箱"
 
 #: ./templates/StandardChests/lost_chests.php:59
 msgid "types"
@@ -3463,8 +3463,8 @@ msgid "Add only this chest"
 msgstr "只添加这个宝箱"
 
 #: ./templates/StandardChests/lost_chests.php:196
-msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in the lost list."
-msgstr "提示：填写分值并选择要登记的宝箱。未选中的宝箱会留在遗漏列表中。"
+msgid "Tip: Fill in the points and select which chests you want to register. Unselected chests will remain in this list."
+msgstr "提示：填写分数并选择要登记的宝箱。未选择的宝箱会保留在此列表中。"
 
 #: ./templates/StandardChests/lost_chests.php:246
 #: ./templates/StandardChests/lost_chests.php:250

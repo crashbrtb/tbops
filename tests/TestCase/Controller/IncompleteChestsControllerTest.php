@@ -202,14 +202,11 @@ class IncompleteChestsControllerTest extends TestCase
         $this->signIn(1);
         $table = $this->fetchTable('IncompleteChests');
         $table->updateAll(['name' => '', 'game_type_id' => 9999], ['id IN' => [1, 2]]);
-        $table->updateAll(['screenshot' => 'png'], ['id' => 2]);
 
         $this->get('/incomplete-chests');
         $this->assertResponseOk();
         $this->assertResponseContains('id="typesToName"');
         $this->assertResponseContains('Code 9999');
-        $this->assertResponseContains('incomplete-chests/image/2');
-        $this->assertResponseContains('must be from Player Two');
         $this->assertResponseNotContains('Player One');
 
         $this->get('/incomplete-chests/view/1');

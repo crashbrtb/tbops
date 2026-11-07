@@ -29,7 +29,6 @@ class UploaderControllerTest extends TestCase
         'app.RolesUsers',
         'app.Members',
         'app.CollectedChests',
-        'app.PlayerNameMappings',
         'app.ApiTokens',
         'app.Events',
         'app.EventChests',
@@ -687,35 +686,6 @@ class UploaderControllerTest extends TestCase
         $this->assertSame('player_id', $rows[0]->match_type);
     }
 
-    public function testChestActivityNoLongerDecidesWhoIsActiveOnceARosterArrived(): void
-    {
-        $members = $this->fetchTable('Members');
-        $members->deleteAll([]);
-        $upload = $this->tournamentUpload();
-        $upload['rows'] = $this->rosterRows(range(201, 210));
-        $this->authorize($this->adminToken);
-        $this->post('/api/v1/tournaments', json_encode($upload));
-        $this->assertResponseCode(201);
-
-        $chests = $this->fetchTable('CollectedChests');
-        $chests->saveOrFail($chests->newEntity([
-            'name' => 'Chest', 'player' => 'Somebody New', 'source' => 'Crypt', 'type' => 0,
-            'collected_at' => DateTime::now(),
-        ], ['accessibleFields' => ['*' => true]]));
-        $chests->saveOrFail($chests->newEntity([
-            'name' => 'Chest', 'player' => 'Player 201', 'source' => 'Crypt', 'type' => 0,
-            'collected_at' => DateTime::now()->subWeeks(6),
-        ], ['accessibleFields' => ['*' => true]]));
-
-        $result = $members->updateFromCollectedChests();
-
-        $this->assertSame(0, $result['newMembersCount']);
-        $this->assertSame(0, $members->find()->where(['player' => 'Somebody New'])->count(),
-            'a chest name the roster does not know is not made a member: it is a misreading, or someone who left');
-        $this->assertSame(1, (int)$members->find()->where(['game_player_id' => 201])->firstOrFail()->active,
-            'an old chest does not deactivate a player the roster says is in the clan');
-    }
-
     public function testAMemberRenamedInTheGameTakesTheirChestsAndCycleRecordsAlong(): void
     {
         $members = $this->fetchTable('Members');
@@ -753,12 +723,6 @@ class UploaderControllerTest extends TestCase
             ->where(['player_name' => $player])->orderBy(['cycle_start_date' => 'ASC'])->all()
             ->map(fn ($row): string => $row->cycle_start_date->format('Y-m-d'))->toList();
 
-        $mappings = $this->fetchTable('PlayerNameMappings');
-        $mappings->deleteAll([]);
-        // A reading corrected to the old name, and a name somebody in the clan now carries.
-        $mappings->saveOrFail($mappings->newEntity(['ocr_text' => 'Dumal', 'correct_name' => 'Dumau']));
-        $mappings->saveOrFail($mappings->newEntity(['ocr_text' => 'Player 105', 'correct_name' => 'Somebody Else']));
-
         $this->authorize($this->adminToken);
         $this->post('/api/v1/members', json_encode($this->memberList(range(101, 120), [101 => 'Xandovsky', 102 => 'Leo'])));
 
@@ -770,16 +734,9 @@ class UploaderControllerTest extends TestCase
         $this->assertSame(1, $under('DUMAU'), 'only the exact spelling is moved');
         $this->assertSame([2, 0], [$under('Lion'), $under('Leo')], 'another member is still called Lion: those chests may be theirs');
 
-        $map = $mappings->find()->all()->combine('ocr_text', 'correct_name')->toArray();
-        $this->assertSame(['Dumal' => 'Xandovsky', 'Dumau' => 'Xandovsky'], $map);
-
         // The cycle the new name has no record of follows; the one it has stays as it was.
         $this->assertSame(['2026-09-01', '2026-09-08'], $cyclesOf('Xandovsky'));
         $this->assertSame(['2026-09-08'], $cyclesOf('Dumau'));
-
-        // Once the roster is in charge, the daily maintenance does not bring "Dumau" back as a member.
-        $members->updateFromCollectedChests();
-        $this->assertSame(0, $members->find()->where(['player' => 'DUMAU'])->count());
     }
 
     /**

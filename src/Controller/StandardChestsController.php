@@ -270,12 +270,12 @@ class StandardChestsController extends AppController
     }
 
     /**
-     * Register a single chest coming from the Lost Chests screen.
+     * Register a single chest coming from the New Chests screen.
      *
      * @param array<string, mixed> $chestData Raw form data for one chest.
      * @return string One of `saved`, `skipped` (source already registered) or `error`.
      */
-    protected function registerLostChest(array $chestData): string
+    protected function registerNewChest(array $chestData): string
     {
         $source = trim((string)($chestData['source'] ?? ''));
         if ($source === '') {
@@ -305,12 +305,16 @@ class StandardChestsController extends AppController
     }
 
     /**
-     * Compare collected chests with standard chests and list those not yet registered.
-     * Allows selecting and bulk/single adding them to standard_chests.
+     * The chest sources the collection brought that have no score yet.
+     *
+     * Every source the game names, from its own chest catalogue, has to be
+     * registered in standard_chests with its points before its chests count.
+     * This lists the collected sources that are not, to add them one by one or
+     * in bulk.
      *
      * @return \Cake\Http\Response|null|void Renders view or redirects on save.
      */
-    public function lostChests()
+    public function newChests()
     {
         $this->requireAdmin();
 
@@ -320,7 +324,7 @@ class StandardChestsController extends AppController
 
             // Check if it's a single addition
             if (!empty($data['single_source'])) {
-                $result = $this->registerLostChest([
+                $result = $this->registerNewChest([
                     'source' => $data['single_source'],
                     'alias' => $data['alias'] ?? null,
                     'score' => $data['score'] ?? 0,
@@ -332,14 +336,14 @@ class StandardChestsController extends AppController
                 // Bulk addition
                 foreach ($data['chests'] as $chestData) {
                     if (!empty($chestData['selected']) && !empty($chestData['source'])) {
-                        $result = $this->registerLostChest($chestData);
+                        $result = $this->registerNewChest($chestData);
                         $counters[$result]++;
                     }
                 }
             }
 
             if ($counters['saved'] > 0) {
-                $this->Flash->success(__('{0} lost chest(s) successfully added to Standard Chests.', $counters['saved']));
+                $this->Flash->success(__('{0} new chest(s) successfully added to Standard Chests.', $counters['saved']));
             } elseif ($counters['error'] > 0) {
                 $this->Flash->error(__('Failed to add selected chest(s). Please check values and try again.'));
             } elseif ($counters['skipped'] === 0) {
@@ -350,12 +354,12 @@ class StandardChestsController extends AppController
                 $this->Flash->warning(__('{0} chest(s) were skipped because their source is already registered.', $counters['skipped']));
             }
 
-            return $this->redirect(['action' => 'lostChests']);
+            return $this->redirect(['action' => 'newChests']);
         }
 
         // Query collected chests that do not exist in standard chests
         $conn = \Cake\Datasource\ConnectionManager::get('default');
-        $lostChests = $conn->execute("
+        $newChests = $conn->execute("
             SELECT 
                 cc.source,
                 COUNT(*) AS total_count,
@@ -369,6 +373,6 @@ class StandardChestsController extends AppController
             ORDER BY total_count DESC, cc.source ASC
         ")->fetchAll('assoc');
 
-        $this->set(compact('lostChests'));
+        $this->set(compact('newChests'));
     }
 }

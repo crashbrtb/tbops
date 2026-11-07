@@ -40,8 +40,8 @@ $this->Paginator->options(['url' => ['?' => $activeFilters]]);
                 ['class' => 'btn btn-primary btn-sm', 'escape' => false]
             ) ?>
             <?= $this->Html->link(
-                '<i class="fas fa-question-circle mr-1"></i> ' . __('Lost Chests'),
-                ['action' => 'lostChests'],
+                '<i class="fas fa-star mr-1"></i> ' . __('New Chests'),
+                ['action' => 'newChests'],
                 ['class' => 'btn btn-outline-warning btn-sm', 'escape' => false]
             ) ?>
             <?= $this->Html->link(

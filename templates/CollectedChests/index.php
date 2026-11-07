@@ -32,11 +32,6 @@ $this->Breadcrumbs->add([
                 ['action' => 'score'],
                 ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
             ) ?>
-            <?= $this->Html->link(
-                '<i class="fas fa-user-friends mr-1"></i> ' . __('Merge Players'),
-                ['action' => 'mergePlayers'],
-                ['class' => 'btn btn-default btn-sm', 'escape' => false]
-            ) ?>
         </div>
     </div>
 
