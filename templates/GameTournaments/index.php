@@ -23,7 +23,7 @@ $sourceLabels = [
         <div class="score-title-group">
             <h1 class="score-title"><i class="fas fa-book text-primary"></i> <?= __('Tournament Catalogue') ?></h1>
             <p class="cycle-subtitle">
-                <?= __('The game\'s tournaments. Names and ids are filled in by the tournament mapper; the image and the duration are set here.') ?>
+                <?= __('The game\'s tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing.') ?>
             </p>
         </div>
         <div class="toolbar-actions">
@@ -68,8 +68,14 @@ $sourceLabels = [
                                 </td>
                                 <td>
                                     <?php if ($tournament->name): ?>
-                                        <strong><?= h($tournament->name) ?></strong>
+                                        <strong><?= h($tournament->displayName()) ?></strong>
+                                        <?php if ($tournament->displayName() !== $tournament->name): ?>
+                                            <small class="d-block text-muted"><?= h(__('In the game: {0}', $tournament->name)) ?></small>
+                                        <?php endif; ?>
                                         <small class="d-block text-muted"><?= h($sourceLabels[$tournament->name_source] ?? '') ?></small>
+                                        <?php if ($tournament->auto_publish): ?>
+                                            <span class="badge badge-success"><i class="fas fa-bolt mr-1"></i><?= __('Published without review') ?></span>
+                                        <?php endif; ?>
                                     <?php else: ?>
                                         <span class="text-warning"><i class="fas fa-question-circle"></i> <?= __('Name not mapped yet') ?></span>
                                     <?php endif; ?>
@@ -91,9 +97,9 @@ $sourceLabels = [
                                 <td><?= $this->Number->format($counts[$tournament->id] ?? 0) ?></td>
                                 <td>
                                     <?= $this->Html->link(
-                                        '<i class="fas fa-pen"></i>',
-                                        ['action' => 'edit', $tournament->id],
-                                        ['class' => 'btn btn-outline-primary btn-xs', 'escape' => false, 'title' => __('Edit')]
+                                        '<i class="fas fa-eye"></i>',
+                                        ['action' => 'view', $tournament->id],
+                                        ['class' => 'btn btn-outline-primary btn-xs', 'escape' => false, 'title' => __('View')]
                                     ) ?>
                                 </td>
                             </tr>

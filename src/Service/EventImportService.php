@@ -511,8 +511,8 @@ class EventImportService
 
         $previous = $this->previousTournament($tournament['tournament_key'], $entry?->id);
 
-        if ($entry !== null && $entry->name) {
-            [$name, $source] = [$entry->name, 'catalog'];
+        if ($entry !== null && ($entry->name || $entry->display_name)) {
+            [$name, $source] = [$entry->displayName(), 'catalog'];
         } elseif ($tournament['name'] !== null) {
             [$name, $source] = [$tournament['name'], 'sent'];
         } elseif ($previous !== null) {
@@ -529,6 +529,10 @@ class EventImportService
 
         $rewards = [];
         foreach ((array)$previous?->event_rewards as $reward) {
+            if ($reward->get('game_item_id') !== null) {
+                // A clan prize: its amount is what the clan received in this event, filled in below.
+                continue;
+            }
             $rewards[] = [
                 'item_name' => $reward->item_name,
                 'quantity' => $reward->quantity,
@@ -555,7 +559,7 @@ class EventImportService
             'ends_at' => $endsAt,
             'prize' => '',
             'contact_player' => $previous?->contact_player ?: ($userName ?: '-'),
-            'description' => $previous?->description,
+            'description' => trim((string)$entry?->get('description')) !== '' ? $entry->get('description') : $previous?->description,
             'event_rewards' => $rewards,
         ] + $goal->toFields(), ['associated' => ['EventRewards']]);
         $event->set([
@@ -566,6 +570,7 @@ class EventImportService
         ], ['guard' => false]);
 
         $events->saveOrFail($event, ['associated' => ['EventRewards'], 'allowNoRewards' => true]);
+        (new ClanResultService())->applyPrizes($event);
 
         return [
             'event' => $events->get($event->id, contain: ['EventRewards']),
@@ -792,6 +797,13 @@ class EventImportService
             )];
         }
 
+        $prizes = (new ClanResultService())->prizeProblems($event);
+        if ($prizes !== null) {
+            $out[] = ['level' => 'warning', 'text' => $prizes['no_result']
+                ? __('The clan\'s result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event.')
+                : __('The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards.', implode(', ', $prizes['missing']))];
+        }
+
         return $out;
     }
 
@@ -935,6 +947,7 @@ class EventImportService
         });
 
         $import->set('status', EventImport::STATUS_PUBLISHED, ['guard' => false]);
+        (new ClanResultService())->settleNotice($event);
 
         return count($rows);
     }

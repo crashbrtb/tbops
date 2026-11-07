@@ -32,6 +32,7 @@ class GameTournamentsTable extends Table
         'id', 'game_type', 'ranking', 'name', 'name_source', 'duration_days', 'image_mime',
         'last_variant', 'first_seen_at', 'last_seen_at', 'created', 'modified',
         'goal_mode', 'goal_points', 'goal_by_guard', 'goal_required',
+        'display_name', 'description', 'prize_items', 'auto_publish',
     ];
 
     /**
@@ -99,6 +100,16 @@ class GameTournamentsTable extends Table
             ->scalar('name')
             ->maxLength('name', 120)
             ->allowEmptyString('name');
+
+        $validator
+            ->scalar('display_name')
+            ->maxLength('display_name', 120)
+            ->allowEmptyString('display_name');
+
+        $validator
+            ->scalar('description')
+            ->maxLength('description', 2000)
+            ->allowEmptyString('description');
 
         $validator
             ->nonNegativeInteger('duration_days', __('The duration must be a whole number of days.'))

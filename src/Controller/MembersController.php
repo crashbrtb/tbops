@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\ClanResultService;
 use App\Service\DuplicatePlayerNameService;
+use App\Service\MemberPerformanceService;
 use App\Service\MemberPowerHistoryService;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -16,6 +18,83 @@ use Cake\I18n\FrozenTime;
  */
 class MembersController extends AppController
 {
+    /**
+     * @inheritDoc
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        // Like the power history: open to everyone when the Clan Data menu is on.
+        $this->Authentication->addUnauthenticatedActions(['tournaments']);
+    }
+
+    /**
+     * The clan in the game's tournaments: its place and points in each one,
+     * and what it received. Query `type`: the game type whose evolution the
+     * charts draw.
+     *
+     * Seen by the administrators, and by everyone when `clan_data_function` is
+     * on, as the power history.
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function tournaments()
+    {
+        $isAdmin = $this->isAdmin();
+        if (!$isAdmin && !$this->fetchTable('Config')->isOn('clan_data_function')) {
+            throw new NotFoundException();
+        }
+
+        $results = $this->fetchTable('ClanTournamentResults')->find()
+            ->orderBy(['ended_at' => 'DESC'])
+            ->all()
+            ->toList();
+        $names = (new ClanResultService())->typeNames();
+
+        // Every type with results, the one ranked most often first.
+        $types = [];
+        foreach ($results as $result) {
+            $type = (int)$result->game_type;
+            $types[$type] ??= ['type' => $type, 'name' => $names[$type] ?? __('Game tournament {0}', $type), 'count' => 0, 'ranked' => 0];
+            $types[$type]['count']++;
+            $types[$type]['ranked'] += $result->isRanked() ? 1 : 0;
+        }
+        uasort($types, fn (array $a, array $b): int => [$b['ranked'], $b['count']] <=> [$a['ranked'], $a['count']]);
+
+        $selected = (int)$this->request->getQuery('type');
+        if (!isset($types[$selected])) {
+            $selected = (int)(array_key_first($types) ?? 0);
+        }
+        $series = array_values(array_reverse(array_filter($results, fn ($r): bool => (int)$r->game_type === $selected)));
+
+        $this->set(compact('results', 'names', 'types', 'selected', 'series', 'isAdmin'));
+    }
+
+    /**
+     * Member performance dashboard: goal achievement statistics and ranking for
+     * events/tournaments and chest cycles.
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function performance()
+    {
+        $this->requireAdmin();
+
+        $period = (int)$this->request->getQuery('period', MemberPerformanceService::DEFAULT_PERIOD);
+        if (!array_key_exists($period, MemberPerformanceService::PERIODS)) {
+            $period = MemberPerformanceService::DEFAULT_PERIOD;
+        }
+
+        $service = new MemberPerformanceService();
+        $data = $service->getPerformanceData($period);
+
+        $selectedPlayer = (string)$this->request->getQuery('player', '');
+
+        $this->set(compact('data', 'period', 'selectedPlayer'));
+        $this->set('periods', MemberPerformanceService::PERIODS);
+    }
+
     /**
      * Index method
      *

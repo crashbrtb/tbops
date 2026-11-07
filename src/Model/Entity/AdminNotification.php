@@ -20,6 +20,8 @@ use Cake\ORM\Entity;
 class AdminNotification extends Entity
 {
     public const TYPE_DUPLICATE_PLAYER_NAME = 'duplicate_player_name';
+    /** An event held for review: a clan prize chosen to be split did not come with it. */
+    public const TYPE_CLAN_PRIZE_MISSING = 'clan_prize_missing';
 
     /**
      * @var array<string, bool>
@@ -58,7 +60,39 @@ class AdminNotification extends Entity
         if ($this->type === self::TYPE_DUPLICATE_PLAYER_NAME && count($members) === 2) {
             return __('Possible duplicate player: "{0}" and "{1}"', $members[0]['player'], $members[1]['player']);
         }
+        if ($this->type === self::TYPE_CLAN_PRIZE_MISSING) {
+            $number = (int)($this->data['event_number'] ?? 0);
+            $name = (string)($this->data['event_name'] ?? '');
+            if (!empty($this->data['no_result'])) {
+                return __(
+                    'Event #{0} "{1}" was not published: the clan\'s result of this tournament has not arrived, so its prizes could not be split. Review it.',
+                    $number,
+                    $name
+                );
+            }
+
+            return __(
+                'Event #{0} "{1}" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it.',
+                $number,
+                $name,
+                implode(', ', array_map('strval', (array)($this->data['missing'] ?? [])))
+            );
+        }
 
         return (string)$this->type;
+    }
+
+    /**
+     * Where the alert is dealt with, when it points somewhere.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function link(): ?array
+    {
+        if ($this->type === self::TYPE_CLAN_PRIZE_MISSING && !empty($this->data['event_id'])) {
+            return ['controller' => 'Events', 'action' => 'review', (int)$this->data['event_id']];
+        }
+
+        return null;
     }
 }

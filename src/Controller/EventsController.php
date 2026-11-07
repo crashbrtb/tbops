@@ -95,7 +95,7 @@ class EventsController extends AppController
     {
         $event = $this->Events->find('withoutBanner')
             ->where(['Events.id' => $id])
-            ->contain(['EventChests' => ['StandardChests'], 'EventRewards', 'GameTournaments' => ['fields' => ['id', 'game_type', 'name', 'duration_days', 'image_mime', 'modified']]])
+            ->contain(['EventChests' => ['StandardChests'], 'EventRewards', 'GameTournaments' => ['fields' => ['id', 'game_type', 'name', 'display_name', 'duration_days', 'image_mime', 'modified']]])
             ->firstOrFail();
 
         if ($event->is_imported) {
@@ -732,7 +732,7 @@ class EventsController extends AppController
 
         $event = $this->Events->find('withoutBanner')
             ->where(['Events.id' => $id])
-            ->contain(['EventRewards', 'GameTournaments' => ['fields' => ['id', 'game_type', 'name', 'duration_days', 'image_mime', 'modified']]])
+            ->contain(['EventRewards', 'GameTournaments' => ['fields' => ['id', 'game_type', 'name', 'display_name', 'duration_days', 'image_mime', 'modified']]])
             ->firstOrFail();
 
         if (!$event->is_imported) {

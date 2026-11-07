@@ -53,6 +53,9 @@ $this->Breadcrumbs->add([
                                 <i class="fas fa-exclamation-circle text-danger"></i>
                             <?php endif; ?>
                             <?= h($notification->message()) ?>
+                            <?php if ($notification->link() !== null): ?>
+                                <?= $this->Html->link(__('Review'), $notification->link(), ['class' => 'ml-1']) ?>
+                            <?php endif; ?>
                             <div class="small">
                                 <?php foreach ($notification->members() as $member): ?>
                                     <?= $this->Html->link(

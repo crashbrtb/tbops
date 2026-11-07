@@ -39,6 +39,7 @@ class GameTournamentsControllerTest extends TestCase
         'app.EventStandings',
         'app.EventRewardAllocations',
         'app.GameTournaments',
+        'app.ClanTournamentResults',
     ];
 
     /** A 1x1 PNG. */
@@ -78,13 +79,14 @@ class GameTournamentsControllerTest extends TestCase
     {
         $catalogue = $this->fetchTable('GameTournaments');
         $entry = $catalogue->touchType(1024, '1');
-        $catalogue->offerName($entry, 'Rise of the Ancients', GameTournament::SOURCE_JOURNAL);
+        $catalogue->offerName($entry, 'Rise of the Ancients', GameTournament::SOURCE_UPLOADER);
 
         $this->loginAdmin();
         $this->get('/game-tournaments');
         $this->assertResponseOk();
         $this->assertResponseContains('Rise of the Ancients');
         $this->assertResponseContains('1024');
+        $this->assertResponseContains("/game-tournaments/view/{$entry->id}");
 
         $this->loginAdmin();
         $this->post("/game-tournaments/edit/{$entry->id}", [
@@ -92,7 +94,7 @@ class GameTournamentsControllerTest extends TestCase
             'duration_days' => '3',
             'image' => $this->upload((string)base64_decode(self::PNG)),
         ]);
-        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'index']);
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
 
         $saved = $catalogue->get($entry->id);
         $this->assertSame('Rise of the Ancients (event)', $saved->name);
@@ -211,4 +213,116 @@ class GameTournamentsControllerTest extends TestCase
             $this->assertResponseCode(302);
         }
     }
+
+    public function testTheTournamentPageShowsEachPartAndWhatIsNotDefined(): void
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $entry = $catalogue->touchType(1032, '1');
+        $catalogue->offerName($entry, 'Trials of Olympus', GameTournament::SOURCE_JOURNAL);
+        $results = $this->fetchTable('ClanTournamentResults');
+        $result = $results->newEmptyEntity();
+        $result->set([
+            'entry_uid' => 'c16a5e54-15d4-447c-8e9d-d05486620e29', 'kind' => 'multistage_tournament_results_entry',
+            'game_type' => 1032, 'game_tournament_key' => '1032:1', 'ended_at' => new DateTime('2026-11-06 18:00:19'),
+            'position' => 2, 'points' => 43043175, 'clans_listed' => 3,
+            'rewards' => json_encode([['item_id' => 702059, 'name' => 'Olympus Elite Chest', 'amount' => 1680]]),
+        ], ['guard' => false]);
+        $results->saveOrFail($result);
+
+        $this->loginAdmin();
+        $this->get("/game-tournaments/view/{$entry->id}");
+        $this->assertResponseOk();
+        $this->assertResponseContains('Trials of Olympus');
+        $this->assertResponseContains('Not defined');
+        $this->assertResponseContains('Olympus Elite Chest');
+        $this->assertResponseContains('autoPublishSwitch');
+        $this->assertResponseContains('the description, the duration, the image, the goal, the prizes');
+        foreach (GameTournament::SECTIONS as $section) {
+            $this->assertResponseContains("section={$section}");
+        }
+    }
+
+    public function testTheGamesNameStaysAndTheDisplayNameIsSetOnItsOwn(): void
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $entry = $catalogue->touchType(1032, '1');
+        $catalogue->offerName($entry, 'Trials of Olympus', GameTournament::SOURCE_JOURNAL);
+
+        $this->loginAdmin();
+        $this->get("/game-tournaments/edit/{$entry->id}?section=name");
+        $this->assertResponseOk();
+        $this->assertResponseContains('readonly');
+
+        $this->loginAdmin();
+        $this->post("/game-tournaments/edit/{$entry->id}", [
+            'section' => 'name', 'name' => 'Something else', 'display_name' => 'Olimpo', 'duration_days' => '9',
+        ]);
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
+        $saved = $catalogue->get($entry->id);
+        $this->assertSame('Trials of Olympus', $saved->name, 'the game names it');
+        $this->assertSame('Olimpo', $saved->display_name);
+        $this->assertSame('Olimpo', $saved->displayName());
+        $this->assertNull($saved->duration_days, 'only the section edited is saved');
+
+        $this->loginAdmin();
+        $this->post("/game-tournaments/edit/{$entry->id}", ['section' => 'description', 'description' => 'Clan stages']);
+        $this->assertSame('Clan stages', $catalogue->get($entry->id)->description);
+        $this->assertSame('Olimpo', $catalogue->get($entry->id)->display_name);
+    }
+
+    public function testThePrizesToSplitAreChosenAmongWhatTheClanReceived(): void
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $entry = $catalogue->touchType(1032, '1');
+        $results = $this->fetchTable('ClanTournamentResults');
+        $result = $results->newEmptyEntity();
+        $result->set([
+            'entry_uid' => 'c16a5e54-15d4-447c-8e9d-d05486620e29', 'kind' => 'multistage_tournament_results_entry',
+            'game_type' => 1032, 'game_tournament_key' => '1032:1', 'ended_at' => new DateTime('2026-11-06 18:00:19'),
+            'position' => 2, 'points' => 43043175, 'clans_listed' => 3,
+            'rewards' => json_encode([
+                ['item_id' => 702059, 'name' => 'Olympus Elite Chest', 'amount' => 1680],
+                ['item_id' => 20, 'name' => 'Scientific Tractates', 'amount' => 500000000],
+            ]),
+        ], ['guard' => false]);
+        $results->saveOrFail($result);
+
+        $this->loginAdmin();
+        $this->get("/game-tournaments/edit/{$entry->id}?section=prizes");
+        $this->assertResponseOk();
+        $this->assertResponseContains('Scientific Tractates');
+
+        $this->loginAdmin();
+        $this->post("/game-tournaments/edit/{$entry->id}", ['section' => 'prizes', 'prizes' => [
+            702059 => ['selected' => '1', 'rule' => 'equal', 'min_points' => '10', 'remainder' => 'keep'],
+            20 => ['selected' => '0', 'rule' => 'proportional'],
+        ]]);
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
+        $this->assertSame([[
+            'item_id' => 702059, 'name' => 'Olympus Elite Chest', 'rule' => 'equal', 'min_points' => 10, 'remainder' => 'keep',
+        ]], $catalogue->get($entry->id)->prizeSelection());
+    }
+
+    public function testPublishingWithoutReviewIsSwitchedPerTournament(): void
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $entry = $catalogue->touchType(1032, '1');
+        $this->assertFalse((bool)$catalogue->get($entry->id)->auto_publish, 'off by default');
+
+        $this->loginAdmin();
+        $this->post("/game-tournaments/auto-publish/{$entry->id}", ['auto_publish' => '1']);
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
+        $this->assertTrue((bool)$catalogue->get($entry->id)->auto_publish);
+        $this->assertFlashElement('flash/warning');
+
+        $this->loginAdmin();
+        $this->post("/game-tournaments/auto-publish/{$entry->id}", ['auto_publish' => '0']);
+        $this->assertFalse((bool)$catalogue->get($entry->id)->auto_publish);
+
+        $this->session(['Auth' => ['id' => 2, 'email' => 'member@example.com']]);
+        $this->post("/game-tournaments/auto-publish/{$entry->id}", ['auto_publish' => '1']);
+        $this->assertResponseCode(403);
+        $this->assertFalse((bool)$catalogue->get($entry->id)->auto_publish);
+    }
+
 }

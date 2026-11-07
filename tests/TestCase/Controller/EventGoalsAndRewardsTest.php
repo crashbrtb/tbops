@@ -346,7 +346,7 @@ class EventGoalsAndRewardsTest extends TestCase
             'duration_days' => '',
             'goal' => ['mode' => 'guard', 'points' => '100', 'by_guard' => ['9' => '900'], 'required' => '1'],
         ]);
-        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'index']);
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
 
         $goal = EventGoal::fromEntity($catalogue->get($entry->id));
         $this->assertSame(EventGoal::MODE_GUARD, $goal->mode);
