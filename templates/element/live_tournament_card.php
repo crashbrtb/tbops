@@ -13,7 +13,7 @@
 use App\Model\Entity\EventReward;
 use App\Service\EventGoal;
 
-$image = fn (?string $name): ?string => $name ? $this->Url->build(['controller' => 'GameImages', 'action' => 'view', $name]) : null;
+$image = fn (?string $name): ?string => $this->GameImage->url($name);
 $tournament = $site['tournament'];
 $lastEvent = $site['last_event'];
 $goal = $tournament !== null ? EventGoal::fromEntity($tournament) : null;
@@ -32,9 +32,8 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
 };
 ?>
 <article class="live-tournament<?= $live->isActive() ? ' is-active' : ' is-upcoming' ?>">
-    <a href="<?= $this->Url->build($historyUrl) ?>" class="live-tournament-banner"
-       style="<?= $live->banner ? 'background-image: url(' . h($image($live->banner)) . ');' : '' ?>"
-       title="<?= h(__('History of {0}', $live->name)) ?>">
+    <div class="live-tournament-banner"
+       style="<?= $live->banner ? 'background-image: url(' . h($image($live->banner)) . ');' : '' ?>">
         <span class="live-tournament-heading">
             <?php if ($live->icon): ?>
                 <img src="<?= h($image($live->icon)) ?>" alt="" class="live-tournament-icon" loading="lazy">
@@ -56,49 +55,16 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                 <?php endif; ?>
             </span>
         </span>
-    </a>
+    </div>
 
     <div class="live-tournament-body">
-        <div class="live-tournament-site">
-            <?php if ($goal !== null && $goal->isActive()): ?>
-                <div><i class="fas fa-bullseye text-primary"></i>
-                    <?php if ($goal->isByGuard()): ?>
-                        <?= __('Goal by guard level') ?>:
-                        <?php foreach ($goal->levelTable() as $level => $points): ?>
-                            <span class="badge badge-light">G<?= $level ?> <?= $this->Number->format($points) ?></span>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <?= h(__('Goal: {0} points', $this->Number->format($goal->points))) ?>
-                    <?php endif; ?>
-                    <?= $goal->isRequired() ? '<span class="text-muted">(' . h(__('required for rewards')) . ')</span>' : '' ?>
-                </div>
-            <?php endif; ?>
-            <?php if ($selection !== []): ?>
-                <div><i class="fas fa-gift text-primary"></i> <?= __('Prizes split among the players') ?>:
-                    <?php foreach ($selection as $prize): ?>
-                        <span class="live-prize"><?= $itemIcon($prize) ?><?= h($prize['name']) ?>
-                            <small class="text-muted">(<?= h(mb_strtolower($ruleLabels[$prize['rule']] ?? $prize['rule'])) ?>)</small></span>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-            <?php if ($lastEvent !== null && $lastEvent->event_rewards): ?>
-                <div><i class="fas fa-history text-primary"></i>
-                    <?= h(__('Last prize split ({0})', $lastEvent->ends_at->format('d/m/Y'))) ?>:
-                    <?php foreach ($lastEvent->event_rewards as $reward): ?>
-                        <span class="live-prize"><?= $itemIcon(['item_id' => (int)$reward->get('game_item_id')]) ?>
-                            <?= h($reward->item_name) ?> x<?= $this->Number->format((int)$reward->quantity) ?></span>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-
         <?php if ($tiers !== []): ?>
             <details class="live-tournament-section">
-                <summary><i class="fas fa-trophy text-warning"></i> <?= __('Rewards of each place') ?>
+                <summary><i class="fas fa-trophy text-warning"></i> <?= __('Clan rewards') ?>
                     <?php if ($clanTiersFor !== []): ?>
                         &middot; <?= __('the clan\'s place now:') ?>
                         <?php foreach ($clanTiersFor as $item): ?>
-                            <span class="live-prize"><?= $itemIcon($item) ?><?= $this->Number->format((int)$item['amount']) ?></span>
+                            <span class="live-prize" title="<?= h($item['name']) ?>"><?= $itemIcon($item) ?><?= $this->gameNumber((int)$item['amount']) ?></span>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </summary>
@@ -109,7 +75,7 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                                 <td class="text-nowrap"><?= $tier['from'] === $tier['to'] ? h(__('#{0}', $tier['from'])) : h(__('#{0} to #{1}', $tier['from'], $tier['to'])) ?></td>
                                 <td>
                                     <?php foreach ((array)$tier['items'] as $item): ?>
-                                        <span class="live-prize" title="<?= h($item['name']) ?>"><?= $itemIcon($item) ?><?= h($item['name']) ?> x<?= $this->Number->format((int)$item['amount']) ?></span>
+                                        <span class="live-prize" title="<?= h($item['name']) ?>"><?= $itemIcon($item) ?><?= $this->gameNumber((int)$item['amount']) ?></span>
                                     <?php endforeach; ?>
                                 </td>
                             </tr>
@@ -158,8 +124,58 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
             </details>
         <?php endif; ?>
 
-        <div class="live-tournament-footer">
-            <?= $this->Html->link('<i class="fas fa-history mr-1"></i>' . __('History of these events'), $historyUrl, ['escape' => false]) ?>
-        </div>
+        <?php
+        $hasClanGoal = ($goal !== null && $goal->isActive());
+        $hasClanPrizes = ($selection !== []);
+        ?>
+        <?php if ($hasClanGoal || $hasClanPrizes): ?>
+            <details class="live-tournament-section">
+                <summary><i class="fas fa-bullseye text-primary"></i> <?= __('Clan rewards and goals') ?></summary>
+                <div class="live-tournament-site mt-2 pl-3 border-left">
+                    <?php if ($hasClanGoal): ?>
+                        <div class="mb-2">
+                            <strong><i class="fas fa-bullseye text-primary mr-1"></i><?= __('Goal') ?>:</strong>
+                            <?php if ($goal->isByGuard()): ?>
+                                <?= __('Goal by guard level') ?>:
+                                <div class="mt-1 d-flex flex-wrap" style="gap: 4px;">
+                                    <?php foreach ($goal->levelTable() as $level => $points): ?>
+                                        <span class="badge badge-light border">G<?= $level ?> <?= $this->Number->format($points) ?></span>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <?= h(__('Goal: {0} points', $this->Number->format($goal->points))) ?>
+                            <?php endif; ?>
+                            <?= $goal->isRequired() ? '<span class="text-muted ml-1">(' . h(__('required for rewards')) . ')</span>' : '' ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($hasClanPrizes): ?>
+                        <div class="mb-2">
+                            <strong><i class="fas fa-gift text-primary mr-1"></i><?= __('Prizes split among the players') ?>:</strong>
+                            <div class="mt-1">
+                                <?php foreach ($selection as $prize): ?>
+                                    <span class="live-prize" title="<?= h($prize['name']) ?>">
+                                        <?= $itemIcon($prize) ?><?= h($prize['name']) ?>
+                                        <small class="text-muted">(<?= h(mb_strtolower($ruleLabels[$prize['rule']] ?? $prize['rule'])) ?>)</small>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($lastEvent !== null && $lastEvent->event_rewards): ?>
+                        <div class="mb-2">
+                            <strong><i class="fas fa-history text-primary mr-1"></i><?= h(__('Last prize split ({0})', $lastEvent->ends_at->format('d/m/Y'))) ?>:</strong>
+                            <div class="mt-1">
+                                <?php foreach ($lastEvent->event_rewards as $reward): ?>
+                                    <span class="live-prize" title="<?= h($reward->item_name) ?>">
+                                        <?= $itemIcon(['item_id' => (int)$reward->get('game_item_id')]) ?>
+                                        <?= h($reward->item_name) ?> x<?= $this->gameNumber((int)$reward->quantity) ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </details>
+        <?php endif; ?>
     </div>
 </article>

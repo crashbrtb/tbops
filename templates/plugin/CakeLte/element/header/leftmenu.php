@@ -17,30 +17,12 @@ try {
     $runningEventCount = 0;
 }
 ?>
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="eventsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <?= __('Events') ?>
-        <?php if ($runningEventCount > 0): ?>
-            <span class="badge badge-success"><?= $runningEventCount ?></span>
-        <?php endif; ?>
-    </a>
-    <div class="dropdown-menu" aria-labelledby="eventsDropdown">
-        <?= $this->Html->link(
-            '<i class="fas fa-trophy mr-2 text-warning"></i>' . __('Current Event'),
-            ['controller' => 'Events', 'action' => 'index'],
-            ['class' => 'dropdown-item', 'escape' => false]
-        ) ?>
-        <?= $this->Html->link(
-            '<i class="fas fa-history mr-2 text-muted"></i>' . __('Event History'),
-            ['controller' => 'Events', 'action' => 'history'],
-            ['class' => 'dropdown-item', 'escape' => false]
-        ) ?>
-        <?= $this->Html->link(
-            '<i class="fas fa-bullseye mr-2 text-primary"></i>' . __('Tournaments and Goals'),
-            ['controller' => 'Events', 'action' => 'tournaments'],
-            ['class' => 'dropdown-item', 'escape' => false]
-        ) ?>
-    </div>
+<li class="nav-item">
+    <?= $this->Html->link(
+        __('Tournaments') . ($runningEventCount > 0 ? ' <span class="badge badge-success">' . $runningEventCount . '</span>' : ''),
+        ['controller' => 'Events', 'action' => 'tournaments'],
+        ['class' => 'nav-link', 'escape' => false]
+    ) ?>
 </li>
 
 <?php

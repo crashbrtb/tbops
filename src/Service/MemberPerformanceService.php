@@ -8,7 +8,7 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Service to calculate member performance, goal achievement statistics,
- * and ranking for tournaments/events and chest cycles.
+ * and ranking based on success rate (aproveitamento) for tournaments/events and chest cycles.
  */
 class MemberPerformanceService
 {
@@ -41,37 +41,40 @@ class MemberPerformanceService
         $now = DateTime::now();
         $from = $period > 0 ? $now->subDays($period) : null;
 
-        // 1. Load active members to ensure every clan member is accounted for
+        // 1. Load active members only - inactive players must NOT appear
         $membersTable = $this->fetchTable('Members');
-        $allMembers = $membersTable->find()->all();
+        $activeMembers = $membersTable->find()
+            ->where(['Members.active' => true])
+            ->all();
+
         $memberMap = [];
         $playerStats = [];
 
-        foreach ($allMembers as $m) {
+        foreach ($activeMembers as $m) {
             $normalizedName = trim((string)$m->player);
-            $memberMap[mb_strtolower($normalizedName)] = $m;
+            $lowerName = mb_strtolower($normalizedName);
+            $memberMap[$lowerName] = $m;
 
-            if ($m->active) {
-                $playerStats[$normalizedName] = [
-                    'member_id' => $m->id,
-                    'player' => $normalizedName,
-                    'active' => (bool)$m->active,
-                    'guards' => (int)($m->guards ?? 0),
-                    'power' => (int)($m->power ?? 0),
-                    'administrative' => (bool)$m->administrative_account,
-                    'score' => 0, // 1 point per event goal beaten in period
-                    'events_met' => 0,
-                    'events_missed' => 0,
-                    'events_no_goal' => 0,
-                    'events_participated' => 0,
-                    'events_history' => [],
-                    'chests_met' => 0,
-                    'chests_missed' => 0,
-                    'chests_participated' => 0,
-                    'chests_history' => [],
-                    'total_points_earned' => 0,
-                ];
-            }
+            $playerStats[$lowerName] = [
+                'member_id' => $m->id,
+                'player' => $normalizedName,
+                'active' => true,
+                'created_at' => $m->created_at,
+                'guards' => (int)($m->guards ?? 0),
+                'power' => (int)($m->power ?? 0),
+                'administrative' => (bool)$m->administrative_account,
+                'events_met' => 0,
+                'events_evaluated' => 0, // only events that have a goal and started after join date
+                'events_participated' => 0,
+                'events_history' => [],
+                'chests_met' => 0,
+                'chests_evaluated' => 0, // only cycles that started after join date
+                'chests_participated' => 0,
+                'chests_history' => [],
+                'total_goals_met' => 0,
+                'total_evaluated' => 0,
+                'success_rate' => 0.0,
+            ];
         }
 
         // 2. Fetch events in window
@@ -98,19 +101,25 @@ class MemberPerformanceService
                 ->orderBy(['position' => 'ASC'])
                 ->all();
 
-            // If snapshot standings empty, try computing results through EventScoringService
             $rows = [];
             if ($standings->count() > 0) {
                 foreach ($standings as $st) {
+                    $lowerName = mb_strtolower(trim((string)$st->player));
+                    // Only process active members
+                    if (!isset($memberMap[$lowerName])) {
+                        continue;
+                    }
+                    $mem = $memberMap[$lowerName];
                     $level = (int)$st->guard_level;
-                    if ($level === 0 && isset($memberMap[mb_strtolower((string)$st->player)])) {
-                        $level = (int)($memberMap[mb_strtolower((string)$st->player)]->guards ?? 0);
+                    if ($level === 0) {
+                        $level = (int)($mem->guards ?? 0);
                     }
                     $target = $st->goal !== null ? (int)$st->goal : ($goalActive ? $goal->goalForLevel($level) : null);
                     $met = $st->goal_met !== null ? (bool)$st->goal_met : (($goalActive && $target !== null) ? ((int)$st->points >= $target) : null);
 
                     $rows[] = [
                         'player' => (string)$st->player,
+                        'lower_player' => $lowerName,
                         'position' => (int)$st->position,
                         'points' => (int)$st->points,
                         'guard_level' => $level,
@@ -123,8 +132,13 @@ class MemberPerformanceService
                     $results = $this->eventScoringService->resultsFor($event);
                     if (!empty($results['rows'])) {
                         foreach ($results['rows'] as $r) {
+                            $lowerName = mb_strtolower(trim((string)$r['player']));
+                            if (!isset($memberMap[$lowerName])) {
+                                continue;
+                            }
                             $rows[] = [
                                 'player' => (string)$r['player'],
+                                'lower_player' => $lowerName,
                                 'position' => (int)$r['position'],
                                 'points' => (int)$r['points'],
                                 'guard_level' => (int)($r['guard_level'] ?? 0),
@@ -142,67 +156,40 @@ class MemberPerformanceService
             $eventMissedCount = 0;
 
             foreach ($rows as $row) {
-                $playerName = trim($row['player']);
-                $lowerName = mb_strtolower($playerName);
+                $lowerName = $row['lower_player'];
+                if (!isset($playerStats[$lowerName])) {
+                    continue;
+                }
 
-                // Initialize player if not active member or not yet tracked
-                if (!isset($playerStats[$playerName])) {
-                    // Check if exists under another casing
-                    $foundKey = null;
-                    foreach (array_keys($playerStats) as $k) {
-                        if (mb_strtolower($k) === $lowerName) {
-                            $foundKey = $k;
-                            break;
-                        }
-                    }
+                $memberObj = $memberMap[$lowerName];
+                $memberEntry = $memberObj->created_at;
 
-                    if ($foundKey !== null) {
-                        $playerName = $foundKey;
-                    } else {
-                        $mem = $memberMap[$lowerName] ?? null;
-                        $playerStats[$playerName] = [
-                            'member_id' => $mem?->id,
-                            'player' => $playerName,
-                            'active' => $mem ? (bool)$mem->active : false,
-                            'guards' => (int)($mem->guards ?? $row['guard_level'] ?? 0),
-                            'power' => (int)($mem->power ?? 0),
-                            'administrative' => $mem ? (bool)$mem->administrative_account : false,
-                            'score' => 0,
-                            'events_met' => 0,
-                            'events_missed' => 0,
-                            'events_no_goal' => 0,
-                            'events_participated' => 0,
-                            'events_history' => [],
-                            'chests_met' => 0,
-                            'chests_missed' => 0,
-                            'chests_participated' => 0,
-                            'chests_history' => [],
-                            'total_points_earned' => 0,
-                        ];
-                    }
+                // Rule: If player entered clan after event started, disregard it for this player
+                $isDisregardedMidEvent = false;
+                if ($memberEntry !== null && $event->starts_at !== null && $event->starts_at < $memberEntry) {
+                    $isDisregardedMidEvent = true;
                 }
 
                 $met = $row['goal_met'];
-                $scoreAward = ($met === true) ? 1 : 0;
+                $hasGoal = $goalActive && $row['goal'] !== null && $row['goal'] > 0;
 
-                $playerStats[$playerName]['events_participated']++;
-                $playerStats[$playerName]['total_points_earned'] += $row['points'];
+                $playerStats[$lowerName]['events_participated']++;
 
-                if ($met === true) {
-                    $playerStats[$playerName]['score'] += 1;
-                    $playerStats[$playerName]['events_met']++;
-                    $eventMetCount++;
-                    $totalEventGoalsMet++;
-                    $totalEventGoalsEvaluated++;
-                } elseif ($met === false) {
-                    $playerStats[$playerName]['events_missed']++;
-                    $eventMissedCount++;
-                    $totalEventGoalsEvaluated++;
-                } else {
-                    $playerStats[$playerName]['events_no_goal']++;
+                if (!$isDisregardedMidEvent) {
+                    if ($hasGoal) {
+                        $playerStats[$lowerName]['events_evaluated']++;
+                        $totalEventGoalsEvaluated++;
+                        if ($met === true) {
+                            $playerStats[$lowerName]['events_met']++;
+                            $eventMetCount++;
+                            $totalEventGoalsMet++;
+                        } else {
+                            $eventMissedCount++;
+                        }
+                    }
                 }
 
-                $playerStats[$playerName]['events_history'][] = [
+                $playerStats[$lowerName]['events_history'][] = [
                     'event_id' => $event->id,
                     'event_name' => $event->name,
                     'starts_at' => $event->starts_at,
@@ -211,7 +198,8 @@ class MemberPerformanceService
                     'points' => $row['points'],
                     'goal' => $row['goal'],
                     'goal_met' => $met,
-                    'score_awarded' => $scoreAward,
+                    'has_goal' => $hasGoal,
+                    'disregarded' => $isDisregardedMidEvent,
                 ];
             }
 
@@ -257,7 +245,6 @@ class MemberPerformanceService
         }
 
         if (empty($selectedCycleKeys) && !empty($cycleGroups)) {
-            // Keep recent cycles so chest charts and statistics are always visible and informative
             $selectedCycleKeys = array_slice(array_keys($cycleGroups), 0, 4);
             $isFallbackCycles = true;
         }
@@ -276,63 +263,37 @@ class MemberPerformanceService
             $end = $cycleRows[0]->cycle_end_date;
 
             foreach ($cycleRows as $cRow) {
-                $playerName = trim((string)$cRow->player_name);
-                $lowerName = mb_strtolower($playerName);
+                $lowerName = mb_strtolower(trim((string)$cRow->player_name));
+                // Only active clan members
+                if (!isset($playerStats[$lowerName])) {
+                    continue;
+                }
+
+                $memberObj = $memberMap[$lowerName];
+                $memberEntry = $memberObj->created_at;
+
+                // Rule: If player entered clan after cycle started, disregard that cycle for the player
+                $isDisregardedMidCycle = false;
+                if ($memberEntry !== null && $start < $memberEntry->startOfDay()) {
+                    $isDisregardedMidCycle = true;
+                }
+
                 $met = (bool)$cRow->goal_achieved;
+                $playerStats[$lowerName]['chests_participated']++;
 
-                if ($met) {
-                    $metCount++;
-                    $totalChestGoalsMet++;
-                } else {
-                    $missedCount++;
-                }
-                $totalChestGoalsEvaluated++;
-
-                // Locate player in playerStats
-                $targetKey = $playerName;
-                if (!isset($playerStats[$playerName])) {
-                    $foundKey = null;
-                    foreach (array_keys($playerStats) as $k) {
-                        if (mb_strtolower($k) === $lowerName) {
-                            $foundKey = $k;
-                            break;
-                        }
-                    }
-                    if ($foundKey !== null) {
-                        $targetKey = $foundKey;
+                if (!$isDisregardedMidCycle) {
+                    $playerStats[$lowerName]['chests_evaluated']++;
+                    $totalChestGoalsEvaluated++;
+                    if ($met) {
+                        $playerStats[$lowerName]['chests_met']++;
+                        $metCount++;
+                        $totalChestGoalsMet++;
                     } else {
-                        $mem = $memberMap[$lowerName] ?? null;
-                        $playerStats[$playerName] = [
-                            'member_id' => $mem?->id,
-                            'player' => $playerName,
-                            'active' => $mem ? (bool)$mem->active : false,
-                            'guards' => (int)($mem->guards ?? $cRow->guard_level ?? 0),
-                            'power' => (int)($mem->power ?? 0),
-                            'administrative' => $mem ? (bool)$mem->administrative_account : false,
-                            'score' => 0,
-                            'events_met' => 0,
-                            'events_missed' => 0,
-                            'events_no_goal' => 0,
-                            'events_participated' => 0,
-                            'events_history' => [],
-                            'chests_met' => 0,
-                            'chests_missed' => 0,
-                            'chests_participated' => 0,
-                            'chests_history' => [],
-                            'total_points_earned' => 0,
-                        ];
-                        $targetKey = $playerName;
+                        $missedCount++;
                     }
                 }
 
-                $playerStats[$targetKey]['chests_participated']++;
-                if ($met) {
-                    $playerStats[$targetKey]['chests_met']++;
-                } else {
-                    $playerStats[$targetKey]['chests_missed']++;
-                }
-
-                $playerStats[$targetKey]['chests_history'][] = [
+                $playerStats[$lowerName]['chests_history'][] = [
                     'cycle_start' => $start,
                     'cycle_end' => $end,
                     'total_chests' => (int)$cRow->total_chests,
@@ -340,6 +301,7 @@ class MemberPerformanceService
                     'epic_crypt_score' => (int)$cRow->epic_crypt_score,
                     'chest_goal' => (int)$cRow->chest_goal,
                     'goal_achieved' => $met,
+                    'disregarded' => $isDisregardedMidCycle,
                 ];
             }
 
@@ -358,14 +320,14 @@ class MemberPerformanceService
         $ranking = array_values($playerStats);
         foreach ($ranking as &$p) {
             $p['total_goals_met'] = $p['events_met'] + $p['chests_met'];
-            $evaluated = ($p['events_met'] + $p['events_missed']) + ($p['chests_met'] + $p['chests_missed']);
+            $evaluated = $p['events_evaluated'] + $p['chests_evaluated'];
             $p['total_evaluated'] = $evaluated;
             $p['success_rate'] = $evaluated > 0 ? round(($p['total_goals_met'] / $evaluated) * 100, 1) : 0.0;
-            $p['event_success_rate'] = ($p['events_met'] + $p['events_missed']) > 0
-                ? round(($p['events_met'] / ($p['events_met'] + $p['events_missed'])) * 100, 1)
+            $p['event_success_rate'] = $p['events_evaluated'] > 0
+                ? round(($p['events_met'] / $p['events_evaluated']) * 100, 1)
                 : 0.0;
-            $p['chest_success_rate'] = ($p['chests_met'] + $p['chests_missed']) > 0
-                ? round(($p['chests_met'] / ($p['chests_met'] + $p['chests_missed'])) * 100, 1)
+            $p['chest_success_rate'] = $p['chests_evaluated'] > 0
+                ? round(($p['chests_met'] / $p['chests_evaluated']) * 100, 1)
                 : 0.0;
 
             // Sort event history newest first
@@ -375,20 +337,20 @@ class MemberPerformanceService
         }
         unset($p);
 
-        // Sort ranking: primary by score (points from beaten event goals in period),
-        // then by chest goals met, then power, then name
+        // Sort ranking: Primary by Success Rate (aproveitamento %),
+        // then by total goals met, then events met, then chests met, then power, then name
         usort($ranking, function (array $a, array $b): int {
-            if ($b['score'] !== $a['score']) {
-                return $b['score'] <=> $a['score'];
+            if ($b['success_rate'] !== $a['success_rate']) {
+                return $b['success_rate'] <=> $a['success_rate'];
+            }
+            if ($b['total_goals_met'] !== $a['total_goals_met']) {
+                return $b['total_goals_met'] <=> $a['total_goals_met'];
             }
             if ($b['events_met'] !== $a['events_met']) {
                 return $b['events_met'] <=> $a['events_met'];
             }
             if ($b['chests_met'] !== $a['chests_met']) {
                 return $b['chests_met'] <=> $a['chests_met'];
-            }
-            if ($b['total_goals_met'] !== $a['total_goals_met']) {
-                return $b['total_goals_met'] <=> $a['total_goals_met'];
             }
             if ($b['power'] !== $a['power']) {
                 return $b['power'] <=> $a['power'];
@@ -399,12 +361,12 @@ class MemberPerformanceService
 
         // Assign ranking positions
         $currentRank = 1;
-        foreach ($ranking as $index => &$entry) {
+        foreach ($ranking as &$entry) {
             $entry['rank'] = $currentRank++;
         }
         unset($entry);
 
-        // Clan overall statistics
+        // Overall statistics
         $totalEvaluatedOverall = $totalEventGoalsEvaluated + $totalChestGoalsEvaluated;
         $totalMetOverall = $totalEventGoalsMet + $totalChestGoalsMet;
 
@@ -421,7 +383,7 @@ class MemberPerformanceService
             'total_goals_met' => $totalMetOverall,
             'total_goals_evaluated' => $totalEvaluatedOverall,
             'overall_success_rate' => $totalEvaluatedOverall > 0 ? round(($totalMetOverall / $totalEvaluatedOverall) * 100, 1) : 0.0,
-            'top_scorer' => $ranking[0] ?? null,
+            'top_performer' => $ranking[0] ?? null,
             'is_fallback_cycles' => $isFallbackCycles,
         ];
 
@@ -435,4 +397,3 @@ class MemberPerformanceService
         ];
     }
 }
-

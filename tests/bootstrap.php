@@ -64,3 +64,6 @@ session_id('cli');
 // (new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test');
 
 (new Migrator())->run();
+
+// The game's images the tests save stay out of the web root.
+Configure::write('GameImages.dir', TMP . 'game_images' . DS);

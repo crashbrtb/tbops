@@ -55,5 +55,21 @@ class MembersPerformanceTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('periodSelect');
     }
-}
 
+    public function testInactiveMembersNotRanked(): void
+    {
+        $membersTable = $this->fetchTable('Members');
+        // Mark a member as inactive
+        $member = $membersTable->find()->first();
+        $playerName = $member->player;
+        $member->active = false;
+        $membersTable->saveOrFail($member);
+
+        $this->loginAdmin();
+        $this->get('/members/performance');
+        $this->assertResponseOk();
+
+        // Inactive member must not appear as a ranking row
+        $this->assertResponseNotContains('data-player-key="' . htmlspecialchars($playerName) . '"');
+    }
+}

@@ -341,6 +341,20 @@ class GameTournamentsController extends AppController
     }
 
     /**
+     * @param string $name Image of the game.
+     * @return string
+     */
+    private function gameImageUrl(string $name): string
+    {
+        $path = \App\Service\LiveTournamentService::filePath($name);
+        if (str_starts_with($path, WWW_ROOT) && is_file($path)) {
+            return \Cake\Routing\Router::url('/img/game/' . $name . '.png', true) . '?v=' . filemtime($path);
+        }
+
+        return \Cake\Routing\Router::url(['controller' => 'GameImages', 'action' => 'view', $name], true);
+    }
+
+    /**
      * The tournament's image.
      *
      * @param string|null $id Catalogue entry id.
@@ -349,9 +363,15 @@ class GameTournamentsController extends AppController
     public function image(?string $id = null): Response
     {
         $tournament = $this->GameTournaments->find()
-            ->select(['id', 'image', 'image_mime', 'modified'])
+            ->select(['id', 'image', 'image_mime', 'modified', 'game_icon'])
             ->where(['id' => (int)$id])
             ->first();
+
+        // The game's own icon first: the site shows what the game shows, and follows it when it changes.
+        $icon = $tournament?->get('game_icon');
+        if ($icon && $this->fetchTable('GameImages')->exists(['name' => $icon])) {
+            return $this->redirect((string)$this->gameImageUrl($icon));
+        }
 
         if ($tournament === null || empty($tournament->image_mime)) {
             return $this->response->withStatus(404);

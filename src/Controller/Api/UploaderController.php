@@ -556,7 +556,10 @@ class UploaderController extends Controller
     {
         $this->request->allowMethod(['get', 'post']);
         if ($this->request->is('get')) {
-            return $this->json(['images' => $this->fetchTable('GameImages')->fileIds() ?: (object)[]]);
+            return $this->json([
+                'images' => $this->fetchTable('GameImages')->fileIds() ?: (object)[],
+                'items_needed' => (new LiveTournamentService())->neededItems(),
+            ]);
         }
         $result = (new LiveTournamentService())->recordImages((array)$this->request->getData('images'));
 

@@ -10,6 +10,9 @@
  * @var array<\App\Model\Entity\GameTournament> $tournaments
  * @var array<int, \App\Model\Entity\Event> $lastResults
  * @var bool $isAdmin
+ * @var array{active: list<\App\Model\Entity\LiveTournament>, upcoming: list<\App\Model\Entity\LiveTournament>, read_at: \Cake\I18n\DateTime|null} $live
+ * @var array<int, array{tournament: \App\Model\Entity\GameTournament|null, last_event: \App\Model\Entity\Event|null}> $site
+ * @var array<int, string> $itemIcons
  */
 
 use App\Service\EventGoal;
@@ -24,11 +27,6 @@ $this->assign('title', __('Tournaments and Goals'));
             <p class="cycle-subtitle"><?= __('The game\'s tournaments and the goal each player has in them') ?></p>
         </div>
         <div class="toolbar-actions d-flex flex-wrap" style="gap: 8px;">
-            <?= $this->Html->link(
-                '<i class="fas fa-history mr-1"></i>' . __('Event History'),
-                ['action' => 'history'],
-                ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
-            ) ?>
             <?php if ($isAdmin): ?>
                 <?= $this->Html->link(
                     '<i class="fas fa-book mr-1"></i>' . __('Tournament Catalogue'),
@@ -38,6 +36,27 @@ $this->assign('title', __('Tournaments and Goals'));
             <?php endif; ?>
         </div>
     </div>
+
+    <?php if ($live['active'] !== [] || $live['upcoming'] !== []): ?>
+        <h2 class="score-title live-section-title"><i class="fas fa-play-circle text-success"></i> <?= __('Active') ?></h2>
+        <?php if ($live['read_at'] !== null): ?>
+            <p class="cycle-subtitle"><?= h(__('As the game showed them on {0} UTC.', $live['read_at']->format('d/m/Y H:i'))) ?></p>
+        <?php endif; ?>
+        <div class="live-tournament-list">
+            <?php foreach ($live['active'] as $entry): ?>
+                <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons]) ?>
+            <?php endforeach; ?>
+        </div>
+        <?php if ($live['upcoming'] !== []): ?>
+            <h2 class="score-title live-section-title"><i class="fas fa-hourglass-start text-muted"></i> <?= __('Coming up') ?></h2>
+            <div class="live-tournament-list">
+                <?php foreach ($live['upcoming'] as $entry): ?>
+                    <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons]) ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <h2 class="score-title live-section-title"><i class="fas fa-bullseye text-primary"></i> <?= __('Goals of each tournament') ?></h2>
+    <?php endif; ?>
 
     <?php if ($tournaments): ?>
         <div class="tournament-grid">

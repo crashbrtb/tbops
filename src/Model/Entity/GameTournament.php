@@ -84,7 +84,7 @@ class GameTournament extends Entity
      */
     protected function _getHasImage(): bool
     {
-        return !empty($this->image_mime);
+        return !empty($this->image_mime) || !empty($this->get('game_icon'));
     }
 
     /**

@@ -32,7 +32,7 @@ class GameTournamentsTable extends Table
         'id', 'game_type', 'ranking', 'name', 'name_source', 'duration_days', 'image_mime',
         'last_variant', 'first_seen_at', 'last_seen_at', 'created', 'modified',
         'goal_mode', 'goal_points', 'goal_by_guard', 'goal_required',
-        'display_name', 'description', 'prize_items', 'auto_publish',
+        'display_name', 'description', 'prize_items', 'auto_publish', 'game_icon', 'game_banner',
     ];
 
     /**

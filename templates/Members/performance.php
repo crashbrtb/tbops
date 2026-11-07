@@ -20,7 +20,7 @@ $stats = $data['stats'];
 $ranking = $data['ranking'];
 $eventChart = $data['eventChart'];
 $chestChart = $data['chestChart'];
-$topScorer = $stats['top_scorer'] ?? null;
+$topPerformer = $stats['top_performer'] ?? null;
 
 $locale = str_replace('_', '-', \Cake\I18n\I18n::getLocale());
 $chartData = [
@@ -37,6 +37,12 @@ $chartData = [
 ?>
 
 <style>
+    /* Prevent horizontal scroll anywhere on page */
+    .content-page-wrap {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
     .performance-stat-card {
         background: var(--surface, #ffffff);
         border: 1px solid var(--line, #e5e7eb);
@@ -107,6 +113,7 @@ $chartData = [
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         overflow: hidden;
         margin-bottom: 2rem;
+        width: 100%;
     }
     .ranking-header {
         padding: 1.15rem 1.25rem;
@@ -118,32 +125,31 @@ $chartData = [
         gap: 0.75rem;
     }
     .ranking-table-wrap {
-        overflow-x: auto;
+        width: 100%;
+        overflow-x: hidden;
     }
     .ranking-table {
         width: 100%;
         margin-bottom: 0;
-        border-collapse: separate;
-        border-spacing: 0;
+        border-collapse: collapse;
     }
     .ranking-table th {
         background: var(--surface-sunken, #f8fafc);
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
         color: var(--text-muted-strong, #4b5563);
-        padding: 0.85rem 1rem;
+        padding: 0.8rem 0.65rem;
         border-bottom: 1px solid var(--line, #e5e7eb);
         border-top: none;
-        white-space: nowrap;
     }
     .ranking-table td {
-        padding: 0.85rem 1rem;
+        padding: 0.8rem 0.65rem;
         vertical-align: middle;
         border-bottom: 1px solid var(--line-subtle, #f1f5f9);
         color: var(--text, #1f2937);
-        font-size: 0.92rem;
+        font-size: 0.9rem;
     }
     .ranking-row {
         cursor: pointer;
@@ -156,32 +162,21 @@ $chartData = [
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
-    .rank-1 { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); }
+    .rank-1 { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; box-shadow: 0 0 6px rgba(245, 158, 11, 0.3); }
     .rank-2 { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
     .rank-3 { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
-    .rank-other { color: var(--text-muted-strong, #64748b); font-size: 0.85rem; font-weight: 600; }
+    .rank-other { color: var(--text-muted-strong, #64748b); font-size: 0.82rem; font-weight: 600; }
 
-    .score-badge {
-        font-size: 1.15rem;
+    .rate-badge {
+        font-size: 1.05rem;
         font-weight: 700;
-        color: var(--accent, #4f46e5);
-        padding: 0.2rem 0.6rem;
-        background: var(--accent-light, #eef2ff);
-        border-radius: var(--radius-sm, 6px);
         display: inline-block;
-        min-width: 44px;
-        text-align: center;
-    }
-    .score-badge.has-score {
-        background: #ecfdf5;
-        color: #065f46;
-        border: 1px solid #a7f3d0;
     }
 
     .guard-badge {
@@ -194,11 +189,12 @@ $chartData = [
     }
 
     .progress-bar-custom {
-        height: 6px;
+        height: 5px;
         border-radius: 3px;
         background: #e2e8f0;
         overflow: hidden;
         margin-top: 4px;
+        width: 100%;
     }
     .progress-fill {
         height: 100%;
@@ -206,23 +202,29 @@ $chartData = [
     }
 
     /* Modal styling */
+    #playerHistoryModal {
+        z-index: 1060 !important;
+    }
+    .modal-backdrop {
+        z-index: 1050 !important;
+    }
     .player-modal-header {
         background: var(--surface-sunken, #f8fafc);
         border-bottom: 1px solid var(--line, #e5e7eb);
-        padding: 1.25rem 1.5rem;
+        padding: 1.15rem 1.25rem;
     }
     .player-avatar {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         background: linear-gradient(135deg, #4f46e5, #7c3aed);
         color: #ffffff;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         font-weight: 700;
-        margin-right: 1rem;
+        margin-right: 0.85rem;
         flex-shrink: 0;
     }
     .detail-history-table th {
@@ -245,7 +247,7 @@ $chartData = [
                 <i class="fas fa-medal text-warning mr-2"></i><?= __('Member Performance') ?>
             </h1>
             <p class="cycle-subtitle text-muted mb-0" style="font-size: 0.95rem;">
-                <?= __('Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories.') ?>
+                <?= __('Goal achievement metrics for chests and events, ranking by success rate, and complete player histories.') ?>
             </p>
         </div>
         <div class="toolbar-actions d-flex align-items-center">
@@ -328,27 +330,27 @@ $chartData = [
             <div class="performance-stat-card">
                 <div class="stat-card-accent stat-accent-primary"></div>
                 <div class="stat-title">
-                    <span><?= __('Monthly Leader') ?></span>
+                    <span><?= __('Top Performer') ?></span>
                     <i class="fas fa-crown text-warning"></i>
                 </div>
-                <?php if ($topScorer && $topScorer['score'] > 0): ?>
-                    <div class="stat-number text-truncate" style="font-size: 1.45rem;" title="<?= h($topScorer['player']) ?>">
-                        <?= h($topScorer['player']) ?>
+                <?php if ($topPerformer && $topPerformer['total_evaluated'] > 0): ?>
+                    <div class="stat-number text-truncate" style="font-size: 1.45rem; color: #10b981;" title="<?= h($topPerformer['player']) ?>">
+                        <?= $topPerformer['success_rate'] ?>%
                     </div>
-                    <div class="stat-subtext">
-                        <strong class="text-success"><?= $topScorer['score'] ?> <?= __('points') ?></strong>
-                        <span class="text-muted">&bull; <?= $topScorer['events_met'] ?> <?= __('goals beaten') ?></span>
+                    <div class="stat-subtext text-truncate">
+                        <strong><?= h($topPerformer['player']) ?></strong>
+                        <span class="text-muted ml-1">&bull; <?= $topPerformer['total_goals_met'] ?> / <?= $topPerformer['total_evaluated'] ?> <?= __('goals beaten') ?></span>
                     </div>
-                <?php elseif ($topScorer): ?>
+                <?php elseif ($topPerformer): ?>
                     <div class="stat-number text-truncate" style="font-size: 1.45rem;">
-                        <?= h($topScorer['player']) ?>
+                        <?= h($topPerformer['player']) ?>
                     </div>
                     <div class="stat-subtext text-muted">
-                        <?= __('Awaiting event goal beats') ?>
+                        <?= __('Awaiting goal evaluations') ?>
                     </div>
                 <?php else: ?>
                     <div class="stat-number">&ndash;</div>
-                    <div class="stat-subtext text-muted"><?= __('No players ranked') ?></div>
+                    <div class="stat-subtext text-muted"><?= __('No active members ranked') ?></div>
                 <?php endif; ?>
             </div>
         </div>
@@ -415,11 +417,11 @@ $chartData = [
                     <i class="fas fa-trophy text-warning mr-2"></i><?= __('Player Performance Ranking') ?>
                 </h2>
                 <small class="text-muted">
-                    <?= __('Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history.') ?>
+                    <?= __('Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history.') ?>
                 </small>
             </div>
             <div class="d-flex align-items-center">
-                <div class="input-group input-group-sm" style="width: 250px;">
+                <div class="input-group input-group-sm" style="width: 220px;">
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
                     </div>
@@ -432,32 +434,30 @@ $chartData = [
             <table class="ranking-table" id="performanceRankingTable">
                 <thead>
                     <tr>
-                        <th style="width: 60px; text-align: center;"><?= __('Rank') ?></th>
+                        <th style="width: 55px; text-align: center;"><?= __('Rank') ?></th>
                         <th><?= __('Player') ?></th>
-                        <th style="text-align: center;" title="<?= __('1 point for every event where goal was reached') ?>">
-                            <i class="fas fa-star text-warning mr-1"></i><?= __('Score') ?>
+                        <th style="width: 170px; text-align: center;" title="<?= __('Percentage of goals met out of valid evaluated goals') ?>">
+                            <i class="fas fa-percentage text-success mr-1"></i><?= __('Success Rate') ?>
                         </th>
-                        <th style="text-align: center;"><?= __('Event Goals') ?></th>
-                        <th style="text-align: center;"><?= __('Chest Goals') ?></th>
-                        <th style="text-align: center;"><?= __('Total Met') ?></th>
-                        <th style="width: 140px; text-align: center;"><?= __('Success Rate') ?></th>
-                        <th style="width: 90px; text-align: center;"><?= __('Action') ?></th>
+                        <th style="width: 125px; text-align: center;"><?= __('Event Goals') ?></th>
+                        <th style="width: 125px; text-align: center;"><?= __('Chest Goals') ?></th>
+                        <th style="width: 105px; text-align: center;"><?= __('Total Met') ?></th>
+                        <th style="width: 65px; text-align: center;"><?= __('Action') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($ranking)): ?>
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
-                                <?= __('No members found.') ?>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <?= __('No active members found.') ?>
                             </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($ranking as $player): ?>
                             <?php
                             $rateColor = $player['success_rate'] >= 75 ? '#10b981' : ($player['success_rate'] >= 40 ? '#0ea5e9' : ($player['success_rate'] > 0 ? '#f59e0b' : '#9ca3af'));
-                            $initials = mb_substr($player['player'], 0, 2);
                             ?>
-                            <tr class="ranking-row" data-player-key="<?= h($player['player']) ?>" data-score="<?= $player['score'] ?>" data-rank="<?= $player['rank'] ?>">
+                            <tr class="ranking-row" data-player-key="<?= h($player['player']) ?>" data-rate="<?= $player['success_rate'] ?>" data-rank="<?= $player['rank'] ?>">
                                 <td style="text-align: center;">
                                     <?php if ($player['rank'] === 1): ?>
                                         <span class="rank-badge rank-1" title="<?= __('1st Place') ?>">🥇</span>
@@ -471,62 +471,46 @@ $chartData = [
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="font-weight-bold text-dark player-name-cell">
+                                        <span class="font-weight-bold text-dark player-name-cell">
                                             <?= h($player['player']) ?>
-                                        </div>
+                                        </span>
                                         <?php if ($player['guards'] > 0): ?>
                                             <span class="guard-badge ml-2" title="<?= __('Guards level') ?>">G<?= $player['guards'] ?></span>
                                         <?php endif; ?>
                                         <?php if ($player['administrative']): ?>
                                             <span class="badge badge-secondary ml-1" title="<?= __('Administrative account') ?>"><?= __('Admin') ?></span>
                                         <?php endif; ?>
-                                        <?php if (!$player['active']): ?>
-                                            <span class="badge badge-light border text-muted ml-1"><?= __('Inactive') ?></span>
-                                        <?php endif; ?>
                                     </div>
-                                </td>
-                                <td style="text-align: center;">
-                                    <span class="score-badge <?= $player['score'] > 0 ? 'has-score' : '' ?>">
-                                        <?= $player['score'] ?> <small><?= $player['score'] === 1 ? __('pt') : __('pts') ?></small>
-                                    </span>
-                                </td>
-                                <td style="text-align: center;">
-                                    <?php if ($player['events_met'] > 0): ?>
-                                        <span class="badge badge-success font-weight-normal py-1 px-2">
-                                            <i class="fas fa-check mr-1"></i><?= $player['events_met'] ?> / <?= $player['events_participated'] ?>
-                                        </span>
-                                    <?php elseif ($player['events_participated'] > 0): ?>
-                                        <span class="badge badge-light border text-muted py-1 px-2">
-                                            0 / <?= $player['events_participated'] ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-muted small">&ndash;</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td style="text-align: center;">
-                                    <?php if ($player['chests_met'] > 0): ?>
-                                        <span class="badge badge-info font-weight-normal py-1 px-2">
-                                            <i class="fas fa-check mr-1"></i><?= $player['chests_met'] ?> / <?= $player['chests_participated'] ?>
-                                        </span>
-                                    <?php elseif ($player['chests_participated'] > 0): ?>
-                                        <span class="badge badge-light border text-muted py-1 px-2">
-                                            0 / <?= $player['chests_participated'] ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-muted small">&ndash;</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td style="text-align: center; font-weight: 600;">
-                                    <?= $player['total_goals_met'] ?>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center justify-content-between mb-1">
-                                        <span class="small font-weight-bold" style="color: <?= $rateColor ?>;"><?= $player['success_rate'] ?>%</span>
-                                        <span class="small text-muted"><?= $player['total_goals_met'] ?>/<?= $player['total_evaluated'] ?></span>
+                                        <span class="rate-badge" style="color: <?= $rateColor ?>;"><?= $player['success_rate'] ?>%</span>
+                                        <span class="small text-muted font-weight-bold"><?= $player['total_goals_met'] ?> / <?= $player['total_evaluated'] ?></span>
                                     </div>
                                     <div class="progress-bar-custom">
                                         <div class="progress-fill" style="width: <?= min(100, $player['success_rate']) ?>%; background: <?= $rateColor ?>;"></div>
                                     </div>
+                                </td>
+                                <td style="text-align: center;">
+                                    <?php if ($player['events_evaluated'] > 0): ?>
+                                        <span class="badge <?= $player['events_met'] === $player['events_evaluated'] ? 'badge-success' : ($player['events_met'] > 0 ? 'badge-warning text-dark' : 'badge-light border text-muted') ?> py-1 px-2 font-weight-normal">
+                                            <?php if ($player['events_met'] > 0): ?><i class="fas fa-check mr-1"></i><?php endif; ?><?= $player['events_met'] ?> / <?= $player['events_evaluated'] ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-muted small">&ndash;</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="text-align: center;">
+                                    <?php if ($player['chests_evaluated'] > 0): ?>
+                                        <span class="badge <?= $player['chests_met'] === $player['chests_evaluated'] ? 'badge-info' : ($player['chests_met'] > 0 ? 'badge-warning text-dark' : 'badge-light border text-muted') ?> py-1 px-2 font-weight-normal">
+                                            <?php if ($player['chests_met'] > 0): ?><i class="fas fa-check mr-1"></i><?php endif; ?><?= $player['chests_met'] ?> / <?= $player['chests_evaluated'] ?>
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-muted small">&ndash;</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="text-align: center; font-weight: 700; font-size: 0.95rem;">
+                                    <?= $player['total_goals_met'] ?>
                                 </td>
                                 <td style="text-align: center;">
                                     <button type="button" class="btn btn-outline-primary btn-sm view-player-btn" data-player-name="<?= h($player['player']) ?>" title="<?= __('View player history') ?>">
@@ -557,10 +541,11 @@ $chartData = [
                             <span id="modalPlayerGuard" class="guard-badge ml-2">G1</span>
                             <span id="modalPlayerRank" class="badge badge-warning ml-2 font-weight-bold">#1</span>
                         </div>
-                        <div class="mt-1 d-flex align-items-center text-muted small">
-                            <span><i class="fas fa-star text-warning mr-1"></i><?= __('Monthly Score') ?>: <strong id="modalPlayerScore" class="text-success">0 pts</strong></span>
+                        <div class="mt-1 d-flex align-items-center text-muted small flex-wrap">
+                            <span><i class="fas fa-percentage text-success mr-1"></i><?= __('Success Rate') ?>: <strong id="modalPlayerRate" class="text-success">0%</strong></span>
                             <span class="mx-2">&bull;</span>
                             <span><?= __('Goals Met') ?>: <strong id="modalPlayerGoalsCount">0</strong></span>
+                            <span id="modalPlayerEntryDate" class="ml-2 text-muted"></span>
                         </div>
                     </div>
                 </div>
@@ -587,9 +572,9 @@ $chartData = [
                 <div class="tab-content p-3">
                     <!-- Events Tab -->
                     <div class="tab-pane fade show active" id="tab-events" role="tabpanel">
-                        <div class="alert alert-info py-2 px-3 small mb-3">
+                        <div class="alert alert-light border py-2 px-3 small mb-3 text-muted">
                             <i class="fas fa-info-circle mr-1"></i>
-                            <?= __('In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score.') ?>
+                            <?= __('Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly.') ?>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-striped detail-history-table mb-0">
@@ -598,9 +583,8 @@ $chartData = [
                                         <th><?= __('Tournament / Event') ?></th>
                                         <th><?= __('Date') ?></th>
                                         <th style="text-align: right;"><?= __('Points') ?></th>
-                                        <th style="text-align: right;"><?= __('Target') ?></th>
+                                        <th style="text-align: right;"><?= __('Goal') ?></th>
                                         <th style="text-align: center;"><?= __('Status') ?></th>
-                                        <th style="text-align: center;"><?= __('Score') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="modalEventsTableBody">
@@ -612,6 +596,10 @@ $chartData = [
 
                     <!-- Chests Tab -->
                     <div class="tab-pane fade" id="tab-chests" role="tabpanel">
+                        <div class="alert alert-light border py-2 px-3 small mb-3 text-muted">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            <?= __('Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded.') ?>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-striped detail-history-table mb-0">
                                 <thead>
@@ -619,8 +607,8 @@ $chartData = [
                                         <th><?= __('Cycle') ?></th>
                                         <th style="text-align: right;"><?= __('Chests') ?></th>
                                         <th style="text-align: right;"><?= __('Score') ?></th>
-                                        <th style="text-align: right;"><?= __('Target') ?></th>
-                                        <th style="text-align: center;"><?= __('Goal Status') ?></th>
+                                        <th style="text-align: right;"><?= __('Goal') ?></th>
+                                        <th style="text-align: center;"><?= __('Status') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="modalChestsTableBody">
@@ -818,8 +806,16 @@ $chartData = [
         document.getElementById('modalPlayerAvatar').textContent = playerObj.player.substring(0, 2).toUpperCase();
         document.getElementById('modalPlayerGuard').textContent = 'G' + (playerObj.guards || 0);
         document.getElementById('modalPlayerRank').textContent = '#' + playerObj.rank;
-        document.getElementById('modalPlayerScore').textContent = playerObj.score + (playerObj.score === 1 ? ' pt' : ' pts');
+        document.getElementById('modalPlayerRate').textContent = playerObj.success_rate + '%';
         document.getElementById('modalPlayerGoalsCount').textContent = playerObj.total_goals_met + ' / ' + playerObj.total_evaluated;
+
+        var entryElem = document.getElementById('modalPlayerEntryDate');
+        if (playerObj.created_at) {
+            var entryDate = new Date(playerObj.created_at);
+            entryElem.textContent = '• <?= __('Member since') ?>: ' + entryDate.toLocaleDateString(chartData.locale || 'pt-BR');
+        } else {
+            entryElem.textContent = '';
+        }
 
         // Populate Events History
         var eventsBody = document.getElementById('modalEventsTableBody');
@@ -828,22 +824,20 @@ $chartData = [
         document.getElementById('modalEventHistoryCount').textContent = evHistory.length;
 
         if (evHistory.length === 0) {
-            eventsBody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted"><?= __('No event records in this period.') ?></td></tr>';
+            eventsBody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-muted"><?= __('No event records in this period.') ?></td></tr>';
         } else {
             evHistory.forEach(function (ev) {
                 var tr = document.createElement('tr');
                 var statusHtml = '';
-                var scoreHtml = '';
 
-                if (ev.goal_met === true) {
-                    statusHtml = '<span class="badge badge-success"><i class="fas fa-check mr-1"></i><?= __('Goal Met') ?></span>';
-                    scoreHtml = '<strong class="text-success">+1 pt</strong>';
-                } else if (ev.goal_met === false) {
-                    statusHtml = '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i><?= __('Not Met') ?></span>';
-                    scoreHtml = '<span class="text-muted">0 pt</span>';
-                } else {
+                if (ev.disregarded) {
+                    statusHtml = '<span class="badge badge-light border text-muted" title="<?= __('Joined clan after tournament started') ?>"><i class="fas fa-ban mr-1"></i><?= __('Disregarded (joined mid-event)') ?></span>';
+                } else if (!ev.has_goal) {
                     statusHtml = '<span class="badge badge-secondary"><i class="fas fa-minus mr-1"></i><?= __('No Goal') ?></span>';
-                    scoreHtml = '<span class="text-muted">0 pt</span>';
+                } else if (ev.goal_met === true) {
+                    statusHtml = '<span class="badge badge-success"><i class="fas fa-check mr-1"></i><?= __('Goal Met') ?></span>';
+                } else {
+                    statusHtml = '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i><?= __('Not Met') ?></span>';
                 }
 
                 var dateStr = '';
@@ -859,8 +853,7 @@ $chartData = [
                     '<td class="text-muted">' + dateStr + '</td>' +
                     '<td style="text-align: right; font-variant-numeric: tabular-nums;">' + pointsStr + '</td>' +
                     '<td style="text-align: right; font-variant-numeric: tabular-nums;">' + targetStr + '</td>' +
-                    '<td style="text-align: center;">' + statusHtml + '</td>' +
-                    '<td style="text-align: center;">' + scoreHtml + '</td>';
+                    '<td style="text-align: center;">' + statusHtml + '</td>';
 
                 eventsBody.appendChild(tr);
             });
@@ -877,9 +870,15 @@ $chartData = [
         } else {
             chHistory.forEach(function (ch) {
                 var tr = document.createElement('tr');
-                var statusHtml = ch.goal_achieved
-                    ? '<span class="badge badge-success"><i class="fas fa-check mr-1"></i><?= __('Goal Met') ?></span>'
-                    : '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i><?= __('Not Met') ?></span>';
+                var statusHtml = '';
+
+                if (ch.disregarded) {
+                    statusHtml = '<span class="badge badge-light border text-muted" title="<?= __('Joined clan after cycle started') ?>"><i class="fas fa-ban mr-1"></i><?= __('Disregarded (joined mid-cycle)') ?></span>';
+                } else if (ch.goal_achieved) {
+                    statusHtml = '<span class="badge badge-success"><i class="fas fa-check mr-1"></i><?= __('Goal Met') ?></span>';
+                } else {
+                    statusHtml = '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i><?= __('Not Met') ?></span>';
+                }
 
                 var startStr = ch.cycle_start ? new Date(ch.cycle_start).toLocaleDateString(chartData.locale || 'pt-BR') : '';
                 var endStr = ch.cycle_end ? new Date(ch.cycle_end).toLocaleDateString(chartData.locale || 'pt-BR') : '';
@@ -899,7 +898,11 @@ $chartData = [
             });
         }
 
-        $('#playerHistoryModal').modal('show');
+        var $modal = $('#playerHistoryModal');
+        if ($modal.parent()[0] !== document.body) {
+            $modal.appendTo('body');
+        }
+        $modal.modal('show');
     }
 
     function escapeHtml(text) {
@@ -937,4 +940,3 @@ $chartData = [
     }
 })();
 <?php $this->Html->scriptEnd(); ?>
-

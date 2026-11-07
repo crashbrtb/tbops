@@ -163,10 +163,84 @@ class LiveTournamentService
             $entity = $table->find()->where(['name' => $name])->first() ?? $table->newEmptyEntity();
             $entity->set(['name' => $name, 'file_id' => strtolower($file), 'mime' => 'image/png', 'data' => $bytes], ['guard' => false]);
             $table->saveOrFail($entity);
+            $this->writeFile($name, $bytes);
             $saved++;
         }
 
         return ['saved' => $saved, 'errors' => $errors];
+    }
+
+    /**
+     * Where the image is kept as a file, served without PHP: the pages load dozens.
+     *
+     * @param string $name Image name.
+     * @return string
+     */
+    public static function filePath(string $name): string
+    {
+        $dir = (string)\Cake\Core\Configure::read('GameImages.dir', WWW_ROOT . 'img' . DS . 'game' . DS);
+
+        return $dir . $name . '.png';
+    }
+
+    /**
+     * @param string $name Image name.
+     * @param string $bytes PNG.
+     * @return void
+     */
+    private function writeFile(string $name, string $bytes): void
+    {
+        $path = self::filePath($name);
+        if (!is_dir(dirname($path))) {
+            @mkdir(dirname($path), 0775, true);
+        }
+        @file_put_contents($path, $bytes);
+    }
+
+    /**
+     * Writes every kept image to its file (after a deploy, or when files were lost).
+     *
+     * @return int Written.
+     */
+    public function publishFiles(): int
+    {
+        $written = 0;
+        foreach ($this->fetchTable('GameImages')->find()->all() as $image) {
+            $bytes = $image->get('data');
+            $bytes = is_resource($bytes) ? (string)stream_get_contents($bytes) : (string)$bytes;
+            $this->writeFile((string)$image->get('name'), $bytes);
+            $written++;
+        }
+
+        return $written;
+    }
+
+    /**
+     * The items the site shows as prizes and does not know yet (name and icon):
+     * from the clan's results and the prizes chosen in the catalogue.
+     *
+     * @return list<int>
+     */
+    public function neededItems(): array
+    {
+        $ids = [];
+        foreach ($this->fetchTable('ClanTournamentResults')->find()->select(['rewards'])->all() as $result) {
+            foreach ($result->rewardList() as $reward) {
+                $ids[$reward['item_id']] = true;
+            }
+        }
+        foreach ($this->fetchTable('GameTournaments')->find('withoutImage')->all() as $entry) {
+            foreach ($entry->prizeSelection() as $prize) {
+                $ids[$prize['item_id']] = true;
+            }
+        }
+        if ($ids === []) {
+            return [];
+        }
+        $known = $this->fetchTable('GameItems')->find()->select(['item_id'])->where(['icon IS NOT' => null])
+            ->disableHydration()->all()->extract('item_id')->map(fn ($v): int => (int)$v)->toList();
+
+        return array_values(array_diff(array_keys($ids), $known));
     }
 
     /**

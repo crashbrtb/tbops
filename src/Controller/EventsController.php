@@ -11,6 +11,7 @@ use App\Model\Table\EventAssetsTable;
 use App\Service\EventImportService;
 use App\Service\EventPrizeService;
 use App\Service\EventScoringService;
+use App\Service\LiveTournamentService;
 use DomainException;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
@@ -71,17 +72,7 @@ class EventsController extends AppController
      */
     public function index()
     {
-        $event = $this->Events->currentEvent();
-
-        if ($event === null) {
-            $upcoming = $this->Events->find('upcoming')->limit(5)->all()->toList();
-            $recent = $this->Events->find('past')->limit(5)->all()->toList();
-            $this->set(compact('upcoming', 'recent'));
-
-            return $this->render('no_event');
-        }
-
-        return $this->redirect(['action' => 'view', $event->id]);
+        return $this->redirect(['action' => 'tournaments']);
     }
 
     /**
@@ -123,10 +114,24 @@ class EventsController extends AppController
     {
         $this->paginate = [
             'limit' => 20,
-            'finder' => 'past',
         ];
 
-        $events = $this->paginate($this->Events);
+        // ?tournament=<game type>: the events of one tournament of the game.
+        $gameType = (int)$this->request->getQuery('tournament');
+        $query = $this->Events->find('past');
+        $tournamentName = null;
+        if ($gameType > 0) {
+            $query->where(['OR' => [
+                ['Events.game_tournament_key' => (string)$gameType],
+                ['Events.game_tournament_key LIKE' => $gameType . ':%'],
+            ]]);
+            $entry = $this->fetchTable('GameTournaments')->find('withoutImage')->where(['GameTournaments.game_type' => $gameType])->first();
+            $live = $this->fetchTable('LiveTournaments')->find()->where(['game_type' => $gameType])->first();
+            $tournamentName = $entry?->displayName() ?? $live?->name ?? __('Game tournament {0}', $gameType);
+        }
+        $this->set(compact('gameType', 'tournamentName'));
+
+        $events = $this->paginate($query);
         $upcoming = $this->Events->find('upcoming')->all()->toList();
         $running = $this->Events->find('running')->all()->toList();
 
@@ -161,7 +166,25 @@ class EventsController extends AppController
 
         $isAdmin = $this->isAdmin();
 
-        $this->set(compact('tournaments', 'lastResults', 'isAdmin'));
+        // The game's Tournaments window, as the collector last read it.
+        $liveService = new LiveTournamentService();
+        $live = $liveService->current();
+        $site = [];
+        $itemIds = [];
+        foreach (array_merge($live['active'], $live['upcoming']) as $entry) {
+            $site[$entry->game_type] ??= $liveService->siteInfo((int)$entry->game_type);
+            foreach ($site[$entry->game_type]['tournament']?->prizeSelection() ?? [] as $prize) {
+                $itemIds[] = $prize['item_id'];
+            }
+            foreach ((array)$site[$entry->game_type]['last_event']?->event_rewards as $reward) {
+                if ($reward->get('game_item_id') !== null) {
+                    $itemIds[] = (int)$reward->get('game_item_id');
+                }
+            }
+        }
+        $itemIcons = $this->fetchTable('GameItems')->iconsOf($itemIds);
+
+        $this->set(compact('tournaments', 'lastResults', 'isAdmin', 'live', 'site', 'itemIcons'));
     }
 
     /**

@@ -1284,3 +1284,27 @@
     font-size: 0.83rem;
     font-weight: 600;
 }
+
+/* ---------------------------------------------------------------- the game's Tournaments window */
+.live-section-title { font-size: 1.15rem; margin: 18px 0 8px; }
+.live-tournament-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; margin-bottom: 10px; }
+.live-tournament { background: var(--card-bg, #fff); border: 1px solid var(--line-subtle, rgba(128,128,128,.2)); border-radius: 10px; overflow: hidden; }
+.live-tournament.is-upcoming { opacity: .85; }
+.live-tournament-banner { display: block; min-height: 96px; background-size: cover; background-position: right center; background-color: #3b4a5c; text-decoration: none !important; }
+.live-tournament-heading { display: flex; gap: 10px; align-items: center; padding: 10px 12px; min-height: 96px;
+    background: linear-gradient(90deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 100%); color: #fff; }
+.live-tournament-heading > span { display: flex; flex-direction: column; }
+.live-tournament-icon { width: 52px; height: 52px; object-fit: contain; flex: 0 0 auto; }
+.live-tournament-name { font-size: 1.05rem; text-shadow: 0 1px 2px #000; }
+.live-tournament-when, .live-tournament-stat { font-size: .8rem; text-shadow: 0 1px 2px #000; }
+.live-tournament-body { padding: 8px 12px 10px; font-size: .86rem; }
+.live-tournament-site > div { margin-bottom: 4px; }
+.live-tournament-section { margin-top: 6px; }
+.live-tournament-section summary { cursor: pointer; font-weight: 600; }
+.live-table { margin: 6px 0 0; font-size: .82rem; }
+.live-table td { padding: 2px 6px; vertical-align: middle; }
+.live-table tr.is-clan { background: var(--accent-light, rgba(0,123,255,.10)); font-weight: 600; }
+.live-prize { display: inline-flex; align-items: center; gap: 3px; margin-right: 8px; white-space: nowrap; }
+.live-item-icon { width: 22px; height: 22px; object-fit: contain; }
+.live-tournament-footer { margin-top: 8px; font-size: .82rem; }
+@media (max-width: 575.98px) { .live-tournament-list { grid-template-columns: 1fr; } }
