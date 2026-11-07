@@ -68,3 +68,6 @@ README.md
 
 # Ferramenta temporaria de captura (nao versionar)
 /tempapp/
+
+# The game's images, written from the database (game_images) as the collector sends them
+/webroot/img/game/

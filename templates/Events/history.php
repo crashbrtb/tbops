@@ -15,7 +15,14 @@ $this->assign('title', __('Event History'));
     <div class="score-toolbar">
         <div class="score-title-group">
             <h1 class="score-title"><i class="fas fa-history text-primary"></i> <?= __('Event History') ?></h1>
-            <p class="cycle-subtitle"><?= __('Every event that has been held, newest first') ?></p>
+            <p class="cycle-subtitle">
+                <?php if (!empty($tournamentName)): ?>
+                    <?= h(__('Every event of {0} that has been held, newest first', $tournamentName)) ?>
+                    &middot; <?= $this->Html->link(__('All events'), ['action' => 'history']) ?>
+                <?php else: ?>
+                    <?= __('Every event that has been held, newest first') ?>
+                <?php endif; ?>
+            </p>
         </div>
         <div class="toolbar-actions">
             <?= $this->Html->link(

@@ -5082,7 +5082,7 @@ msgid "No token has been created yet."
 msgstr "Nenhum token foi criado ainda."
 
 msgid "Tournament rewards"
-msgstr "Prêmios de torneios"
+msgstr "Premiações do clã"
 
 msgid "Administrative"
 msgstr "Administrativa"
@@ -6568,3 +6568,135 @@ msgstr "Nenhum registro de ciclo de baús neste período."
 
 msgid "Awaiting event goal beats"
 msgstr "Aguardando metas batidas em eventos"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "Métricas de cumprimento de metas em baús e eventos, ranking por taxa de aproveitamento e histórico completo dos jogadores."
+
+msgid "Top Performer"
+msgstr "Melhor Aproveitamento"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "Classificado por taxa de sucesso (aproveitamento %). Apenas membros ativos são exibidos. Clique em qualquer jogador para ver o histórico detalhado de eventos e baús."
+
+msgid "No active members found."
+msgstr "Nenhum membro ativo encontrado."
+
+msgid "No active members ranked"
+msgstr "Nenhum membro ativo classificado"
+
+msgid "Awaiting goal evaluations"
+msgstr "Aguardando avaliações de meta"
+
+msgid "Member since"
+msgstr "Membro desde"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "Desconsiderado (entrou no meio do evento)"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "Desconsiderado (entrou no meio do ciclo)"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "Torneios com metas ativas iniciados após a entrada do jogador no clã são avaliados para a taxa de sucesso. Torneios iniciados antes da entrada ou sem meta são identificados."
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "Ciclos semanais de baús iniciados após a entrada do jogador no clã são avaliados. Ciclos iniciados antes da entrada são desconsiderados."
+
+msgid "History of {0}"
+msgstr "Histórico de {0}"
+
+msgid "Ends {0} UTC"
+msgstr "Termina {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "Começa {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "Pontos do clã: {0}"
+
+msgid "Clan place: #{0}"
+msgstr "Posição do clã: #{0}"
+
+msgid "Clan place: 100+"
+msgstr "Posição do clã: 100+"
+
+msgid "Goal: {0} points"
+msgstr "Meta: {0} pontos"
+
+msgid "required for rewards"
+msgstr "obrigatória para receber prêmio"
+
+msgid "Prizes split among the players"
+msgstr "Prêmios divididos entre os jogadores"
+
+msgid "Last prize split ({0})"
+msgstr "Último prêmio distribuído ({0})"
+
+msgid "Rewards of each place"
+msgstr "Premiações do clã"
+
+msgid "Clan rewards"
+msgstr "Premiações do clã"
+
+msgid "Clan rewards and goals"
+msgstr "Premiações e metas do clã"
+
+msgid "Tournaments"
+msgstr "Torneios"
+
+msgid "the clan's place now:"
+msgstr "posição atual do clã:"
+
+msgid "#{0} to #{1}"
+msgstr "#{0} a #{1}"
+
+msgid "Best clans"
+msgstr "Melhores clãs"
+
+msgid "Clan ranking"
+msgstr "Ranking do clã"
+
+msgid "{0} player(s) with points"
+msgstr "{0} jogador(es) com pontos"
+
+msgid "History of these events"
+msgstr "Histórico destes eventos"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "Como o jogo os mostrava em {0} UTC."
+
+msgid "Inactive"
+msgstr "Em breve"
+
+msgid "Goals of each tournament"
+msgstr "Metas de cada torneio"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "Todos os eventos de {0} já realizados, do mais recente ao mais antigo"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "Envie tournaments como uma lista de no máximo {0}."
+
+msgid "This tournament is not valid."
+msgstr "Este torneio não é válido."
+
+msgid "This image is not a valid PNG."
+msgstr "Esta imagem não é um PNG válido."
+
+msgid "Target"
+msgstr "Meta"
+
+msgid "Goals Met"
+msgstr "Metas Batidas"
+
+msgid "Goal Met"
+msgstr "Meta Batida"
+
+msgid "Not Met"
+msgstr "Não Batida"
+
+msgid "No Goal"
+msgstr "Sem Meta"
+
+msgid "Cycle"
+msgstr "Ciclo"
