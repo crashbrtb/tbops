@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\EventReward;
 use App\Model\Entity\GameTournament;
+use App\Service\ClanResultService;
 use App\Service\EventGoal;
 use App\Service\TournamentCatalogService;
 use Cake\Http\Response;
@@ -12,9 +14,11 @@ use Psr\Http\Message\UploadedFileInterface;
 /**
  * Administration of the game's tournament catalogue.
  *
- * The uploader registers the tournaments it meets, and here an administrator sets
- * what the game does not say: the name, from a picture of the Journal, the duration
- * in days (an event's start is its end minus that) and the image.
+ * The collector registers the tournaments it meets, and here an administrator
+ * sets what the game does not say. Each tournament has a page (view) with one
+ * card per part - name, description, duration, image, goal, prizes - each
+ * edited on its own (edit with `?section=`), its clan results, whether its
+ * rankings are published without review, and its latest events.
  *
  * @property \App\Model\Table\GameTournamentsTable $GameTournaments
  */
@@ -60,6 +64,41 @@ class GameTournamentsController extends AppController
     }
 
     /**
+     * A tournament's page: every part of it, its clan results and its events.
+     *
+     * @param string|null $id Catalogue entry id.
+     * @return \Cake\Http\Response|null|void
+     */
+    public function view(?string $id = null)
+    {
+        $this->requireAdmin();
+
+        $tournament = $this->GameTournaments->find('withoutImage')->where(['GameTournaments.id' => $id])->firstOrFail();
+        $prizes = (new ClanResultService())->knownPrizes((int)$tournament->game_type);
+
+        $clanResults = $this->fetchTable('ClanTournamentResults')->find()
+            ->where(['game_type' => $tournament->game_type])
+            ->orderBy(['ended_at' => 'DESC'])
+            ->limit(10)
+            ->all()
+            ->toList();
+
+        $events = $this->fetchTable('Events')->find('withoutBanner')
+            ->where(['Events.game_tournament_id' => $tournament->id])
+            ->orderBy(['Events.ends_at' => 'DESC'])
+            ->limit(10)
+            ->all();
+
+        $missing = $tournament->missingSections();
+
+        $this->set(compact('tournament', 'prizes', 'clanResults', 'events', 'missing'));
+    }
+
+    /**
+     * Edit one part of a tournament (`?section=`), or the name, duration,
+     * image and goal together when no section is given. Saving goes back to the
+     * tournament's page.
+     *
      * @param string|null $id Catalogue entry id.
      * @return \Cake\Http\Response|null|void
      */
@@ -68,31 +107,62 @@ class GameTournamentsController extends AppController
         $this->requireAdmin();
 
         $tournament = $this->GameTournaments->find('withoutImage')->where(['GameTournaments.id' => $id])->firstOrFail();
+        $section = (string)($this->request->getData('section') ?? $this->request->getQuery('section', ''));
+        if (!in_array($section, GameTournament::SECTIONS, true)) {
+            $section = '';
+        }
+        $shows = fn (string $part): bool => $section === ''
+            ? !in_array($part, [GameTournament::SECTION_PRIZES, GameTournament::SECTION_DESCRIPTION], true)
+            : $section === $part;
+        $prizes = $shows(GameTournament::SECTION_PRIZES) ? (new ClanResultService())->knownPrizes((int)$tournament->game_type) : [];
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $data = $this->request->getData();
+            $fields = [];
             $nameBefore = (string)$tournament->name;
-            $tournament = $this->GameTournaments->patchEntity($tournament, [
-                'name' => trim((string)($data['name'] ?? '')),
-                'duration_days' => ($data['duration_days'] ?? '') === '' ? null : $data['duration_days'],
+            if ($shows(GameTournament::SECTION_NAME)) {
+                if (array_key_exists('display_name', $data)) {
+                    $shown = trim((string)$data['display_name']);
+                    // The game's name again is no display name.
+                    $fields['display_name'] = $shown === '' || $shown === $tournament->name ? null : $shown;
+                }
+                if (array_key_exists('name', $data) && !$tournament->isNamedByTheGame()) {
+                    $fields['name'] = trim((string)$data['name']);
+                }
+            }
+            if ($shows(GameTournament::SECTION_DESCRIPTION)) {
+                $fields['description'] = trim((string)($data['description'] ?? '')) ?: null;
+            }
+            if ($shows(GameTournament::SECTION_DURATION) && array_key_exists('duration_days', $data)) {
+                $fields['duration_days'] = $data['duration_days'] === '' ? null : $data['duration_days'];
+            }
+            if ($shows(GameTournament::SECTION_GOAL) && array_key_exists('goal', $data)) {
                 // The default goal every new event of this tournament starts with.
-            ] + EventGoal::marshal((array)($data['goal'] ?? [])));
+                $fields += EventGoal::marshal((array)$data['goal']);
+            }
+            $tournament = $this->GameTournaments->patchEntity($tournament, $fields);
             if ((string)$tournament->name !== $nameBefore) {
                 // A name typed here is final: the mapper will not replace it.
                 $tournament->set('name_source', $tournament->name ? GameTournament::SOURCE_MANUAL : null, ['guard' => false]);
             }
+            if ($shows(GameTournament::SECTION_PRIZES)) {
+                $tournament->set('prize_items', $this->postedPrizes((array)($data['prizes'] ?? []), $prizes), ['guard' => false]);
+            }
 
             $imageError = null;
-            $removeImage = (bool)($data['remove_image'] ?? false);
-            $upload = $data['image'] ?? null;
+            $removeImage = false;
             $image = null;
-            if (!$removeImage && $upload instanceof UploadedFileInterface && $upload->getError() !== UPLOAD_ERR_NO_FILE) {
-                if ($upload->getError() !== UPLOAD_ERR_OK || ($upload->getSize() ?? 0) > self::MAX_UPLOAD_BYTES) {
-                    $imageError = __('The image must be a PNG, JPEG, WebP or GIF of at most {0} KB.', (int)(self::MAX_UPLOAD_BYTES / 1024));
-                } else {
-                    $image = (new TournamentCatalogService())->imageType((string)$upload->getStream());
-                    if ($image === null) {
+            if ($shows(GameTournament::SECTION_IMAGE)) {
+                $removeImage = (bool)($data['remove_image'] ?? false);
+                $upload = $data['image'] ?? null;
+                if (!$removeImage && $upload instanceof UploadedFileInterface && $upload->getError() !== UPLOAD_ERR_NO_FILE) {
+                    if ($upload->getError() !== UPLOAD_ERR_OK || ($upload->getSize() ?? 0) > self::MAX_UPLOAD_BYTES) {
                         $imageError = __('The image must be a PNG, JPEG, WebP or GIF of at most {0} KB.', (int)(self::MAX_UPLOAD_BYTES / 1024));
+                    } else {
+                        $image = (new TournamentCatalogService())->imageType((string)$upload->getStream());
+                        if ($image === null) {
+                            $imageError = __('The image must be a PNG, JPEG, WebP or GIF of at most {0} KB.', (int)(self::MAX_UPLOAD_BYTES / 1024));
+                        }
                     }
                 }
             }
@@ -106,21 +176,100 @@ class GameTournamentsController extends AppController
                 if ($tournament->name) {
                     $this->GameTournaments->updateAll(['pending_picture' => null], ['id' => $tournament->id]);
                 }
+                if ($shows(GameTournament::SECTION_PRIZES)) {
+                    $this->refreshPendingEvents($tournament);
+                }
                 $this->Flash->success(__('Tournament "{0}" saved.', $tournament->displayName()));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $tournament->id]);
             }
 
             $this->Flash->error($imageError ?? __('The tournament could not be saved. Please check the fields below.'));
         }
 
-        $events = $this->fetchTable('Events')->find('withoutBanner')
-            ->where(['Events.game_tournament_id' => $tournament->id])
-            ->orderBy(['Events.ends_at' => 'DESC'])
-            ->limit(10)
-            ->all();
+        $this->set(compact('tournament', 'section', 'prizes'));
+        $this->set('ruleOptions', array_intersect_key(EventReward::ruleOptions(), array_flip(ClanResultService::PRIZE_RULES)));
+        $this->set('remainderOptions', EventReward::remainderOptions());
+    }
 
-        $this->set(compact('tournament', 'events'));
+    /**
+     * Turn publishing without review on or off for the tournament. The page
+     * asks first when something is not filled in; here it is said once more.
+     *
+     * @param string|null $id Catalogue entry id.
+     * @return \Cake\Http\Response|null
+     */
+    public function autoPublish(?string $id = null): ?Response
+    {
+        $this->requireAdmin();
+        $this->request->allowMethod(['post', 'put']);
+
+        $tournament = $this->GameTournaments->find('withoutImage')->where(['GameTournaments.id' => $id])->firstOrFail();
+        $enabled = (bool)$this->request->getData('auto_publish');
+        $this->GameTournaments->updateAll(['auto_publish' => $enabled], ['id' => $tournament->id]);
+
+        if (!$enabled) {
+            $this->Flash->success(__('The rankings of "{0}" now wait for a review before they are published.', $tournament->displayName()));
+        } elseif ($tournament->missingSections()) {
+            $this->Flash->warning(__(
+                'The rankings of "{0}" are now published without review, with {1} not filled in.',
+                $tournament->displayName(),
+                implode(', ', $tournament->missingSections())
+            ));
+        } else {
+            $this->Flash->success(__('The rankings of "{0}" are now published without review.', $tournament->displayName()));
+        }
+
+        return $this->redirect(['action' => 'view', $tournament->id]);
+    }
+
+    /**
+     * The clan prizes ticked on the form, as stored.
+     *
+     * @param array<int|string, mixed> $posted `prizes[item_id][selected|rule|min_points|remainder|name]`.
+     * @param list<array{item_id: int, name: string}> $known What the clan has received in this tournament.
+     * @return string|null JSON, or null when none is ticked.
+     */
+    private function postedPrizes(array $posted, array $known): ?string
+    {
+        $names = [];
+        foreach ($known as $prize) {
+            $names[$prize['item_id']] = $prize['name'];
+        }
+        $selection = [];
+        foreach ($posted as $itemId => $prize) {
+            if (!is_array($prize) || empty($prize['selected']) || !ctype_digit((string)$itemId)) {
+                continue;
+            }
+            $rule = (string)($prize['rule'] ?? '');
+            $remainder = (string)($prize['remainder'] ?? '');
+            $selection[] = [
+                'item_id' => (int)$itemId,
+                'name' => mb_substr($names[(int)$itemId] ?? trim((string)($prize['name'] ?? '')), 0, 120),
+                'rule' => in_array($rule, ClanResultService::PRIZE_RULES, true) ? $rule : EventReward::RULE_PROPORTIONAL,
+                'min_points' => max(0, (int)($prize['min_points'] ?? 1)),
+                'remainder' => array_key_exists($remainder, EventReward::remainderOptions()) ? $remainder : EventReward::REMAINDER_TOP_RANKED,
+            ];
+        }
+
+        return $selection === [] ? null : (string)json_encode($selection, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * The events of the tournament not published yet follow the new prizes.
+     *
+     * @param \App\Model\Entity\GameTournament $tournament Tournament.
+     * @return void
+     */
+    private function refreshPendingEvents(GameTournament $tournament): void
+    {
+        $service = new ClanResultService();
+        $pending = $this->fetchTable('Events')->find('withoutBanner')
+            ->where(['Events.game_tournament_id' => $tournament->id, 'Events.published_at IS' => null])
+            ->all();
+        foreach ($pending as $event) {
+            $service->applyPrizes($event);
+        }
     }
 
     /**

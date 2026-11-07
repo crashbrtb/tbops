@@ -125,6 +125,11 @@ $clanDataEnabled = $configTable->isOn('clan_data_function');
             ['controller' => 'Members', 'action' => 'history'],
             ['class' => 'dropdown-item', 'escape' => false]
         ) ?>
+        <?= $this->Html->link(
+            '<i class="fas fa-flag mr-2 text-warning"></i>' . __('Tournament History'),
+            ['controller' => 'Members', 'action' => 'tournaments'],
+            ['class' => 'dropdown-item', 'escape' => false]
+        ) ?>
     </div>
 </li>
 <?php endif; ?>

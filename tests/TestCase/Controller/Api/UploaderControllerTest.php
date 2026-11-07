@@ -46,6 +46,8 @@ class UploaderControllerTest extends TestCase
         'app.GoalPenaltyWaivers',
         // One reading of each member's power a day.
         'app.MemberPowerSnapshots',
+        'app.ClanTournamentResults',
+        'app.AdminNotifications',
     ];
 
     protected string $adminToken;
@@ -382,9 +384,25 @@ class UploaderControllerTest extends TestCase
         $this->assertSame(0, $this->fetchTable('Events')->find()->count());
     }
 
+    /**
+     * The catalogue entry of the Rise of the Ancients, publishing on its own or not.
+     *
+     * @param bool $autoPublish Whether its rankings are published without review.
+     * @return \App\Model\Entity\GameTournament
+     */
+    private function catalogueEntry(bool $autoPublish): \App\Model\Entity\GameTournament
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $entry = $catalogue->touchType(1024, '1');
+        $catalogue->updateAll(['auto_publish' => $autoPublish], ['id' => $entry->id]);
+
+        return $entry;
+    }
+
     public function testAutoPublishClosesATournamentWhereEveryoneHasANameAndMember(): void
     {
         $this->fetchTable('Members')->deleteAll([]);
+        $this->catalogueEntry(true);
         $upload = $this->tournamentUpload(['auto_publish' => true]);
         $upload['rows'] = $this->rosterRows(range(101, 120));
 
@@ -407,6 +425,7 @@ class UploaderControllerTest extends TestCase
     public function testAutoPublishLeavesARankingWithoutAllNamesForReview(): void
     {
         $this->fetchTable('Members')->deleteAll([]);
+        $this->catalogueEntry(true);
         $ids = range(101, 120);
         $upload = $this->tournamentUpload(['auto_publish' => true]);
         $upload['rows'] = $this->rosterRows($ids, [120 => 'id:120']);
@@ -420,6 +439,264 @@ class UploaderControllerTest extends TestCase
         $event = $this->fetchTable('Events')->get($this->body()['event_id']);
         $this->assertNull($event->published_at);
         $this->assertSame(EventImport::STATUS_DRAFT, $this->fetchTable('EventImports')->current($event->id)->status);
+    }
+
+    public function testATournamentNotSetToPublishOnItsOwnWaitsForReview(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $this->catalogueEntry(false);
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+
+        $this->assertResponseCode(201);
+        $this->assertFalse($this->body()['published'], 'the catalogue decides, not the collector');
+        $this->assertSame('auto_publish_off', $this->body()['publish_blocked']);
+        $this->assertNull($this->fetchTable('Events')->get($this->body()['event_id'])->published_at);
+    }
+
+    /**
+     * A clans' result as the collector sends it: the Trials of Olympus of 2026-11-06.
+     *
+     * @param array<string, mixed> $overrides Fields.
+     * @return array<string, mixed>
+     */
+    private function clanResult(array $overrides = []): array
+    {
+        return $overrides + [
+            'entry_uid' => 'c16a5e54-15d4-447c-8e9d-d05486620e29',
+            'result_uid' => '1f0e3089-a073-40bd-83b0-22d490595845',
+            'kind' => 'multistage_tournament_results_entry',
+            'tournament_key' => '1024:1',
+            'ended_at' => '2026-09-12T17:00:30Z',
+            'clan_id' => 936302870583,
+            'position' => 2,
+            'points' => 43043175,
+            'clans_listed' => 3,
+            'rewards' => [
+                ['item_id' => 702059, 'name' => 'Olympus Elite Chest', 'amount' => 1680],
+                ['item_id' => 20, 'name' => 'Scientific Tractates', 'amount' => 500000000],
+                ['item_id' => 31, 'name' => 'Dragon Coins', 'amount' => 4000000],
+            ],
+        ];
+    }
+
+    public function testTheClansResultsAreKeptAndSendingAgainReplacesThem(): void
+    {
+        $this->authorize($this->adminToken);
+        $this->get('/api/v1/searches/last');
+        $this->assertSame(0, $this->body()['clan_results'], 'none yet: the collector fills in the last weeks');
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [
+            $this->clanResult(),
+            $this->clanResult(['entry_uid' => 'c7943f88-2856-4c50-9ec6-aa99929223c8', 'kind' => 'global_tournament_clan_result',
+                'result_uid' => null, 'position' => null, 'points' => null, 'clans_listed' => 100, 'rewards' => [],
+                'ended_at' => '2026-09-05T17:00:41Z']),
+            ['entry_uid' => 'bad'],
+        ]]));
+        $this->assertResponseOk();
+        $this->assertSame(2, $this->body()['created']);
+        $this->assertArrayHasKey('results.2', $this->body()['errors']);
+
+        $results = $this->fetchTable('ClanTournamentResults');
+        $olympus = $results->find()->where(['entry_uid' => 'c16a5e54-15d4-447c-8e9d-d05486620e29'])->firstOrFail();
+        $this->assertSame(2, $olympus->position);
+        $this->assertSame(1680, $olympus->amountOf(702059));
+        $outside = $results->find()->where(['entry_uid' => 'c7943f88-2856-4c50-9ec6-aa99929223c8'])->firstOrFail();
+        $this->assertFalse($outside->isRanked());
+        $this->assertSame(100, $outside->clans_listed);
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [$this->clanResult(['position' => 3])]]));
+        $this->assertSame(['created' => 0, 'updated' => 1], array_intersect_key($this->body(), ['created' => 0, 'updated' => 0]));
+        $this->assertSame(3, $results->get($olympus->id)->position);
+        $this->assertSame(2, $results->find()->count());
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => []]));
+        $this->assertResponseCode(422);
+    }
+
+    public function testTheChosenClanPrizesAreSplitAmongThePlayersBesideTheHandAddedRewards(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $entry = $this->catalogueEntry(true);
+        $this->fetchTable('GameTournaments')->updateAll(['prize_items' => json_encode([
+            ['item_id' => 702059, 'name' => 'Olympus Elite Chest', 'rule' => EventReward::RULE_PROPORTIONAL, 'min_points' => 1, 'remainder' => EventReward::REMAINDER_TOP_RANKED],
+            ['item_id' => 31, 'name' => 'Dragon Coins', 'rule' => EventReward::RULE_EQUAL, 'min_points' => 1, 'remainder' => EventReward::REMAINDER_KEEP],
+        ])], ['id' => $entry->id]);
+        // The previous event of the tournament had a reward added by hand, and a clan prize.
+        $previous = $this->tournament(['name' => 'Rise of the Ancients', 'ends_at' => '2026-09-05T17:00', 'starts_at' => '2026-09-04T17:00']);
+        $previous->set(['game_tournament_id' => $entry->id, 'game_tournament_key' => '1024:1'], ['guard' => false]);
+        $this->fetchTable('Events')->saveOrFail($previous);
+        $this->fetchTable('EventRewards')->updateAll(['game_item_id' => null], ['event_id' => $previous->id]);
+        $old = $this->fetchTable('EventRewards')->newEntity(['item_name' => 'Old chests', 'quantity' => 7, 'rule' => EventReward::RULE_EQUAL]);
+        $old->set(['event_id' => $previous->id, 'game_item_id' => 702059], ['guard' => false]);
+        $this->fetchTable('EventRewards')->saveOrFail($old);
+
+        // The clans' result comes first, then the ranking: published at once with the prizes.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [$this->clanResult()]]));
+        $this->assertResponseOk();
+
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertResponseCode(201);
+        $this->assertTrue($this->body()['published']);
+
+        $event = $this->fetchTable('Events')->get($this->body()['event_id'], contain: ['EventRewards']);
+        $lines = [];
+        foreach ($event->event_rewards as $reward) {
+            $lines[$reward->item_name] = [(int)$reward->quantity, $reward->rule, $reward->get('game_item_id') !== null];
+        }
+        $this->assertSame([
+            'Pieces' => [90, EventReward::RULE_PROPORTIONAL, false],
+            'Olympus Elite Chest' => [1680, EventReward::RULE_PROPORTIONAL, true],
+            'Dragon Coins' => [4000000, EventReward::RULE_EQUAL, true],
+        ], $lines, 'the hand-added reward is copied, the prizes come with what the clan received');
+
+        $allocated = $this->fetchTable('EventRewardAllocations')->find()
+            ->contain(['EventRewards'])
+            ->where(['EventRewards.event_id' => $event->id, 'EventRewards.item_name' => 'Olympus Elite Chest'])
+            ->all()
+            ->sumOf('amount');
+        $this->assertSame(1680, (int)$allocated);
+    }
+
+    /**
+     * The Rise of the Ancients publishing on its own and splitting these prizes.
+     *
+     * @param list<array{0: int, 1: string}> $prizes Item id and name.
+     * @return void
+     */
+    private function splitting(array $prizes): void
+    {
+        $entry = $this->catalogueEntry(true);
+        $this->fetchTable('GameTournaments')->updateAll(['prize_items' => json_encode(array_map(fn (array $p): array => [
+            'item_id' => $p[0], 'name' => $p[1], 'rule' => EventReward::RULE_PROPORTIONAL, 'min_points' => 1,
+            'remainder' => EventReward::REMAINDER_TOP_RANKED,
+        ], $prizes))], ['id' => $entry->id]);
+    }
+
+    /**
+     * @return list<\App\Model\Entity\AdminNotification>
+     */
+    private function alerts(): array
+    {
+        return $this->fetchTable('AdminNotifications')->find('unread')->all()->toList();
+    }
+
+    public function testAChosenPrizeTheClanDidNotReceiveHoldsTheEventAndTellsTheAdministrators(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $this->splitting([[31, 'Dragon Coins'], [555, 'Golden Statue']]);
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [$this->clanResult()]]));
+
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertResponseCode(201);
+        $this->assertFalse($this->body()['published']);
+        $this->assertSame('clan_prizes', $this->body()['publish_blocked']);
+        $eventId = $this->body()['event_id'];
+        $this->assertNull($this->fetchTable('Events')->get($eventId)->published_at);
+        $this->assertStringContainsString('Golden Statue', implode(' ', $this->body()['warnings']), 'the review page says it');
+
+        $alerts = $this->alerts();
+        $this->assertCount(1, $alerts);
+        $this->assertStringContainsString('Golden Statue', $alerts[0]->message());
+        $this->assertStringNotContainsString('Dragon Coins', $alerts[0]->message());
+        $this->assertSame(['controller' => 'Events', 'action' => 'review', $eventId], $alerts[0]->link());
+        // The prizes that did come are there, ready for the review.
+        $this->assertSame(1, $this->fetchTable('EventRewards')->find()->where(['event_id' => $eventId, 'game_item_id' => 31])->count());
+
+        // Sent again, it is not said twice.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertCount(1, $this->alerts());
+
+        // A corrected clan result with every prize closes the alert.
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [$this->clanResult(['rewards' => [
+            ['item_id' => 31, 'name' => 'Dragon Coins', 'amount' => 4000000],
+            ['item_id' => 555, 'name' => 'Golden Statue', 'amount' => 2],
+        ]])]]));
+        $this->assertSame([], $this->alerts());
+    }
+
+    public function testWithoutTheClansResultAnEventSplittingPrizesWaitsForReview(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $this->splitting([[31, 'Dragon Coins']]);
+
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertFalse($this->body()['published']);
+        $this->assertSame('clan_prizes', $this->body()['publish_blocked']);
+        $eventId = $this->body()['event_id'];
+
+        $alerts = $this->alerts();
+        $this->assertCount(1, $alerts);
+        $this->assertStringContainsString('has not arrived', $alerts[0]->message());
+
+        // Published from the review page, the alert no longer applies.
+        $event = $this->fetchTable('Events')->get($eventId, contain: ['EventRewards']);
+        $service = new \App\Service\EventImportService();
+        $service->publish($event, $this->fetchTable('EventImports')->current($eventId));
+        $this->assertSame([], $this->alerts());
+    }
+
+    public function testATournamentSplittingNoPrizeIsPublishedWithoutTheClansResult(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $this->catalogueEntry(true);
+        $upload = $this->tournamentUpload(['auto_publish' => true]);
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $this->assertTrue($this->body()['published']);
+        $this->assertSame([], $this->alerts());
+    }
+
+    public function testAClanResultArrivingLaterFillsTheDraftButNotAPublishedEvent(): void
+    {
+        $this->fetchTable('Members')->deleteAll([]);
+        $entry = $this->catalogueEntry(false);
+        $this->fetchTable('GameTournaments')->updateAll(['prize_items' => json_encode([
+            ['item_id' => 31, 'name' => 'Dragon Coins', 'rule' => EventReward::RULE_PROPORTIONAL, 'min_points' => 1, 'remainder' => EventReward::REMAINDER_TOP_RANKED],
+        ])], ['id' => $entry->id]);
+
+        $upload = $this->tournamentUpload();
+        $upload['rows'] = $this->rosterRows(range(101, 120));
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/tournaments', json_encode($upload));
+        $eventId = $this->body()['event_id'];
+        $rewards = $this->fetchTable('EventRewards');
+        $this->assertSame(0, $rewards->find()->where(['event_id' => $eventId, 'game_item_id IS NOT' => null])->count());
+
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [$this->clanResult()]]));
+        $this->assertSame(1, $this->body()['events']);
+        $line = $rewards->find()->where(['event_id' => $eventId, 'game_item_id' => 31])->firstOrFail();
+        $this->assertSame(4000000, (int)$line->quantity);
+
+        // Once published, a corrected result no longer changes the event.
+        $this->fetchTable('Events')->updateAll(['published_at' => DateTime::now()], ['id' => $eventId]);
+        $this->authorize($this->adminToken);
+        $this->post('/api/v1/clan-results', json_encode(['results' => [$this->clanResult(['rewards' => [
+            ['item_id' => 31, 'name' => 'Dragon Coins', 'amount' => 1],
+        ]])]]));
+        $this->assertSame(0, $this->body()['events']);
+        $this->assertSame(4000000, (int)$rewards->get($line->id)->quantity);
     }
 
     public function testWithoutAutoPublishTheRankingStaysADraft(): void

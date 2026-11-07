@@ -8,8 +8,10 @@ use App\Model\Entity\Event;
 use App\Model\Entity\EventImport;
 use App\Model\Entity\EventReward;
 use App\Model\Entity\JobRun;
+use App\Service\ClanResultService;
 use App\Service\EventImportService;
 use App\Service\JobRunRecorder;
+use App\Service\LiveTournamentService;
 use App\Service\MemberRosterService;
 use App\Service\TournamentCatalogService;
 use Cake\Controller\Controller;
@@ -29,9 +31,11 @@ use Throwable;
  *
  * The everyday call is `POST /tournaments`: the uploader sends the tournament
  * as the game identifies it plus its ranking, and the site registers the event
- * if it is new and attaches the ranking as a draft for review; with
- * `auto_publish: true` and every player identified, the result is published
- * (the tournament closed) in the same call. The older
+ * if it is new and attaches the ranking as a draft for review. When the
+ * tournament is set to publish on its own (its page in the catalogue) and
+ * every player is identified, the result is published (the tournament closed)
+ * in the same call. `POST /clan-results` brings how the clan did - its place
+ * among the clans and the prizes it received - before the rankings. The older
  * `events/awaiting` and `events/{id}/imports` pair serves events an
  * administrator created by hand.
  *
@@ -57,7 +61,7 @@ class UploaderController extends Controller
         $this->loadComponent('Authentication.Authentication');
         $this->Authentication->allowUnauthenticated([
             'me', 'awaiting', 'import', 'tournament', 'known', 'catalog', 'lookup', 'searchState', 'searchReport',
-            'members',
+            'members', 'clanResults', 'liveTournaments', 'gameImages',
         ]);
     }
 
@@ -432,6 +436,8 @@ class UploaderController extends Controller
 
         return $this->json([
             'covered_until' => $covered,
+            // None yet: the collector walks the last weeks once to fill in the clan's history.
+            'clan_results' => $this->fetchTable('ClanTournamentResults')->find()->count(),
             'latest_ended_at' => $latest?->ends_at?->setTimezone('UTC')->format('Y-m-d\TH:i:s\Z'),
             'last_run' => $last === null ? null : [
                 'status' => $last->status,
@@ -496,6 +502,68 @@ class UploaderController extends Controller
     }
 
     /**
+     * Receive how the clan did in some tournaments, from the Journal cards with
+     * the clans' ranking.
+     *
+     * Body (JSON): `{results: [{entry_uid, result_uid, kind, tournament_key,
+     * ended_at, clan_id, position, points, clans_listed, rewards: [{item_id,
+     * name, amount}]}]}`. Sending one again replaces it. The events of those
+     * tournaments not published yet get their clan prize lines.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function clanResults(): Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $data = $this->request->getData();
+        $service = new ClanResultService();
+        $checked = $service->validate(is_array($data) ? $data : []);
+        if ($checked['results'] === []) {
+            return $this->json(['error' => __('The clan results were not accepted.'), 'errors' => $checked['errors']], 422);
+        }
+
+        $summary = $this->fetchTable('ClanTournamentResults')->getConnection()->transactional(
+            fn (): array => $service->record($checked['results'])
+        );
+
+        return $this->json($summary + ['errors' => $checked['errors'] ?: (object)[]]);
+    }
+
+    /**
+     * The game's Tournaments window, as the collector read it: replaces the list
+     * the site shows. Body: see LiveTournamentService::record().
+     *
+     * @return \Cake\Http\Response
+     */
+    public function liveTournaments(): Response
+    {
+        $this->request->allowMethod(['post']);
+        $data = $this->request->getData();
+        $result = (new LiveTournamentService())->record(is_array($data) ? $data : []);
+        $status = isset($result['errors']['tournaments']) ? 422 : 200;
+
+        return $this->json($result + ['errors' => $result['errors'] ?: (object)[]], $status);
+    }
+
+    /**
+     * The game's images: GET says which the site has (name => CDN file id), POST
+     * `{images: [{name, file_id, png}]}` keeps new or changed ones.
+     *
+     * @return \Cake\Http\Response
+     */
+    public function gameImages(): Response
+    {
+        $this->request->allowMethod(['get', 'post']);
+        if ($this->request->is('get')) {
+            return $this->json(['images' => $this->fetchTable('GameImages')->fileIds() ?: (object)[]]);
+        }
+        $result = (new LiveTournamentService())->recordImages((array)$this->request->getData('images'));
+
+        return $this->json($result + ['errors' => $result['errors'] ?: (object)[]]);
+    }
+
+    /**
      * Receive the clan's Members list, as the collector's members module reads
      * it from the game.
      *
@@ -545,13 +613,15 @@ class UploaderController extends Controller
     }
 
     /**
-     * Publish (close) the draft right away when the uploader asks for it and
-     * nobody in the ranking is left to identify.
+     * Publish (close) the draft right away when its tournament is set to publish
+     * on its own and nobody in the ranking is left to identify.
      *
-     * The uploader sends `auto_publish: true` only when every player came with
-     * a name; the site checks again (EventImportService::autoPublishBlocker()).
-     * Anything else stays a draft for the review page, as before. An event
-     * without rewards is published too: rewards can be added to it later.
+     * The catalogue decides (GameTournament::$auto_publish). The uploader still
+     * sends `auto_publish: true` when every player came with a name and the end
+     * date is known, and nothing is published without it; the site checks the
+     * names again (EventImportService::autoPublishBlocker()). Anything else stays
+     * a draft for the review page. An event without rewards is published too:
+     * rewards can be added to it later.
      *
      * @param \App\Service\EventImportService $service Service.
      * @param \App\Model\Entity\Event $event Event with rewards.
@@ -561,6 +631,26 @@ class UploaderController extends Controller
     private function autoPublish(EventImportService $service, Event $event, array $result): array
     {
         if (!filter_var($this->request->getData('auto_publish'), FILTER_VALIDATE_BOOLEAN)) {
+            return $result;
+        }
+        $tournament = $event->game_tournament_id === null ? null : $this->fetchTable('GameTournaments')->find()
+            ->select(['id', 'auto_publish'])
+            ->where(['id' => $event->game_tournament_id])
+            ->first();
+        if ($tournament === null || !$tournament->get('auto_publish')) {
+            $result['publish_blocked'] = 'auto_publish_off';
+
+            return $result;
+        }
+
+        // A prize chosen to be split that did not come (or no clan result at all):
+        // published as it is, the players would not get it. A person decides.
+        $prizes = new ClanResultService();
+        $problems = $prizes->prizeProblems($event);
+        if ($problems !== null) {
+            $result['publish_blocked'] = 'clan_prizes';
+            $prizes->notifyHeld($event, $problems);
+
             return $result;
         }
 

@@ -41,7 +41,13 @@ if ($isAdmin):
                     <?= $this->Html->link(__('List'), ['controller' => 'Members', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
+                    <?= $this->Html->link(__('Member Performance'), ['controller' => 'Members', 'action' => 'performance'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
                     <?= $this->Html->link(__('Power History'), ['controller' => 'Members', 'action' => 'history'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(__('Tournament History'), ['controller' => 'Members', 'action' => 'tournaments'], ['class' => 'dropdown-item']) ?>
                 </li>
             </ul>
         </li>
@@ -244,6 +250,9 @@ endif;
                         <div class="admin-notification-text">
                             <i class="fas fa-exclamation-circle text-danger"></i>
                             <?= h($notification->message()) ?>
+                            <?php if ($notification->link() !== null): ?>
+                                <?= $this->Html->link(__('Review'), $notification->link(), ['class' => 'ml-1']) ?>
+                            <?php endif; ?>
                             <div class="text-muted small">
                                 <?php foreach ($notification->members() as $member): ?>
                                     <?= $this->Html->link(

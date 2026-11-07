@@ -6265,3 +6265,306 @@ msgstr "Variação %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "Dados do clã"
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "Os rankings de \"{0}\" agora aguardam revisão antes de serem publicados."
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "Os rankings de \"{0}\" agora são publicados sem revisão, mesmo faltando {1}."
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "Os rankings de \"{0}\" agora são publicados sem revisão."
+
+msgid "The clan results were not accepted."
+msgstr "Os resultados do clã não foram aceitos."
+
+msgid "the name"
+msgstr "o nome"
+
+msgid "the description"
+msgstr "a descrição"
+
+msgid "the duration"
+msgstr "a duração"
+
+msgid "the image"
+msgstr "a imagem"
+
+msgid "the goal"
+msgstr "a meta"
+
+msgid "the prizes"
+msgstr "a premiação"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "Envie results como uma lista de 1 a {0} resultados do clã."
+
+msgid "This clan result is not valid."
+msgstr "Este resultado do clã não é válido."
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "O id da entrada do Journal está ausente ou é inválido."
+
+msgid "Item {0}"
+msgstr "Item {0}"
+
+msgid "Not defined"
+msgstr "Não definido"
+
+msgid "Ranking {0}"
+msgstr "Ranking {0}"
+
+msgid "Published without review"
+msgstr "Publicado sem revisão"
+
+msgid "Clan Tournament History"
+msgstr "Histórico de Torneios do Clã"
+
+msgid "In the game"
+msgstr "No jogo"
+
+msgid "Display name"
+msgstr "Nome de exibição"
+
+msgid "The game's name"
+msgstr "O nome do jogo"
+
+msgid "By guard level"
+msgstr "Por nível de guarda"
+
+msgid "Required to receive a reward."
+msgstr "Obrigatória para receber recompensa."
+
+msgid "Not required to receive a reward."
+msgstr "Não é obrigatória para receber recompensa."
+
+msgid "Prizes"
+msgstr "Premiação"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "Dividida entre os jogadores de cada novo evento, com a quantidade que o clã recebeu nele:"
+
+msgid "minimum {0} point(s)"
+msgstr "mínimo de {0} ponto(s)"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "O que o clã já recebeu neste torneio, por posição:"
+
+msgid "Last received"
+msgstr "Último recebido"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "O clã ainda não recebeu prêmio neste torneio, ou o coletor ainda não enviou os resultados do clã."
+
+msgid "The clan in this tournament"
+msgstr "O clã neste torneio"
+
+msgid "Ended (UTC)"
+msgstr "Término (UTC)"
+
+msgid "Place"
+msgstr "Posição"
+
+msgid "Clan points"
+msgstr "Pontos do clã"
+
+msgid "Received"
+msgstr "Recebido"
+
+msgid "Not in the top {0}"
+msgstr "Fora do top {0}"
+
+msgid "Nothing"
+msgstr "Nada"
+
+msgid "Publish events automatically"
+msgstr "Publicar eventos automaticamente"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "Com esta opção ligada, assim que o coletor envia o ranking de um evento encerrado deste torneio, as metas são calculadas e o evento é publicado na hora, sem revisão: a parte de cada jogador na premiação fica registrada. Um ranking com jogadores que o site não consegue identificar continua aguardando revisão. Com a opção desligada, todo ranking fica como rascunho na página de revisão."
+
+msgid "Publish this tournament's events without review"
+msgstr "Publicar os eventos deste torneio sem revisão"
+
+msgid "Missing: {0}."
+msgstr "Falta: {0}."
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "Publicar os eventos deste torneio sem revisão mesmo assim?"
+
+msgid "Back to the tournament"
+msgstr "Voltar ao torneio"
+
+msgid "Name in the game"
+msgstr "Nome no jogo"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "Lido do Journal do jogo. Fica como o jogo o chama, em inglês."
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "O jogo ainda não informou o nome. Um nome digitado aqui é mantido: o coletor não o substitui."
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "O nome que o site mostra para este torneio e seus novos eventos. Vazio: o nome do jogo."
+
+msgid "Shown on every new event of this tournament."
+msgstr "Mostrada em cada novo evento deste torneio."
+
+msgid "Clan prizes to split among the players"
+msgstr "Prêmios do clã a dividir entre os jogadores"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "Estes são os prêmios que o clã já recebeu neste torneio. Marque os que serão divididos entre os jogadores: cada novo evento do torneio recebe uma recompensa por prêmio marcado, com a quantidade que o clã recebeu nele, dividida pelo critério escolhido. As recompensas adicionadas à mão em um evento continuam ao lado delas."
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "Os torneios do jogo. Nomes e ids são preenchidos pelo coletor; abra um torneio para definir o resto: nome de exibição, descrição, duração, imagem, meta, premiação e publicação."
+
+msgid "Tournament History"
+msgstr "Histórico de Torneios"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "A posição do clã entre os clãs e seus pontos em cada torneio do jogo, e o que o clã recebeu"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "Nenhum resultado do clã ainda. O coletor os envia junto com os torneios que lê no Journal."
+
+msgid "Best place"
+msgstr "Melhor posição"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "classificado em {0} de {1} vez(es)"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "O clã nunca ficou entre os clãs listados neste torneio."
+
+msgid "Every tournament"
+msgstr "Todos os torneios"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "Preenchido com o que o clã recebeu neste torneio"
+
+msgid "Clan prize"
+msgstr "Prêmio do clã"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "O evento #{0} \"{1}\" não foi publicado: o resultado do clã neste torneio ainda não chegou, então os prêmios não puderam ser divididos. Revise-o."
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "O evento #{0} \"{1}\" não foi publicado: o clã não recebeu {2} nele, prêmio escolhido para ser dividido entre os jogadores. Revise-o."
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "O resultado do clã neste torneio ainda não chegou: os prêmios do clã escolhidos no catálogo não estão sendo divididos neste evento."
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "O clã não recebeu {0} neste evento: escolhido no catálogo para ser dividido, não está nas recompensas."
+
+msgid "Member Performance"
+msgstr "Desempenho dos Membros"
+
+msgid "Performance"
+msgstr "Desempenho"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "Métricas de cumprimento de metas em baús e eventos, ranking mensal (+1 pt por meta de evento batida) e histórico completo por jogador."
+
+msgid "Event Goals Met"
+msgstr "Metas Batidas em Eventos"
+
+msgid "Chest Goals Met"
+msgstr "Metas Batidas em Baús"
+
+msgid "Overall Goals Met"
+msgstr "Total de Metas Batidas"
+
+msgid "Monthly Leader"
+msgstr "Líder do Mês"
+
+msgid "Event Goals Met per Tournament"
+msgstr "Metas Batidas por Torneio / Evento"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "Metas Batidas por Ciclo de Baús"
+
+msgid "Player Performance Ranking"
+msgstr "Ranking de Desempenho dos Jogadores"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "Pontuação: 1 ponto para cada evento cuja meta foi batida no período. Clique em qualquer jogador para ver o histórico detalhado de eventos e baús."
+
+msgid "Search player..."
+msgstr "Buscar jogador..."
+
+msgid "Event Goals"
+msgstr "Metas em Eventos"
+
+msgid "Chest Goals"
+msgstr "Metas em Baús"
+
+msgid "Total Met"
+msgstr "Total Batidas"
+
+msgid "Success Rate"
+msgstr "Taxa de Sucesso"
+
+msgid "Monthly Score"
+msgstr "Pontuação do Mês"
+
+msgid "Event History"
+msgstr "Histórico de Eventos"
+
+msgid "Chest History"
+msgstr "Histórico de Baús"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "No sistema de pontuação, cada torneio em que o jogador atinge ou supera a meta concede +1 ponto para sua pontuação mensal."
+
+msgid "Tournament / Event"
+msgstr "Torneio / Evento"
+
+msgid "Goal Status"
+msgstr "Status da Meta"
+
+msgid "View player history"
+msgstr "Ver histórico do jogador"
+
+msgid "Last month (30 days)"
+msgstr "Último mês (30 dias)"
+
+msgid "Last 60 days"
+msgstr "Últimos 60 dias"
+
+msgid "Last 90 days"
+msgstr "Últimos 90 dias"
+
+msgid "All time"
+msgstr "Todo o período"
+
+msgid "success rate"
+msgstr "taxa de sucesso"
+
+msgid "global rate"
+msgstr "taxa global"
+
+msgid "goals beaten"
+msgstr "metas batidas"
+
+msgid "Recent cycles"
+msgstr "Ciclos recentes"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "Exibindo os ciclos concluídos mais recentes"
+
+msgid "No events with standings found in this period."
+msgstr "Nenhum evento com classificação encontrado neste período."
+
+msgid "No chest cycle summaries recorded."
+msgstr "Nenhum resumo de ciclo de baús registrado."
+
+msgid "No event records in this period."
+msgstr "Nenhum registro de evento neste período."
+
+msgid "No chest cycle records in this period."
+msgstr "Nenhum registro de ciclo de baús neste período."
+
+msgid "Awaiting event goal beats"
+msgstr "Aguardando metas batidas em eventos"

@@ -75,6 +75,9 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/tournament-catalog', ['controller' => 'Uploader', 'action' => 'catalog']);
         // The clan's Members list: who is in it is active, everyone else is not.
         $builder->connect('/members', ['controller' => 'Uploader', 'action' => 'members']);
+        $builder->connect('/clan-results', ['controller' => 'Uploader', 'action' => 'clanResults']);
+        $builder->connect('/live-tournaments', ['controller' => 'Uploader', 'action' => 'liveTournaments']);
+        $builder->connect('/game-images', ['controller' => 'Uploader', 'action' => 'gameImages']);
         $builder->connect(
             '/events/{id}/imports',
             ['controller' => 'Uploader', 'action' => 'import'],
@@ -114,6 +117,9 @@ return function (RouteBuilder $routes): void {
         // The page was called Lost Chests; an old bookmark lands on the new one.
         $builder->redirect('/standard-chests/lost-chests', '/standard-chests/new-chests', ['status' => 301]);
 
+        // Members performance route
+        $builder->connect('/members/performance', ['controller' => 'Members', 'action' => 'performance']);
+
         // Troop calculator
         $builder->connect('/calculator', ['controller' => 'TroopCalculator', 'action' => 'index']);
 
@@ -126,6 +132,7 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/events', ['controller' => 'Events', 'action' => 'index']);
         $builder->connect('/events/history', ['controller' => 'Events', 'action' => 'history']);
         $builder->connect('/events/tournaments', ['controller' => 'Events', 'action' => 'tournaments']);
+        $builder->connect('/game-image/{name}', ['controller' => 'GameImages', 'action' => 'view'], ['pass' => ['name'], 'name' => '[A-Za-z0-9_.-]+']);
         $builder->connect('/events/banner/*', ['controller' => 'Events', 'action' => 'banner']);
         $builder->connect('/events/asset/*', ['controller' => 'Events', 'action' => 'asset']);
 

@@ -60,6 +60,8 @@ foreach ((array)$event->event_rewards as $reward) {
             'min_points' => $reward->min_points ?? 1,
             'remainder' => $reward->remainder ?: EventReward::REMAINDER_TOP_RANKED,
             'errors' => array_values(Hash::flatten($reward->getErrors())),
+            // Filled from what the clan received; it can still be changed or removed here.
+            'clan_prize' => $reward->get('game_item_id') !== null,
         ];
     }
 }
@@ -101,6 +103,9 @@ $rewardLine = function (string $index, array $row) use ($ruleOptions, $remainder
     $html .= '<div class="form-group reward-remainder js-not-position"' . $hidden($byPosition) . '><label>' . __('Leftover units') . '</label>'
         . '<select class="form-control" name="' . $name('remainder') . '">' . $options($remainderOptions, $row['remainder']) . '</select></div>';
     $html .= '<button type="button" class="btn btn-outline-danger btn-sm reward-remove" onclick="removeRewardLine(this)" title="' . h(__('Remove')) . '"><i class="fas fa-trash"></i></button>';
+    if (!empty($row['clan_prize'])) {
+        $html .= '<span class="badge badge-info reward-clan-prize" title="' . h(__('Filled in with what the clan received in this tournament')) . '"><i class="fas fa-flag mr-1"></i>' . h(__('Clan prize')) . '</span>';
+    }
     if (!empty($row['errors'])) {
         $html .= '<span class="field-error reward-errors"><i class="fas fa-exclamation-circle mr-1"></i>' . h(implode(' ', $row['errors'])) . '</span>';
     }
