@@ -111,8 +111,16 @@ class GameTournamentsController extends AppController
         if (!in_array($section, GameTournament::SECTIONS, true)) {
             $section = '';
         }
+        if ($section === GameTournament::SECTION_DURATION || $section === GameTournament::SECTION_IMAGE) {
+            return $this->redirect(['action' => 'view', $id]);
+        }
         $shows = fn (string $part): bool => $section === ''
-            ? !in_array($part, [GameTournament::SECTION_PRIZES, GameTournament::SECTION_DESCRIPTION], true)
+            ? !in_array($part, [
+                GameTournament::SECTION_PRIZES,
+                GameTournament::SECTION_DESCRIPTION,
+                GameTournament::SECTION_DURATION,
+                GameTournament::SECTION_IMAGE,
+            ], true)
             : $section === $part;
         $prizes = $shows(GameTournament::SECTION_PRIZES) ? (new ClanResultService())->knownPrizes((int)$tournament->game_type) : [];
 
@@ -133,9 +141,6 @@ class GameTournamentsController extends AppController
             if ($shows(GameTournament::SECTION_DESCRIPTION)) {
                 $fields['description'] = trim((string)($data['description'] ?? '')) ?: null;
             }
-            if ($shows(GameTournament::SECTION_DURATION) && array_key_exists('duration_days', $data)) {
-                $fields['duration_days'] = $data['duration_days'] === '' ? null : $data['duration_days'];
-            }
             if ($shows(GameTournament::SECTION_GOAL) && array_key_exists('goal', $data)) {
                 // The default goal every new event of this tournament starts with.
                 $fields += EventGoal::marshal((array)$data['goal']);
@@ -149,30 +154,7 @@ class GameTournamentsController extends AppController
                 $tournament->set('prize_items', $this->postedPrizes((array)($data['prizes'] ?? []), $prizes), ['guard' => false]);
             }
 
-            $imageError = null;
-            $removeImage = false;
-            $image = null;
-            if ($shows(GameTournament::SECTION_IMAGE)) {
-                $removeImage = (bool)($data['remove_image'] ?? false);
-                $upload = $data['image'] ?? null;
-                if (!$removeImage && $upload instanceof UploadedFileInterface && $upload->getError() !== UPLOAD_ERR_NO_FILE) {
-                    if ($upload->getError() !== UPLOAD_ERR_OK || ($upload->getSize() ?? 0) > self::MAX_UPLOAD_BYTES) {
-                        $imageError = __('The image must be a PNG, JPEG, WebP or GIF of at most {0} KB.', (int)(self::MAX_UPLOAD_BYTES / 1024));
-                    } else {
-                        $image = (new TournamentCatalogService())->imageType((string)$upload->getStream());
-                        if ($image === null) {
-                            $imageError = __('The image must be a PNG, JPEG, WebP or GIF of at most {0} KB.', (int)(self::MAX_UPLOAD_BYTES / 1024));
-                        }
-                    }
-                }
-            }
-
-            if ($imageError === null && $this->GameTournaments->save($tournament)) {
-                if ($removeImage) {
-                    $this->GameTournaments->updateAll(['image' => null, 'image_mime' => null], ['id' => $tournament->id]);
-                } elseif ($image !== null) {
-                    $this->GameTournaments->updateAll(['image' => $image[0], 'image_mime' => $image[1]], ['id' => $tournament->id]);
-                }
+            if ($this->GameTournaments->save($tournament)) {
                 if ($tournament->name) {
                     $this->GameTournaments->updateAll(['pending_picture' => null], ['id' => $tournament->id]);
                 }
@@ -184,7 +166,7 @@ class GameTournamentsController extends AppController
                 return $this->redirect(['action' => 'view', $tournament->id]);
             }
 
-            $this->Flash->error($imageError ?? __('The tournament could not be saved. Please check the fields below.'));
+            $this->Flash->error(__('The tournament could not be saved. Please check the fields below.'));
         }
 
         $this->set(compact('tournament', 'section', 'prizes'));

@@ -17,8 +17,8 @@ $playerCount = $playerCount ?? null;
         <p><?= __('Each player has the goal of their guard level:') ?></p>
         <div class="event-chest-tags">
             <?php foreach ($goal->levelTable() as $level => $points): ?>
-                <span class="event-chest-tag" title="<?= $level === 0 ? h(__('Guard level not identified')) : '' ?>">
-                    G<?= $level ?> <span class="tag-score"><?= $this->Number->format($points) ?></span>
+                <span class="event-chest-tag" title="<?= $level === 0 ? h(__('Guard level not identified')) : ($level === \App\Service\EventGoal::LEVEL_T9 ? h(__('All troops level 9 (T9)')) : '') ?>">
+                    <?= \App\Service\EventGoal::levelLabel((int)$level) ?> <span class="tag-score"><?= $this->Number->format($points) ?></span>
                 </span>
             <?php endforeach; ?>
         </div>

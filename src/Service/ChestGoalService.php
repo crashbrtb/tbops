@@ -38,9 +38,14 @@ class ChestGoalService
     public const UNKNOWN_LEVEL = 0;
 
     /**
+     * Level for a player whose all troops (guards, specialists, monsters, engineers) are level 9.
+     */
+    public const LEVEL_T9 = 10;
+
+    /**
      * Guard levels that can carry a goal of their own.
      */
-    public const LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    public const LEVELS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     /**
      * The config row holding each target's global goal.
@@ -196,10 +201,10 @@ class ChestGoalService
         if ($this->levels === null) {
             $this->levels = [];
             $rows = $this->fetchTable('Members')->find()
-                ->select(['player', 'guards'])
+                ->select(['player', 'guards', 'specialists', 'monsters', 'engineers'])
                 ->all();
             foreach ($rows as $row) {
-                $this->levels[mb_strtolower((string)$row->player)] = (int)$row->guards;
+                $this->levels[mb_strtolower((string)$row->player)] = EventGoal::levelForMember($row);
             }
         }
 
@@ -256,8 +261,9 @@ class ChestGoalService
                 }
                 $goal = self::parseGoal($raw);
                 if ($goal === null) {
+                    $lbl = $level === self::LEVEL_T9 ? 'T9' : ('G' . $level);
                     throw new InvalidArgumentException(
-                        __('G{0}: the goal must be a whole number of 0 or more, or left blank.', $level)
+                        __('{0}: the goal must be a whole number of 0 or more, or left blank.', $lbl)
                     );
                 }
                 $levels[$level] = $goal;

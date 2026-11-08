@@ -5680,6 +5680,12 @@ msgstr "Maior meta"
 msgid "G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table."
 msgstr "G0 significa que o nível dos guardas nunca foi identificado. Esses jogadores, e os que não têm perfil de membro, recebem a maior meta da tabela."
 
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "T9 aplica-se quando todas as tropas (guardas, especialistas, monstros, engenheiros) são nível 9. G0 significa que o nível não foi identificado (recebe a maior meta)."
+
+msgid "All troops level 9 (T9)"
+msgstr "Todas as tropas nível 9 (T9)"
+
 msgid "Each closed cycle keeps the goal the player had in it, so changing a level later does not rewrite history. The goal penalty raises the player's own goal."
 msgstr "Cada ciclo fechado guarda a meta que o jogador tinha nele, então mudar um nível depois não reescreve o histórico. A penalidade de meta aumenta a meta do próprio jogador."
 
@@ -6663,7 +6669,10 @@ msgid "History of these events"
 msgstr "Histórico destes eventos"
 
 msgid "As the game showed them on {0} UTC."
-msgstr "Como o jogo os mostrava em {0} UTC."
+msgstr "Última atualização em {0} UTC."
+
+msgid "Last updated on {0} UTC."
+msgstr "Última atualização em {0} UTC."
 
 msgid "Inactive"
 msgstr "Em breve"

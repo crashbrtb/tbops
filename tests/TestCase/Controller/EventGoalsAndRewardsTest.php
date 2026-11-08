@@ -353,4 +353,58 @@ class EventGoalsAndRewardsTest extends TestCase
         $this->assertSame([9 => 900], $goal->byGuard);
         $this->assertTrue($goal->required);
     }
+
+    public function testT9LevelGoalAndMemberQualification(): void
+    {
+        $this->assertSame(10, EventGoal::LEVEL_T9);
+        $this->assertSame(10, EventGoal::LEVELS[0]);
+        $this->assertSame('T9', EventGoal::levelLabel(10));
+        $this->assertSame('G9', EventGoal::levelLabel(9));
+        $this->assertSame('G0', EventGoal::levelLabel(0));
+
+        $members = $this->fetchTable('Members');
+        $t9Member = $members->newEntity([
+            'player' => 'T9Player',
+            'guards' => 9,
+            'specialists' => 9,
+            'monsters' => 9,
+            'engineers' => 9,
+            'active' => 1,
+        ], ['validate' => false]);
+        $this->assertTrue($t9Member->isT9());
+        $this->assertSame(10, $t9Member->guardLevel());
+        $this->assertSame(10, EventGoal::levelForMember($t9Member));
+
+        $g9Member = $members->newEntity([
+            'player' => 'G9Player',
+            'guards' => 9,
+            'specialists' => 8,
+            'monsters' => 9,
+            'engineers' => 9,
+            'active' => 1,
+        ], ['validate' => false]);
+        $this->assertFalse($g9Member->isT9());
+        $this->assertSame(9, $g9Member->guardLevel());
+        $this->assertSame(9, EventGoal::levelForMember($g9Member));
+
+        // Marshal and verify ladder
+        $marshaled = EventGoal::marshal([
+            'mode' => 'guard',
+            'points' => '1000',
+            'by_guard' => ['10' => '5000', '9' => '4000', '1' => '2000'],
+            'required' => '1',
+        ]);
+        $goal = new EventGoal(
+            $marshaled['goal_mode'],
+            $marshaled['goal_points'],
+            \App\Service\ChestGoalService::decodeLevels((string)$marshaled['goal_by_guard']),
+            $marshaled['goal_required']
+        );
+        $this->assertSame(5000, $goal->goalForLevel(10));
+        $this->assertSame(4000, $goal->goalForLevel(9));
+        $this->assertSame(1000, $goal->goalForLevel(5)); // fallback to global
+        $table = $goal->levelTable();
+        $this->assertSame(10, array_key_first($table));
+        $this->assertSame(5000, $table[10]);
+    }
 }

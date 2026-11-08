@@ -132,7 +132,7 @@ class EventScoringService
                 'position' => (int)$row['position'],
                 'points' => (int)$row['points'],
                 'eligible' => !($member['administrative'] ?? false),
-                'guard_level' => (int)($member['guards'] ?? 0),
+                'guard_level' => (int)($member['guard_level'] ?? 0),
             ];
         }
         $distribution = $this->prizes->distribute($event, $players);
@@ -320,7 +320,7 @@ class EventScoringService
         if ($this->members === null) {
             $this->members = [];
             $rows = $this->fetchTable('Members')->find()
-                ->select(['id', 'player', 'administrative_account', 'guards'])
+                ->select(['id', 'player', 'administrative_account', 'guards', 'specialists', 'monsters', 'engineers'])
                 ->disableHydration()
                 ->all();
             foreach ($rows as $row) {
@@ -328,6 +328,7 @@ class EventScoringService
                     'id' => (int)$row['id'],
                     'administrative' => (bool)$row['administrative_account'],
                     'guards' => (int)$row['guards'],
+                    'guard_level' => EventGoal::levelForMember($row),
                 ];
             }
         }
