@@ -23,7 +23,54 @@ final class EventGoal
     public const MODE_GLOBAL = 'global';
     public const MODE_GUARD = 'guard';
 
+    public const LEVEL_T9 = ChestGoalService::LEVEL_T9;
+
+    /**
+     * Ladder of levels with T9 on top, down to G1.
+     */
+    public const LEVELS = [self::LEVEL_T9, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+
     public const FIELDS = ['goal_mode', 'goal_points', 'goal_by_guard', 'goal_required'];
+
+    /**
+     * Label for a level: T9 for 10, G0 for 0/unknown, G{level} for 1..9.
+     *
+     * @param int $level Level.
+     * @return string
+     */
+    public static function levelLabel(int $level): string
+    {
+        if ($level === self::LEVEL_T9) {
+            return 'T9';
+        }
+
+        return 'G' . $level;
+    }
+
+    /**
+     * Determine a member's level: T9 if guards, specialists, monsters and engineers are all 9;
+     * otherwise their guards level (1..9), or 0 (unknown).
+     *
+     * @param mixed $member Member entity, array or null.
+     * @return int
+     */
+    public static function levelForMember(mixed $member): int
+    {
+        if ($member === null) {
+            return ChestGoalService::UNKNOWN_LEVEL;
+        }
+
+        $guards = is_array($member) ? (int)($member['guards'] ?? 0) : (int)($member->guards ?? 0);
+        $specialists = is_array($member) ? (int)($member['specialists'] ?? 0) : (int)($member->specialists ?? 0);
+        $monsters = is_array($member) ? (int)($member['monsters'] ?? 0) : (int)($member->monsters ?? 0);
+        $engineers = is_array($member) ? (int)($member['engineers'] ?? 0) : (int)($member->engineers ?? 0);
+
+        if ($guards === 9 && $specialists === 9 && $monsters === 9 && $engineers === 9) {
+            return self::LEVEL_T9;
+        }
+
+        return in_array($guards, ChestGoalService::LEVELS, true) ? $guards : ChestGoalService::UNKNOWN_LEVEL;
+    }
 
     /**
      * @param string $mode One of the MODE_* constants.
@@ -89,7 +136,7 @@ final class EventGoal
         $levels = [];
         foreach ((array)($posted['by_guard'] ?? []) as $level => $raw) {
             $goal = self::number($raw);
-            if ($goal !== null && in_array((int)$level, ChestGoalService::LEVELS, true)) {
+            if ($goal !== null && in_array((int)$level, self::LEVELS, true)) {
                 $levels[(int)$level] = $goal;
             }
         }
@@ -162,8 +209,8 @@ final class EventGoal
         if ($this->mode === self::MODE_GLOBAL) {
             return $this->points;
         }
-        if (!in_array($level, ChestGoalService::LEVELS, true)) {
-            return max(array_map(fn (int $known): int => $this->goalForLevel($known), ChestGoalService::LEVELS));
+        if (!in_array($level, self::LEVELS, true)) {
+            return max(array_map(fn (int $known): int => $this->goalForLevel($known), self::LEVELS));
         }
 
         return $this->byGuard[$level] ?? $this->points;
@@ -177,7 +224,7 @@ final class EventGoal
     public function levelTable(): array
     {
         $table = [];
-        foreach (array_merge(array_reverse(ChestGoalService::LEVELS), [ChestGoalService::UNKNOWN_LEVEL]) as $level) {
+        foreach (array_merge(self::LEVELS, [ChestGoalService::UNKNOWN_LEVEL]) as $level) {
             $table[$level] = $this->goalForLevel($level);
         }
 

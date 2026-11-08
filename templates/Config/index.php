@@ -229,13 +229,13 @@ $configTable = function (array $rows): string {
                                                 <tbody>
                                                     <?php foreach ($guardLevels as $level): ?>
                                                         <tr>
-                                                            <td class="align-middle font-weight-bold">G<?= $level ?></td>
+                                                            <td class="align-middle font-weight-bold"><?= \App\Service\EventGoal::levelLabel((int)$level) ?></td>
                                                             <?php foreach ($targets as $target => $label): ?>
                                                                 <td>
                                                                     <input type="number" min="0" step="1"
                                                                            class="form-control form-control-sm js-guard-input"
                                                                            name="by_guard[<?= h($target) ?>][<?= $level ?>]"
-                                                                           aria-label="<?= h('G' . $level . ' — ' . $label) ?>"
+                                                                           aria-label="<?= h(\App\Service\EventGoal::levelLabel((int)$level) . ' — ' . $label) ?>"
                                                                            placeholder="<?= h(__('Global ({0})', $this->Number->format($goalSettings['global'][$target]))) ?>"
                                                                            value="<?= isset($goalSettings['by_guard'][$target][$level]) ? h((string)$goalSettings['by_guard'][$target][$level]) : '' ?>"
                                                                            <?= $byGuard ? '' : 'readonly' ?>>

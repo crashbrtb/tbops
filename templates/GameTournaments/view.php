@@ -143,13 +143,11 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
         </div>
 
         <div class="tournament-card <?= $state(GameTournament::SECTION_DURATION) ?>">
-            <?= $pencil(GameTournament::SECTION_DURATION) ?>
             <h3><?= __('Duration') ?><?= $icon(GameTournament::SECTION_DURATION) ?></h3>
             <?= $tournament->duration_days ? h(__('{0} day(s)', $tournament->duration_days)) : $notSet ?>
         </div>
 
         <div class="tournament-card <?= $state(GameTournament::SECTION_IMAGE) ?>">
-            <?= $pencil(GameTournament::SECTION_IMAGE) ?>
             <h3><?= __('Image') ?><?= $icon(GameTournament::SECTION_IMAGE) ?></h3>
             <?= $tournament->has_image ? '<img src="' . $imageUrl . '" alt="" class="tournament-thumb is-large">' : $notSet ?>
         </div>

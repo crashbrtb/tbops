@@ -61,6 +61,7 @@ class MemberPerformanceService
                 'active' => true,
                 'created_at' => $m->created_at,
                 'guards' => (int)($m->guards ?? 0),
+                'guard_level' => EventGoal::levelForMember($m),
                 'power' => (int)($m->power ?? 0),
                 'administrative' => (bool)$m->administrative_account,
                 'events_met' => 0,
@@ -112,7 +113,7 @@ class MemberPerformanceService
                     $mem = $memberMap[$lowerName];
                     $level = (int)$st->guard_level;
                     if ($level === 0) {
-                        $level = (int)($mem->guards ?? 0);
+                        $level = $mem ? EventGoal::levelForMember($mem) : 0;
                     }
                     $target = $st->goal !== null ? (int)$st->goal : ($goalActive ? $goal->goalForLevel($level) : null);
                     $met = $st->goal_met !== null ? (bool)$st->goal_met : (($goalActive && $target !== null) ? ((int)$st->points >= $target) : null);

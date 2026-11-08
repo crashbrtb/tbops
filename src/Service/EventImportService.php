@@ -785,7 +785,7 @@ class EventImportService
             }
         }
 
-        $unknownLevel = array_filter($rows, fn (EventImportRow $r): bool => (int)($r->member->guards ?? 0) < 1);
+        $unknownLevel = array_filter($rows, fn (EventImportRow $r): bool => EventGoal::levelForMember($r->member) < 1);
         if ($goal->isByGuard() && $unknownLevel) {
             $out[] = ['level' => 'info', 'text' => __(
                 '{0} player(s) have no known guard level and get the highest goal: {1}.',
@@ -1180,7 +1180,7 @@ class EventImportService
             'position' => (int)$row->position,
             'points' => (int)$row->points,
             'eligible' => (bool)$row->eligible,
-            'guard_level' => (int)($row->member->guards ?? 0),
+            'guard_level' => EventGoal::levelForMember($row->member),
         ], $rows);
     }
 

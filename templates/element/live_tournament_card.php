@@ -8,11 +8,13 @@
  * @var \App\Model\Entity\LiveTournament $live
  * @var array{tournament: \App\Model\Entity\GameTournament|null, last_event: \App\Model\Entity\Event|null} $site
  * @var array<int, string> $itemIcons item id => icon name
+ * @var bool|null $isAdmin
  */
 
 use App\Model\Entity\EventReward;
 use App\Service\EventGoal;
 
+$isAdmin = !empty($isAdmin);
 $image = fn (?string $name): ?string => $this->GameImage->url($name);
 $tournament = $site['tournament'];
 $lastEvent = $site['last_event'];
@@ -54,6 +56,20 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                     </span>
                 <?php endif; ?>
             </span>
+            <?php if ($isAdmin && $tournament !== null): ?>
+                <span class="ml-auto align-self-start pt-1">
+                    <?= $this->Html->link(
+                        '<i class="fas fa-pen"></i>',
+                        ['controller' => 'GameTournaments', 'action' => 'edit', $tournament->id],
+                        [
+                            'class' => 'btn btn-outline-light btn-xs',
+                            'escape' => false,
+                            'title' => __('Edit'),
+                            'style' => 'background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.6); padding: 3px 7px; border-radius: 4px;'
+                        ]
+                    ) ?>
+                </span>
+            <?php endif; ?>
         </span>
     </div>
 
@@ -139,7 +155,7 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                                 <?= __('Goal by guard level') ?>:
                                 <div class="mt-1 d-flex flex-wrap" style="gap: 4px;">
                                     <?php foreach ($goal->levelTable() as $level => $points): ?>
-                                        <span class="badge badge-light border">G<?= $level ?> <?= $this->Number->format($points) ?></span>
+                                        <span class="badge badge-light border"><?= \App\Service\EventGoal::levelLabel((int)$level) ?> <?= $this->Number->format($points) ?></span>
                                     <?php endforeach; ?>
                                 </div>
                             <?php else: ?>

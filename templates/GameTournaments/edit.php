@@ -17,7 +17,12 @@ use App\Model\Entity\GameTournament;
 $this->assign('title', __('Edit Tournament'));
 
 $shows = fn (string $part): bool => $section === ''
-    ? !in_array($part, [GameTournament::SECTION_PRIZES, GameTournament::SECTION_DESCRIPTION], true)
+    ? !in_array($part, [
+        GameTournament::SECTION_PRIZES,
+        GameTournament::SECTION_DESCRIPTION,
+        GameTournament::SECTION_DURATION,
+        GameTournament::SECTION_IMAGE,
+    ], true)
     : $section === $part;
 $titles = [
     GameTournament::SECTION_NAME => __('Name'),
@@ -67,7 +72,7 @@ foreach ($selected as $itemId => $prize) {
     <?= $this->Form->create($tournament, ['type' => 'file']) ?>
     <?= $this->Form->hidden('section', ['value' => $section]) ?>
 
-    <?php if ($shows(GameTournament::SECTION_NAME) || $shows(GameTournament::SECTION_DURATION) || $shows(GameTournament::SECTION_IMAGE) || $shows(GameTournament::SECTION_DESCRIPTION)): ?>
+    <?php if ($shows(GameTournament::SECTION_NAME) || $shows(GameTournament::SECTION_DESCRIPTION)): ?>
     <div class="event-form-card">
         <div class="event-form-grid">
             <?php if ($shows(GameTournament::SECTION_NAME)): ?>
@@ -111,44 +116,6 @@ foreach ($selected as $itemId => $prize) {
                         'class' => 'form-control',
                     ]) ?>
                     <small class="form-text text-muted"><?= __('Shown on every new event of this tournament.') ?></small>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($shows(GameTournament::SECTION_DURATION)): ?>
-                <div class="form-group">
-                    <?= $this->Form->control('duration_days', [
-                        'label' => __('Duration (days)'),
-                        'type' => 'number',
-                        'min' => 1,
-                        'max' => 60,
-                        'class' => 'form-control',
-                        'placeholder' => '1',
-                    ]) ?>
-                    <small class="form-text text-muted">
-                        <?= __('How long the tournament runs. A new event starts this many days before the end the game reports; one day when empty.') ?>
-                    </small>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($shows(GameTournament::SECTION_IMAGE)): ?>
-                <div class="form-group full-width">
-                    <label><?= __('Image') ?></label>
-                    <div class="d-flex align-items-center flex-wrap" style="gap: 16px;">
-                        <?php if ($tournament->has_image): ?>
-                            <img src="<?= $this->Url->build(['action' => 'image', $tournament->id, '?' => ['v' => $tournament->modified?->getTimestamp()]]) ?>"
-                                 alt="" class="tournament-thumb is-large">
-                        <?php endif; ?>
-                        <div>
-                            <input type="file" name="image" accept="image/png,image/jpeg,image/webp,image/gif" class="form-control-file">
-                            <small class="form-text text-muted"><?= __('PNG, JPEG, WebP or GIF, up to 1 MB.') ?></small>
-                            <?php if ($tournament->has_image): ?>
-                                <div class="form-check mt-2">
-                                    <input type="checkbox" class="form-check-input" id="remove-image" name="remove_image" value="1">
-                                    <label class="form-check-label" for="remove-image"><?= __('Remove the image') ?></label>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
                 </div>
             <?php endif; ?>
         </div>

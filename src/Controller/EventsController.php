@@ -7,6 +7,8 @@ use App\Model\Entity\Event;
 use App\Model\Entity\EventAsset;
 use App\Model\Entity\EventImport;
 use App\Model\Entity\EventReward;
+use App\Model\Entity\GameTournament;
+use App\Model\Entity\LiveTournament;
 use App\Model\Table\EventAssetsTable;
 use App\Service\EventImportService;
 use App\Service\EventPrizeService;
@@ -173,6 +175,21 @@ class EventsController extends AppController
         $itemIds = [];
         foreach (array_merge($live['active'], $live['upcoming']) as $entry) {
             $site[$entry->game_type] ??= $liveService->siteInfo((int)$entry->game_type);
+            if ($site[$entry->game_type]['tournament'] === null) {
+                /** @var \App\Model\Table\GameTournamentsTable $gtTable */
+                $gtTable = $this->fetchTable('GameTournaments');
+                $gt = $gtTable->touchType((int)$entry->game_type, (string)$entry->variant);
+                if ($entry->name !== '') {
+                    $gtTable->offerName($gt, $entry->name, GameTournament::SOURCE_JOURNAL);
+                }
+                if ($entry->icon || $entry->banner) {
+                    $gtTable->updateAll(
+                        array_filter(['game_icon' => $entry->icon, 'game_banner' => $entry->banner]),
+                        ['id' => $gt->id]
+                    );
+                }
+                $site[$entry->game_type]['tournament'] = $gt;
+            }
             foreach ($site[$entry->game_type]['tournament']?->prizeSelection() ?? [] as $prize) {
                 $itemIds[] = $prize['item_id'];
             }
@@ -183,6 +200,28 @@ class EventsController extends AppController
             }
         }
         $itemIcons = $this->fetchTable('GameItems')->iconsOf($itemIds);
+
+        // Sort tournaments: those with clan rewards first, ordered by ending earlier first.
+        $sortFn = function (LiveTournament $a, LiveTournament $b) use ($site): int {
+            $aHasReward = $a->rewardTiers() !== [] || !empty($site[$a->game_type]['tournament']?->prizeSelection());
+            $bHasReward = $b->rewardTiers() !== [] || !empty($site[$b->game_type]['tournament']?->prizeSelection());
+
+            if ($aHasReward !== $bHasReward) {
+                return $aHasReward ? -1 : 1;
+            }
+
+            $aTime = $a->ends_at?->getTimestamp() ?? PHP_INT_MAX;
+            $bTime = $b->ends_at?->getTimestamp() ?? PHP_INT_MAX;
+
+            if ($aTime !== $bTime) {
+                return $aTime <=> $bTime;
+            }
+
+            return ($a->starts_at?->getTimestamp() ?? PHP_INT_MAX) <=> ($b->starts_at?->getTimestamp() ?? PHP_INT_MAX);
+        };
+
+        usort($live['active'], $sortFn);
+        usort($live['upcoming'], $sortFn);
 
         $this->set(compact('tournaments', 'lastResults', 'isAdmin', 'live', 'site', 'itemIcons'));
     }

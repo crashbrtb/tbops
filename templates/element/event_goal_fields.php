@@ -50,13 +50,13 @@ $mode = $goal->mode;
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach (array_reverse(ChestGoalService::LEVELS) as $level): ?>
+                        <?php foreach (EventGoal::LEVELS as $level): ?>
                             <tr>
-                                <td class="align-middle font-weight-bold">G<?= $level ?></td>
+                                <td class="align-middle font-weight-bold"><?= EventGoal::levelLabel($level) ?></td>
                                 <td>
                                     <input type="text" inputmode="numeric" class="form-control form-control-sm"
                                            name="goal[by_guard][<?= $level ?>]"
-                                           aria-label="<?= h('G' . $level . ' — ' . __('Goal')) ?>"
+                                           aria-label="<?= h(EventGoal::levelLabel($level) . ' — ' . __('Goal')) ?>"
                                            placeholder="<?= h(__('Same as blank levels')) ?>"
                                            value="<?= isset($goal->byGuard[$level]) ? h((string)$goal->byGuard[$level]) : '' ?>">
                                 </td>
@@ -70,7 +70,7 @@ $mode = $goal->mode;
                 </table>
             </div>
             <p class="small text-muted">
-                <?= __('G0 means the guard level was never identified. Those players, and players with no member profile, get the highest goal of the table.') ?>
+                <?= __('T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal).') ?>
             </p>
         </div>
 

@@ -283,7 +283,7 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
                                                 ['class' => 'player-link', 'title' => $penaltyTitle ?? $summary->player_name]
                                             ) ?>
                                             <?php if ($summary->guard_level !== null): ?>
-                                                <span class="badge badge-light border ml-1" title="<?= h(__('Goal in this cycle: {0} chest points, {1} Epic chest points', $this->Number->format($summary->goalFor('total', (int)$minimumChestScore)), $this->Number->format($summary->goalFor('epic', (int)$minimumEpicChestScore)))) ?>">G<?= (int)$summary->guard_level ?></span>
+                                                <span class="badge badge-light border ml-1" title="<?= h(__('Goal in this cycle: {0} chest points, {1} Epic chest points', $this->Number->format($summary->goalFor('total', (int)$minimumChestScore)), $this->Number->format($summary->goalFor('epic', (int)$minimumEpicChestScore)))) ?>"><?= \App\Service\EventGoal::levelLabel((int)$summary->guard_level) ?></span>
                                             <?php endif; ?>
                                             <?php if ($penaltyTitle !== null): ?>
                                                 <i class="fas fa-arrow-up" style="color: #d97706; cursor: help;" title="<?= h($penaltyTitle) ?>"></i>

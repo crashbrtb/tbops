@@ -49,4 +49,23 @@ class Member extends Entity
         'game_player_id' => true,
         'administrative_account' => true,
     ];
+
+    /**
+     * Whether all troops (guards, specialists, monsters, engineers) are level 9.
+     */
+    public function isT9(): bool
+    {
+        return (int)$this->guards === 9
+            && (int)$this->specialists === 9
+            && (int)$this->monsters === 9
+            && (int)$this->engineers === 9;
+    }
+
+    /**
+     * Level for goals: T9 (10) if all troops are 9, guards level (1..9), or 0.
+     */
+    public function guardLevel(): int
+    {
+        return \App\Service\EventGoal::levelForMember($this);
+    }
 }

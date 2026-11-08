@@ -20,5 +20,5 @@ endif;
     <i class="fas <?= $met ? 'fa-check' : 'fa-times' ?> mr-1"></i><?= $this->Number->format((int)$value) ?>
 </span>
 <?php if (!empty($byGuard)): ?>
-    <span class="badge badge-light border" title="<?= h($level > 0 ? __('Guards G{0}', $level) : __('Guard level unknown (G0): highest goal')) ?>">G<?= (int)$level ?></span>
+    <span class="badge badge-light border" title="<?= h($level === \App\Service\EventGoal::LEVEL_T9 ? __('All troops level 9 (T9)') : ($level > 0 ? __('Guards G{0}', $level) : __('Guard level unknown (G0): highest goal'))) ?>"><?= \App\Service\EventGoal::levelLabel((int)$level) ?></span>
 <?php endif; ?>

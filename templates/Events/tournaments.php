@@ -40,18 +40,18 @@ $this->assign('title', __('Tournaments and Goals'));
     <?php if ($live['active'] !== [] || $live['upcoming'] !== []): ?>
         <h2 class="score-title live-section-title"><i class="fas fa-play-circle text-success"></i> <?= __('Active') ?></h2>
         <?php if ($live['read_at'] !== null): ?>
-            <p class="cycle-subtitle"><?= h(__('As the game showed them on {0} UTC.', $live['read_at']->format('d/m/Y H:i'))) ?></p>
+            <p class="cycle-subtitle"><?= h(__('Last updated on {0} UTC.', $live['read_at']->format('d/m/Y H:i'))) ?></p>
         <?php endif; ?>
         <div class="live-tournament-list">
             <?php foreach ($live['active'] as $entry): ?>
-                <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons]) ?>
+                <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons, 'isAdmin' => $isAdmin]) ?>
             <?php endforeach; ?>
         </div>
         <?php if ($live['upcoming'] !== []): ?>
             <h2 class="score-title live-section-title"><i class="fas fa-hourglass-start text-muted"></i> <?= __('Coming up') ?></h2>
             <div class="live-tournament-list">
                 <?php foreach ($live['upcoming'] as $entry): ?>
-                    <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons]) ?>
+                    <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons, 'isAdmin' => $isAdmin]) ?>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
