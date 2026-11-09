@@ -118,17 +118,30 @@ class EventsController extends AppController
             'limit' => 20,
         ];
 
-        // ?tournament=<game type>: the events of one tournament of the game.
+        // ?tournament=<game type>[&variant=<variant>]: the events of one tournament of
+        // the game. One type can hold several tournaments (1015 is Gold Rush, Silver
+        // Rush...), told apart by the variant.
         $gameType = (int)$this->request->getQuery('tournament');
+        $variant = (int)$this->request->getQuery('variant');
         $query = $this->Events->find('past');
         $tournamentName = null;
         if ($gameType > 0) {
-            $query->where(['OR' => [
-                ['Events.game_tournament_key' => (string)$gameType],
-                ['Events.game_tournament_key LIKE' => $gameType . ':%'],
-            ]]);
-            $entry = $this->fetchTable('GameTournaments')->find('withoutImage')->where(['GameTournaments.game_type' => $gameType])->first();
-            $live = $this->fetchTable('LiveTournaments')->find()->where(['game_type' => $gameType])->first();
+            $live = $this->fetchTable('LiveTournaments')->find()
+                ->where($variant > 0 ? ['game_key' => $gameType . ':' . $variant] : ['game_type' => $gameType])
+                ->first();
+            if ($variant > 0) {
+                $query->where(['OR' => [
+                    ['Events.game_tournament_key' => (string)$gameType],
+                    ['Events.game_tournament_key' => $gameType . ':' . $variant],
+                ]]);
+                $entry = (new LiveTournamentService())->entriesOf($gameType, (string)$live?->name, $variant)[0] ?? null;
+            } else {
+                $query->where(['OR' => [
+                    ['Events.game_tournament_key' => (string)$gameType],
+                    ['Events.game_tournament_key LIKE' => $gameType . ':%'],
+                ]]);
+                $entry = $this->fetchTable('GameTournaments')->find('withoutImage')->where(['GameTournaments.game_type' => $gameType])->first();
+            }
             $tournamentName = $entry?->displayName() ?? $live?->name ?? __('Game tournament {0}', $gameType);
         }
         $this->set(compact('gameType', 'tournamentName'));
@@ -174,11 +187,13 @@ class EventsController extends AppController
         $site = [];
         $itemIds = [];
         foreach (array_merge($live['active'], $live['upcoming']) as $entry) {
-            $site[$entry->game_type] ??= $liveService->siteInfo((int)$entry->game_type);
-            if ($site[$entry->game_type]['tournament'] === null) {
+            $site[$entry->game_key] ??= $liveService->siteInfo((int)$entry->game_type, (string)$entry->name, (int)$entry->variant);
+            // A tournament the catalogue lacks gets its own entry, even when its type
+            // already has another one (1007:14 Arachne's Swarm beside 1007:1 Doomsday).
+            if ($site[$entry->game_key]['tournament'] === null) {
                 /** @var \App\Model\Table\GameTournamentsTable $gtTable */
                 $gtTable = $this->fetchTable('GameTournaments');
-                $gt = $gtTable->touchType((int)$entry->game_type, (string)$entry->variant);
+                $gt = $gtTable->touchType((int)$entry->game_type, (string)$entry->variant, null, GameTournament::RANKING_DEFAULT, (string)$entry->name);
                 if ($entry->name !== '') {
                     $gtTable->offerName($gt, $entry->name, GameTournament::SOURCE_JOURNAL);
                 }
@@ -188,12 +203,12 @@ class EventsController extends AppController
                         ['id' => $gt->id]
                     );
                 }
-                $site[$entry->game_type]['tournament'] = $gt;
+                $site[$entry->game_key]['tournament'] = $gt;
             }
-            foreach ($site[$entry->game_type]['tournament']?->prizeSelection() ?? [] as $prize) {
+            foreach ($site[$entry->game_key]['tournament']?->prizeSelection() ?? [] as $prize) {
                 $itemIds[] = $prize['item_id'];
             }
-            foreach ((array)$site[$entry->game_type]['last_event']?->event_rewards as $reward) {
+            foreach ((array)$site[$entry->game_key]['last_event']?->event_rewards as $reward) {
                 if ($reward->get('game_item_id') !== null) {
                     $itemIds[] = (int)$reward->get('game_item_id');
                 }
@@ -203,8 +218,8 @@ class EventsController extends AppController
 
         // Sort tournaments: those with clan rewards first, ordered by ending earlier first.
         $sortFn = function (LiveTournament $a, LiveTournament $b) use ($site): int {
-            $aHasReward = $a->rewardTiers() !== [] || !empty($site[$a->game_type]['tournament']?->prizeSelection());
-            $bHasReward = $b->rewardTiers() !== [] || !empty($site[$b->game_type]['tournament']?->prizeSelection());
+            $aHasReward = $a->rewardTiers() !== [] || !empty($site[$a->game_key]['tournament']?->prizeSelection());
+            $bHasReward = $b->rewardTiers() !== [] || !empty($site[$b->game_key]['tournament']?->prizeSelection());
 
             if ($aHasReward !== $bHasReward) {
                 return $aHasReward ? -1 : 1;
@@ -573,6 +588,8 @@ class EventsController extends AppController
                 }
                 if ($recorded) {
                     $allocations = (new EventPrizeService())->redistribute($event);
+                    // The Silver not credited yet follows the new split.
+                    (new \App\Service\TournamentPayoutService())->propose($event);
                 }
 
                 return true;
@@ -748,6 +765,92 @@ class EventsController extends AppController
     }
 
     /**
+     * The published result of a game tournament as a CSV file: one line per
+     * player with their place, guard level, points, goal, what they received of
+     * each prize and their fine. Separated by semicolons, in UTF-8 with a BOM,
+     * so a spreadsheet opens it in columns with its accents. Silver and fines
+     * are in millions, as the clan bank keeps them.
+     *
+     * @param string|null $id Event id.
+     * @return \Cake\Http\Response
+     */
+    public function export(?string $id = null): Response
+    {
+        $this->requireAdmin();
+        /** @var \App\Model\Entity\Event $event */
+        $event = $this->Events->find('withoutBanner')
+            ->where(['Events.id' => (int)$id])
+            ->contain(['EventRewards'])
+            ->firstOrFail();
+        if (!$event->is_imported || $event->published_at === null) {
+            throw new NotFoundException(__('This event has no published result yet.'));
+        }
+
+        $result = (new EventImportService())->publishedResult($event);
+        $fines = [];
+        foreach ((new \App\Service\TournamentFineService())->finesOf($event) as $fine) {
+            $fines[mb_strtolower($fine->player)] = $fine;
+        }
+        $fineStatus = \App\Model\Entity\EventFine::statusOptions();
+        $byGuard = $event->goal()->isByGuard();
+
+        $header = [__('Position'), __('Player'), __('Guard level'), __('Points'), __('Goal'), __('Reached (%)'), __('Goal met'), __('Takes part in the prize')];
+        foreach ($result['rewards'] as $reward) {
+            if (!$reward->get('is_silver')) {
+                $header[] = $reward->item_name;
+            } else {
+                $header[] = in_array(mb_strtolower($reward->item_name), ['silver', mb_strtolower(__('Silver'))], true)
+                    ? __('Silver (millions)')
+                    : __('{0} (millions of Silver)', $reward->item_name);
+            }
+        }
+        $header[] = __('Fine (millions of Silver)');
+        $header[] = __('Fine status');
+
+        $lines = [$header];
+        foreach ($result['rows'] as $row) {
+            $standing = $row['standing'];
+            $goal = $standing->goal !== null ? (int)$standing->goal : null;
+            $points = (int)$standing->points;
+            $line = [
+                (int)$standing->position,
+                (string)$standing->player,
+                $byGuard ? \App\Service\EventGoal::levelLabel((int)$standing->guard_level) : '',
+                $points,
+                $goal ?? '',
+                $goal ? (int)floor(100 * min($points, $goal) / $goal) : '',
+                $standing->goal_met === null ? '' : ($standing->goal_met ? __('Yes') : __('No')),
+                $standing->eligible ? __('Yes') : __('No'),
+            ];
+            foreach ($result['rewards'] as $reward) {
+                $line[] = (int)($row['amounts'][$reward->id] ?? 0);
+            }
+            $fine = $fines[mb_strtolower((string)$standing->player)] ?? null;
+            $line[] = $fine ? (int)$fine->amount : '';
+            $line[] = $fine ? ($fineStatus[$fine->status] ?? $fine->status) : '';
+            $lines[] = $line;
+        }
+
+        $out = fopen('php://temp', 'r+');
+        fwrite($out, "\xEF\xBB\xBF");
+        foreach ($lines as $line) {
+            fputcsv($out, $line, ';', '"', '');
+        }
+        rewind($out);
+        $csv = (string)stream_get_contents($out);
+        fclose($out);
+
+        $slug = strtolower(trim((string)preg_replace('/[^A-Za-z0-9]+/', '-', (string)\Cake\Utility\Text::transliterate((string)$event->name)), '-')) ?: 'event';
+        $file = sprintf('%s-%s.csv', $slug, $event->ends_at?->format('Y-m-d') ?? $event->id);
+
+        return $this->response
+            ->withType('csv')
+            ->withCharset('UTF-8')
+            ->withDownload($file)
+            ->withStringBody($csv);
+    }
+
+    /**
      * A game tournament's page: its published result with every player's share.
      *
      * Until the result is published the page does not exist for players, only
@@ -767,6 +870,12 @@ class EventsController extends AppController
 
         $result = (new EventImportService())->publishedResult($event);
         $isAdmin = $this->isAdmin();
+        if ($isAdmin) {
+            $fineService = new \App\Service\TournamentFineService();
+            $this->set('fines', $fineService->finesOf($event));
+            $this->set('fineRule', $fineService->ruleFor($event));
+            $this->set('payouts', (new \App\Service\TournamentPayoutService())->payoutsOf($event));
+        }
 
         $this->set('cakelte_theme', [
             'sidebar' => ['enable' => false],
@@ -879,69 +988,6 @@ class EventsController extends AppController
         $this->Flash->success(__('The result of event #{0} is a draft again and no longer public.', $event->event_number));
 
         return $this->redirect(['action' => 'review', $event->id]);
-    }
-
-    /**
-     * Start a new clan event from an existing one: same rules, rewards and
-     * goal, starting in an hour and lasting as long as the original.
-     *
-     * @param string|null $id Event id.
-     * @return \Cake\Http\Response
-     */
-    public function duplicate(?string $id = null): Response
-    {
-        $this->requireAdmin();
-        $this->request->allowMethod(['post']);
-
-        $source = $this->Events->get($id, contain: ['EventRewards', 'EventChests']);
-
-        // A game tournament is registered by the EventUploader, which already
-        // copies the name, rewards and goal of the previous one of its type.
-        if ($source->is_imported) {
-            $this->Flash->warning(__('Game events are created by the EventUploader, not by this form.'));
-
-            return $this->redirect(['action' => 'manage']);
-        }
-
-        $data = [
-            'name' => $source->name,
-            'description' => $source->description,
-            'criteria' => $source->criteria,
-            'custom_metric' => $source->custom_metric,
-            'prize' => $source->prize,
-            'contact_player' => $source->contact_player,
-            // A chest event has to end in the future: the copy starts in an hour
-            // and lasts as long as the original.
-            'starts_at' => DateTime::now()->addHours(1),
-            'ends_at' => DateTime::now()->addHours(1)->addSeconds(
-                $source->ends_at->getTimestamp() - $source->starts_at->getTimestamp()
-            ),
-            'event_chests' => array_map(fn ($c) => ['standard_chest_id' => $c->standard_chest_id, 'source' => $c->source], (array)$source->event_chests),
-            'event_rewards' => array_map(fn (EventReward $r) => [
-                'item_name' => $r->item_name,
-                'quantity' => $r->quantity,
-                'position_amounts' => $r->position_amounts,
-                'rule' => $r->rule,
-                'min_points' => $r->min_points,
-                'remainder' => $r->remainder,
-            ], (array)$source->event_rewards),
-        ] + $source->goal()->toFields();
-
-        $copy = $this->Events->newEntity($data, ['associated' => ['EventChests', 'EventRewards']]);
-        $copy->set('created_by', $this->currentUserId());
-
-        if ($this->Events->save($copy, ['associated' => ['EventChests', 'EventRewards']])) {
-            $this->Flash->success(__('Event #{0} was created from #{1}. Check the name and the date.', $copy->event_number, $source->event_number));
-
-            return $this->redirect(['action' => 'edit', $copy->id]);
-        }
-
-        $this->Flash->error(__(
-            'The event could not be duplicated: {0}',
-            implode(' ', array_values(Hash::flatten($copy->getErrors())))
-        ));
-
-        return $this->redirect(['action' => 'manage']);
     }
 
     /**

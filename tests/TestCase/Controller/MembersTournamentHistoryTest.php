@@ -108,7 +108,7 @@ class MembersTournamentHistoryTest extends TestCase
         $this->assertResponseContains('clanPointsChart');
         $this->assertResponseContains('43,043,175', 'the points of the clan');
         $this->assertResponseContains('Not in the top 100');
-        $this->assertResponseContains('Dragon Coins x4,000,000');
+        $this->assertResponseContains('Dragon Coins x4M');
 
         $data = $this->chartData();
         $this->assertSame([2, 1], array_column($data['points'], 'position'), 'oldest first');

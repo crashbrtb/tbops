@@ -146,7 +146,7 @@ $best = $ranked === [] ? null : min(array_map(fn ($r): int => (int)$r->position,
                                 <td style="font-size: .85rem;">
                                     <?php $received = $result->rewardList(); ?>
                                     <?= $received === [] ? '<span class="text-muted">&ndash;</span>' : h(implode(', ', array_map(
-                                        fn (array $r): string => $r['name'] . ' x' . $this->Number->format($r['amount']),
+                                        fn (array $r): string => $r['name'] . ' x' . $this->gameNumber($r['amount']),
                                         $received
                                     ))) ?>
                                 </td>

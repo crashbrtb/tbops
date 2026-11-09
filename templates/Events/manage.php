@@ -125,17 +125,6 @@ $stateIcons = [
                                             ) ?>
                                         <?php endif; ?>
 
-                                        <?php if (!$event->is_imported): ?>
-                                            <?= $this->Form->postLink(
-                                                '<i class="fas fa-copy"></i>',
-                                                ['action' => 'duplicate', $event->id],
-                                                [
-                                                    'class' => 'btn btn-outline-primary btn-xs',
-                                                    'escape' => false,
-                                                    'title' => __('Duplicate'),
-                                                ]
-                                            ) ?>
-                                        <?php endif; ?>
                                         <?php if (!$event->is_imported && ($state === Event::STATE_FINISHED || $state === Event::STATE_CANCELLED)): ?>
                                             <?= $this->Form->postLink(
                                                 '<i class="fas fa-lock"></i>',

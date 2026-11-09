@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\GameTournament;
 use App\Service\EventGoal;
+use App\Service\TournamentFineService;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
@@ -29,10 +30,11 @@ class GameTournamentsTable extends Table
      * @var list<string>
      */
     public const LIST_FIELDS = [
-        'id', 'game_type', 'ranking', 'name', 'name_source', 'duration_days', 'image_mime',
+        'id', 'game_type', 'variant', 'ranking', 'name', 'name_source', 'duration_days', 'image_mime',
         'last_variant', 'first_seen_at', 'last_seen_at', 'created', 'modified',
         'goal_mode', 'goal_points', 'goal_by_guard', 'goal_required',
-        'display_name', 'description', 'prize_items', 'auto_publish', 'game_icon', 'game_banner',
+        'display_name', 'description', 'prize_items', 'extra_prizes', 'auto_publish', 'game_icon', 'game_banner',
+        'fine_mode', 'fine_amount', 'fine_tiers',
     ];
 
     /**
@@ -120,6 +122,11 @@ class GameTournamentsTable extends Table
             ->nonNegativeInteger('goal_points', __('The goal must be a whole number.'))
             ->allowEmptyString('goal_points');
 
+        $validator
+            ->inList('fine_mode', array_keys(TournamentFineService::modeOptions()))
+            ->nonNegativeInteger('fine_amount', __('The fine must be a whole number of millions of Silver.'))
+            ->allowEmptyString('fine_amount');
+
         return $validator;
     }
 
@@ -129,7 +136,7 @@ class GameTournamentsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['game_type', 'ranking']), ['errorField' => 'game_type']);
+        $rules->add($rules->isUnique(['game_type', 'variant', 'ranking']), ['errorField' => 'game_type']);
         $rules->add(
             fn (EntityInterface $entity): bool => (string)$entity->get('goal_mode') === EventGoal::MODE_NONE
                 || !$entity->get('goal_mode')
@@ -137,32 +144,90 @@ class GameTournamentsTable extends Table
             'goalSet',
             ['errorField' => 'goal_points', 'message' => __('Set the goal, or choose "No goal".')]
         );
+        $rules->add(
+            fn (EntityInterface $entity): bool => in_array((string)$entity->get('fine_mode'), ['', TournamentFineService::MODE_NONE, TournamentFineService::MODE_TIERS], true)
+                || (int)$entity->get('fine_amount') > 0,
+            'fineSet',
+            ['errorField' => 'fine_amount', 'message' => __('Set the fine, or choose "No fine".')]
+        );
+        $rules->add(
+            function (EntityInterface $entity): bool|string {
+                if ((string)$entity->get('fine_mode') !== TournamentFineService::MODE_TIERS) {
+                    return true;
+                }
+                /** @var \App\Model\Entity\GameTournament $entity */
+                return TournamentFineService::tierProblem($entity->fineTiers()) ?? true;
+            },
+            'fineTiersSet',
+            ['errorField' => 'fine_tiers']
+        );
 
         return $rules;
     }
 
     /**
-     * The catalogue entry for one ranking of a game type, created on first sight.
+     * The catalogue entry of one tournament, created on first sight.
+     *
+     * One game type can hold several tournaments, told apart by the variant (1007:1
+     * Doomsday, 1007:14 Arachne's Swarm), while one tournament can come back under
+     * another variant (Ragnarök 1026:1 and 1026:2). So the entry is the one made for
+     * this variant; else, when the name is known, the type's entry of that name;
+     * else an entry made for any variant (0), which from then on is this variant's;
+     * else, without a name, the type's first entry; else a new one for the variant.
      *
      * @param int $gameType Type id.
      * @param string|null $variant Rest of the key, such as `1` in `1024:1`.
      * @param \Cake\I18n\DateTime|null $seenAt When a tournament of this type ended.
      * @param string $ranking Which ranking of the type, from normalizeRanking().
+     * @param string $name The tournament's name, when known.
      * @return \App\Model\Entity\GameTournament
      */
     public function touchType(
         int $gameType,
         ?string $variant = null,
         ?DateTime $seenAt = null,
-        string $ranking = GameTournament::RANKING_DEFAULT
+        string $ranking = GameTournament::RANKING_DEFAULT,
+        string $name = ''
     ): GameTournament {
-        /** @var \App\Model\Entity\GameTournament|null $entry */
-        $entry = $this->find('withoutImage')
+        $number = $variant !== null && ctype_digit($variant) ? (int)$variant : 0;
+        /** @var list<\App\Model\Entity\GameTournament> $entries */
+        $entries = $this->find('withoutImage')
             ->where(['GameTournaments.game_type' => $gameType, 'GameTournaments.ranking' => $ranking])
-            ->first();
+            ->orderBy(['GameTournaments.id' => 'ASC'])
+            ->all()
+            ->toList();
+        $entry = null;
+        foreach ($entries as $candidate) {
+            if ((int)$candidate->variant === $number) {
+                $entry = $candidate;
+                break;
+            }
+        }
+        if ($entry === null && trim($name) !== '') {
+            foreach ($entries as $candidate) {
+                if ($candidate->isNamed($name)) {
+                    $entry = $candidate;
+                    break;
+                }
+            }
+        }
+        if ($entry === null) {
+            foreach ($entries as $candidate) {
+                if ((int)$candidate->variant === 0) {
+                    $entry = $candidate;
+                    if ($number > 0) {
+                        $entry->set('variant', $number, ['guard' => false]);
+                    }
+                    break;
+                }
+            }
+        }
+        if ($entry === null && trim($name) === '') {
+            $entry = $entries[0] ?? null;
+        }
         if ($entry === null) {
             $entry = $this->newEmptyEntity();
-            $entry->set(['game_type' => $gameType, 'ranking' => $ranking], ['guard' => false]);
+            $entry->set(['game_type' => $gameType, 'variant' => $number, 'ranking' => $ranking], ['guard' => false]);
         }
 
         if ($variant !== null && $variant !== '') {

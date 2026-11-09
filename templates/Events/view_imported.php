@@ -66,6 +66,11 @@ foreach ($rows as $row) {
                     ['action' => 'edit', $event->id],
                     ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
                 ) ?>
+                <?= $this->Html->link(
+                    '<i class="fas fa-file-csv mr-1"></i>' . __('Export CSV'),
+                    ['action' => 'export', $event->id],
+                    ['class' => 'btn btn-outline-success btn-sm', 'escape' => false]
+                ) ?>
             <?php endif; ?>
         </div>
     </div>
@@ -148,6 +153,13 @@ foreach ($rows as $row) {
         </div>
     </div>
 
+    <?php if ($isAdmin && isset($fines)): ?>
+        <?= $this->element('event_fines', ['event' => $event, 'fines' => $fines, 'fineRule' => $fineRule]) ?>
+    <?php endif; ?>
+    <?php if ($isAdmin && !empty($payouts)): ?>
+        <?= $this->element('event_payouts', ['event' => $event, 'payouts' => $payouts]) ?>
+    <?php endif; ?>
+
     <div class="event-standings-card">
         <div class="event-standings-header">
             <h2 class="event-standings-title">
@@ -174,7 +186,7 @@ foreach ($rows as $row) {
                             <th style="width: 150px;"><?= __('Goal') ?></th>
                         <?php endif; ?>
                         <?php foreach ($rewards as $reward): ?>
-                            <th style="width: 130px;" title="<?= h($reward->summary()) ?>"><?= h($reward->item_name) ?></th>
+                            <th style="width: 130px;" title="<?= h($reward->summary()) ?>"><?= $reward->get('is_silver') ? '<i class="fas fa-coins text-warning mr-1"></i>' : '' ?><?= h($reward->item_name) ?></th>
                         <?php endforeach; ?>
                     </tr>
                 </thead>
@@ -212,7 +224,7 @@ foreach ($rows as $row) {
                             <?php endif; ?>
                             <?php foreach ($rewards as $reward): ?>
                                 <?php $amount = $row['amounts'][$reward->id] ?? 0; ?>
-                                <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $fmt($amount) ?></td>
+                                <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $this->rewardAmount($reward, $amount) ?></td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>

@@ -81,20 +81,20 @@ msgid "⚠️ INSUFFICIENT BALANCE ⚠️"
 msgstr "⚠️ BAKİYE YETERSİZ ⚠️"
 
 #: ./src/Controller/BankController.php:305
-msgid "Available balance: {0} $"
-msgstr "Kullanılabilir bakiye: {0} $"
+msgid "Available balance: {0}"
+msgstr "Kullanılabilir bakiye: {0}"
 
 #: ./src/Controller/BankController.php:306
-msgid "Withdrawal amount: {0} $"
-msgstr "Çekim miktarı: {0} $"
+msgid "Withdrawal amount: {0}"
+msgstr "Çekim miktarı: {0}"
 
 #: ./src/Controller/BankController.php:307
-msgid "Fee: {0} $"
-msgstr "Ücret: {0} $"
+msgid "Fee: {0}"
+msgstr "Ücret: {0}"
 
 #: ./src/Controller/BankController.php:308
-msgid "Total required: {0} $"
-msgstr "Gereken toplam: {0} $"
+msgid "Total required: {0}"
+msgstr "Gereken toplam: {0}"
 
 #: ./src/Controller/BankController.php:309
 msgid "Please reduce the withdrawal amount."
@@ -1038,8 +1038,8 @@ msgid "Request a Silver deposit. Amounts represent millions of Silver ($)"
 msgstr "Gümüş yatırma talebi oluşturun. Miktarlar milyon Gümüş ($) cinsindendir"
 
 #: ./templates/Bank/deposit.php:35
-msgid "Flat deposit fee: {0} $ | Caravan fee: {1}%"
-msgstr "Sabit yatırma ücreti: {0} $ | Kervan ücreti: %{1}"
+msgid "Flat deposit fee: {0} | Caravan fee: {1}%"
+msgstr "Sabit yatırma ücreti: {0} | Kervan ücreti: %{1}"
 
 #: ./templates/Bank/deposit.php:40
 msgid "Deposit Details"
@@ -1141,8 +1141,8 @@ msgid "Values are saved in millions of Silver ($)"
 msgstr "Değerler milyon Gümüş ($) olarak saklanır"
 
 #: ./templates/Bank/history.php:24
-msgid "Current balance: {0} $"
-msgstr "Mevcut bakiye: {0} $"
+msgid "Current balance: {0}"
+msgstr "Mevcut bakiye: {0}"
 
 #: ./templates/Bank/history.php:29
 msgid "Transactions"
@@ -1261,8 +1261,8 @@ msgid "Refresh"
 msgstr "Yenile"
 
 #: ./templates/Bank/statement.php:39
-msgid "Member: {0} | Current balance: {1} $"
-msgstr "Üye: {0} | Mevcut bakiye: {1} $"
+msgid "Member: {0} | Current balance: {1}"
+msgstr "Üye: {0} | Mevcut bakiye: {1}"
 
 #: ./templates/Bank/statement.php:44
 msgid "Statement Records"
@@ -1277,8 +1277,8 @@ msgid "Choose a source and destination member. All values represent millions of 
 msgstr "Bir kaynak ve bir hedef üye seçin. Tüm değerler milyon Gümüş ($) cinsindendir"
 
 #: ./templates/Bank/transfer.php:33
-msgid "Transfer fee: {0} $ (charged in addition to the transferred amount)"
-msgstr "Transfer ücreti: {0} $ (transfer edilen miktara ek olarak alınır)"
+msgid "Transfer fee: {0} (charged in addition to the transferred amount)"
+msgstr "Transfer ücreti: {0} (transfer edilen miktara ek olarak alınır)"
 
 #: ./templates/Bank/transfer.php:38
 msgid "Your Available Source Balances"
@@ -1364,8 +1364,8 @@ msgid "Select a member and enter the Silver amount. All values represent million
 msgstr "Bir üye seçip Gümüş miktarını girin. Tüm değerler milyon Gümüş ($) cinsindendir"
 
 #: ./templates/Bank/withdraw.php:32
-msgid "Current withdrawal fee: {0} $"
-msgstr "Mevcut çekim ücreti: {0} $"
+msgid "Current withdrawal fee: {0}"
+msgstr "Mevcut çekim ücreti: {0}"
 
 #: ./templates/Bank/withdraw.php:38
 msgid "You do not have members available for withdrawals."
@@ -6098,3 +6098,1583 @@ msgstr "Değişim %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "Klan Verileri"
+
+msgid "Edit the catalogue entry of this tournament type"
+msgstr "Bu turnuva türünün katalog girişini düzenle"
+
+msgid "By ranges of the goal reached"
+msgstr "Ulaşılan hedef aralıklarına göre"
+
+msgid "Add at least one range, or choose \"No fine\"."
+msgstr "En az bir aralık ekleyin veya \"Ceza yok\" seçin."
+
+msgid "At most {0} ranges."
+msgstr "En fazla {0} aralık."
+
+
+msgid "The range {0}% to {1}% is not valid: it must start below where it ends, between 0% and 100%."
+msgstr "%{0} - %{1} aralığı geçersiz: bitişinden önce başlamalı, %0 ile %100 arasında olmalıdır."
+
+
+msgid "The range {0}% to {1}% overlaps the one before it."
+msgstr "%{0} - %{1} aralığı bir öncekiyle çakışıyor."
+
+msgid "{0}% to {1}% of the goal: {2}"
+msgstr "Hedefin %{0} - %{1} kısmı: {2}"
+
+msgid "By the goal reached"
+msgstr "Ulaşılan hedefe göre"
+
+msgid "By the share of the goal reached:"
+msgstr "Ulaşılan hedef oranına göre:"
+
+msgid "Each range is a share of the goal the player reached and the fine for it. A range holds its start but not its end: with 0% to 10% and 10% to 50%, a player at exactly 10% falls in the second. A share no range holds is not fined; a player who reached the goal never is."
+msgstr "Her aralık, oyuncunun ulaştığı hedef oranı ve buna karşılık gelen cezadır. Bir aralık başlangıcını içerir ama bitişini içermez: %0 - %10 ve %10 - %50 aralıklarında tam %10 olan oyuncu ikinciye girer. Hiçbir aralığa girmeyen oran cezalandırılmaz; hedefe ulaşan oyuncu asla cezalandırılmaz."
+
+msgid "From (%)"
+msgstr "Başlangıç (%)"
+
+msgid "To (%)"
+msgstr "Bitiş (%)"
+
+msgid "Remove range"
+msgstr "Aralığı kaldır"
+
+msgid "Add range"
+msgstr "Aralık ekle"
+
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "T9, tüm birlikler (muhafızlar, uzmanlar, canavarlar, mühendisler) 9. seviye olduğunda geçerlidir. G0, muhafız seviyesinin hiç belirlenemediği anlamına gelir (en yüksek hedefi alır)."
+
+msgid "All troops level 9 (T9)"
+msgstr "Tüm birlikler 9. seviye (T9)"
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "Bu türden {0} sandık daha aynı adla kaydedildi."
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "Bu kodun sandığı vurgulandı. Satırında oyunun bildirdiği oyuncunun göründüğünü kontrol edin."
+
+msgid "New chest types"
+msgstr "Yeni sandık türleri"
+
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "Oyunda ne sistemin ne de oyunun kendi kataloğunun henüz adlandıramadığı sandıklar var. Adı ve kaynağı yazıp kaydedin: bu türdeki tüm sandıklar her biri kendi oyuncusuyla kaydedilir ve sonrakiler kendiliğinden tanınır."
+
+msgid "Picture"
+msgstr "Görsel"
+
+msgid "Chests waiting"
+msgstr "Bekleyen sandıklar"
+
+msgid "Name it"
+msgstr "Adlandır"
+
+msgid "Picture of the chest"
+msgstr "Sandığın görseli"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "Kontrol edin: görselin en üst satırı {0} oyuncusuna ait olmalı."
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "Görsel yok. Yalnızca hangi sandık olduğunu biliyorsanız adlandırın."
+
+msgid "Code {0}"
+msgstr "Kod {0}"
+
+msgid "Save and record the chests"
+msgstr "Kaydet ve sandıkları işle"
+
+msgid "Cannot be identified"
+msgstr "Belirlenemiyor"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "Bu {0} sandık kurtarılamaz olarak işaretlensin mi? Kimse için sayılmayacaklar."
+
+msgid "Fill in the chest name and the source."
+msgstr "Sandık adını ve kaynağı doldurun."
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "{0} sandık \"{1}\" olarak kaydedildi."
+
+msgid "Chest code"
+msgstr "Sandık kodu"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "Bu, {0} kodunu kalıcı olarak adlandırır: bekleyen diğer {1} sandık ve bu kodun gelecekteki tüm sandıkları bu adı ve kaynağı alır."
+
+msgid "Pending Tournaments"
+msgstr "Bekleyen turnuvalar"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "Oyun bir turnuva için yalnızca bir numara gönderir. Adını görselden okuyun: adı olana kadar sıralamaları gönderilmez ve arama yalnızca programın \"Geriye bakılacak gün\" ayarı kadar geriye gider."
+
+msgid "The Journal page of this tournament"
+msgstr "Bu turnuvanın Günlük sayfası"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "Bu turnuvanın kartı vurgulandı. Tarihinin görselin yanındaki tarih olduğunu ve bir sonuç kartı olduğunu kontrol edin."
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "Program henüz görüntüsünü alamadı: bir sonraki aramada yeniden deneyecek."
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "Bu ad bundan sonra bu kodun tüm turnuvaları için kullanılacak."
+
+msgid "Save the name"
+msgstr "Adı kaydet"
+
+msgid "No tournament is waiting for a name."
+msgstr "Ad bekleyen turnuva yok."
+
+msgid "Fill in the name of the tournament."
+msgstr "Turnuvanın adını doldurun."
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "\"{0}\" turnuvası adlandırıldı. Sıralamaları bir sonraki aramayla gelecek."
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "Görsel en fazla {0} KB boyutunda PNG, JPEG, WebP veya GIF olmalıdır."
+
+msgid "Source, alias or chest name..."
+msgstr "Kaynak, takma ad veya sandık adı..."
+
+msgid "Filter by source or chest name..."
+msgstr "Kaynağa veya sandık adına göre filtrele..."
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr "Puana göre sıralamada yalnızca puanı olan sandıklar listelenir; toplanan sayıya göre sıralamada hepsi listelenir, çünkü puan önemli değildir. İstediğiniz kadar seçin."
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "\"{0}\" sıralamaları artık yayımlanmadan önce incelemeyi bekliyor."
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "\"{0}\" sıralamaları artık {1} eksik olsa da incelemesiz yayımlanıyor."
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "\"{0}\" sıralamaları artık incelemesiz yayımlanıyor."
+
+msgid "The clan results were not accepted."
+msgstr "Klan sonuçları kabul edilmedi."
+
+msgid "the name"
+msgstr "ad"
+
+msgid "the description"
+msgstr "açıklama"
+
+msgid "the duration"
+msgstr "süre"
+
+msgid "the image"
+msgstr "görsel"
+
+msgid "the goal"
+msgstr "hedef"
+
+msgid "the prizes"
+msgstr "ödüller"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "results'ı 1 ile {0} arasında klan sonucundan oluşan bir liste olarak gönderin."
+
+msgid "This clan result is not valid."
+msgstr "Bu klan sonucu geçerli değil."
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "Journal kaydının id'si eksik veya geçersiz."
+
+msgid "Item {0}"
+msgstr "Eşya {0}"
+
+msgid "Not defined"
+msgstr "Tanımlanmadı"
+
+msgid "Ranking {0}"
+msgstr "Sıralama {0}"
+
+msgid "Published without review"
+msgstr "İncelemesiz yayımlandı"
+
+msgid "Clan Tournament History"
+msgstr "Klan turnuva geçmişi"
+
+msgid "In the game"
+msgstr "Oyunda"
+
+msgid "Display name"
+msgstr "Görünen ad"
+
+msgid "The game's name"
+msgstr "Oyundaki ad"
+
+msgid "By guard level"
+msgstr "Muhafız seviyesine göre"
+
+msgid "Required to receive a reward."
+msgstr "Ödül almak için zorunlu."
+
+msgid "Not required to receive a reward."
+msgstr "Ödül almak için zorunlu değil."
+
+msgid "Prizes"
+msgstr "Ödüller"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "Her yeni etkinliğin oyuncuları arasında, klanın o etkinlikte aldığı miktarla bölüştürülür:"
+
+msgid "minimum {0} point(s)"
+msgstr "en az {0} puan"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "Klanın bu turnuvada sıraya göre aldıkları:"
+
+msgid "Last received"
+msgstr "Son alınan"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "Klan bu turnuvada henüz ödül almadı veya toplayıcı klan sonuçlarını göndermedi."
+
+msgid "The clan in this tournament"
+msgstr "Bu turnuvadaki klan"
+
+msgid "Ended (UTC)"
+msgstr "Bitiş (UTC)"
+
+msgid "Place"
+msgstr "Sıra"
+
+msgid "Clan points"
+msgstr "Klan puanı"
+
+msgid "Received"
+msgstr "Alınan"
+
+msgid "Not in the top {0}"
+msgstr "İlk {0} içinde değil"
+
+msgid "Nothing"
+msgstr "Hiçbir şey"
+
+msgid "Publish events automatically"
+msgstr "Etkinlikleri otomatik yayımla"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "Açıkken, toplayıcı bu turnuvanın biten bir etkinliğinin sıralamasını gönderir göndermez hedefler hesaplanır ve etkinlik incelemesiz hemen yayımlanır: her oyuncunun ödül payı kaydedilir. Sitenin tanıyamadığı oyuncular içeren bir sıralama yine de incelemeyi bekler. Kapalıyken her sıralama inceleme sayfasında taslak olarak bekler."
+
+msgid "Publish this tournament's events without review"
+msgstr "Bu turnuvanın etkinliklerini incelemesiz yayımla"
+
+msgid "Missing: {0}."
+msgstr "Eksik: {0}."
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "Bu turnuvanın etkinlikleri yine de incelemesiz yayımlansın mı?"
+
+msgid "Back to the tournament"
+msgstr "Turnuvaya dön"
+
+msgid "Name in the game"
+msgstr "Oyundaki ad"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "Oyunun Journal'ından okundu. Oyunun verdiği şekilde, İngilizce olarak kalır."
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "Oyun henüz bildirmedi. Buraya yazılan ad korunur: toplayıcı onun üzerine yazmaz."
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "Sitenin bu turnuva ve yeni etkinlikleri için gösterdiği ad. Boş: oyundaki ad."
+
+msgid "Shown on every new event of this tournament."
+msgstr "Bu turnuvanın her yeni etkinliğinde gösterilir."
+
+msgid "Clan prizes to split among the players"
+msgstr "Oyuncular arasında bölüştürülecek klan ödülleri"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "Bunlar klanın bu turnuvada aldığı ödüllerdir. Oyuncular arasında bölüştürülecekleri işaretleyin: turnuvanın her yeni etkinliği, işaretlenen her ödül için klanın o etkinlikte aldığı miktarla, seçilen kurala göre bölüştürülen bir ödül alır. Bir etkinliğe elle eklenen ödüller yanlarında korunur."
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "Oyunun turnuvaları. Adları ve id'leri toplayıcı doldurur; geri kalanını ayarlamak için bir turnuva açın: görünen ad, açıklama, süre, görsel, hedef, ödüller ve yayımlama."
+
+msgid "Tournament History"
+msgstr "Turnuva geçmişi"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "Klanın klanlar arasındaki sırası ve oyunun her turnuvasındaki puanı ile klanın aldıkları"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "Henüz klan sonucu yok. Toplayıcı bunları Journal'da okuduğu turnuvalarla birlikte gönderir."
+
+msgid "Best place"
+msgstr "En iyi sıra"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "{1} kezin {0}'inde sıralamaya girdi"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "Klan bu turnuvada listelenen klanlar arasında hiç yer almadı."
+
+msgid "Every tournament"
+msgstr "Tüm turnuvalar"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "Klanın bu turnuvada aldıklarıyla dolduruldu"
+
+msgid "Clan prize"
+msgstr "Klan ödülü"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "#{0} \"{1}\" etkinliği yayımlanmadı: klanın bu turnuvadaki sonucu gelmedi, bu yüzden ödülleri bölüştürülemedi. İnceleyin."
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "#{0} \"{1}\" etkinliği yayımlanmadı: klan bu etkinlikte, oyuncular arasında bölüştürülmek üzere seçilen {2} ödülünü almadı. İnceleyin."
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "Klanın bu turnuvadaki sonucu gelmedi: katalogda seçilen klan ödülleri bu etkinlikte bölüştürülmüyor."
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "Klan bu etkinlikte {0} almadı: katalogda bölüştürülmek üzere seçildi ama ödüller arasında yok."
+
+msgid "Member Performance"
+msgstr "Üye performansı"
+
+msgid "Performance"
+msgstr "Performans"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "Sandık ve etkinlik hedeflerine ulaşma ölçümleri, aylık sıralama (geçilen her etkinlik hedefi için +1 puan) ve her oyuncunun tam geçmişi."
+
+msgid "Event Goals Met"
+msgstr "Ulaşılan etkinlik hedefleri"
+
+msgid "Chest Goals Met"
+msgstr "Ulaşılan sandık hedefleri"
+
+msgid "Overall Goals Met"
+msgstr "Ulaşılan toplam hedef"
+
+msgid "Monthly Leader"
+msgstr "Ayın lideri"
+
+msgid "Event Goals Met per Tournament"
+msgstr "Turnuva / etkinlik başına ulaşılan hedefler"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "Sandık döngüsü başına ulaşılan hedefler"
+
+msgid "Player Performance Ranking"
+msgstr "Oyuncu performans sıralaması"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "Puan: dönem içinde hedefi geçilen her etkinlik için 1 puan. Tam etkinlik ve sandık geçmişini görmek için bir oyuncuya tıklayın."
+
+msgid "Event Goals"
+msgstr "Etkinlik hedefleri"
+
+msgid "Chest Goals"
+msgstr "Sandık hedefleri"
+
+msgid "Total Met"
+msgstr "Toplam ulaşılan"
+
+msgid "Success Rate"
+msgstr "Başarı oranı"
+
+msgid "Monthly Score"
+msgstr "Aylık puan"
+
+msgid "Chest History"
+msgstr "Sandık geçmişi"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "Puan sisteminde oyuncunun hedefe ulaştığı veya geçtiği her turnuva aylık puanına +1 puan ekler."
+
+msgid "Tournament / Event"
+msgstr "Turnuva / Etkinlik"
+
+msgid "Goal Status"
+msgstr "Hedef durumu"
+
+msgid "View player history"
+msgstr "Oyuncu geçmişini gör"
+
+msgid "Last month (30 days)"
+msgstr "Son ay (30 gün)"
+
+msgid "Last 60 days"
+msgstr "Son 60 gün"
+
+msgid "Last 90 days"
+msgstr "Son 90 gün"
+
+msgid "All time"
+msgstr "Tüm zamanlar"
+
+msgid "success rate"
+msgstr "başarı oranı"
+
+msgid "global rate"
+msgstr "genel oran"
+
+msgid "goals beaten"
+msgstr "geçilen hedefler"
+
+msgid "Recent cycles"
+msgstr "Son döngüler"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "En son tamamlanan döngüler gösteriliyor"
+
+msgid "No events with standings found in this period."
+msgstr "Bu dönemde sıralaması olan etkinlik bulunamadı."
+
+msgid "No chest cycle summaries recorded."
+msgstr "Kayıtlı sandık döngüsü özeti yok."
+
+msgid "No event records in this period."
+msgstr "Bu dönemde etkinlik kaydı yok."
+
+msgid "No chest cycle records in this period."
+msgstr "Bu dönemde sandık döngüsü kaydı yok."
+
+msgid "Awaiting event goal beats"
+msgstr "Geçilen etkinlik hedefleri bekleniyor"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "Sandık ve etkinlik hedeflerine ulaşma ölçümleri, başarı oranına göre sıralama ve oyuncuların tam geçmişi."
+
+msgid "Top Performer"
+msgstr "En iyi performans"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "Başarı oranına (%) göre sıralandı. Yalnızca aktif üyeler listelenir. Tam etkinlik ve sandık geçmişini görmek için bir oyuncuya tıklayın."
+
+msgid "No active members found."
+msgstr "Aktif üye bulunamadı."
+
+msgid "No active members ranked"
+msgstr "Sıralamada aktif üye yok"
+
+msgid "Awaiting goal evaluations"
+msgstr "Hedef değerlendirmeleri bekleniyor"
+
+msgid "Member since"
+msgstr "Üyelik başlangıcı"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "Dikkate alınmadı (etkinlik ortasında katıldı)"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "Dikkate alınmadı (döngü ortasında katıldı)"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "Oyuncu klana katıldıktan sonra başlayan, aktif hedefli turnuvalar başarı oranında değerlendirilir. Katılımdan önce başlayan veya hedefi olmayan turnuvalar buna göre işaretlenir."
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "Oyuncu klana katıldıktan sonra başlayan haftalık sandık döngüleri değerlendirilir. Katılımdan önce başlayan döngüler dikkate alınmaz."
+
+msgid "History of {0}"
+msgstr "{0} geçmişi"
+
+msgid "Ends {0} UTC"
+msgstr "Bitiş {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "Başlangıç {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "Klan puanı: {0}"
+
+msgid "Clan place: #{0}"
+msgstr "Klan sırası: #{0}"
+
+msgid "Clan place: 100+"
+msgstr "Klan sırası: 100+"
+
+msgid "Goal: {0} points"
+msgstr "Hedef: {0} puan"
+
+msgid "required for rewards"
+msgstr "ödüller için zorunlu"
+
+msgid "Prizes split among the players"
+msgstr "Oyuncular arasında bölüştürülen ödüller"
+
+msgid "Last prize split ({0})"
+msgstr "Son bölüştürülen ödül ({0})"
+
+msgid "Rewards of each place"
+msgstr "Klan ödülleri"
+
+msgid "Clan rewards"
+msgstr "Klan ödülleri"
+
+msgid "Clan rewards and goals"
+msgstr "Klan ödülleri ve hedefleri"
+
+msgid "Tournaments"
+msgstr "Turnuvalar"
+
+msgid "the clan's place now:"
+msgstr "klanın şu anki sırası:"
+
+msgid "#{0} to #{1}"
+msgstr "#{0} - #{1}"
+
+msgid "Best clans"
+msgstr "En iyi klanlar"
+
+msgid "Clan ranking"
+msgstr "Klan sıralaması"
+
+msgid "{0} player(s) with points"
+msgstr "Puanı olan {0} oyuncu"
+
+msgid "History of these events"
+msgstr "Bu etkinliklerin geçmişi"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "Son güncelleme: {0} UTC."
+
+msgid "Last updated on {0} UTC."
+msgstr "Son güncelleme: {0} UTC."
+
+msgid "Inactive"
+msgstr "Yakında"
+
+msgid "Goals of each tournament"
+msgstr "Her turnuvanın hedefleri"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "{0} turnuvasının yapılmış tüm etkinlikleri, en yeniden eskiye"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "tournaments'ı en fazla {0} öğelik bir liste olarak gönderin."
+
+msgid "This tournament is not valid."
+msgstr "Bu turnuva geçerli değil."
+
+msgid "This image is not a valid PNG."
+msgstr "Bu görsel geçerli bir PNG değil."
+
+msgid "Target"
+msgstr "Hedef"
+
+msgid "Goals Met"
+msgstr "Ulaşılan hedefler"
+
+msgid "Goal Met"
+msgstr "Hedefe ulaşıldı"
+
+msgid "Not Met"
+msgstr "Ulaşılamadı"
+
+msgid "No Goal"
+msgstr "Hedef yok"
+
+msgid "Cycle"
+msgstr "Döngü"
+
+msgid "Waived"
+msgstr "Affedildi"
+
+msgid "Charged"
+msgstr "Tahsil edildi"
+
+msgid "Refunded"
+msgstr "İade edildi"
+
+msgid "Fine"
+msgstr "Ceza"
+
+msgid "Fines"
+msgstr "Cezalar"
+
+msgid "Refund"
+msgstr "İade et"
+
+msgid "Waive"
+msgstr "Affet"
+
+msgid "Fine again"
+msgstr "Yeniden cezalandır"
+
+msgid "List again"
+msgstr "Yeniden listele"
+
+msgid "No fine"
+msgstr "Ceza yok"
+
+msgid "Fixed amount"
+msgstr "Sabit tutar"
+
+msgid "In proportion to what was missing"
+msgstr "Eksik kalan orana göre"
+
+msgid "Fine for missing the goal"
+msgstr "Hedefi kaçırma cezası"
+
+msgid "When the result of an event of this tournament is published, every player who did not reach the goal is listed with the fine below, debited from their account in the clan bank once an administrator charges it. Players can be waived on the event page before charging."
+msgstr "Bu turnuvanın bir etkinliğinin sonucu yayımlandığında, hedefe ulaşamayan her oyuncu aşağıdaki cezayla listelenir; bir yönetici tahsil ettiğinde ceza klan bankasındaki hesabından düşülür. Etkinlik sayfasında tahsilattan önce oyuncular affedilebilir."
+
+msgid "Fixed: every player who missed the goal owes the amount. In proportion: the amount times the part of the goal that was missing; a player at 60% of the goal owes 40% of the amount."
+msgstr "Sabit: hedefi kaçıran her oyuncu tutarı öder. Orantılı: tutar çarpı hedefin eksik kalan kısmı; hedefin %60'ındaki bir oyuncu tutarın %40'ını öder."
+
+msgid "{0} for every player who misses the goal."
+msgstr "Hedefi kaçıran her oyuncu için {0}."
+
+msgid "Up to {0}, in proportion to what was missing of the goal."
+msgstr "Hedefe eksik kalan orana göre en fazla {0}."
+
+msgid "Without a goal nobody is fined."
+msgstr "Hedef yoksa kimse cezalandırılmaz."
+
+msgid "The fine must be a whole number."
+msgstr "Ceza bir tam sayı olmalıdır."
+
+msgid "Set the fine, or choose \"No fine\"."
+msgstr "Cezayı belirleyin veya \"Ceza yok\" seçin."
+
+msgid "Not a member of the clan bank"
+msgstr "Klan bankası üyesi değil"
+
+msgid "Debit the pending fines from the players' accounts in the clan bank? A balance may go below zero: the player pays it by depositing."
+msgstr "Bekleyen cezalar oyuncuların klan bankasındaki hesaplarından düşülsün mü? Bakiye sıfırın altına inebilir: oyuncu para yatırarak öder."
+
+msgid "The fine is collected as a bank fee: the balance may go below zero, the player pays it by depositing, and the amount stays with the clan."
+msgstr "Ceza bir banka ücreti olarak tahsil edilir: bakiye sıfırın altına inebilir, oyuncu para yatırarak öder ve tutar klanda kalır."
+
+msgid "Tournament fine: {0} - {1} of {2} points ({3}%)"
+msgstr "Turnuva cezası: {0} - {2} puanın {1}'i (%{3})"
+
+msgid "{0} fine(s) waiting to be charged."
+msgstr "Tahsil edilmeyi bekleyen {0} ceza."
+
+msgid "{0} fine(s) charged, {1} in all."
+msgstr "{0} ceza tahsil edildi, toplam {1}."
+
+msgid "{0} player(s) are not members of the clan bank: their fines stay pending."
+msgstr "{0} oyuncu klan bankası üyesi değil: cezaları beklemede kalıyor."
+
+msgid "{0} is fined again."
+msgstr "{0} yeniden cezalandırıldı."
+
+msgid "{0} is waived."
+msgstr "{0} affedildi."
+
+msgid "The fine of {0} was refunded."
+msgstr "{0} oyuncusunun cezası iade edildi."
+
+msgid "This tournament has no fine."
+msgstr "Bu turnuvanın cezası yok."
+
+msgid "Lists the pending fines again from the result and the tournament's current rule."
+msgstr "Bekleyen cezaları sonuçtan ve turnuvanın güncel kuralından yeniden listeler."
+
+msgid "Charge {0} fine(s) ({1})"
+msgstr "{0} cezayı tahsil et ({1})"
+
+msgid "Set a fine on the tournament's page in the catalogue, then list the fines again."
+msgstr "Katalogdaki turnuva sayfasında bir ceza belirleyin, ardından cezaları yeniden listeleyin."
+
+msgid "Every player reached the goal: nobody is fined."
+msgstr "Tüm oyuncular hedefe ulaştı: kimse cezalandırılmadı."
+
+msgid "Give {0} back to {1}?"
+msgstr "{0} tutarı {1} oyuncusuna geri verilsin mi?"
+
+msgid "Lost"
+msgstr "Kayıp"
+
+msgid "Tournament Fines"
+msgstr "Turnuva cezaları"
+
+msgid "Tournament fines"
+msgstr "Turnuva cezaları"
+
+msgid "Every fine of the game tournaments, who still owes and what was given up"
+msgstr "Oyun turnuvalarının tüm cezaları, kimin hâlâ borçlu olduğu ve nelerin silindiği"
+
+msgid "{0} fine(s)"
+msgstr "{0} ceza"
+
+msgid "Fines to pay, by player"
+msgstr "Ödenecek cezalar, oyuncuya göre"
+
+msgid "Left the clan"
+msgstr "Klandan ayrıldı"
+
+msgid "{0} out of the clan"
+msgstr "Klan dışında {0}"
+
+msgid "Nobody owes a fine."
+msgstr "Kimsenin ceza borcu yok."
+
+msgid "In the clan"
+msgstr "Klanda"
+
+msgid "Not charged yet"
+msgstr "Henüz tahsil edilmedi"
+
+msgid "Debt in the bank"
+msgstr "Bankadaki borç"
+
+msgid "To pay"
+msgstr "Ödenecek"
+
+msgid "Show their fines"
+msgstr "Cezalarını göster"
+
+msgid "Not registered"
+msgstr "Kayıtlı değil"
+
+msgid "Give up as lost"
+msgstr "Kayıp olarak sil"
+
+msgid "Give up the {0} {1} owes? The debt leaves their balance and the clan's fees."
+msgstr "{1} oyuncusunun borçlu olduğu {0} silinsin mi? Borç bakiyesinden ve klanın ücretlerinden çıkar."
+
+msgid "Fine history"
+msgstr "Ceza geçmişi"
+
+msgid "Any status"
+msgstr "Herhangi bir durum"
+
+msgid "{0} given up"
+msgstr "{0} silindi"
+
+msgid "No fine matches."
+msgstr "Eşleşen ceza yok."
+
+msgid "This player owes nothing."
+msgstr "Bu oyuncunun borcu yok."
+
+msgid "{0} of {1} given up as lost."
+msgstr "{1} oyuncusunun {0} borcu kayıp olarak silindi."
+
+msgid "{0} given up as lost"
+msgstr "{0} kayıp olarak silindi"
+
+msgid "{0} paid, {1} given up"
+msgstr "{0} ödendi, {1} silindi"
+
+msgid "To pay: {0}"
+msgstr "Ödenecek: {0}"
+
+msgid "Nothing to pay"
+msgstr "Ödenecek bir şey yok"
+
+msgid "The ranges take whole numbers: percentages from 0 to 100, and the fine in millions of Silver."
+msgstr "Aralıklar tam sayı alır: 0 ile 100 arası yüzdeler ve milyon Gümüş cinsinden ceza."
+
+msgid "Set the fine of the range {0}% to {1}%, at least 1 million Silver."
+msgstr "%{0} - %{1} aralığının cezasını belirleyin, en az 1 milyon Gümüş."
+
+msgid "The fine must be a whole number of millions of Silver."
+msgstr "Ceza, milyon Gümüş cinsinden tam sayı olmalıdır."
+
+msgid "The fine is Silver in whole millions, as in the clan bank: 1 is 1 million, 1000 is 1 billion. It is never less than 1 million."
+msgstr "Ceza, klan bankasındaki gibi tam milyon cinsinden Gümüştür: 1, 1 milyon; 1000, 1 milyardır. Asla 1 milyondan az olmaz."
+
+msgid "Fine (millions of Silver)"
+msgstr "Ceza (milyon Gümüş)"
+
+msgid "Edit tournament"
+msgstr "Turnuvayı düzenle"
+
+msgid "Players without an identified level are evaluated by the highest goal."
+msgstr "Seviyesi belirlenmemiş oyuncular en yüksek hedefe göre değerlendirilir."
+
+msgid "{0} Silver credit(s) waiting to be confirmed."
+msgstr "Onay bekleyen {0} Gümüş ödemesi."
+
+msgid "{0} player(s) credited, {1} in all."
+msgstr "{0} oyuncuya ödendi, toplam {1}."
+
+msgid "{0} player(s) are not members of the clan bank: their Silver stays pending."
+msgstr "{0} oyuncu klan bankası üyesi değil: Gümüşleri beklemede kalıyor."
+
+msgid "{0} will be credited again."
+msgstr "{0} yeniden ödenecek."
+
+msgid "{0} will not be credited."
+msgstr "{0} oyuncusuna ödenmeyecek."
+
+msgid "The Silver credited to {0} was taken back."
+msgstr "{0} oyuncusuna ödenen Gümüş geri alındı."
+
+msgid "Guard level"
+msgstr "Muhafız seviyesi"
+
+msgid "Reached (%)"
+msgstr "Ulaşılan (%)"
+
+msgid "Goal met"
+msgstr "Hedefe ulaştı"
+
+msgid "{0} (millions of Silver)"
+msgstr "{0} (milyon Gümüş)"
+
+msgid "Fine status"
+msgstr "Ceza durumu"
+
+msgid "Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions."
+msgstr "Her ek ödülün sıfırdan büyük tam bir miktarı, eşyaların ise bir adı olmalıdır. Gümüş tam milyon cinsindendir."
+
+msgid "Not credited"
+msgstr "Ödenmedi"
+
+msgid "Credited"
+msgstr "Ödendi"
+
+msgid "Reversed"
+msgstr "Geri alındı"
+
+msgid "Silver"
+msgstr "Gümüş"
+
+msgid "Tournament prize: {0} - {1}"
+msgstr "Turnuva ödülü: {0} - {1}"
+
+msgid "Silver prize"
+msgstr "Gümüş ödülü"
+
+msgid "Credited to the players' accounts in the clan bank once confirmed."
+msgstr "Onaylandıktan sonra oyuncuların klan bankasındaki hesaplarına yatırılır."
+
+msgid "Lists the pending Silver again from the split of the rewards."
+msgstr "Bekleyen Gümüşü ödüllerin dağıtımından yeniden listeler."
+
+msgid "Credit {0} player(s) ({1})"
+msgstr "{0} oyuncuya öde ({1})"
+
+msgid "Credit the pending Silver to the players' accounts in the clan bank?"
+msgstr "Bekleyen Gümüş oyuncuların klan bankasındaki hesaplarına yatırılsın mı?"
+
+msgid "Do not credit"
+msgstr "Ödeme"
+
+msgid "Credit again"
+msgstr "Yeniden öde"
+
+msgid "Take back"
+msgstr "Geri al"
+
+msgid "Take {0} back from {1}? Their balance may go below zero."
+msgstr "{1} oyuncusundan {0} geri alınsın mı? Bakiyesi sıfırın altına inebilir."
+
+msgid "Silver in millions, credited to the players in the clan bank"
+msgstr "Milyon cinsinden Gümüş, klan bankasında oyunculara yatırılır"
+
+msgid "Silver (millions)"
+msgstr "Gümüş (milyon)"
+
+msgid "Export CSV"
+msgstr "CSV dışa aktar"
+
+msgid "Extra prizes: Silver and items"
+msgstr "Ek ödüller: Gümüş ve eşyalar"
+
+msgid "Prizes the clan gives besides the ones it receives, added to every new event of this tournament and split by the rule chosen. Add as many as you like."
+msgstr "Klanın aldıklarının yanı sıra verdiği ödüller; bu turnuvanın her yeni etkinliğine eklenir ve seçilen kurala göre bölüştürülür. İstediğiniz kadar ekleyin."
+
+msgid "Silver is in whole millions, as in the clan bank (1000 is 1B): when the result is published, each player's share waits on the event page for an administrator to credit it to their account in the clan bank."
+msgstr "Gümüş, klan bankasındaki gibi tam milyon cinsindendir (1000, 1B'dir): sonuç yayımlandığında her oyuncunun payı, bir yönetici klan bankasındaki hesabına yatırana kadar etkinlik sayfasında bekler."
+
+msgid "Item name"
+msgstr "Eşya adı"
+
+msgid "Remove prize"
+msgstr "Ödülü kaldır"
+
+msgid "Add prize"
+msgstr "Ödül ekle"
+
+msgid "Given by the clan in every new event:"
+msgstr "Klanın her yeni etkinlikte verdikleri:"
+
+msgid "{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "{0}: hedef 0 veya daha büyük bir tam sayı olmalı ya da boş bırakılmalıdır."
+
+msgid "The tournament ranking is invalid."
+msgstr "Turnuva sıralaması geçersiz."
+
+msgid "Manually register a chest collection entry"
+msgstr "Bir sandık toplamasını elle kaydet"
+
+msgid "Collection Record"
+msgstr "Toplama kaydı"
+
+msgid "Chest Name"
+msgstr "Sandık adı"
+
+msgid "e.g. Chest of the Ancients"
+msgstr "örn. Kadimlerin Sandığı"
+
+msgid "Player name"
+msgstr "Oyuncu adı"
+
+msgid "Save Record"
+msgstr "Kaydı kaydet"
+
+msgid "Missing Configuration"
+msgstr "Eksik yapılandırma"
+
+msgid "Incomplete Configuration"
+msgstr "Eksik yapılandırma"
+
+msgid "A required system parameter is missing or has an invalid configuration"
+msgstr "Zorunlu bir sistem parametresi eksik veya geçersiz yapılandırılmış"
+
+msgid "System Configurations"
+msgstr "Sistem yapılandırmaları"
+
+msgid "Parameter missing: {0}"
+msgstr "Eksik parametre: {0}"
+
+msgid "The parameter <strong>{0}</strong> is {1} in the <code>config</code> table, preventing score calculations."
+msgstr "<strong>{0}</strong> parametresi <code>config</code> tablosunda {1}; bu yüzden puanlar hesaplanamıyor."
+
+msgid "If this is a fresh setup or update, execute the initial migration seed in your terminal:"
+msgstr "Yeni bir kurulum veya güncelleme ise ilk migration seed'ini terminalde çalıştırın:"
+
+msgid "Then review and configure parameters in {0}."
+msgstr "Ardından parametreleri {0} içinde gözden geçirip yapılandırın."
+
+msgid "Configurations"
+msgstr "Yapılandırmalar"
+
+msgid "Modify individual chest record details and player attribution"
+msgstr "Sandık kaydının ayrıntılarını ve atanan oyuncuyu değiştir"
+
+msgid "Save Changes"
+msgstr "Değişiklikleri kaydet"
+
+msgid "History of all individual chest openings recorded by collectors"
+msgstr "Toplayıcıların kaydettiği tüm sandık açılışlarının geçmişi"
+
+msgid "Opened Chests Log"
+msgstr "Açılan sandık kaydı"
+
+msgid "Show:"
+msgstr "Göster:"
+
+msgid "No collected chests recorded."
+msgstr "Kayıtlı toplanmış sandık yok."
+
+msgid "Collected Chest: {0}"
+msgstr "Toplanan sandık: {0}"
+
+msgid "Chest collection event details and player log"
+msgstr "Sandık toplama ayrıntıları ve oyuncu kaydı"
+
+msgid "Collection Event Details"
+msgstr "Toplama ayrıntıları"
+
+msgid "Log ID"
+msgstr "Kayıt ID"
+
+msgid "Back to List"
+msgstr "Listeye dön"
+
+msgid "Add Configuration"
+msgstr "Yapılandırma ekle"
+
+msgid "Create a new global configuration parameter and its default value"
+msgstr "Yeni bir genel yapılandırma parametresi ve varsayılan değerini oluştur"
+
+msgid "List Configs"
+msgstr "Yapılandırmaları listele"
+
+msgid "New Parameter"
+msgstr "Yeni parametre"
+
+msgid "Parameter Key (Name)"
+msgstr "Parametre anahtarı (ad)"
+
+msgid "e.g. system_feature_enabled"
+msgstr "örn. system_feature_enabled"
+
+msgid "Snake_case identifier used in code."
+msgstr "Kodda kullanılan snake_case tanımlayıcı."
+
+msgid "Value (string or number)"
+msgstr "Değer (metin veya sayı)"
+
+msgid "Description & Purpose"
+msgstr "Açıklama ve amaç"
+
+msgid "Explain what this configuration affects..."
+msgstr "Bu yapılandırmanın neyi etkilediğini açıklayın..."
+
+msgid "Save Configuration"
+msgstr "Yapılandırmayı kaydet"
+
+msgid "Edit Configuration"
+msgstr "Yapılandırmayı düzenle"
+
+msgid "Update parameter value or documentation"
+msgstr "Parametre değerini veya açıklamasını güncelle"
+
+msgid "Parameter Key"
+msgstr "Parametre anahtarı"
+
+msgid "Parameter names are immutable identifiers used throughout the codebase."
+msgstr "Parametre adları kodun her yerinde kullanılan sabit tanımlayıcılardır."
+
+msgid "Are you sure you want to delete parameter \"{0}\"?"
+msgstr "\"{0}\" parametresini silmek istediğinizden emin misiniz?"
+
+msgid "Parameter"
+msgstr "Parametre"
+
+msgid "No configurations found."
+msgstr "Yapılandırma bulunamadı."
+
+msgid "Are you sure you want to delete parameter {0}?"
+msgstr "{0} parametresini silmek istediğinizden emin misiniz?"
+
+msgid "Global environment settings, feature toggles, and application variables"
+msgstr "Genel ortam ayarları, özellik anahtarları ve uygulama değişkenleri"
+
+msgid "Config: {0}"
+msgstr "Yapılandırma: {0}"
+
+msgid "Configuration parameter details and values"
+msgstr "Yapılandırma parametresinin ayrıntıları ve değerleri"
+
+msgid "Current Value"
+msgstr "Mevcut değer"
+
+msgid "Internal ID"
+msgstr "İç ID"
+
+msgid "Manually record an error log entry"
+msgstr "Bir hata kaydını elle oluştur"
+
+msgid "Error Log"
+msgstr "Hata kaydı"
+
+msgid "Configure error record details."
+msgstr "Hata kaydının ayrıntılarını yapılandırın."
+
+msgid "Save Error"
+msgstr "Hatayı kaydet"
+
+msgid "Modify error record details"
+msgstr "Hata kaydının ayrıntılarını değiştir"
+
+msgid "Error # {0}"
+msgstr "Hata no. {0}"
+
+msgid "System Errors"
+msgstr "Sistem hataları"
+
+msgid "Error logs and captured exception reports"
+msgstr "Hata kayıtları ve yakalanan istisna raporları"
+
+msgid "Recorded Errors"
+msgstr "Kaydedilen hatalar"
+
+msgid "No errors logged."
+msgstr "Kayıtlı hata yok."
+
+msgid "Error log record details"
+msgstr "Hata kaydı ayrıntıları"
+
+msgid "Error Details"
+msgstr "Hata ayrıntıları"
+
+msgid "Error ID"
+msgstr "Hata ID"
+
+msgid "The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody's points change."
+msgstr "Bu etkinliğin sonucu kaydedildi. Ödüllerini ve hedefini burada değiştirebilirsiniz: kaydedilen sıralamaya yeniden uygulanır ve kimsenin puanı değişmez."
+
+msgid "Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future."
+msgstr "İki zaman da UTC'dir, skor tablosuyla aynı saat. Yalnızca bu aralıkta toplanan sandıklar sayılır; başlangıç geçmişte olabilir, ama bitiş gelecekte olmalıdır."
+
+msgid "Review and manually transcribe unopened or unread chests captured by collectors"
+msgstr "Toplayıcıların yakaladığı açılmamış veya okunmamış sandıkları inceleyip elle yazın"
+
+msgid "Status Filters"
+msgstr "Durum filtreleri"
+
+msgid "Complete and record a chest the collector could not finish"
+msgstr "Toplayıcının bitiremediği bir sandığı tamamlayıp kaydedin"
+
+msgid "Back to Queue"
+msgstr "Kuyruğa dön"
+
+msgid "Register a new clan member, configure troop levels, and ranking participation"
+msgstr "Yeni bir klan üyesi kaydedin, birlik seviyelerini ve sıralamalara katılımı ayarlayın"
+
+msgid "New Member Profile"
+msgstr "Yeni üye profili"
+
+msgid "Player Details"
+msgstr "Oyuncu bilgileri"
+
+msgid "Player in-game name"
+msgstr "Oyuncunun oyundaki adı"
+
+msgid "Game Player ID"
+msgstr "Oyundaki oyuncu ID"
+
+msgid "Optional. Matches the member to tournament rankings even if their name changes."
+msgstr "İsteğe bağlı. Adı değişse bile üyeyi turnuva sıralamalarıyla eşleştirir."
+
+msgid "Linked System User"
+msgstr "Bağlı sistem kullanıcısı"
+
+msgid "None (Not linked to any login account)"
+msgstr "Yok (bir giriş hesabına bağlı değil)"
+
+msgid "Associate this clan member with a web system login account."
+msgstr "Bu klan üyesini sistemin bir giriş hesabıyla ilişkilendirin."
+
+msgid "Troop Levels & Status"
+msgstr "Birlik seviyeleri ve durum"
+
+msgid "Member Status & Clan Policy"
+msgstr "Üye durumu ve klan kuralları"
+
+msgid "Active Member (currently in clan and active)"
+msgstr "Aktif üye (klanda ve aktif)"
+
+msgid "Inactive members are hidden from common lists and ranking calculations."
+msgstr "Aktif olmayan üyeler genel listelerden ve sıralama hesaplarından gizlenir."
+
+msgid "Administrative Account"
+msgstr "Yönetim hesabı"
+
+msgid "Takes part in tournament rankings but never receives tournament rewards or counts towards division points."
+msgstr "Turnuva sıralamalarına katılır ama asla turnuva ödülü almaz ve lig puanlarına sayılmaz."
+
+msgid "Save Member"
+msgstr "Üyeyi kaydet"
+
+msgid "Manage player profile, in-game identifier, troop levels, and ranking participation"
+msgstr "Oyuncu profilini, oyundaki kimliğini, birlik seviyelerini ve sıralamalara katılımını yönetin"
+
+msgid "Receives Rewards"
+msgstr "Ödül alır"
+
+msgid "Matches the member to tournament rankings even if their name changes."
+msgstr "Adı değişse bile üyeyi turnuva sıralamalarıyla eşleştirir."
+
+msgid "Created:"
+msgstr "Oluşturulma:"
+
+msgid "Last Modified:"
+msgstr "Son değişiklik:"
+
+msgid "Manage clan members roster, troop tiers, and tournament reward eligibility"
+msgstr "Klan üye listesini, birlik seviyelerini ve turnuva ödülü uygunluğunu yönetin"
+
+msgid "Clan Members Roster"
+msgstr "Klan üye listesi"
+
+msgid "Troops"
+msgstr "Birlikler"
+
+msgid "Tournament Rewards"
+msgstr "Turnuva ödülleri"
+
+msgid "No clan members found."
+msgstr "Klan üyesi bulunamadı."
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "{0} silinsin mi?"
+
+msgid "Goals Missed"
+msgstr "Kaçırılan hedefler"
+
+msgid "Success Rate (%)"
+msgstr "Başarı oranı (%)"
+
+msgid "events"
+msgstr "etkinlik"
+
+msgid "cycles"
+msgstr "döngü"
+
+msgid "Events + Chests"
+msgstr "Etkinlikler + Sandıklar"
+
+msgid "Rank"
+msgstr "Sıra"
+
+msgid "Percentage of goals met out of valid evaluated goals"
+msgstr "Geçerli değerlendirilen hedefler içinde ulaşılan hedeflerin yüzdesi"
+
+msgid "1st Place"
+msgstr "1. sıra"
+
+msgid "Guards level"
+msgstr "Muhafız seviyesi"
+
+msgid "Administrative account"
+msgstr "Yönetim hesabı"
+
+msgid "Joined clan after tournament started"
+msgstr "Turnuva başladıktan sonra klana katıldı"
+
+msgid "Joined clan after cycle started"
+msgstr "Döngü başladıktan sonra klana katıldı"
+
+msgid "Member: {0}"
+msgstr "Üye: {0}"
+
+msgid "Member profile, troop composition, and clan participation details"
+msgstr "Üye profili, birlik dağılımı ve klan katılımı"
+
+msgid "Total Power"
+msgstr "Toplam güç"
+
+msgid "Clan Member # {0}"
+msgstr "Klan üyesi no. {0}"
+
+msgid "Troop Composition"
+msgstr "Birlik dağılımı"
+
+msgid "Account & Clan Data"
+msgstr "Hesap ve klan bilgileri"
+
+msgid "Active Member"
+msgstr "Aktif üye"
+
+msgid "Not assigned yet"
+msgstr "Henüz atanmadı"
+
+msgid "Administrative Account (Excluded from tournament prize distribution)"
+msgstr "Yönetim hesabı (turnuva ödül dağıtımı dışında)"
+
+msgid "Eligible for tournament rewards"
+msgstr "Turnuva ödülü alabilir"
+
+msgid "Not linked to any login account"
+msgstr "Bir giriş hesabına bağlı değil"
+
+msgid "Delete Member"
+msgstr "Üyeyi sil"
+
+msgid "Define a new authorization role and its permissions"
+msgstr "Yeni bir yetki rolü ve izinlerini tanımlayın"
+
+msgid "New Role Details"
+msgstr "Yeni rol bilgileri"
+
+msgid "Role Name"
+msgstr "Rol adı"
+
+msgid "e.g. manager"
+msgstr "örn. manager"
+
+msgid "Alias / Identifier"
+msgstr "Takma ad / tanımlayıcı"
+
+msgid "e.g. role_manager"
+msgstr "örn. role_manager"
+
+msgid "Describe what this role permits..."
+msgstr "Bu rolün neye izin verdiğini açıklayın..."
+
+msgid "Assign Users"
+msgstr "Kullanıcı ata"
+
+msgid "Hold Ctrl (or Cmd) to select multiple users."
+msgstr "Birden fazla kullanıcı seçmek için Ctrl (veya Cmd) tuşunu basılı tutun."
+
+msgid "Save Role"
+msgstr "Rolü kaydet"
+
+msgid "Modify role details, description, and assigned users"
+msgstr "Rolün bilgilerini, açıklamasını ve kullanıcılarını değiştirin"
+
+msgid "Assigned Users"
+msgstr "Atanan kullanıcılar"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple users."
+msgstr "Birden fazla kullanıcıyı seçmek veya seçimini kaldırmak için Ctrl (veya Cmd) tuşunu basılı tutun."
+
+msgid "Created: {0}"
+msgstr "Oluşturulma: {0}"
+
+msgid "Modified: {0}"
+msgstr "Değiştirilme: {0}"
+
+msgid "System Roles"
+msgstr "Sistem rolleri"
+
+msgid "Manage access permission levels and system role definitions"
+msgstr "Erişim izni seviyelerini ve sistem rollerini yönetin"
+
+msgid "Configured Roles"
+msgstr "Tanımlı roller"
+
+msgid "No roles found."
+msgstr "Rol bulunamadı."
+
+msgid "Role: {0}"
+msgstr "Rol: {0}"
+
+msgid "Role details and assigned system users"
+msgstr "Rol bilgileri ve atanan kullanıcılar"
+
+msgid "Role Information"
+msgstr "Rol bilgisi"
+
+msgid "Users Assigned to this Role"
+msgstr "Bu role sahip kullanıcılar"
+
+msgid "No users currently assigned to this role."
+msgstr "Şu anda bu role sahip kullanıcı yok."
+
+msgid "View User"
+msgstr "Kullanıcıyı gör"
+
+msgid "Assign Role to User"
+msgstr "Kullanıcıya rol ata"
+
+msgid "Link a system user account to a specific role"
+msgstr "Bir sistem kullanıcı hesabını bir role bağlayın"
+
+msgid "List Assignments"
+msgstr "Atamaları listele"
+
+msgid "Assignment Details"
+msgstr "Atama bilgileri"
+
+msgid "Save Assignment"
+msgstr "Atamayı kaydet"
+
+msgid "Edit Role Assignment"
+msgstr "Rol atamasını düzenle"
+
+msgid "Modify the user or role for this assignment"
+msgstr "Bu atamanın kullanıcısını veya rolünü değiştirin"
+
+msgid "Assignment # {0}"
+msgstr "Atama no. {0}"
+
+msgid "User Role Assignments"
+msgstr "Kullanıcı rol atamaları"
+
+msgid "Direct mappings between system user accounts and roles"
+msgstr "Kullanıcı hesapları ile roller arasındaki doğrudan bağlantılar"
+
+msgid "Assign Role"
+msgstr "Rol ata"
+
+msgid "Role Assignments"
+msgstr "Rol atamaları"
+
+msgid "No role assignments found."
+msgstr "Rol ataması bulunamadı."
+
+msgid "Roles User # {0}"
+msgstr "Kullanıcı rolü no. {0}"
+
+msgid "Role Assignment # {0}"
+msgstr "Rol ataması no. {0}"
+
+msgid "Direct user-to-role permission linkage"
+msgstr "Kullanıcı ile rol arasındaki doğrudan izin bağlantısı"
+
+msgid "Assignment Information"
+msgstr "Atama bilgisi"
+
+msgid "Assignment ID"
+msgstr "Atama ID"
+
+msgid "Register a new chest definition, point valuation, and monster categorization"
+msgstr "Yeni bir sandık, puan değeri ve canavar sınıflandırması kaydedin"
+
+msgid "Chest Specification"
+msgstr "Sandık özellikleri"
+
+msgid "Source Name"
+msgstr "Kaynak adı"
+
+msgid "e.g. Chest of the Serpent"
+msgstr "örn. Yılan Sandığı"
+
+msgid "The raw name of the chest as scanned by OCR or reported by the game."
+msgstr "Sandığın OCR'nin okuduğu veya oyunun bildirdiği ham adı."
+
+msgid "Friendly Alias"
+msgstr "Takma ad"
+
+msgid "Optional friendly name for reports..."
+msgstr "Raporlar için isteğe bağlı kolay ad..."
+
+msgid "Optional friendly name shown in reports instead of the raw source."
+msgstr "Raporlarda ham kaynak yerine gösterilen isteğe bağlı kolay ad."
+
+msgid "Score / Points"
+msgstr "Skor / puan"
+
+msgid "Points awarded for collecting this chest."
+msgstr "Bu sandığı toplamanın verdiği puan."
+
+msgid "Epic Monster Classification"
+msgstr "Epik canavar sınıflandırması"
+
+msgid "Epic Monster Chest (Drop from killing an Epic Monster)"
+msgstr "Epik canavar sandığı (bir epik canavarı öldürünce düşer)"
+
+msgid "Chests Quantity per Monster"
+msgstr "Canavar başına sandık"
+
+msgid "If chest type is Epic Monster, inform how many chests are earned by killing one monster."
+msgstr "Sandık epik canavardan geliyorsa, bir canavarı öldürmenin kaç sandık verdiğini belirtin."
+
+msgid "Save Chest"
+msgstr "Sandığı kaydet"
+
+msgid "Modify chest configuration, scoring weight, and monster flags"
+msgstr "Sandık yapılandırmasını, puan ağırlığını ve canavar işaretlerini değiştirin"
+
+msgid "Regular Chest"
+msgstr "Normal sandık"
+
+msgid "Catalogue of game chests, score values, and monster classifications"
+msgstr "Oyunun sandık kataloğu, puan değerleri ve canavar sınıflandırmaları"
+
+msgid "Goals & Weights"
+msgstr "Hedefler ve ağırlıklar"
+
+msgid "Filters & Search"
+msgstr "Filtreler ve arama"
+
+msgid "Review unregistered chests found in collection records and promote them to Standard Chests"
+msgstr "Toplama kayıtlarında bulunan kayıtsız sandıkları inceleyip standart sandığa dönüştürün"
+
+msgid "Standard Chest: {0}"
+msgstr "Standart sandık: {0}"
+
+msgid "Standard chest specification, score value, and monster drop configuration"
+msgstr "Standart sandığın özellikleri, puan değeri ve canavar ganimeti ayarları"
+
+msgid "Chest Attributes"
+msgstr "Sandık nitelikleri"
+
+msgid "Source (OCR / Game Name)"
+msgstr "Kaynak (OCR / oyundaki ad)"
+
+msgid "points"
+msgstr "puan"
+
+msgid "Classification"
+msgstr "Sınıflandırma"
+
+msgid "Epic Monster Chest"
+msgstr "Epik canavar sandığı"
+
+msgid "Optimize army formations, march capacities, leadership, and troop compositions"
+msgstr "Ordu dizilişlerini, yürüyüş kapasitesini, liderliği ve birlik dağılımını optimize edin"
+
+msgid "Create a new system user account and optionally link clan members"
+msgstr "Yeni bir sistem kullanıcı hesabı oluşturun ve isterseniz klan üyelerini bağlayın"
+
+msgid "Account Registration"
+msgstr "Hesap kaydı"
+
+msgid "Account Details"
+msgstr "Hesap bilgileri"
+
+msgid "User full name"
+msgstr "Kullanıcının tam adı"
+
+msgid "name@example.com"
+msgstr "ad@ornek.com"
+
+msgid "Enter a secure password"
+msgstr "Güvenli bir şifre girin"
+
+msgid "Status & Access"
+msgstr "Durum ve erişim"
+
+msgid "The user will be created with default role: <strong>user</strong>."
+msgstr "Kullanıcı varsayılan rolle oluşturulacak: <strong>user</strong>."
+
+msgid "Linked Clan Members"
+msgstr "Bağlı klan üyeleri"
+
+msgid "Clan Members"
+msgstr "Klan üyeleri"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple members."
+msgstr "Birden fazla üyeyi seçmek veya seçimini kaldırmak için Ctrl (veya Cmd) tuşunu basılı tutun."
+
+msgid "Save User"
+msgstr "Kullanıcıyı kaydet"
+
+msgid "Manage account details, permissions, and linked clan members"
+msgstr "Hesap bilgilerini, izinleri ve bağlı klan üyelerini yönetin"
+
+msgid "Leave blank to keep current password"
+msgstr "Mevcut şifreyi korumak için boş bırakın"
+
+msgid "Leave blank if you do not want to change the password."
+msgstr "Şifreyi değiştirmek istemiyorsanız boş bırakın."
+
+msgid "Only administrators can change the status."
+msgstr "Durumu yalnızca yöneticiler değiştirebilir."
+
+msgid "Roles & Clan Association"
+msgstr "Roller ve klan bağlantısı"
+
+msgid "Select the permission level for this user in the system."
+msgstr "Bu kullanıcının sistemdeki izin seviyesini seçin."
+
+msgid "Manage registered user accounts, permissions, and clan member associations"
+msgstr "Kullanıcı hesaplarını, izinleri ve klan üyesi bağlantılarını yönetin"
+
+msgid "System Users"
+msgstr "Sistem kullanıcıları"
+
+msgid "User: {0}"
+msgstr "Kullanıcı: {0}"
+
+msgid "User profile, security permissions, and clan membership links"
+msgstr "Kullanıcı profili, güvenlik izinleri ve klan üyeliği bağlantıları"
+
+msgid "Account Status"
+msgstr "Hesap durumu"
+
+msgid "Active (Access granted)"
+msgstr "Aktif (erişim verildi)"
+
+msgid "Pending Approval"
+msgstr "Onay bekliyor"
+
+msgid "Google Sign-In"
+msgstr "Google ile giriş"
+
+msgid "Registered"
+msgstr "Kayıt tarihi"
+
+msgid "Last Updated"
+msgstr "Son güncelleme"
+
+msgid "Active in Clan"
+msgstr "Klanda aktif"
+
+msgid "No clan members linked to this user."
+msgstr "Bu kullanıcıya bağlı klan üyesi yok."
+
+msgid "View Member"
+msgstr "Üyeyi gör"
+
+msgid "Assigned Roles"
+msgstr "Atanan roller"
+
+msgid "No roles assigned."
+msgstr "Atanmış rol yok."
+
+msgid "View Role"
+msgstr "Rolü gör"

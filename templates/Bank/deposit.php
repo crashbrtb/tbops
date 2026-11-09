@@ -32,7 +32,7 @@ if ($isAdmin) {
     </div>
 
     <div class="goal-pill">
-        <?= __('Flat deposit fee: {0} $ | Caravan fee: {1}%', $this->Number->format($depositFee, ['places' => 0]), $this->Number->format($caravanFee, ['places' => 0])) ?>
+        <?= __('Flat deposit fee: {0} | Caravan fee: {1}%', $this->silver($depositFee), $this->Number->format($caravanFee, ['places' => 0])) ?>
     </div>
 
     <div class="card ranking-card">

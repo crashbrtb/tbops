@@ -81,20 +81,20 @@ msgid "⚠️ INSUFFICIENT BALANCE ⚠️"
 msgstr "⚠️ НЕДОСТАТОЧНО СРЕДСТВ ⚠️"
 
 #: ./src/Controller/BankController.php:305
-msgid "Available balance: {0} $"
-msgstr "Доступный баланс: {0} $"
+msgid "Available balance: {0}"
+msgstr "Доступный баланс: {0}"
 
 #: ./src/Controller/BankController.php:306
-msgid "Withdrawal amount: {0} $"
-msgstr "Сумма снятия: {0} $"
+msgid "Withdrawal amount: {0}"
+msgstr "Сумма снятия: {0}"
 
 #: ./src/Controller/BankController.php:307
-msgid "Fee: {0} $"
-msgstr "Комиссия: {0} $"
+msgid "Fee: {0}"
+msgstr "Комиссия: {0}"
 
 #: ./src/Controller/BankController.php:308
-msgid "Total required: {0} $"
-msgstr "Требуется всего: {0} $"
+msgid "Total required: {0}"
+msgstr "Требуется всего: {0}"
 
 #: ./src/Controller/BankController.php:309
 msgid "Please reduce the withdrawal amount."
@@ -1038,8 +1038,8 @@ msgid "Request a Silver deposit. Amounts represent millions of Silver ($)"
 msgstr "Запросите вклад Серебра. Суммы указаны в миллионах Серебра ($)"
 
 #: ./templates/Bank/deposit.php:35
-msgid "Flat deposit fee: {0} $ | Caravan fee: {1}%"
-msgstr "Фиксированная комиссия за вклад: {0} $ | Комиссия каравана: {1}%"
+msgid "Flat deposit fee: {0} | Caravan fee: {1}%"
+msgstr "Фиксированная комиссия за вклад: {0} | Комиссия каравана: {1}%"
 
 #: ./templates/Bank/deposit.php:40
 msgid "Deposit Details"
@@ -1141,8 +1141,8 @@ msgid "Values are saved in millions of Silver ($)"
 msgstr "Значения хранятся в миллионах Серебра ($)"
 
 #: ./templates/Bank/history.php:24
-msgid "Current balance: {0} $"
-msgstr "Текущий баланс: {0} $"
+msgid "Current balance: {0}"
+msgstr "Текущий баланс: {0}"
 
 #: ./templates/Bank/history.php:29
 msgid "Transactions"
@@ -1261,8 +1261,8 @@ msgid "Refresh"
 msgstr "Обновить"
 
 #: ./templates/Bank/statement.php:39
-msgid "Member: {0} | Current balance: {1} $"
-msgstr "Участник: {0} | Текущий баланс: {1} $"
+msgid "Member: {0} | Current balance: {1}"
+msgstr "Участник: {0} | Текущий баланс: {1}"
 
 #: ./templates/Bank/statement.php:44
 msgid "Statement Records"
@@ -1277,8 +1277,8 @@ msgid "Choose a source and destination member. All values represent millions of 
 msgstr "Выберите участника-отправителя и участника-получателя. Все значения — в миллионах Серебра ($)"
 
 #: ./templates/Bank/transfer.php:33
-msgid "Transfer fee: {0} $ (charged in addition to the transferred amount)"
-msgstr "Комиссия за перевод: {0} $ (взимается сверх переводимой суммы)"
+msgid "Transfer fee: {0} (charged in addition to the transferred amount)"
+msgstr "Комиссия за перевод: {0} (взимается сверх переводимой суммы)"
 
 #: ./templates/Bank/transfer.php:38
 msgid "Your Available Source Balances"
@@ -1364,8 +1364,8 @@ msgid "Select a member and enter the Silver amount. All values represent million
 msgstr "Выберите участника и укажите сумму Серебра. Все значения — в миллионах Серебра ($)"
 
 #: ./templates/Bank/withdraw.php:32
-msgid "Current withdrawal fee: {0} $"
-msgstr "Текущая комиссия за снятие: {0} $"
+msgid "Current withdrawal fee: {0}"
+msgstr "Текущая комиссия за снятие: {0}"
 
 #: ./templates/Bank/withdraw.php:38
 msgid "You do not have members available for withdrawals."
@@ -6098,3 +6098,1583 @@ msgstr "Изменение %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "Данные клана"
+
+msgid "Edit the catalogue entry of this tournament type"
+msgstr "Изменить запись каталога этого типа турнира"
+
+msgid "By ranges of the goal reached"
+msgstr "По диапазонам достигнутой цели"
+
+msgid "Add at least one range, or choose \"No fine\"."
+msgstr "Добавьте хотя бы один диапазон или выберите «Без штрафа»."
+
+msgid "At most {0} ranges."
+msgstr "Не более {0} диапазонов."
+
+
+msgid "The range {0}% to {1}% is not valid: it must start below where it ends, between 0% and 100%."
+msgstr "Диапазон от {0}% до {1}% недопустим: начало должно быть меньше конца, в пределах от 0% до 100%."
+
+
+msgid "The range {0}% to {1}% overlaps the one before it."
+msgstr "Диапазон от {0}% до {1}% пересекается с предыдущим."
+
+msgid "{0}% to {1}% of the goal: {2}"
+msgstr "От {0}% до {1}% цели: {2}"
+
+msgid "By the goal reached"
+msgstr "По достигнутой цели"
+
+msgid "By the share of the goal reached:"
+msgstr "По достигнутой доле цели:"
+
+msgid "Each range is a share of the goal the player reached and the fine for it. A range holds its start but not its end: with 0% to 10% and 10% to 50%, a player at exactly 10% falls in the second. A share no range holds is not fined; a player who reached the goal never is."
+msgstr "Каждый диапазон — это доля цели, которую достиг игрок, и штраф за неё. Диапазон включает начало, но не конец: при диапазонах 0–10% и 10–50% игрок ровно с 10% попадает во второй. Доля вне всех диапазонов не штрафуется; игрок, достигший цели, — никогда."
+
+msgid "From (%)"
+msgstr "От (%)"
+
+msgid "To (%)"
+msgstr "До (%)"
+
+msgid "Remove range"
+msgstr "Удалить диапазон"
+
+msgid "Add range"
+msgstr "Добавить диапазон"
+
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "T9 применяется, когда все войска (стражи, специалисты, монстры, инженеры) 9-го уровня. G0 означает, что уровень стражи так и не был определён (получает самую высокую цель)."
+
+msgid "All troops level 9 (T9)"
+msgstr "Все войска 9-го уровня (T9)"
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "Ещё {0} сундук(ов) этого типа записаны с тем же названием."
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "Сундук с этим кодом выделен. Проверьте, что в его строке указан игрок, которого назвала игра."
+
+msgid "New chest types"
+msgstr "Новые типы сундуков"
+
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "В игре есть сундуки, которые пока не может назвать ни система, ни каталог самой игры. Введите название и источник и сохраните: все сундуки этого типа будут записаны, каждый со своим игроком, а следующие будут распознаваться сами."
+
+msgid "Picture"
+msgstr "Изображение"
+
+msgid "Chests waiting"
+msgstr "Сундуки в ожидании"
+
+msgid "Name it"
+msgstr "Дать название"
+
+msgid "Picture of the chest"
+msgstr "Изображение сундука"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "Проверьте: верхняя строка изображения должна быть от {0}."
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "Нет изображения. Давайте название, только если знаете, что это за сундук."
+
+msgid "Code {0}"
+msgstr "Код {0}"
+
+msgid "Save and record the chests"
+msgstr "Сохранить и записать сундуки"
+
+msgid "Cannot be identified"
+msgstr "Невозможно определить"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "Отметить эти {0} сундук(ов) как невосстановимые? Они ни для кого не будут засчитаны."
+
+msgid "Fill in the chest name and the source."
+msgstr "Заполните название сундука и источник."
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "{0} сундук(ов) записано как «{1}»."
+
+msgid "Chest code"
+msgstr "Код сундука"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "Это окончательно даёт название коду {0}: ещё {1} сундук(ов) в ожидании и все будущие сундуки этого кода получат это название и источник."
+
+msgid "Pending Tournaments"
+msgstr "Турниры в ожидании"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "Игра присылает для турнира только номер. Прочитайте его название на изображении: его рейтинги не отправляются, пока у него нет названия, а поиск идёт назад лишь на «Дней назад» программы."
+
+msgid "The Journal page of this tournament"
+msgstr "Страница Журнала этого турнира"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "Карточка этого турнира выделена. Проверьте, что её дата совпадает с датой рядом с изображением и что это карточка результатов."
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "Программа ещё не смогла сделать снимок: она попробует снова при следующем поиске."
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "Это название будет использоваться для всех турниров этого кода с этого момента."
+
+msgid "Save the name"
+msgstr "Сохранить название"
+
+msgid "No tournament is waiting for a name."
+msgstr "Ни один турнир не ждёт названия."
+
+msgid "Fill in the name of the tournament."
+msgstr "Заполните название турнира."
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "Турнир «{0}» назван. Его рейтинги придут со следующим поиском."
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "Изображение должно быть PNG, JPEG, WebP или GIF размером не более {0} КБ."
+
+msgid "Source, alias or chest name..."
+msgstr "Источник, псевдоним или название сундука..."
+
+msgid "Filter by source or chest name..."
+msgstr "Фильтр по источнику или названию сундука..."
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr "При рейтинге по очкам перечислены только сундуки с очками; при рейтинге по количеству — все, потому что очки не важны. Выберите сколько угодно."
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "Рейтинги «{0}» теперь ждут проверки перед публикацией."
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "Рейтинги «{0}» теперь публикуются без проверки, хотя не заполнено: {1}."
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "Рейтинги «{0}» теперь публикуются без проверки."
+
+msgid "The clan results were not accepted."
+msgstr "Результаты клана не приняты."
+
+msgid "the name"
+msgstr "название"
+
+msgid "the description"
+msgstr "описание"
+
+msgid "the duration"
+msgstr "длительность"
+
+msgid "the image"
+msgstr "изображение"
+
+msgid "the goal"
+msgstr "цель"
+
+msgid "the prizes"
+msgstr "призы"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "Отправьте results списком от 1 до {0} результатов клана."
+
+msgid "This clan result is not valid."
+msgstr "Этот результат клана недействителен."
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "Id записи Journal отсутствует или недействителен."
+
+msgid "Item {0}"
+msgstr "Предмет {0}"
+
+msgid "Not defined"
+msgstr "Не задано"
+
+msgid "Ranking {0}"
+msgstr "Рейтинг {0}"
+
+msgid "Published without review"
+msgstr "Опубликовано без проверки"
+
+msgid "Clan Tournament History"
+msgstr "История турниров клана"
+
+msgid "In the game"
+msgstr "В игре"
+
+msgid "Display name"
+msgstr "Отображаемое название"
+
+msgid "The game's name"
+msgstr "Название в игре"
+
+msgid "By guard level"
+msgstr "По уровню стражи"
+
+msgid "Required to receive a reward."
+msgstr "Обязательна для получения награды."
+
+msgid "Not required to receive a reward."
+msgstr "Не обязательна для получения награды."
+
+msgid "Prizes"
+msgstr "Призы"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "Делятся между игроками каждого нового события, в количестве, которое клан в нём получил:"
+
+msgid "minimum {0} point(s)"
+msgstr "минимум {0} очк(ов)"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "Что клан получил в этом турнире, по местам:"
+
+msgid "Last received"
+msgstr "Последнее получение"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "Клан ещё не получал призов в этом турнире, или сборщик не отправил результаты клана."
+
+msgid "The clan in this tournament"
+msgstr "Клан в этом турнире"
+
+msgid "Ended (UTC)"
+msgstr "Завершён (UTC)"
+
+msgid "Place"
+msgstr "Место"
+
+msgid "Clan points"
+msgstr "Очки клана"
+
+msgid "Received"
+msgstr "Получено"
+
+msgid "Not in the top {0}"
+msgstr "Не в топ-{0}"
+
+msgid "Nothing"
+msgstr "Ничего"
+
+msgid "Publish events automatically"
+msgstr "Публиковать события автоматически"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "Когда включено, как только сборщик присылает рейтинг завершённого события этого турнира, цели рассчитываются и событие сразу публикуется без проверки: доля призов каждого игрока записывается. Рейтинг с игроками, которых сайт не может определить, всё равно ждёт проверки. Когда выключено, каждый рейтинг ждёт как черновик на странице проверки."
+
+msgid "Publish this tournament's events without review"
+msgstr "Публиковать события этого турнира без проверки"
+
+msgid "Missing: {0}."
+msgstr "Не хватает: {0}."
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "Всё равно публиковать события этого турнира без проверки?"
+
+msgid "Back to the tournament"
+msgstr "Назад к турниру"
+
+msgid "Name in the game"
+msgstr "Название в игре"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "Прочитано из Journal игры. Сохраняется так, как его называет игра, на английском."
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "Игра ещё не сообщила его. Введённое здесь название сохраняется: сборщик его не перезапишет."
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "Название, которое сайт показывает для этого турнира и его новых событий. Пусто: название в игре."
+
+msgid "Shown on every new event of this tournament."
+msgstr "Показывается в каждом новом событии этого турнира."
+
+msgid "Clan prizes to split among the players"
+msgstr "Призы клана для распределения между игроками"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "Это призы, которые клан получил в этом турнире. Отметьте те, что нужно делить между игроками: каждое новое событие турнира получает по награде за каждый отмеченный приз, в количестве, которое клан в нём получил, разделённом по выбранному правилу. Награды, добавленные к событию вручную, сохраняются рядом с ними."
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "Турниры игры. Названия и id заполняет сборщик; откройте турнир, чтобы задать остальное: отображаемое название, описание, длительность, изображение, цель, призы и публикацию."
+
+msgid "Tournament History"
+msgstr "История турниров"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "Место клана среди кланов и его очки в каждом турнире игры, и что клан получил"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "Результатов клана пока нет. Сборщик присылает их вместе с турнирами, которые читает в Journal."
+
+msgid "Best place"
+msgstr "Лучшее место"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "в рейтинге {0} из {1} раз"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "Клан ни разу не был среди кланов, перечисленных в этом турнире."
+
+msgid "Every tournament"
+msgstr "Все турниры"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "Заполнено тем, что клан получил в этом турнире"
+
+msgid "Clan prize"
+msgstr "Приз клана"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "Событие #{0} «{1}» не опубликовано: результат клана в этом турнире не пришёл, поэтому призы не удалось разделить. Проверьте его."
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "Событие #{0} «{1}» не опубликовано: клан не получил в нём {2}, выбранный для распределения между игроками. Проверьте его."
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "Результат клана в этом турнире не пришёл: призы клана, выбранные в каталоге, в этом событии не делятся."
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "Клан не получил {0} в этом событии: выбранный в каталоге для распределения, он отсутствует в наградах."
+
+msgid "Member Performance"
+msgstr "Эффективность участников"
+
+msgid "Performance"
+msgstr "Эффективность"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "Показатели выполнения целей по сундукам и событиям, месячный рейтинг (+1 очко за каждую выполненную цель события) и полная история каждого игрока."
+
+msgid "Event Goals Met"
+msgstr "Выполнено целей событий"
+
+msgid "Chest Goals Met"
+msgstr "Выполнено целей сундуков"
+
+msgid "Overall Goals Met"
+msgstr "Всего выполнено целей"
+
+msgid "Monthly Leader"
+msgstr "Лидер месяца"
+
+msgid "Event Goals Met per Tournament"
+msgstr "Выполненные цели по турнирам / событиям"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "Выполненные цели по циклам сундуков"
+
+msgid "Player Performance Ranking"
+msgstr "Рейтинг эффективности игроков"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "Очки: 1 очко за каждое событие, цель которого выполнена за период. Нажмите на игрока, чтобы увидеть полную историю событий и сундуков."
+
+msgid "Event Goals"
+msgstr "Цели событий"
+
+msgid "Chest Goals"
+msgstr "Цели сундуков"
+
+msgid "Total Met"
+msgstr "Всего выполнено"
+
+msgid "Success Rate"
+msgstr "Процент успеха"
+
+msgid "Monthly Score"
+msgstr "Очки за месяц"
+
+msgid "Chest History"
+msgstr "История сундуков"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "В системе очков каждый турнир, в котором игрок достигает или превышает цель, даёт +1 очко к его месячному счёту."
+
+msgid "Tournament / Event"
+msgstr "Турнир / Событие"
+
+msgid "Goal Status"
+msgstr "Статус цели"
+
+msgid "View player history"
+msgstr "Посмотреть историю игрока"
+
+msgid "Last month (30 days)"
+msgstr "Последний месяц (30 дней)"
+
+msgid "Last 60 days"
+msgstr "Последние 60 дней"
+
+msgid "Last 90 days"
+msgstr "Последние 90 дней"
+
+msgid "All time"
+msgstr "Весь период"
+
+msgid "success rate"
+msgstr "процент успеха"
+
+msgid "global rate"
+msgstr "общий процент"
+
+msgid "goals beaten"
+msgstr "выполнено целей"
+
+msgid "Recent cycles"
+msgstr "Последние циклы"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "Показаны последние завершённые циклы"
+
+msgid "No events with standings found in this period."
+msgstr "За этот период событий с рейтингом не найдено."
+
+msgid "No chest cycle summaries recorded."
+msgstr "Сводок по циклам сундуков не записано."
+
+msgid "No event records in this period."
+msgstr "Нет записей о событиях за этот период."
+
+msgid "No chest cycle records in this period."
+msgstr "Нет записей о циклах сундуков за этот период."
+
+msgid "Awaiting event goal beats"
+msgstr "Ожидание выполненных целей событий"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "Показатели выполнения целей по сундукам и событиям, рейтинг по проценту успеха и полная история игроков."
+
+msgid "Top Performer"
+msgstr "Лучший результат"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "Упорядочено по проценту успеха (%). Перечислены только активные участники. Нажмите на игрока, чтобы увидеть полную историю событий и сундуков."
+
+msgid "No active members found."
+msgstr "Активные участники не найдены."
+
+msgid "No active members ranked"
+msgstr "Нет активных участников в рейтинге"
+
+msgid "Awaiting goal evaluations"
+msgstr "Ожидание оценки целей"
+
+msgid "Member since"
+msgstr "Участник с"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "Не учитывается (вступил во время события)"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "Не учитывается (вступил во время цикла)"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "Турниры с активными целями, начавшиеся после вступления игрока в клан, учитываются в проценте успеха. Начавшиеся до вступления или без цели помечаются соответственно."
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "Оцениваются еженедельные циклы сундуков, начавшиеся после вступления игрока в клан. Циклы, начавшиеся до вступления, не учитываются."
+
+msgid "History of {0}"
+msgstr "История {0}"
+
+msgid "Ends {0} UTC"
+msgstr "Заканчивается {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "Начинается {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "Очки клана: {0}"
+
+msgid "Clan place: #{0}"
+msgstr "Место клана: #{0}"
+
+msgid "Clan place: 100+"
+msgstr "Место клана: 100+"
+
+msgid "Goal: {0} points"
+msgstr "Цель: {0} очков"
+
+msgid "required for rewards"
+msgstr "обязательна для наград"
+
+msgid "Prizes split among the players"
+msgstr "Призы, разделённые между игроками"
+
+msgid "Last prize split ({0})"
+msgstr "Последний разделённый приз ({0})"
+
+msgid "Rewards of each place"
+msgstr "Награды клана"
+
+msgid "Clan rewards"
+msgstr "Награды клана"
+
+msgid "Clan rewards and goals"
+msgstr "Награды и цели клана"
+
+msgid "Tournaments"
+msgstr "Турниры"
+
+msgid "the clan's place now:"
+msgstr "текущее место клана:"
+
+msgid "#{0} to #{1}"
+msgstr "с #{0} по #{1}"
+
+msgid "Best clans"
+msgstr "Лучшие кланы"
+
+msgid "Clan ranking"
+msgstr "Рейтинг клана"
+
+msgid "{0} player(s) with points"
+msgstr "{0} игрок(ов) с очками"
+
+msgid "History of these events"
+msgstr "История этих событий"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "Последнее обновление {0} UTC."
+
+msgid "Last updated on {0} UTC."
+msgstr "Последнее обновление {0} UTC."
+
+msgid "Inactive"
+msgstr "Скоро"
+
+msgid "Goals of each tournament"
+msgstr "Цели каждого турнира"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "Все прошедшие события {0}, сначала новые"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "Отправьте tournaments списком не более чем из {0}."
+
+msgid "This tournament is not valid."
+msgstr "Этот турнир недействителен."
+
+msgid "This image is not a valid PNG."
+msgstr "Это изображение не является корректным PNG."
+
+msgid "Target"
+msgstr "Цель"
+
+msgid "Goals Met"
+msgstr "Выполнено целей"
+
+msgid "Goal Met"
+msgstr "Цель выполнена"
+
+msgid "Not Met"
+msgstr "Не выполнена"
+
+msgid "No Goal"
+msgstr "Нет цели"
+
+msgid "Cycle"
+msgstr "Цикл"
+
+msgid "Waived"
+msgstr "Прощён"
+
+msgid "Charged"
+msgstr "Взыскан"
+
+msgid "Refunded"
+msgstr "Возвращён"
+
+msgid "Fine"
+msgstr "Штраф"
+
+msgid "Fines"
+msgstr "Штрафы"
+
+msgid "Refund"
+msgstr "Вернуть"
+
+msgid "Waive"
+msgstr "Простить"
+
+msgid "Fine again"
+msgstr "Оштрафовать снова"
+
+msgid "List again"
+msgstr "Составить заново"
+
+msgid "No fine"
+msgstr "Без штрафа"
+
+msgid "Fixed amount"
+msgstr "Фиксированная сумма"
+
+msgid "In proportion to what was missing"
+msgstr "Пропорционально недостающему"
+
+msgid "Fine for missing the goal"
+msgstr "Штраф за невыполнение цели"
+
+msgid "When the result of an event of this tournament is published, every player who did not reach the goal is listed with the fine below, debited from their account in the clan bank once an administrator charges it. Players can be waived on the event page before charging."
+msgstr "Когда публикуется результат события этого турнира, каждый игрок, не достигший цели, вносится в список со штрафом ниже, который списывается с его счёта в банке клана, когда администратор его взыскивает. На странице события можно простить игроков до взыскания."
+
+msgid "Fixed: every player who missed the goal owes the amount. In proportion: the amount times the part of the goal that was missing; a player at 60% of the goal owes 40% of the amount."
+msgstr "Фиксированный: каждый игрок, не достигший цели, должен сумму. Пропорциональный: сумма, умноженная на недостающую часть цели; игрок с 60% цели должен 40% суммы."
+
+msgid "{0} for every player who misses the goal."
+msgstr "{0} для каждого игрока, не достигшего цели."
+
+msgid "Up to {0}, in proportion to what was missing of the goal."
+msgstr "До {0}, пропорционально тому, сколько не хватило до цели."
+
+msgid "Without a goal nobody is fined."
+msgstr "Без цели никто не штрафуется."
+
+msgid "The fine must be a whole number."
+msgstr "Штраф должен быть целым числом."
+
+msgid "Set the fine, or choose \"No fine\"."
+msgstr "Укажите штраф или выберите «Без штрафа»."
+
+msgid "Not a member of the clan bank"
+msgstr "Не участник банка клана"
+
+msgid "Debit the pending fines from the players' accounts in the clan bank? A balance may go below zero: the player pays it by depositing."
+msgstr "Списать ожидающие штрафы со счетов игроков в банке клана? Баланс может стать отрицательным: игрок погашает его внесением."
+
+msgid "The fine is collected as a bank fee: the balance may go below zero, the player pays it by depositing, and the amount stays with the clan."
+msgstr "Штраф взимается как комиссия банка: баланс может стать отрицательным, игрок погашает его внесением, а сумма остаётся клану."
+
+msgid "Tournament fine: {0} - {1} of {2} points ({3}%)"
+msgstr "Штраф турнира: {0} - {1} из {2} очков ({3}%)"
+
+msgid "{0} fine(s) waiting to be charged."
+msgstr "{0} штраф(ов) ожидают взыскания."
+
+msgid "{0} fine(s) charged, {1} in all."
+msgstr "Взыскано {0} штраф(ов), всего {1}."
+
+msgid "{0} player(s) are not members of the clan bank: their fines stay pending."
+msgstr "{0} игрок(ов) не являются участниками банка клана: их штрафы остаются в ожидании."
+
+msgid "{0} is fined again."
+msgstr "{0} снова оштрафован."
+
+msgid "{0} is waived."
+msgstr "{0} прощён."
+
+msgid "The fine of {0} was refunded."
+msgstr "Штраф {0} возвращён."
+
+msgid "This tournament has no fine."
+msgstr "У этого турнира нет штрафа."
+
+msgid "Lists the pending fines again from the result and the tournament's current rule."
+msgstr "Заново составляет список ожидающих штрафов по результату и текущему правилу турнира."
+
+msgid "Charge {0} fine(s) ({1})"
+msgstr "Взыскать {0} штраф(ов) ({1})"
+
+msgid "Set a fine on the tournament's page in the catalogue, then list the fines again."
+msgstr "Задайте штраф на странице турнира в каталоге, затем составьте список штрафов заново."
+
+msgid "Every player reached the goal: nobody is fined."
+msgstr "Все игроки достигли цели: никто не оштрафован."
+
+msgid "Give {0} back to {1}?"
+msgstr "Вернуть {0} игроку {1}?"
+
+msgid "Lost"
+msgstr "Списан"
+
+msgid "Tournament Fines"
+msgstr "Штрафы турниров"
+
+msgid "Tournament fines"
+msgstr "Штрафы турниров"
+
+msgid "Every fine of the game tournaments, who still owes and what was given up"
+msgstr "Все штрафы игровых турниров: кто ещё должен и что списано"
+
+msgid "{0} fine(s)"
+msgstr "{0} штраф(ов)"
+
+msgid "Fines to pay, by player"
+msgstr "Штрафы к оплате, по игрокам"
+
+msgid "Left the clan"
+msgstr "Покинул клан"
+
+msgid "{0} out of the clan"
+msgstr "{0} вне клана"
+
+msgid "Nobody owes a fine."
+msgstr "Никто не должен штрафов."
+
+msgid "In the clan"
+msgstr "В клане"
+
+msgid "Not charged yet"
+msgstr "Ещё не взыскан"
+
+msgid "Debt in the bank"
+msgstr "Долг в банке"
+
+msgid "To pay"
+msgstr "К оплате"
+
+msgid "Show their fines"
+msgstr "Показать его штрафы"
+
+msgid "Not registered"
+msgstr "Не зарегистрирован"
+
+msgid "Give up as lost"
+msgstr "Списать как потерянный"
+
+msgid "Give up the {0} {1} owes? The debt leaves their balance and the clan's fees."
+msgstr "Списать {0}, которые должен {1}? Долг уходит из его баланса и из комиссий клана."
+
+msgid "Fine history"
+msgstr "История штрафов"
+
+msgid "Any status"
+msgstr "Любой статус"
+
+msgid "{0} given up"
+msgstr "{0} списано"
+
+msgid "No fine matches."
+msgstr "Нет подходящих штрафов."
+
+msgid "This player owes nothing."
+msgstr "Этот игрок ничего не должен."
+
+msgid "{0} of {1} given up as lost."
+msgstr "{0} от {1} списано как потерянное."
+
+msgid "{0} given up as lost"
+msgstr "{0} списано как потерянное"
+
+msgid "{0} paid, {1} given up"
+msgstr "{0} оплачено, {1} списано"
+
+msgid "To pay: {0}"
+msgstr "К оплате: {0}"
+
+msgid "Nothing to pay"
+msgstr "Нечего платить"
+
+msgid "The ranges take whole numbers: percentages from 0 to 100, and the fine in millions of Silver."
+msgstr "Диапазоны принимают целые числа: проценты от 0 до 100 и штраф в миллионах Серебра."
+
+msgid "Set the fine of the range {0}% to {1}%, at least 1 million Silver."
+msgstr "Укажите штраф для диапазона от {0}% до {1}%, не менее 1 миллиона Серебра."
+
+msgid "The fine must be a whole number of millions of Silver."
+msgstr "Штраф должен быть целым числом миллионов Серебра."
+
+msgid "The fine is Silver in whole millions, as in the clan bank: 1 is 1 million, 1000 is 1 billion. It is never less than 1 million."
+msgstr "Штраф указывается в Серебре, в целых миллионах, как в банке клана: 1 — это 1 миллион, 1000 — 1 миллиард. Он никогда не меньше 1 миллиона."
+
+msgid "Fine (millions of Silver)"
+msgstr "Штраф (миллионы Серебра)"
+
+msgid "Edit tournament"
+msgstr "Редактировать турнир"
+
+msgid "Players without an identified level are evaluated by the highest goal."
+msgstr "Игроки без определённого уровня оцениваются по самой высокой цели."
+
+msgid "{0} Silver credit(s) waiting to be confirmed."
+msgstr "{0} начислений Серебра ожидают подтверждения."
+
+msgid "{0} player(s) credited, {1} in all."
+msgstr "Начислено {0} игрок(ам), всего {1}."
+
+msgid "{0} player(s) are not members of the clan bank: their Silver stays pending."
+msgstr "{0} игрок(ов) не являются участниками банка клана: их Серебро остаётся в ожидании."
+
+msgid "{0} will be credited again."
+msgstr "{0} снова получит начисление."
+
+msgid "{0} will not be credited."
+msgstr "{0} не получит начисление."
+
+msgid "The Silver credited to {0} was taken back."
+msgstr "Серебро, начисленное {0}, отозвано."
+
+msgid "Guard level"
+msgstr "Уровень стражи"
+
+msgid "Reached (%)"
+msgstr "Достигнуто (%)"
+
+msgid "Goal met"
+msgstr "Цель выполнена"
+
+msgid "{0} (millions of Silver)"
+msgstr "{0} (миллионы Серебра)"
+
+msgid "Fine status"
+msgstr "Статус штрафа"
+
+msgid "Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions."
+msgstr "Каждому дополнительному призу нужно целое количество больше нуля, а предметам — название. Серебро указывается в целых миллионах."
+
+msgid "Not credited"
+msgstr "Не начислено"
+
+msgid "Credited"
+msgstr "Начислено"
+
+msgid "Reversed"
+msgstr "Отозвано"
+
+msgid "Silver"
+msgstr "Серебро"
+
+msgid "Tournament prize: {0} - {1}"
+msgstr "Приз турнира: {0} - {1}"
+
+msgid "Silver prize"
+msgstr "Приз в Серебре"
+
+msgid "Credited to the players' accounts in the clan bank once confirmed."
+msgstr "Начисляется на счета игроков в банке клана после подтверждения."
+
+msgid "Lists the pending Silver again from the split of the rewards."
+msgstr "Заново составляет список ожидающего Серебра по распределению наград."
+
+msgid "Credit {0} player(s) ({1})"
+msgstr "Начислить {0} игрок(ам) ({1})"
+
+msgid "Credit the pending Silver to the players' accounts in the clan bank?"
+msgstr "Начислить ожидающее Серебро на счета игроков в банке клана?"
+
+msgid "Do not credit"
+msgstr "Не начислять"
+
+msgid "Credit again"
+msgstr "Начислить снова"
+
+msgid "Take back"
+msgstr "Отозвать"
+
+msgid "Take {0} back from {1}? Their balance may go below zero."
+msgstr "Отозвать {0} у {1}? Баланс может стать отрицательным."
+
+msgid "Silver in millions, credited to the players in the clan bank"
+msgstr "Серебро в миллионах, начисляется игрокам в банке клана"
+
+msgid "Silver (millions)"
+msgstr "Серебро (миллионы)"
+
+msgid "Export CSV"
+msgstr "Экспорт в CSV"
+
+msgid "Extra prizes: Silver and items"
+msgstr "Дополнительные призы: Серебро и предметы"
+
+msgid "Prizes the clan gives besides the ones it receives, added to every new event of this tournament and split by the rule chosen. Add as many as you like."
+msgstr "Призы, которые клан даёт сверх полученных, добавляются в каждое новое событие этого турнира и делятся по выбранному правилу. Добавляйте сколько угодно."
+
+msgid "Silver is in whole millions, as in the clan bank (1000 is 1B): when the result is published, each player's share waits on the event page for an administrator to credit it to their account in the clan bank."
+msgstr "Серебро указывается в целых миллионах, как в банке клана (1000 — это 1B): после публикации результата доля каждого игрока ждёт на странице события, пока администратор не начислит её на его счёт в банке клана."
+
+msgid "Item name"
+msgstr "Название предмета"
+
+msgid "Remove prize"
+msgstr "Удалить приз"
+
+msgid "Add prize"
+msgstr "Добавить приз"
+
+msgid "Given by the clan in every new event:"
+msgstr "Выдаётся кланом в каждом новом событии:"
+
+msgid "{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "{0}: цель должна быть целым числом от 0 или оставаться пустой."
+
+msgid "The tournament ranking is invalid."
+msgstr "Рейтинг турнира недействителен."
+
+msgid "Manually register a chest collection entry"
+msgstr "Вручную записать сбор сундука"
+
+msgid "Collection Record"
+msgstr "Запись о сборе"
+
+msgid "Chest Name"
+msgstr "Название сундука"
+
+msgid "e.g. Chest of the Ancients"
+msgstr "напр. Сундук Древних"
+
+msgid "Player name"
+msgstr "Имя игрока"
+
+msgid "Save Record"
+msgstr "Сохранить запись"
+
+msgid "Missing Configuration"
+msgstr "Отсутствует настройка"
+
+msgid "Incomplete Configuration"
+msgstr "Неполная настройка"
+
+msgid "A required system parameter is missing or has an invalid configuration"
+msgstr "Обязательный системный параметр отсутствует или настроен неверно"
+
+msgid "System Configurations"
+msgstr "Системные настройки"
+
+msgid "Parameter missing: {0}"
+msgstr "Отсутствует параметр: {0}"
+
+msgid "The parameter <strong>{0}</strong> is {1} in the <code>config</code> table, preventing score calculations."
+msgstr "Параметр <strong>{0}</strong> имеет значение {1} в таблице <code>config</code>, поэтому очки не рассчитываются."
+
+msgid "If this is a fresh setup or update, execute the initial migration seed in your terminal:"
+msgstr "Если это новая установка или обновление, выполните в терминале seed начальной миграции:"
+
+msgid "Then review and configure parameters in {0}."
+msgstr "Затем проверьте и настройте параметры в {0}."
+
+msgid "Configurations"
+msgstr "Настройки"
+
+msgid "Modify individual chest record details and player attribution"
+msgstr "Изменить данные записи сундука и назначенного игрока"
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+msgid "History of all individual chest openings recorded by collectors"
+msgstr "История всех открытий сундуков, записанных сборщиками"
+
+msgid "Opened Chests Log"
+msgstr "Журнал открытых сундуков"
+
+msgid "Show:"
+msgstr "Показать:"
+
+msgid "No collected chests recorded."
+msgstr "Собранных сундуков не записано."
+
+msgid "Collected Chest: {0}"
+msgstr "Собранный сундук: {0}"
+
+msgid "Chest collection event details and player log"
+msgstr "Данные о сборе сундука и журнал игрока"
+
+msgid "Collection Event Details"
+msgstr "Данные о сборе"
+
+msgid "Log ID"
+msgstr "ID записи"
+
+msgid "Back to List"
+msgstr "Назад к списку"
+
+msgid "Add Configuration"
+msgstr "Добавить настройку"
+
+msgid "Create a new global configuration parameter and its default value"
+msgstr "Создать новый глобальный параметр настройки и его значение по умолчанию"
+
+msgid "List Configs"
+msgstr "Список настроек"
+
+msgid "New Parameter"
+msgstr "Новый параметр"
+
+msgid "Parameter Key (Name)"
+msgstr "Ключ параметра (имя)"
+
+msgid "e.g. system_feature_enabled"
+msgstr "напр. system_feature_enabled"
+
+msgid "Snake_case identifier used in code."
+msgstr "Идентификатор в snake_case, используемый в коде."
+
+msgid "Value (string or number)"
+msgstr "Значение (текст или число)"
+
+msgid "Description & Purpose"
+msgstr "Описание и назначение"
+
+msgid "Explain what this configuration affects..."
+msgstr "Объясните, на что влияет эта настройка..."
+
+msgid "Save Configuration"
+msgstr "Сохранить настройку"
+
+msgid "Edit Configuration"
+msgstr "Редактировать настройку"
+
+msgid "Update parameter value or documentation"
+msgstr "Обновить значение или описание параметра"
+
+msgid "Parameter Key"
+msgstr "Ключ параметра"
+
+msgid "Parameter names are immutable identifiers used throughout the codebase."
+msgstr "Имена параметров — неизменные идентификаторы, используемые во всём коде."
+
+msgid "Are you sure you want to delete parameter \"{0}\"?"
+msgstr "Удалить параметр «{0}»?"
+
+msgid "Parameter"
+msgstr "Параметр"
+
+msgid "No configurations found."
+msgstr "Настройки не найдены."
+
+msgid "Are you sure you want to delete parameter {0}?"
+msgstr "Удалить параметр {0}?"
+
+msgid "Global environment settings, feature toggles, and application variables"
+msgstr "Глобальные настройки окружения, переключатели функций и переменные приложения"
+
+msgid "Config: {0}"
+msgstr "Настройка: {0}"
+
+msgid "Configuration parameter details and values"
+msgstr "Данные и значения параметра настройки"
+
+msgid "Current Value"
+msgstr "Текущее значение"
+
+msgid "Internal ID"
+msgstr "Внутренний ID"
+
+msgid "Manually record an error log entry"
+msgstr "Вручную записать ошибку"
+
+msgid "Error Log"
+msgstr "Журнал ошибок"
+
+msgid "Configure error record details."
+msgstr "Укажите данные записи об ошибке."
+
+msgid "Save Error"
+msgstr "Сохранить ошибку"
+
+msgid "Modify error record details"
+msgstr "Изменить данные записи об ошибке"
+
+msgid "Error # {0}"
+msgstr "Ошибка № {0}"
+
+msgid "System Errors"
+msgstr "Системные ошибки"
+
+msgid "Error logs and captured exception reports"
+msgstr "Журналы ошибок и отчёты о перехваченных исключениях"
+
+msgid "Recorded Errors"
+msgstr "Записанные ошибки"
+
+msgid "No errors logged."
+msgstr "Ошибок не записано."
+
+msgid "Error log record details"
+msgstr "Данные записи об ошибке"
+
+msgid "Error Details"
+msgstr "Подробности ошибки"
+
+msgid "Error ID"
+msgstr "ID ошибки"
+
+msgid "The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody's points change."
+msgstr "Результат этого события записан. Здесь можно изменить награды и цель: они заново применяются к записанному рейтингу, и ничьи очки не меняются."
+
+msgid "Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future."
+msgstr "Оба момента указаны в UTC — по тем же часам, что и табло. Учитываются только сундуки, собранные в этот период; начало может быть в прошлом, но конец должен быть в будущем."
+
+msgid "Review and manually transcribe unopened or unread chests captured by collectors"
+msgstr "Проверьте и вручную перепишите неоткрытые или непрочитанные сундуки, захваченные сборщиками"
+
+msgid "Status Filters"
+msgstr "Фильтры статуса"
+
+msgid "Complete and record a chest the collector could not finish"
+msgstr "Дополнить и записать сундук, который сборщик не смог обработать"
+
+msgid "Back to Queue"
+msgstr "Назад к очереди"
+
+msgid "Register a new clan member, configure troop levels, and ranking participation"
+msgstr "Добавить нового участника клана, настроить уровни войск и участие в рейтингах"
+
+msgid "New Member Profile"
+msgstr "Новый профиль участника"
+
+msgid "Player Details"
+msgstr "Данные игрока"
+
+msgid "Player in-game name"
+msgstr "Имя игрока в игре"
+
+msgid "Game Player ID"
+msgstr "ID игрока в игре"
+
+msgid "Optional. Matches the member to tournament rankings even if their name changes."
+msgstr "Необязательно. Связывает участника с рейтингами турниров, даже если он сменит имя."
+
+msgid "Linked System User"
+msgstr "Связанный пользователь системы"
+
+msgid "None (Not linked to any login account)"
+msgstr "Нет (не связан с учётной записью)"
+
+msgid "Associate this clan member with a web system login account."
+msgstr "Связать этого участника клана с учётной записью системы."
+
+msgid "Troop Levels & Status"
+msgstr "Уровни войск и статус"
+
+msgid "Member Status & Clan Policy"
+msgstr "Статус участника и правила клана"
+
+msgid "Active Member (currently in clan and active)"
+msgstr "Активный участник (в клане и активен)"
+
+msgid "Inactive members are hidden from common lists and ranking calculations."
+msgstr "Неактивные участники скрыты из обычных списков и расчётов рейтинга."
+
+msgid "Administrative Account"
+msgstr "Административная учётная запись"
+
+msgid "Takes part in tournament rankings but never receives tournament rewards or counts towards division points."
+msgstr "Участвует в рейтингах турниров, но никогда не получает турнирных наград и не учитывается в очках дивизиона."
+
+msgid "Save Member"
+msgstr "Сохранить участника"
+
+msgid "Manage player profile, in-game identifier, troop levels, and ranking participation"
+msgstr "Управление профилем игрока, игровым идентификатором, уровнями войск и участием в рейтингах"
+
+msgid "Receives Rewards"
+msgstr "Получает награды"
+
+msgid "Matches the member to tournament rankings even if their name changes."
+msgstr "Связывает участника с рейтингами турниров, даже если он сменит имя."
+
+msgid "Created:"
+msgstr "Создан:"
+
+msgid "Last Modified:"
+msgstr "Последнее изменение:"
+
+msgid "Manage clan members roster, troop tiers, and tournament reward eligibility"
+msgstr "Управление списком участников клана, уровнями войск и правом на турнирные награды"
+
+msgid "Clan Members Roster"
+msgstr "Список участников клана"
+
+msgid "Troops"
+msgstr "Войска"
+
+msgid "Tournament Rewards"
+msgstr "Турнирные награды"
+
+msgid "No clan members found."
+msgstr "Участники клана не найдены."
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "Удалить {0}?"
+
+msgid "Goals Missed"
+msgstr "Невыполненные цели"
+
+msgid "Success Rate (%)"
+msgstr "Процент успеха (%)"
+
+msgid "events"
+msgstr "события"
+
+msgid "cycles"
+msgstr "циклы"
+
+msgid "Events + Chests"
+msgstr "События + Сундуки"
+
+msgid "Rank"
+msgstr "Место"
+
+msgid "Percentage of goals met out of valid evaluated goals"
+msgstr "Доля выполненных целей среди оценённых действительных целей"
+
+msgid "1st Place"
+msgstr "1-е место"
+
+msgid "Guards level"
+msgstr "Уровень стражи"
+
+msgid "Administrative account"
+msgstr "Административная учётная запись"
+
+msgid "Joined clan after tournament started"
+msgstr "Вступил в клан после начала турнира"
+
+msgid "Joined clan after cycle started"
+msgstr "Вступил в клан после начала цикла"
+
+msgid "Member: {0}"
+msgstr "Участник: {0}"
+
+msgid "Member profile, troop composition, and clan participation details"
+msgstr "Профиль участника, состав войск и участие в клане"
+
+msgid "Total Power"
+msgstr "Общая мощь"
+
+msgid "Clan Member # {0}"
+msgstr "Участник клана № {0}"
+
+msgid "Troop Composition"
+msgstr "Состав войск"
+
+msgid "Account & Clan Data"
+msgstr "Данные учётной записи и клана"
+
+msgid "Active Member"
+msgstr "Активный участник"
+
+msgid "Not assigned yet"
+msgstr "Ещё не назначен"
+
+msgid "Administrative Account (Excluded from tournament prize distribution)"
+msgstr "Административная учётная запись (не участвует в распределении турнирных призов)"
+
+msgid "Eligible for tournament rewards"
+msgstr "Может получать турнирные награды"
+
+msgid "Not linked to any login account"
+msgstr "Не связан с учётной записью"
+
+msgid "Delete Member"
+msgstr "Удалить участника"
+
+msgid "Define a new authorization role and its permissions"
+msgstr "Создать новую роль доступа и её права"
+
+msgid "New Role Details"
+msgstr "Данные новой роли"
+
+msgid "Role Name"
+msgstr "Название роли"
+
+msgid "e.g. manager"
+msgstr "напр. manager"
+
+msgid "Alias / Identifier"
+msgstr "Псевдоним / идентификатор"
+
+msgid "e.g. role_manager"
+msgstr "напр. role_manager"
+
+msgid "Describe what this role permits..."
+msgstr "Опишите, что разрешает эта роль..."
+
+msgid "Assign Users"
+msgstr "Назначить пользователей"
+
+msgid "Hold Ctrl (or Cmd) to select multiple users."
+msgstr "Удерживайте Ctrl (или Cmd), чтобы выбрать несколько пользователей."
+
+msgid "Save Role"
+msgstr "Сохранить роль"
+
+msgid "Modify role details, description, and assigned users"
+msgstr "Изменить данные, описание и пользователей роли"
+
+msgid "Assigned Users"
+msgstr "Назначенные пользователи"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple users."
+msgstr "Удерживайте Ctrl (или Cmd), чтобы выбрать или снять выбор нескольких пользователей."
+
+msgid "Created: {0}"
+msgstr "Создано: {0}"
+
+msgid "Modified: {0}"
+msgstr "Изменено: {0}"
+
+msgid "System Roles"
+msgstr "Роли системы"
+
+msgid "Manage access permission levels and system role definitions"
+msgstr "Управление уровнями доступа и ролями системы"
+
+msgid "Configured Roles"
+msgstr "Настроенные роли"
+
+msgid "No roles found."
+msgstr "Роли не найдены."
+
+msgid "Role: {0}"
+msgstr "Роль: {0}"
+
+msgid "Role details and assigned system users"
+msgstr "Данные роли и назначенные пользователи"
+
+msgid "Role Information"
+msgstr "Сведения о роли"
+
+msgid "Users Assigned to this Role"
+msgstr "Пользователи с этой ролью"
+
+msgid "No users currently assigned to this role."
+msgstr "Сейчас ни у одного пользователя нет этой роли."
+
+msgid "View User"
+msgstr "Посмотреть пользователя"
+
+msgid "Assign Role to User"
+msgstr "Назначить роль пользователю"
+
+msgid "Link a system user account to a specific role"
+msgstr "Связать учётную запись пользователя с ролью"
+
+msgid "List Assignments"
+msgstr "Список назначений"
+
+msgid "Assignment Details"
+msgstr "Данные назначения"
+
+msgid "Save Assignment"
+msgstr "Сохранить назначение"
+
+msgid "Edit Role Assignment"
+msgstr "Редактировать назначение роли"
+
+msgid "Modify the user or role for this assignment"
+msgstr "Изменить пользователя или роль этого назначения"
+
+msgid "Assignment # {0}"
+msgstr "Назначение № {0}"
+
+msgid "User Role Assignments"
+msgstr "Назначения ролей пользователям"
+
+msgid "Direct mappings between system user accounts and roles"
+msgstr "Прямые связи между учётными записями и ролями"
+
+msgid "Assign Role"
+msgstr "Назначить роль"
+
+msgid "Role Assignments"
+msgstr "Назначения ролей"
+
+msgid "No role assignments found."
+msgstr "Назначения ролей не найдены."
+
+msgid "Roles User # {0}"
+msgstr "Роль пользователя № {0}"
+
+msgid "Role Assignment # {0}"
+msgstr "Назначение роли № {0}"
+
+msgid "Direct user-to-role permission linkage"
+msgstr "Прямая связь прав между пользователем и ролью"
+
+msgid "Assignment Information"
+msgstr "Сведения о назначении"
+
+msgid "Assignment ID"
+msgstr "ID назначения"
+
+msgid "Register a new chest definition, point valuation, and monster categorization"
+msgstr "Добавить новый сундук, его стоимость в очках и классификацию монстра"
+
+msgid "Chest Specification"
+msgstr "Описание сундука"
+
+msgid "Source Name"
+msgstr "Исходное название"
+
+msgid "e.g. Chest of the Serpent"
+msgstr "напр. Сундук Змея"
+
+msgid "The raw name of the chest as scanned by OCR or reported by the game."
+msgstr "Исходное название сундука, как его прочитал OCR или передала игра."
+
+msgid "Friendly Alias"
+msgstr "Псевдоним"
+
+msgid "Optional friendly name for reports..."
+msgstr "Необязательное понятное название для отчётов..."
+
+msgid "Optional friendly name shown in reports instead of the raw source."
+msgstr "Необязательное понятное название, показываемое в отчётах вместо исходного."
+
+msgid "Score / Points"
+msgstr "Очки"
+
+msgid "Points awarded for collecting this chest."
+msgstr "Очки за сбор этого сундука."
+
+msgid "Epic Monster Classification"
+msgstr "Классификация эпического монстра"
+
+msgid "Epic Monster Chest (Drop from killing an Epic Monster)"
+msgstr "Сундук эпического монстра (выпадает при убийстве эпического монстра)"
+
+msgid "Chests Quantity per Monster"
+msgstr "Сундуков за монстра"
+
+msgid "If chest type is Epic Monster, inform how many chests are earned by killing one monster."
+msgstr "Если это сундук эпического монстра, укажите, сколько сундуков даёт один убитый монстр."
+
+msgid "Save Chest"
+msgstr "Сохранить сундук"
+
+msgid "Modify chest configuration, scoring weight, and monster flags"
+msgstr "Изменить настройки сундука, вес в очках и отметки монстра"
+
+msgid "Regular Chest"
+msgstr "Обычный сундук"
+
+msgid "Catalogue of game chests, score values, and monster classifications"
+msgstr "Каталог сундуков игры, стоимость в очках и классификации монстров"
+
+msgid "Goals & Weights"
+msgstr "Цели и веса"
+
+msgid "Filters & Search"
+msgstr "Фильтры и поиск"
+
+msgid "Review unregistered chests found in collection records and promote them to Standard Chests"
+msgstr "Проверьте незарегистрированные сундуки из записей о сборе и сделайте их стандартными"
+
+msgid "Standard Chest: {0}"
+msgstr "Стандартный сундук: {0}"
+
+msgid "Standard chest specification, score value, and monster drop configuration"
+msgstr "Описание стандартного сундука, стоимость в очках и настройки добычи с монстра"
+
+msgid "Chest Attributes"
+msgstr "Свойства сундука"
+
+msgid "Source (OCR / Game Name)"
+msgstr "Источник (OCR / название в игре)"
+
+msgid "points"
+msgstr "очки"
+
+msgid "Classification"
+msgstr "Классификация"
+
+msgid "Epic Monster Chest"
+msgstr "Сундук эпического монстра"
+
+msgid "Optimize army formations, march capacities, leadership, and troop compositions"
+msgstr "Оптимизация построений армии, вместимости марша, лидерства и состава войск"
+
+msgid "Create a new system user account and optionally link clan members"
+msgstr "Создать новую учётную запись пользователя и при желании связать участников клана"
+
+msgid "Account Registration"
+msgstr "Регистрация учётной записи"
+
+msgid "Account Details"
+msgstr "Данные учётной записи"
+
+msgid "User full name"
+msgstr "Полное имя пользователя"
+
+msgid "name@example.com"
+msgstr "name@example.com"
+
+msgid "Enter a secure password"
+msgstr "Введите надёжный пароль"
+
+msgid "Status & Access"
+msgstr "Статус и доступ"
+
+msgid "The user will be created with default role: <strong>user</strong>."
+msgstr "Пользователь будет создан с ролью по умолчанию: <strong>user</strong>."
+
+msgid "Linked Clan Members"
+msgstr "Связанные участники клана"
+
+msgid "Clan Members"
+msgstr "Участники клана"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple members."
+msgstr "Удерживайте Ctrl (или Cmd), чтобы выбрать или снять выбор нескольких участников."
+
+msgid "Save User"
+msgstr "Сохранить пользователя"
+
+msgid "Manage account details, permissions, and linked clan members"
+msgstr "Управление данными учётной записи, правами и связанными участниками клана"
+
+msgid "Leave blank to keep current password"
+msgstr "Оставьте пустым, чтобы сохранить текущий пароль"
+
+msgid "Leave blank if you do not want to change the password."
+msgstr "Оставьте пустым, если не хотите менять пароль."
+
+msgid "Only administrators can change the status."
+msgstr "Только администраторы могут менять статус."
+
+msgid "Roles & Clan Association"
+msgstr "Роли и связь с кланом"
+
+msgid "Select the permission level for this user in the system."
+msgstr "Выберите уровень прав этого пользователя в системе."
+
+msgid "Manage registered user accounts, permissions, and clan member associations"
+msgstr "Управление учётными записями, правами и связями с участниками клана"
+
+msgid "System Users"
+msgstr "Пользователи системы"
+
+msgid "User: {0}"
+msgstr "Пользователь: {0}"
+
+msgid "User profile, security permissions, and clan membership links"
+msgstr "Профиль пользователя, права безопасности и связи с участниками клана"
+
+msgid "Account Status"
+msgstr "Статус учётной записи"
+
+msgid "Active (Access granted)"
+msgstr "Активен (доступ разрешён)"
+
+msgid "Pending Approval"
+msgstr "Ожидает одобрения"
+
+msgid "Google Sign-In"
+msgstr "Вход через Google"
+
+msgid "Registered"
+msgstr "Зарегистрирован"
+
+msgid "Last Updated"
+msgstr "Последнее обновление"
+
+msgid "Active in Clan"
+msgstr "Активен в клане"
+
+msgid "No clan members linked to this user."
+msgstr "С этим пользователем не связаны участники клана."
+
+msgid "View Member"
+msgstr "Посмотреть участника"
+
+msgid "Assigned Roles"
+msgstr "Назначенные роли"
+
+msgid "No roles assigned."
+msgstr "Роли не назначены."
+
+msgid "View Role"
+msgstr "Посмотреть роль"

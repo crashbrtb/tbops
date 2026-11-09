@@ -44,97 +44,20 @@ $this->assign('title', __('Tournaments and Goals'));
         <?php endif; ?>
         <div class="live-tournament-list">
             <?php foreach ($live['active'] as $entry): ?>
-                <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons, 'isAdmin' => $isAdmin]) ?>
+                <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_key], 'itemIcons' => $itemIcons, 'isAdmin' => $isAdmin]) ?>
             <?php endforeach; ?>
         </div>
         <?php if ($live['upcoming'] !== []): ?>
             <h2 class="score-title live-section-title"><i class="fas fa-hourglass-start text-muted"></i> <?= __('Coming up') ?></h2>
             <div class="live-tournament-list">
                 <?php foreach ($live['upcoming'] as $entry): ?>
-                    <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_type], 'itemIcons' => $itemIcons, 'isAdmin' => $isAdmin]) ?>
+                    <?= $this->element('live_tournament_card', ['live' => $entry, 'site' => $site[$entry->game_key], 'itemIcons' => $itemIcons, 'isAdmin' => $isAdmin]) ?>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <h2 class="score-title live-section-title"><i class="fas fa-bullseye text-primary"></i> <?= __('Goals of each tournament') ?></h2>
     <?php endif; ?>
 
-    <?php if ($tournaments): ?>
-        <div class="tournament-grid">
-            <?php foreach ($tournaments as $tournament): ?>
-                <?php
-                $goal = EventGoal::fromEntity($tournament);
-                $banner = 'tournaments/' . (int)$tournament->game_type . '.png';
-                $hasBanner = is_file(WWW_ROOT . 'img' . DS . str_replace('/', DS, $banner));
-                $iconUrl = $tournament->has_image
-                    ? $this->Url->build([
-                        'controller' => 'GameTournaments', 'action' => 'image', $tournament->id,
-                        '?' => ['v' => $tournament->modified?->getTimestamp()],
-                    ])
-                    : null;
-                $lastResult = $lastResults[$tournament->id] ?? null;
-                ?>
-                <article class="tournament-card">
-                    <div class="tournament-card-banner<?= $hasBanner ? '' : ' is-plain' ?>">
-                        <?php if ($hasBanner): ?>
-                            <?= $this->Html->image($banner, ['alt' => '', 'loading' => 'lazy']) ?>
-                        <?php endif; ?>
-                        <?php if ($iconUrl !== null): ?>
-                            <img src="<?= h($iconUrl) ?>" alt="" class="tournament-card-icon">
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="tournament-card-body">
-                        <h2 class="tournament-card-title"><?= h($tournament->displayName()) ?></h2>
-                        <div class="event-history-meta">
-                            <span><i class="fas fa-clock"></i> <?= __('{0} day(s)', $tournament->effectiveDurationDays()) ?></span>
-                            <?php if ($goal->isActive()): ?>
-                                <span class="tournament-goal-flag<?= $goal->isRequired() ? ' is-required' : '' ?>">
-                                    <i class="fas <?= $goal->isRequired() ? 'fa-lock' : 'fa-lock-open' ?>"></i>
-                                    <?= $goal->isRequired() ? __('Required for rewards') : __('Does not decide rewards') ?>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-
-                        <?php if (!$goal->isActive()): ?>
-                            <p class="tournament-goal-none"><i class="fas fa-minus-circle"></i> <?= __('No goal set for this tournament.') ?></p>
-                        <?php elseif ($goal->isByGuard()): ?>
-                            <div class="tournament-goal-label"><?= __('Goal by guard level') ?></div>
-                            <div class="tournament-goal-levels">
-                                <?php foreach ($goal->levelTable() as $level => $points): ?>
-                                    <div class="tournament-goal-level" title="<?= $level === 0 ? h(__('Guard level not identified')) : '' ?>">
-                                        <span class="level-name">G<?= $level ?></span>
-                                        <span class="level-points"><?= $this->Number->format($points) ?></span>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php else: ?>
-                            <div class="tournament-goal-label"><?= __('Goal for every player') ?></div>
-                            <div class="tournament-goal-single"><?= __('{0} points', $this->Number->format($goal->points)) ?></div>
-                        <?php endif; ?>
-                    </div>
-
-                    <?php if ($lastResult !== null || $isAdmin): ?>
-                        <div class="tournament-card-footer">
-                            <?php if ($lastResult !== null): ?>
-                                <?= $this->Html->link(
-                                    '<i class="fas fa-trophy mr-1"></i>' . __('Last result') . ' &middot; ' . h($lastResult->ends_at->format('d/m/Y')),
-                                    ['action' => 'view', $lastResult->id],
-                                    ['escape' => false]
-                                ) ?>
-                            <?php endif; ?>
-                            <?php if ($isAdmin): ?>
-                                <?= $this->Html->link(
-                                    '<i class="fas fa-pen"></i>',
-                                    ['controller' => 'GameTournaments', 'action' => 'edit', $tournament->id],
-                                    ['class' => 'btn btn-outline-primary btn-xs ml-auto', 'escape' => false, 'title' => __('Edit')]
-                                ) ?>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
-                </article>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
+    <?php if ($live['active'] === [] && $live['upcoming'] === []): ?>
         <div class="event-standings-card">
             <div class="event-empty">
                 <i class="fas fa-book-open"></i>

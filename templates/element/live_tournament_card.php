@@ -25,8 +25,13 @@ $tiers = $live->rewardTiers();
 $clanTiersFor = $live->rewardsOf($live->clan_place);
 $members = $live->memberList();
 $topClans = $live->topClans();
-$historyUrl = ['controller' => 'Events', 'action' => 'history', '?' => ['tournament' => $live->game_type]];
+$historyUrl = ['controller' => 'Events', 'action' => 'history', '?' => ['tournament' => $live->game_type, 'variant' => $live->variant]];
 $when = $live->isActive() ? $live->ends_at : $live->starts_at;
+// The catalogue's name (or the one the clan gave it) when the entry is this very
+// tournament; the game's own otherwise ("Dark Omens", not the name of one of its rankings).
+$sameTournament = $tournament !== null
+    && \App\Service\LiveTournamentService::nameKey($tournament->gameName()) === \App\Service\LiveTournamentService::nameKey((string)$live->name);
+$shownName = ($sameTournament || (string)$live->name === '') ? ($tournament?->displayName() ?? (string)$live->name) : (string)$live->name;
 $itemIcon = function (array $item) use ($image, $itemIcons): string {
     $icon = $item['icon'] ?? ($itemIcons[(int)($item['item_id'] ?? 0)] ?? null);
 
@@ -41,7 +46,7 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                 <img src="<?= h($image($live->icon)) ?>" alt="" class="live-tournament-icon" loading="lazy">
             <?php endif; ?>
             <span>
-                <strong class="live-tournament-name"><?= h($tournament?->displayName() ?: $live->name) ?></strong>
+                <strong class="live-tournament-name"><?= h($shownName) ?></strong>
                 <?php if ($when !== null): ?>
                     <span class="live-tournament-when" data-countdown="<?= $when->getTimestamp() ?>">
                         <?= $live->isActive() ? h(__('Ends {0} UTC', $when->format('d/m H:i'))) : h(__('Starts {0} UTC', $when->format('d/m H:i'))) ?>
@@ -60,11 +65,11 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                 <span class="ml-auto align-self-start pt-1">
                     <?= $this->Html->link(
                         '<i class="fas fa-pen"></i>',
-                        ['controller' => 'GameTournaments', 'action' => 'edit', $tournament->id],
+                        ['controller' => 'GameTournaments', 'action' => 'view', $tournament->id],
                         [
                             'class' => 'btn btn-outline-light btn-xs',
                             'escape' => false,
-                            'title' => __('Edit'),
+                            'title' => __('Edit tournament'),
                             'style' => 'background: rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.6); padding: 3px 7px; border-radius: 4px;'
                         ]
                     ) ?>
@@ -154,10 +159,11 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                             <?php if ($goal->isByGuard()): ?>
                                 <?= __('Goal by guard level') ?>:
                                 <div class="mt-1 d-flex flex-wrap" style="gap: 4px;">
-                                    <?php foreach ($goal->levelTable() as $level => $points): ?>
+                                    <?php foreach ($goal->shownLevels() as $level => $points): ?>
                                         <span class="badge badge-light border"><?= \App\Service\EventGoal::levelLabel((int)$level) ?> <?= $this->Number->format($points) ?></span>
                                     <?php endforeach; ?>
                                 </div>
+                                <small class="text-muted d-block mt-1"><?= __('Players without an identified level are evaluated by the highest goal.') ?></small>
                             <?php else: ?>
                                 <?= h(__('Goal: {0} points', $this->Number->format($goal->points))) ?>
                             <?php endif; ?>
@@ -184,7 +190,7 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                                 <?php foreach ($lastEvent->event_rewards as $reward): ?>
                                     <span class="live-prize" title="<?= h($reward->item_name) ?>">
                                         <?= $itemIcon(['item_id' => (int)$reward->get('game_item_id')]) ?>
-                                        <?= h($reward->item_name) ?> x<?= $this->gameNumber((int)$reward->quantity) ?>
+                                        <?= h($reward->item_name) ?> x<?= $this->rewardAmount($reward, (int)$reward->quantity) ?>
                                     </span>
                                 <?php endforeach; ?>
                             </div>
@@ -193,5 +199,11 @@ $itemIcon = function (array $item) use ($image, $itemIcons): string {
                 </div>
             </details>
         <?php endif; ?>
+
+        <?= $this->Html->link(
+            '<i class="fas fa-history text-primary"></i> ' . __('View history'),
+            $historyUrl,
+            ['class' => 'live-tournament-section d-block', 'escape' => false]
+        ) ?>
     </div>
 </article>

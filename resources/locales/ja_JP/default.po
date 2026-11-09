@@ -81,20 +81,20 @@ msgid "⚠️ INSUFFICIENT BALANCE ⚠️"
 msgstr "⚠️ 残高不足 ⚠️"
 
 #: ./src/Controller/BankController.php:305
-msgid "Available balance: {0} $"
-msgstr "利用可能残高: {0} $"
+msgid "Available balance: {0}"
+msgstr "利用可能残高: {0}"
 
 #: ./src/Controller/BankController.php:306
-msgid "Withdrawal amount: {0} $"
-msgstr "引き出し額: {0} $"
+msgid "Withdrawal amount: {0}"
+msgstr "引き出し額: {0}"
 
 #: ./src/Controller/BankController.php:307
-msgid "Fee: {0} $"
-msgstr "手数料: {0} $"
+msgid "Fee: {0}"
+msgstr "手数料: {0}"
 
 #: ./src/Controller/BankController.php:308
-msgid "Total required: {0} $"
-msgstr "必要合計: {0} $"
+msgid "Total required: {0}"
+msgstr "必要合計: {0}"
 
 #: ./src/Controller/BankController.php:309
 msgid "Please reduce the withdrawal amount."
@@ -1038,8 +1038,8 @@ msgid "Request a Silver deposit. Amounts represent millions of Silver ($)"
 msgstr "シルバーの預け入れを申請します。金額は100万シルバー ($) 単位です"
 
 #: ./templates/Bank/deposit.php:35
-msgid "Flat deposit fee: {0} $ | Caravan fee: {1}%"
-msgstr "預け入れ固定手数料: {0} $ | キャラバン手数料: {1}%"
+msgid "Flat deposit fee: {0} | Caravan fee: {1}%"
+msgstr "預け入れ固定手数料: {0} | キャラバン手数料: {1}%"
 
 #: ./templates/Bank/deposit.php:40
 msgid "Deposit Details"
@@ -1141,8 +1141,8 @@ msgid "Values are saved in millions of Silver ($)"
 msgstr "値は100万シルバー ($) 単位で保存されます"
 
 #: ./templates/Bank/history.php:24
-msgid "Current balance: {0} $"
-msgstr "現在の残高: {0} $"
+msgid "Current balance: {0}"
+msgstr "現在の残高: {0}"
 
 #: ./templates/Bank/history.php:29
 msgid "Transactions"
@@ -1261,8 +1261,8 @@ msgid "Refresh"
 msgstr "更新"
 
 #: ./templates/Bank/statement.php:39
-msgid "Member: {0} | Current balance: {1} $"
-msgstr "メンバー: {0} | 現在の残高: {1} $"
+msgid "Member: {0} | Current balance: {1}"
+msgstr "メンバー: {0} | 現在の残高: {1}"
 
 #: ./templates/Bank/statement.php:44
 msgid "Statement Records"
@@ -1277,8 +1277,8 @@ msgid "Choose a source and destination member. All values represent millions of 
 msgstr "送金元と送金先のメンバーを選んでください。すべての値は100万シルバー ($) 単位です"
 
 #: ./templates/Bank/transfer.php:33
-msgid "Transfer fee: {0} $ (charged in addition to the transferred amount)"
-msgstr "送金手数料: {0} $ (送金額に加えて徴収されます)"
+msgid "Transfer fee: {0} (charged in addition to the transferred amount)"
+msgstr "送金手数料: {0} (送金額に加えて徴収されます)"
 
 #: ./templates/Bank/transfer.php:38
 msgid "Your Available Source Balances"
@@ -1364,8 +1364,8 @@ msgid "Select a member and enter the Silver amount. All values represent million
 msgstr "メンバーを選び、シルバーの金額を入力してください。すべての値は100万シルバー ($) 単位です"
 
 #: ./templates/Bank/withdraw.php:32
-msgid "Current withdrawal fee: {0} $"
-msgstr "現在の引き出し手数料: {0} $"
+msgid "Current withdrawal fee: {0}"
+msgstr "現在の引き出し手数料: {0}"
 
 #: ./templates/Bank/withdraw.php:38
 msgid "You do not have members available for withdrawals."
@@ -6098,3 +6098,1583 @@ msgstr "変化 %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "クランデータ"
+
+msgid "Edit the catalogue entry of this tournament type"
+msgstr "このトーナメント種別のカタログ項目を編集"
+
+msgid "By ranges of the goal reached"
+msgstr "目標達成率の範囲ごと"
+
+msgid "Add at least one range, or choose \"No fine\"."
+msgstr "範囲を1つ以上追加するか、「罰金なし」を選んでください。"
+
+msgid "At most {0} ranges."
+msgstr "範囲は最大{0}個までです。"
+
+
+msgid "The range {0}% to {1}% is not valid: it must start below where it ends, between 0% and 100%."
+msgstr "{0}%〜{1}%の範囲は無効です: 開始は終了より小さく、0%〜100%の間である必要があります。"
+
+
+msgid "The range {0}% to {1}% overlaps the one before it."
+msgstr "{0}%〜{1}%の範囲が前の範囲と重なっています。"
+
+msgid "{0}% to {1}% of the goal: {2}"
+msgstr "目標の{0}%〜{1}%: {2}"
+
+msgid "By the goal reached"
+msgstr "目標達成率ごと"
+
+msgid "By the share of the goal reached:"
+msgstr "目標達成率ごと:"
+
+msgid "Each range is a share of the goal the player reached and the fine for it. A range holds its start but not its end: with 0% to 10% and 10% to 50%, a player at exactly 10% falls in the second. A share no range holds is not fined; a player who reached the goal never is."
+msgstr "各範囲は、プレイヤーが達成した目標の割合とその罰金です。範囲は開始値を含み、終了値は含みません: 0%〜10%と10%〜50%の場合、ちょうど10%のプレイヤーは後者に入ります。どの範囲にも入らない割合は罰金なし、目標を達成したプレイヤーも罰金はありません。"
+
+msgid "From (%)"
+msgstr "開始 (%)"
+
+msgid "To (%)"
+msgstr "終了 (%)"
+
+msgid "Remove range"
+msgstr "範囲を削除"
+
+msgid "Add range"
+msgstr "範囲を追加"
+
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "T9は、すべての部隊（ガード、スペシャリスト、モンスター、エンジニア）がレベル9の場合に適用されます。G0はガードレベルが一度も特定されなかったことを意味します（最も高い目標が適用されます）。"
+
+msgid "All troops level 9 (T9)"
+msgstr "全部隊レベル9（T9）"
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "このタイプの宝箱が同じ名前でほかに{0}個記録されました。"
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "このコードの宝箱が強調表示されています。その行にゲームが示したプレイヤーが表示されているか確認してください。"
+
+msgid "New chest types"
+msgstr "新しい宝箱タイプ"
+
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "システムもゲーム自体のカタログもまだ名前を付けられない宝箱があります。名前とソースを入力して保存してください。そのタイプのすべての宝箱がそれぞれのプレイヤーで記録され、次からは自動で認識されます。"
+
+msgid "Picture"
+msgstr "画像"
+
+msgid "Chests waiting"
+msgstr "待機中の宝箱"
+
+msgid "Name it"
+msgstr "名前を付ける"
+
+msgid "Picture of the chest"
+msgstr "宝箱の画像"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "確認: 画像の一番上の行は{0}のものである必要があります。"
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "画像がありません。どの宝箱か分かる場合のみ名前を付けてください。"
+
+msgid "Code {0}"
+msgstr "コード{0}"
+
+msgid "Save and record the chests"
+msgstr "保存して宝箱を記録"
+
+msgid "Cannot be identified"
+msgstr "特定できない"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "これら{0}個の宝箱を回復不能としてマークしますか？誰のカウントにもなりません。"
+
+msgid "Fill in the chest name and the source."
+msgstr "宝箱の名前とソースを入力してください。"
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "{0}個の宝箱を「{1}」として記録しました。"
+
+msgid "Chest code"
+msgstr "宝箱コード"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "これによりコード{0}の名前が確定します: 待機中のほかの{1}個の宝箱と、このコードの今後のすべての宝箱がこの名前とソースになります。"
+
+msgid "Pending Tournaments"
+msgstr "保留中のトーナメント"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "ゲームはトーナメントに番号しか送りません。画像から名前を読み取ってください: 名前が付くまでランキングは送信されず、検索はアップローダーの「遡る日数」までしか遡りません。"
+
+msgid "The Journal page of this tournament"
+msgstr "このトーナメントのジャーナルページ"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "このトーナメントのカードが強調表示されています。日付が画像の横の日付と同じで、結果カードであることを確認してください。"
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "アップローダーはまだ画像を撮影できていません: 次の検索で再試行します。"
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "今後、このコードのすべてのトーナメントにこの名前が使われます。"
+
+msgid "Save the name"
+msgstr "名前を保存"
+
+msgid "No tournament is waiting for a name."
+msgstr "名前を待っているトーナメントはありません。"
+
+msgid "Fill in the name of the tournament."
+msgstr "トーナメントの名前を入力してください。"
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "トーナメント「{0}」に名前を付けました。ランキングは次の検索で届きます。"
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "画像は{0} KB以下のPNG、JPEG、WebP、またはGIFである必要があります。"
+
+msgid "Source, alias or chest name..."
+msgstr "ソース、別名、または宝箱の名前..."
+
+msgid "Filter by source or chest name..."
+msgstr "ソースまたは宝箱の名前で絞り込み..."
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr "スコア順の場合はスコアのある宝箱のみ、獲得数順の場合はスコアが関係ないためすべての宝箱が表示されます。いくつでも選べます。"
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "「{0}」のランキングは公開前に確認待ちになりました。"
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "「{0}」のランキングは、{1}が未入力でも確認なしで公開されるようになりました。"
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "「{0}」のランキングは確認なしで公開されるようになりました。"
+
+msgid "The clan results were not accepted."
+msgstr "クランの結果は受け付けられませんでした。"
+
+msgid "the name"
+msgstr "名前"
+
+msgid "the description"
+msgstr "説明"
+
+msgid "the duration"
+msgstr "期間"
+
+msgid "the image"
+msgstr "画像"
+
+msgid "the goal"
+msgstr "目標"
+
+msgid "the prizes"
+msgstr "賞品"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "resultsは1〜{0}件のクラン結果のリストで送信してください。"
+
+msgid "This clan result is not valid."
+msgstr "このクラン結果は無効です。"
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "ジャーナル項目のIDがないか無効です。"
+
+msgid "Item {0}"
+msgstr "アイテム{0}"
+
+msgid "Not defined"
+msgstr "未設定"
+
+msgid "Ranking {0}"
+msgstr "ランキング{0}"
+
+msgid "Published without review"
+msgstr "確認なしで公開"
+
+msgid "Clan Tournament History"
+msgstr "クランのトーナメント履歴"
+
+msgid "In the game"
+msgstr "ゲーム内"
+
+msgid "Display name"
+msgstr "表示名"
+
+msgid "The game's name"
+msgstr "ゲーム内の名前"
+
+msgid "By guard level"
+msgstr "ガードレベル別"
+
+msgid "Required to receive a reward."
+msgstr "報酬の受け取りに必須。"
+
+msgid "Not required to receive a reward."
+msgstr "報酬の受け取りに必須ではありません。"
+
+msgid "Prizes"
+msgstr "賞品"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "新しいイベントごとに、クランがそのイベントで受け取った量をプレイヤー間で分配します:"
+
+msgid "minimum {0} point(s)"
+msgstr "最低{0}ポイント"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "このトーナメントでクランが受け取ったもの（順位別）:"
+
+msgid "Last received"
+msgstr "最終受け取り"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "クランはこのトーナメントでまだ賞品を受け取っていないか、コレクターがクランの結果を送信していません。"
+
+msgid "The clan in this tournament"
+msgstr "このトーナメントでのクラン"
+
+msgid "Ended (UTC)"
+msgstr "終了（UTC）"
+
+msgid "Place"
+msgstr "順位"
+
+msgid "Clan points"
+msgstr "クランポイント"
+
+msgid "Received"
+msgstr "受け取り"
+
+msgid "Not in the top {0}"
+msgstr "トップ{0}圏外"
+
+msgid "Nothing"
+msgstr "なし"
+
+msgid "Publish events automatically"
+msgstr "イベントを自動公開"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "オンの場合、コレクターがこのトーナメントの終了したイベントのランキングを送ると、すぐに目標が計算され、確認なしでイベントが公開されます: 各プレイヤーの賞品の取り分が記録されます。サイトが特定できないプレイヤーを含むランキングは引き続き確認待ちになります。オフの場合、すべてのランキングは確認ページで下書きとして待機します。"
+
+msgid "Publish this tournament's events without review"
+msgstr "このトーナメントのイベントを確認なしで公開"
+
+msgid "Missing: {0}."
+msgstr "不足: {0}。"
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "それでもこのトーナメントのイベントを確認なしで公開しますか？"
+
+msgid "Back to the tournament"
+msgstr "トーナメントに戻る"
+
+msgid "Name in the game"
+msgstr "ゲーム内の名前"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "ゲームのジャーナルから読み取られます。ゲームでの名前のまま、英語で保持されます。"
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "ゲームはまだ名前を伝えていません。ここで入力した名前は保持され、コレクターが上書きすることはありません。"
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "このトーナメントと新しいイベントにサイトが表示する名前。空欄: ゲーム内の名前。"
+
+msgid "Shown on every new event of this tournament."
+msgstr "このトーナメントの新しいイベントすべてに表示されます。"
+
+msgid "Clan prizes to split among the players"
+msgstr "プレイヤー間で分配するクランの賞品"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "これらはクランがこのトーナメントで受け取った賞品です。プレイヤー間で分配するものにチェックを入れてください: トーナメントの新しいイベントごとに、チェックした賞品1つにつき報酬が1つ作られ、クランが受け取った量が選択したルールで分配されます。イベントに手動で追加した報酬はそのまま残ります。"
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "ゲームのトーナメント。名前とIDはコレクターが入力します。トーナメントを開いて残りを設定してください: 表示名、説明、期間、画像、目標、賞品、公開。"
+
+msgid "Tournament History"
+msgstr "トーナメント履歴"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "ゲームの各トーナメントでのクランの順位とポイント、そしてクランが受け取ったもの"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "クランの結果はまだありません。コレクターはジャーナルで読み取ったトーナメントと一緒に送信します。"
+
+msgid "Best place"
+msgstr "最高順位"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "{1}回中{0}回ランクイン"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "クランはこのトーナメントのリストに一度も載りませんでした。"
+
+msgid "Every tournament"
+msgstr "すべてのトーナメント"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "このトーナメントでクランが受け取ったもので入力済み"
+
+msgid "Clan prize"
+msgstr "クラン賞品"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "イベント#{0}「{1}」は公開されませんでした: このトーナメントのクラン結果が届いていないため、賞品を分配できませんでした。確認してください。"
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "イベント#{0}「{1}」は公開されませんでした: プレイヤー間で分配するよう選ばれた{2}をクランが受け取っていません。確認してください。"
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "このトーナメントのクラン結果が届いていません: カタログで選ばれたクラン賞品はこのイベントで分配されません。"
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "クランはこのイベントで{0}を受け取っていません: カタログで分配対象に選ばれていますが、報酬にありません。"
+
+msgid "Member Performance"
+msgstr "メンバーのパフォーマンス"
+
+msgid "Performance"
+msgstr "パフォーマンス"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "宝箱とイベントの目標達成指標、月間ランキング（イベント目標達成ごとに+1pt）、各プレイヤーの完全な履歴。"
+
+msgid "Event Goals Met"
+msgstr "イベント目標達成数"
+
+msgid "Chest Goals Met"
+msgstr "宝箱目標達成数"
+
+msgid "Overall Goals Met"
+msgstr "目標達成合計"
+
+msgid "Monthly Leader"
+msgstr "今月のリーダー"
+
+msgid "Event Goals Met per Tournament"
+msgstr "トーナメント / イベント別の目標達成"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "宝箱サイクル別の目標達成"
+
+msgid "Player Performance Ranking"
+msgstr "プレイヤーパフォーマンスランキング"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "スコア: 期間中に目標を達成したイベントごとに1ポイント。プレイヤーをクリックするとイベントと宝箱の完全な履歴を表示します。"
+
+msgid "Event Goals"
+msgstr "イベント目標"
+
+msgid "Chest Goals"
+msgstr "宝箱目標"
+
+msgid "Total Met"
+msgstr "達成合計"
+
+msgid "Success Rate"
+msgstr "成功率"
+
+msgid "Monthly Score"
+msgstr "今月のスコア"
+
+msgid "Chest History"
+msgstr "宝箱履歴"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "スコアシステムでは、プレイヤーが目標に到達または超えたトーナメントごとに月間スコアに+1ポイントが加算されます。"
+
+msgid "Tournament / Event"
+msgstr "トーナメント / イベント"
+
+msgid "Goal Status"
+msgstr "目標の状態"
+
+msgid "View player history"
+msgstr "プレイヤー履歴を見る"
+
+msgid "Last month (30 days)"
+msgstr "先月（30日）"
+
+msgid "Last 60 days"
+msgstr "過去60日"
+
+msgid "Last 90 days"
+msgstr "過去90日"
+
+msgid "All time"
+msgstr "全期間"
+
+msgid "success rate"
+msgstr "成功率"
+
+msgid "global rate"
+msgstr "全体の率"
+
+msgid "goals beaten"
+msgstr "達成した目標"
+
+msgid "Recent cycles"
+msgstr "最近のサイクル"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "最近完了したサイクルを表示中"
+
+msgid "No events with standings found in this period."
+msgstr "この期間にランキングのあるイベントは見つかりませんでした。"
+
+msgid "No chest cycle summaries recorded."
+msgstr "記録された宝箱サイクルの集計はありません。"
+
+msgid "No event records in this period."
+msgstr "この期間のイベント記録はありません。"
+
+msgid "No chest cycle records in this period."
+msgstr "この期間の宝箱サイクル記録はありません。"
+
+msgid "Awaiting event goal beats"
+msgstr "イベント目標の達成待ち"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "宝箱とイベントの目標達成指標、成功率によるランキング、プレイヤーの完全な履歴。"
+
+msgid "Top Performer"
+msgstr "トップパフォーマー"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "成功率（%）順。アクティブなメンバーのみ表示されます。プレイヤーをクリックするとイベントと宝箱の完全な履歴を表示します。"
+
+msgid "No active members found."
+msgstr "アクティブなメンバーが見つかりません。"
+
+msgid "No active members ranked"
+msgstr "ランク入りしたアクティブメンバーはいません"
+
+msgid "Awaiting goal evaluations"
+msgstr "目標評価待ち"
+
+msgid "Member since"
+msgstr "加入日"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "対象外（イベント途中で加入）"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "対象外（サイクル途中で加入）"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "プレイヤーのクラン加入後に始まった目標ありのトーナメントが成功率の対象になります。加入前に始まったものや目標のないものはその旨が表示されます。"
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "プレイヤーのクラン加入後に始まった週間宝箱サイクルが評価されます。加入前に始まったサイクルは対象外です。"
+
+msgid "History of {0}"
+msgstr "{0}の履歴"
+
+msgid "Ends {0} UTC"
+msgstr "終了 {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "開始 {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "クランポイント: {0}"
+
+msgid "Clan place: #{0}"
+msgstr "クラン順位: #{0}"
+
+msgid "Clan place: 100+"
+msgstr "クラン順位: 100+"
+
+msgid "Goal: {0} points"
+msgstr "目標: {0}ポイント"
+
+msgid "required for rewards"
+msgstr "報酬に必須"
+
+msgid "Prizes split among the players"
+msgstr "プレイヤー間で分配された賞品"
+
+msgid "Last prize split ({0})"
+msgstr "最後に分配された賞品（{0}）"
+
+msgid "Rewards of each place"
+msgstr "クラン報酬"
+
+msgid "Clan rewards"
+msgstr "クラン報酬"
+
+msgid "Clan rewards and goals"
+msgstr "クラン報酬と目標"
+
+msgid "Tournaments"
+msgstr "トーナメント"
+
+msgid "the clan's place now:"
+msgstr "現在のクラン順位:"
+
+msgid "#{0} to #{1}"
+msgstr "#{0}〜#{1}"
+
+msgid "Best clans"
+msgstr "上位クラン"
+
+msgid "Clan ranking"
+msgstr "クランランキング"
+
+msgid "{0} player(s) with points"
+msgstr "ポイントのあるプレイヤー{0}人"
+
+msgid "History of these events"
+msgstr "これらのイベントの履歴"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "最終更新 {0} UTC。"
+
+msgid "Last updated on {0} UTC."
+msgstr "最終更新 {0} UTC。"
+
+msgid "Inactive"
+msgstr "近日公開"
+
+msgid "Goals of each tournament"
+msgstr "各トーナメントの目標"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "開催済みの{0}のすべてのイベント（新しい順）"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "tournamentsは最大{0}件のリストで送信してください。"
+
+msgid "This tournament is not valid."
+msgstr "このトーナメントは無効です。"
+
+msgid "This image is not a valid PNG."
+msgstr "この画像は有効なPNGではありません。"
+
+msgid "Target"
+msgstr "目標"
+
+msgid "Goals Met"
+msgstr "目標達成"
+
+msgid "Goal Met"
+msgstr "目標達成"
+
+msgid "Not Met"
+msgstr "未達成"
+
+msgid "No Goal"
+msgstr "目標なし"
+
+msgid "Cycle"
+msgstr "サイクル"
+
+msgid "Waived"
+msgstr "免除"
+
+msgid "Charged"
+msgstr "徴収済み"
+
+msgid "Refunded"
+msgstr "返金済み"
+
+msgid "Fine"
+msgstr "罰金"
+
+msgid "Fines"
+msgstr "罰金"
+
+msgid "Refund"
+msgstr "返金"
+
+msgid "Waive"
+msgstr "免除"
+
+msgid "Fine again"
+msgstr "再度罰金"
+
+msgid "List again"
+msgstr "再リスト"
+
+msgid "No fine"
+msgstr "罰金なし"
+
+msgid "Fixed amount"
+msgstr "固定額"
+
+msgid "In proportion to what was missing"
+msgstr "不足分に比例"
+
+msgid "Fine for missing the goal"
+msgstr "目標未達の罰金"
+
+msgid "When the result of an event of this tournament is published, every player who did not reach the goal is listed with the fine below, debited from their account in the clan bank once an administrator charges it. Players can be waived on the event page before charging."
+msgstr "このトーナメントのイベント結果が公開されると、目標に達しなかったプレイヤーが下の罰金とともにリストされ、管理者が徴収するとクランバンクの口座から引き落とされます。徴収前にイベントページでプレイヤーを免除できます。"
+
+msgid "Fixed: every player who missed the goal owes the amount. In proportion: the amount times the part of the goal that was missing; a player at 60% of the goal owes 40% of the amount."
+msgstr "固定: 目標に達しなかったプレイヤーはそれぞれ金額を支払います。比例: 金額×目標の不足分。目標の60%のプレイヤーは金額の40%を支払います。"
+
+msgid "{0} for every player who misses the goal."
+msgstr "目標に達しなかったプレイヤーごとに{0}。"
+
+msgid "Up to {0}, in proportion to what was missing of the goal."
+msgstr "最大{0}、目標の不足分に比例。"
+
+msgid "Without a goal nobody is fined."
+msgstr "目標がなければ誰も罰金を受けません。"
+
+msgid "The fine must be a whole number."
+msgstr "罰金は整数である必要があります。"
+
+msgid "Set the fine, or choose \"No fine\"."
+msgstr "罰金を設定するか、「罰金なし」を選んでください。"
+
+msgid "Not a member of the clan bank"
+msgstr "クランバンクのメンバーではありません"
+
+msgid "Debit the pending fines from the players' accounts in the clan bank? A balance may go below zero: the player pays it by depositing."
+msgstr "保留中の罰金をクランバンクのプレイヤー口座から引き落としますか？残高がマイナスになることがあります: プレイヤーは入金して支払います。"
+
+msgid "The fine is collected as a bank fee: the balance may go below zero, the player pays it by depositing, and the amount stays with the clan."
+msgstr "罰金はバンクの手数料として徴収されます: 残高はマイナスになることがあり、プレイヤーは入金して支払い、金額はクランに残ります。"
+
+msgid "Tournament fine: {0} - {1} of {2} points ({3}%)"
+msgstr "トーナメント罰金: {0} - {2}ポイント中{1}（{3}%）"
+
+msgid "{0} fine(s) waiting to be charged."
+msgstr "徴収待ちの罰金{0}件。"
+
+msgid "{0} fine(s) charged, {1} in all."
+msgstr "{0}件の罰金を徴収、合計{1}。"
+
+msgid "{0} player(s) are not members of the clan bank: their fines stay pending."
+msgstr "{0}人のプレイヤーはクランバンクのメンバーではありません: 罰金は保留のままです。"
+
+msgid "{0} is fined again."
+msgstr "{0}に再度罰金を科しました。"
+
+msgid "{0} is waived."
+msgstr "{0}を免除しました。"
+
+msgid "The fine of {0} was refunded."
+msgstr "{0}の罰金を返金しました。"
+
+msgid "This tournament has no fine."
+msgstr "このトーナメントに罰金はありません。"
+
+msgid "Lists the pending fines again from the result and the tournament's current rule."
+msgstr "結果とトーナメントの現在のルールから保留中の罰金を再リストします。"
+
+msgid "Charge {0} fine(s) ({1})"
+msgstr "{0}件の罰金を徴収（{1}）"
+
+msgid "Set a fine on the tournament's page in the catalogue, then list the fines again."
+msgstr "カタログのトーナメントページで罰金を設定してから、罰金を再リストしてください。"
+
+msgid "Every player reached the goal: nobody is fined."
+msgstr "全プレイヤーが目標を達成しました: 罰金はありません。"
+
+msgid "Give {0} back to {1}?"
+msgstr "{0}を{1}に返しますか？"
+
+msgid "Lost"
+msgstr "損失"
+
+msgid "Tournament Fines"
+msgstr "トーナメントの罰金"
+
+msgid "Tournament fines"
+msgstr "トーナメントの罰金"
+
+msgid "Every fine of the game tournaments, who still owes and what was given up"
+msgstr "ゲームのトーナメントのすべての罰金、まだ支払っていない人、損失処理されたもの"
+
+msgid "{0} fine(s)"
+msgstr "罰金{0}件"
+
+msgid "Fines to pay, by player"
+msgstr "支払うべき罰金（プレイヤー別）"
+
+msgid "Left the clan"
+msgstr "クランを脱退"
+
+msgid "{0} out of the clan"
+msgstr "クラン外{0}人"
+
+msgid "Nobody owes a fine."
+msgstr "罰金を負っている人はいません。"
+
+msgid "In the clan"
+msgstr "クラン内"
+
+msgid "Not charged yet"
+msgstr "未徴収"
+
+msgid "Debt in the bank"
+msgstr "バンクの借金"
+
+msgid "To pay"
+msgstr "支払い"
+
+msgid "Show their fines"
+msgstr "罰金を表示"
+
+msgid "Not registered"
+msgstr "未登録"
+
+msgid "Give up as lost"
+msgstr "損失として処理"
+
+msgid "Give up the {0} {1} owes? The debt leaves their balance and the clan's fees."
+msgstr "{1}が負っている{0}を損失として処理しますか？借金は残高とクランの手数料から消えます。"
+
+msgid "Fine history"
+msgstr "罰金履歴"
+
+msgid "Any status"
+msgstr "すべての状態"
+
+msgid "{0} given up"
+msgstr "{0}損失"
+
+msgid "No fine matches."
+msgstr "該当する罰金はありません。"
+
+msgid "This player owes nothing."
+msgstr "このプレイヤーには支払いがありません。"
+
+msgid "{0} of {1} given up as lost."
+msgstr "{1}の{0}を損失として処理しました。"
+
+msgid "{0} given up as lost"
+msgstr "{0}を損失として処理"
+
+msgid "{0} paid, {1} given up"
+msgstr "{0}支払い済み、{1}損失"
+
+msgid "To pay: {0}"
+msgstr "支払い: {0}"
+
+msgid "Nothing to pay"
+msgstr "支払いなし"
+
+msgid "The ranges take whole numbers: percentages from 0 to 100, and the fine in millions of Silver."
+msgstr "範囲には整数を入力してください: 0〜100のパーセンテージと、百万シルバー単位の罰金。"
+
+msgid "Set the fine of the range {0}% to {1}%, at least 1 million Silver."
+msgstr "{0}%〜{1}%の範囲の罰金を設定してください (最低100万シルバー)。"
+
+msgid "The fine must be a whole number of millions of Silver."
+msgstr "罰金は百万シルバー単位の整数で入力してください。"
+
+msgid "The fine is Silver in whole millions, as in the clan bank: 1 is 1 million, 1000 is 1 billion. It is never less than 1 million."
+msgstr "罰金はクランバンクと同じく百万シルバー単位の整数です: 1は100万、1000は10億。100万未満になることはありません。"
+
+msgid "Fine (millions of Silver)"
+msgstr "罰金 (百万シルバー)"
+
+msgid "Edit tournament"
+msgstr "トーナメントを編集"
+
+msgid "Players without an identified level are evaluated by the highest goal."
+msgstr "レベルが特定されていないプレイヤーは、最も高い目標で評価されます。"
+
+msgid "{0} Silver credit(s) waiting to be confirmed."
+msgstr "確認待ちのシルバー入金{0}件。"
+
+msgid "{0} player(s) credited, {1} in all."
+msgstr "{0}人に入金しました。合計{1}。"
+
+msgid "{0} player(s) are not members of the clan bank: their Silver stays pending."
+msgstr "{0}人のプレイヤーはクランバンクのメンバーではありません: シルバーは保留のままです。"
+
+msgid "{0} will be credited again."
+msgstr "{0}に再度入金されます。"
+
+msgid "{0} will not be credited."
+msgstr "{0}には入金されません。"
+
+msgid "The Silver credited to {0} was taken back."
+msgstr "{0}に入金したシルバーを取り消しました。"
+
+msgid "Guard level"
+msgstr "ガードレベル"
+
+msgid "Reached (%)"
+msgstr "達成率（%）"
+
+msgid "Goal met"
+msgstr "目標達成"
+
+msgid "{0} (millions of Silver)"
+msgstr "{0}（百万シルバー）"
+
+msgid "Fine status"
+msgstr "罰金の状態"
+
+msgid "Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions."
+msgstr "追加賞品にはそれぞれ0より大きい整数の数量が必要で、アイテムには名前も必要です。シルバーは百万単位の整数です。"
+
+msgid "Not credited"
+msgstr "未入金"
+
+msgid "Credited"
+msgstr "入金済み"
+
+msgid "Reversed"
+msgstr "取り消し済み"
+
+msgid "Silver"
+msgstr "シルバー"
+
+msgid "Tournament prize: {0} - {1}"
+msgstr "トーナメント賞品: {0} - {1}"
+
+msgid "Silver prize"
+msgstr "シルバー賞品"
+
+msgid "Credited to the players' accounts in the clan bank once confirmed."
+msgstr "確認後、クランバンクのプレイヤー口座に入金されます。"
+
+msgid "Lists the pending Silver again from the split of the rewards."
+msgstr "報酬の分配から保留中のシルバーを再リストします。"
+
+msgid "Credit {0} player(s) ({1})"
+msgstr "{0}人に入金（{1}）"
+
+msgid "Credit the pending Silver to the players' accounts in the clan bank?"
+msgstr "保留中のシルバーをクランバンクのプレイヤー口座に入金しますか？"
+
+msgid "Do not credit"
+msgstr "入金しない"
+
+msgid "Credit again"
+msgstr "再度入金"
+
+msgid "Take back"
+msgstr "取り消す"
+
+msgid "Take {0} back from {1}? Their balance may go below zero."
+msgstr "{1}から{0}を取り消しますか？残高がマイナスになることがあります。"
+
+msgid "Silver in millions, credited to the players in the clan bank"
+msgstr "百万単位のシルバー、クランバンクでプレイヤーに入金"
+
+msgid "Silver (millions)"
+msgstr "シルバー（百万）"
+
+msgid "Export CSV"
+msgstr "CSVをエクスポート"
+
+msgid "Extra prizes: Silver and items"
+msgstr "追加賞品: シルバーとアイテム"
+
+msgid "Prizes the clan gives besides the ones it receives, added to every new event of this tournament and split by the rule chosen. Add as many as you like."
+msgstr "クランが受け取る賞品とは別に配る賞品です。このトーナメントの新しいイベントすべてに追加され、選んだルールで分配されます。いくつでも追加できます。"
+
+msgid "Silver is in whole millions, as in the clan bank (1000 is 1B): when the result is published, each player's share waits on the event page for an administrator to credit it to their account in the clan bank."
+msgstr "シルバーはクランバンクと同じく百万単位の整数です（1000は1B）: 結果が公開されると、各プレイヤーの取り分はイベントページで待機し、管理者がクランバンクの口座に入金します。"
+
+msgid "Item name"
+msgstr "アイテム名"
+
+msgid "Remove prize"
+msgstr "賞品を削除"
+
+msgid "Add prize"
+msgstr "賞品を追加"
+
+msgid "Given by the clan in every new event:"
+msgstr "新しいイベントごとにクランが配るもの:"
+
+msgid "{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "{0}: 目標は0以上の整数にするか、空欄にしてください。"
+
+msgid "The tournament ranking is invalid."
+msgstr "トーナメントのランキングが無効です。"
+
+msgid "Manually register a chest collection entry"
+msgstr "宝箱の獲得を手動で登録"
+
+msgid "Collection Record"
+msgstr "獲得記録"
+
+msgid "Chest Name"
+msgstr "宝箱の名前"
+
+msgid "e.g. Chest of the Ancients"
+msgstr "例: 古代の宝箱"
+
+msgid "Player name"
+msgstr "プレイヤー名"
+
+msgid "Save Record"
+msgstr "記録を保存"
+
+msgid "Missing Configuration"
+msgstr "設定がありません"
+
+msgid "Incomplete Configuration"
+msgstr "設定が不完全です"
+
+msgid "A required system parameter is missing or has an invalid configuration"
+msgstr "必須のシステムパラメーターがないか、設定が無効です"
+
+msgid "System Configurations"
+msgstr "システム設定"
+
+msgid "Parameter missing: {0}"
+msgstr "パラメーターがありません: {0}"
+
+msgid "The parameter <strong>{0}</strong> is {1} in the <code>config</code> table, preventing score calculations."
+msgstr "パラメーター<strong>{0}</strong>が<code>config</code>テーブルで{1}のため、スコアを計算できません。"
+
+msgid "If this is a fresh setup or update, execute the initial migration seed in your terminal:"
+msgstr "新規インストールまたは更新の場合は、ターミナルで初期マイグレーションのシードを実行してください:"
+
+msgid "Then review and configure parameters in {0}."
+msgstr "その後、{0}でパラメーターを確認・設定してください。"
+
+msgid "Configurations"
+msgstr "設定"
+
+msgid "Modify individual chest record details and player attribution"
+msgstr "宝箱記録の詳細と割り当てられたプレイヤーを変更"
+
+msgid "Save Changes"
+msgstr "変更を保存"
+
+msgid "History of all individual chest openings recorded by collectors"
+msgstr "コレクターが記録したすべての宝箱開封の履歴"
+
+msgid "Opened Chests Log"
+msgstr "開封済み宝箱のログ"
+
+msgid "Show:"
+msgstr "表示:"
+
+msgid "No collected chests recorded."
+msgstr "獲得した宝箱の記録はありません。"
+
+msgid "Collected Chest: {0}"
+msgstr "獲得した宝箱: {0}"
+
+msgid "Chest collection event details and player log"
+msgstr "宝箱獲得の詳細とプレイヤーのログ"
+
+msgid "Collection Event Details"
+msgstr "獲得の詳細"
+
+msgid "Log ID"
+msgstr "ログID"
+
+msgid "Back to List"
+msgstr "一覧に戻る"
+
+msgid "Add Configuration"
+msgstr "設定を追加"
+
+msgid "Create a new global configuration parameter and its default value"
+msgstr "新しいグローバル設定パラメーターと既定値を作成"
+
+msgid "List Configs"
+msgstr "設定一覧"
+
+msgid "New Parameter"
+msgstr "新しいパラメーター"
+
+msgid "Parameter Key (Name)"
+msgstr "パラメーターキー（名前）"
+
+msgid "e.g. system_feature_enabled"
+msgstr "例: system_feature_enabled"
+
+msgid "Snake_case identifier used in code."
+msgstr "コードで使われるsnake_caseの識別子。"
+
+msgid "Value (string or number)"
+msgstr "値（文字列または数値）"
+
+msgid "Description & Purpose"
+msgstr "説明と目的"
+
+msgid "Explain what this configuration affects..."
+msgstr "この設定が何に影響するかを説明してください..."
+
+msgid "Save Configuration"
+msgstr "設定を保存"
+
+msgid "Edit Configuration"
+msgstr "設定を編集"
+
+msgid "Update parameter value or documentation"
+msgstr "パラメーターの値または説明を更新"
+
+msgid "Parameter Key"
+msgstr "パラメーターキー"
+
+msgid "Parameter names are immutable identifiers used throughout the codebase."
+msgstr "パラメーター名はコード全体で使われる固定の識別子です。"
+
+msgid "Are you sure you want to delete parameter \"{0}\"?"
+msgstr "パラメーター「{0}」を削除しますか？"
+
+msgid "Parameter"
+msgstr "パラメーター"
+
+msgid "No configurations found."
+msgstr "設定が見つかりません。"
+
+msgid "Are you sure you want to delete parameter {0}?"
+msgstr "パラメーター{0}を削除しますか？"
+
+msgid "Global environment settings, feature toggles, and application variables"
+msgstr "グローバルな環境設定、機能の切り替え、アプリケーション変数"
+
+msgid "Config: {0}"
+msgstr "設定: {0}"
+
+msgid "Configuration parameter details and values"
+msgstr "設定パラメーターの詳細と値"
+
+msgid "Current Value"
+msgstr "現在の値"
+
+msgid "Internal ID"
+msgstr "内部ID"
+
+msgid "Manually record an error log entry"
+msgstr "エラーログを手動で記録"
+
+msgid "Error Log"
+msgstr "エラーログ"
+
+msgid "Configure error record details."
+msgstr "エラー記録の詳細を設定してください。"
+
+msgid "Save Error"
+msgstr "エラーを保存"
+
+msgid "Modify error record details"
+msgstr "エラー記録の詳細を変更"
+
+msgid "Error # {0}"
+msgstr "エラー #{0}"
+
+msgid "System Errors"
+msgstr "システムエラー"
+
+msgid "Error logs and captured exception reports"
+msgstr "エラーログと捕捉された例外のレポート"
+
+msgid "Recorded Errors"
+msgstr "記録されたエラー"
+
+msgid "No errors logged."
+msgstr "エラーの記録はありません。"
+
+msgid "Error log record details"
+msgstr "エラー記録の詳細"
+
+msgid "Error Details"
+msgstr "エラーの詳細"
+
+msgid "Error ID"
+msgstr "エラーID"
+
+msgid "The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody's points change."
+msgstr "このイベントの結果は記録済みです。ここで報酬と目標を変更できます: 記録済みのランキングに再適用され、誰のポイントも変わりません。"
+
+msgid "Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future."
+msgstr "どちらの時刻もスコアボードと同じUTCです。この期間内に獲得した宝箱だけが数えられます。開始は過去でも構いませんが、終了は未来である必要があります。"
+
+msgid "Review and manually transcribe unopened or unread chests captured by collectors"
+msgstr "コレクターが取得した未開封・未読の宝箱を確認し、手動で書き起こします"
+
+msgid "Status Filters"
+msgstr "状態フィルター"
+
+msgid "Complete and record a chest the collector could not finish"
+msgstr "コレクターが完了できなかった宝箱を補完して記録"
+
+msgid "Back to Queue"
+msgstr "キューに戻る"
+
+msgid "Register a new clan member, configure troop levels, and ranking participation"
+msgstr "新しいクランメンバーを登録し、部隊レベルとランキングへの参加を設定"
+
+msgid "New Member Profile"
+msgstr "新しいメンバープロフィール"
+
+msgid "Player Details"
+msgstr "プレイヤー情報"
+
+msgid "Player in-game name"
+msgstr "ゲーム内のプレイヤー名"
+
+msgid "Game Player ID"
+msgstr "ゲーム内プレイヤーID"
+
+msgid "Optional. Matches the member to tournament rankings even if their name changes."
+msgstr "任意。名前が変わってもメンバーをトーナメントのランキングと照合します。"
+
+msgid "Linked System User"
+msgstr "リンクされたシステムユーザー"
+
+msgid "None (Not linked to any login account)"
+msgstr "なし（ログインアカウントにリンクされていません）"
+
+msgid "Associate this clan member with a web system login account."
+msgstr "このクランメンバーをシステムのログインアカウントに関連付けます。"
+
+msgid "Troop Levels & Status"
+msgstr "部隊レベルと状態"
+
+msgid "Member Status & Clan Policy"
+msgstr "メンバーの状態とクランのルール"
+
+msgid "Active Member (currently in clan and active)"
+msgstr "アクティブメンバー（クラン在籍中で活動中）"
+
+msgid "Inactive members are hidden from common lists and ranking calculations."
+msgstr "非アクティブなメンバーは通常の一覧とランキング計算から非表示になります。"
+
+msgid "Administrative Account"
+msgstr "管理用アカウント"
+
+msgid "Takes part in tournament rankings but never receives tournament rewards or counts towards division points."
+msgstr "トーナメントのランキングには参加しますが、トーナメント報酬は受け取らず、ディビジョンポイントにも数えられません。"
+
+msgid "Save Member"
+msgstr "メンバーを保存"
+
+msgid "Manage player profile, in-game identifier, troop levels, and ranking participation"
+msgstr "プレイヤープロフィール、ゲーム内ID、部隊レベル、ランキングへの参加を管理"
+
+msgid "Receives Rewards"
+msgstr "報酬を受け取る"
+
+msgid "Matches the member to tournament rankings even if their name changes."
+msgstr "名前が変わってもメンバーをトーナメントのランキングと照合します。"
+
+msgid "Created:"
+msgstr "作成:"
+
+msgid "Last Modified:"
+msgstr "最終更新:"
+
+msgid "Manage clan members roster, troop tiers, and tournament reward eligibility"
+msgstr "クランメンバー名簿、部隊レベル、トーナメント報酬の対象を管理"
+
+msgid "Clan Members Roster"
+msgstr "クランメンバー名簿"
+
+msgid "Troops"
+msgstr "部隊"
+
+msgid "Tournament Rewards"
+msgstr "トーナメント報酬"
+
+msgid "No clan members found."
+msgstr "クランメンバーが見つかりません。"
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "{0}を削除しますか？"
+
+msgid "Goals Missed"
+msgstr "未達成の目標"
+
+msgid "Success Rate (%)"
+msgstr "成功率（%）"
+
+msgid "events"
+msgstr "イベント"
+
+msgid "cycles"
+msgstr "サイクル"
+
+msgid "Events + Chests"
+msgstr "イベント + 宝箱"
+
+msgid "Rank"
+msgstr "順位"
+
+msgid "Percentage of goals met out of valid evaluated goals"
+msgstr "評価された有効な目標のうち達成した目標の割合"
+
+msgid "1st Place"
+msgstr "1位"
+
+msgid "Guards level"
+msgstr "ガードレベル"
+
+msgid "Administrative account"
+msgstr "管理用アカウント"
+
+msgid "Joined clan after tournament started"
+msgstr "トーナメント開始後にクランに加入"
+
+msgid "Joined clan after cycle started"
+msgstr "サイクル開始後にクランに加入"
+
+msgid "Member: {0}"
+msgstr "メンバー: {0}"
+
+msgid "Member profile, troop composition, and clan participation details"
+msgstr "メンバープロフィール、部隊構成、クランへの参加状況"
+
+msgid "Total Power"
+msgstr "総戦力"
+
+msgid "Clan Member # {0}"
+msgstr "クランメンバー #{0}"
+
+msgid "Troop Composition"
+msgstr "部隊構成"
+
+msgid "Account & Clan Data"
+msgstr "アカウントとクランの情報"
+
+msgid "Active Member"
+msgstr "アクティブメンバー"
+
+msgid "Not assigned yet"
+msgstr "まだ割り当てられていません"
+
+msgid "Administrative Account (Excluded from tournament prize distribution)"
+msgstr "管理用アカウント（トーナメント賞品の分配対象外）"
+
+msgid "Eligible for tournament rewards"
+msgstr "トーナメント報酬の対象"
+
+msgid "Not linked to any login account"
+msgstr "ログインアカウントにリンクされていません"
+
+msgid "Delete Member"
+msgstr "メンバーを削除"
+
+msgid "Define a new authorization role and its permissions"
+msgstr "新しい権限ロールとその権限を定義"
+
+msgid "New Role Details"
+msgstr "新しいロールの詳細"
+
+msgid "Role Name"
+msgstr "ロール名"
+
+msgid "e.g. manager"
+msgstr "例: manager"
+
+msgid "Alias / Identifier"
+msgstr "別名 / 識別子"
+
+msgid "e.g. role_manager"
+msgstr "例: role_manager"
+
+msgid "Describe what this role permits..."
+msgstr "このロールで許可される内容を説明してください..."
+
+msgid "Assign Users"
+msgstr "ユーザーを割り当て"
+
+msgid "Hold Ctrl (or Cmd) to select multiple users."
+msgstr "Ctrl（またはCmd）を押しながら複数のユーザーを選択します。"
+
+msgid "Save Role"
+msgstr "ロールを保存"
+
+msgid "Modify role details, description, and assigned users"
+msgstr "ロールの詳細、説明、割り当てユーザーを変更"
+
+msgid "Assigned Users"
+msgstr "割り当てられたユーザー"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple users."
+msgstr "Ctrl（またはCmd）を押しながら複数のユーザーを選択・解除します。"
+
+msgid "Created: {0}"
+msgstr "作成: {0}"
+
+msgid "Modified: {0}"
+msgstr "更新: {0}"
+
+msgid "System Roles"
+msgstr "システムロール"
+
+msgid "Manage access permission levels and system role definitions"
+msgstr "アクセス権限レベルとシステムロールを管理"
+
+msgid "Configured Roles"
+msgstr "設定済みのロール"
+
+msgid "No roles found."
+msgstr "ロールが見つかりません。"
+
+msgid "Role: {0}"
+msgstr "ロール: {0}"
+
+msgid "Role details and assigned system users"
+msgstr "ロールの詳細と割り当てユーザー"
+
+msgid "Role Information"
+msgstr "ロール情報"
+
+msgid "Users Assigned to this Role"
+msgstr "このロールを持つユーザー"
+
+msgid "No users currently assigned to this role."
+msgstr "現在このロールを持つユーザーはいません。"
+
+msgid "View User"
+msgstr "ユーザーを見る"
+
+msgid "Assign Role to User"
+msgstr "ユーザーにロールを割り当て"
+
+msgid "Link a system user account to a specific role"
+msgstr "システムのユーザーアカウントをロールにリンク"
+
+msgid "List Assignments"
+msgstr "割り当て一覧"
+
+msgid "Assignment Details"
+msgstr "割り当ての詳細"
+
+msgid "Save Assignment"
+msgstr "割り当てを保存"
+
+msgid "Edit Role Assignment"
+msgstr "ロールの割り当てを編集"
+
+msgid "Modify the user or role for this assignment"
+msgstr "この割り当てのユーザーまたはロールを変更"
+
+msgid "Assignment # {0}"
+msgstr "割り当て #{0}"
+
+msgid "User Role Assignments"
+msgstr "ユーザーへのロール割り当て"
+
+msgid "Direct mappings between system user accounts and roles"
+msgstr "ユーザーアカウントとロールの直接の対応"
+
+msgid "Assign Role"
+msgstr "ロールを割り当て"
+
+msgid "Role Assignments"
+msgstr "ロールの割り当て"
+
+msgid "No role assignments found."
+msgstr "ロールの割り当てが見つかりません。"
+
+msgid "Roles User # {0}"
+msgstr "ユーザーロール #{0}"
+
+msgid "Role Assignment # {0}"
+msgstr "ロール割り当て #{0}"
+
+msgid "Direct user-to-role permission linkage"
+msgstr "ユーザーとロールの直接の権限リンク"
+
+msgid "Assignment Information"
+msgstr "割り当て情報"
+
+msgid "Assignment ID"
+msgstr "割り当てID"
+
+msgid "Register a new chest definition, point valuation, and monster categorization"
+msgstr "新しい宝箱、ポイント値、モンスター分類を登録"
+
+msgid "Chest Specification"
+msgstr "宝箱の仕様"
+
+msgid "Source Name"
+msgstr "ソース名"
+
+msgid "e.g. Chest of the Serpent"
+msgstr "例: 蛇の宝箱"
+
+msgid "The raw name of the chest as scanned by OCR or reported by the game."
+msgstr "OCRで読み取った、またはゲームが報告した宝箱の元の名前。"
+
+msgid "Friendly Alias"
+msgstr "表示名"
+
+msgid "Optional friendly name for reports..."
+msgstr "レポート用の任意の表示名..."
+
+msgid "Optional friendly name shown in reports instead of the raw source."
+msgstr "レポートで元のソースの代わりに表示される任意の表示名。"
+
+msgid "Score / Points"
+msgstr "スコア / ポイント"
+
+msgid "Points awarded for collecting this chest."
+msgstr "この宝箱を獲得すると得られるポイント。"
+
+msgid "Epic Monster Classification"
+msgstr "エピックモンスター分類"
+
+msgid "Epic Monster Chest (Drop from killing an Epic Monster)"
+msgstr "エピックモンスターの宝箱（エピックモンスターを倒すと獲得）"
+
+msgid "Chests Quantity per Monster"
+msgstr "モンスターあたりの宝箱数"
+
+msgid "If chest type is Epic Monster, inform how many chests are earned by killing one monster."
+msgstr "エピックモンスターの宝箱の場合、1体倒すと何個の宝箱が得られるかを入力してください。"
+
+msgid "Save Chest"
+msgstr "宝箱を保存"
+
+msgid "Modify chest configuration, scoring weight, and monster flags"
+msgstr "宝箱の設定、スコアの重み、モンスターのフラグを変更"
+
+msgid "Regular Chest"
+msgstr "通常の宝箱"
+
+msgid "Catalogue of game chests, score values, and monster classifications"
+msgstr "ゲームの宝箱カタログ、スコア値、モンスター分類"
+
+msgid "Goals & Weights"
+msgstr "目標と重み"
+
+msgid "Filters & Search"
+msgstr "フィルターと検索"
+
+msgid "Review unregistered chests found in collection records and promote them to Standard Chests"
+msgstr "獲得記録で見つかった未登録の宝箱を確認し、標準宝箱に昇格します"
+
+msgid "Standard Chest: {0}"
+msgstr "標準宝箱: {0}"
+
+msgid "Standard chest specification, score value, and monster drop configuration"
+msgstr "標準宝箱の仕様、スコア値、モンスタードロップの設定"
+
+msgid "Chest Attributes"
+msgstr "宝箱の属性"
+
+msgid "Source (OCR / Game Name)"
+msgstr "ソース（OCR / ゲーム内の名前）"
+
+msgid "points"
+msgstr "ポイント"
+
+msgid "Classification"
+msgstr "分類"
+
+msgid "Epic Monster Chest"
+msgstr "エピックモンスターの宝箱"
+
+msgid "Optimize army formations, march capacities, leadership, and troop compositions"
+msgstr "軍の編成、行軍容量、統率力、部隊構成を最適化"
+
+msgid "Create a new system user account and optionally link clan members"
+msgstr "新しいシステムユーザーアカウントを作成し、必要に応じてクランメンバーをリンク"
+
+msgid "Account Registration"
+msgstr "アカウント登録"
+
+msgid "Account Details"
+msgstr "アカウント情報"
+
+msgid "User full name"
+msgstr "ユーザーのフルネーム"
+
+msgid "name@example.com"
+msgstr "name@example.com"
+
+msgid "Enter a secure password"
+msgstr "安全なパスワードを入力してください"
+
+msgid "Status & Access"
+msgstr "状態とアクセス"
+
+msgid "The user will be created with default role: <strong>user</strong>."
+msgstr "ユーザーは既定のロール<strong>user</strong>で作成されます。"
+
+msgid "Linked Clan Members"
+msgstr "リンクされたクランメンバー"
+
+msgid "Clan Members"
+msgstr "クランメンバー"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple members."
+msgstr "Ctrl（またはCmd）を押しながら複数のメンバーを選択・解除します。"
+
+msgid "Save User"
+msgstr "ユーザーを保存"
+
+msgid "Manage account details, permissions, and linked clan members"
+msgstr "アカウント情報、権限、リンクされたクランメンバーを管理"
+
+msgid "Leave blank to keep current password"
+msgstr "現在のパスワードを維持する場合は空欄のまま"
+
+msgid "Leave blank if you do not want to change the password."
+msgstr "パスワードを変更しない場合は空欄のままにしてください。"
+
+msgid "Only administrators can change the status."
+msgstr "状態を変更できるのは管理者だけです。"
+
+msgid "Roles & Clan Association"
+msgstr "ロールとクランの関連付け"
+
+msgid "Select the permission level for this user in the system."
+msgstr "このユーザーのシステム内での権限レベルを選択してください。"
+
+msgid "Manage registered user accounts, permissions, and clan member associations"
+msgstr "ユーザーアカウント、権限、クランメンバーとの関連付けを管理"
+
+msgid "System Users"
+msgstr "システムユーザー"
+
+msgid "User: {0}"
+msgstr "ユーザー: {0}"
+
+msgid "User profile, security permissions, and clan membership links"
+msgstr "ユーザープロフィール、セキュリティ権限、クランメンバーとのリンク"
+
+msgid "Account Status"
+msgstr "アカウントの状態"
+
+msgid "Active (Access granted)"
+msgstr "アクティブ（アクセス許可）"
+
+msgid "Pending Approval"
+msgstr "承認待ち"
+
+msgid "Google Sign-In"
+msgstr "Googleでログイン"
+
+msgid "Registered"
+msgstr "登録日"
+
+msgid "Last Updated"
+msgstr "最終更新"
+
+msgid "Active in Clan"
+msgstr "クランでアクティブ"
+
+msgid "No clan members linked to this user."
+msgstr "このユーザーにリンクされたクランメンバーはいません。"
+
+msgid "View Member"
+msgstr "メンバーを見る"
+
+msgid "Assigned Roles"
+msgstr "割り当てられたロール"
+
+msgid "No roles assigned."
+msgstr "ロールは割り当てられていません。"
+
+msgid "View Role"
+msgstr "ロールを見る"

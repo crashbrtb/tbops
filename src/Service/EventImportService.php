@@ -504,7 +504,7 @@ class EventImportService
         $catalogue = $this->fetchTable('GameTournaments');
         [$type, $variant] = GameTournamentsTable::parseKey($tournament['tournament_key']);
         $ranking = $tournament['ranking'] ?? GameTournament::RANKING_DEFAULT;
-        $entry = $type !== null ? $catalogue->touchType($type, $variant, $endsAt, $ranking) : null;
+        $entry = $type !== null ? $catalogue->touchType($type, $variant, $endsAt, $ranking, (string)($tournament['name'] ?? '')) : null;
         if ($entry !== null && $tournament['name'] !== null) {
             $catalogue->offerName($entry, $tournament['name'], GameTournament::SOURCE_UPLOADER);
         }
@@ -948,6 +948,10 @@ class EventImportService
 
         $import->set('status', EventImport::STATUS_PUBLISHED, ['guard' => false]);
         (new ClanResultService())->settleNotice($event);
+        // Who missed the goal owes the tournament's fine: listed for an administrator to charge.
+        (new TournamentFineService())->propose($event);
+        // The Silver won waits for an administrator to credit it in the clan bank.
+        (new TournamentPayoutService())->propose($event);
 
         return count($rows);
     }
@@ -1031,6 +1035,9 @@ class EventImportService
             $event->set('published_at', null, ['guard' => false]);
             $event->set('finalized_at', null, ['guard' => false]);
             $this->fetchTable('Events')->saveOrFail($event, ['checkRules' => false, 'associated' => false]);
+            // The fines not charged go with the result; the charged ones stay to be refunded.
+            (new TournamentFineService())->withdraw($event);
+            (new TournamentPayoutService())->withdraw($event);
         });
     }
 

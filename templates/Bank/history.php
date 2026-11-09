@@ -21,7 +21,7 @@ $balance = (int)round($member->bank_account->balance ?? 0);
     </div>
 
     <div class="goal-pill">
-        <?= __('Current balance: {0} $', $this->Number->format($balance, ['places' => 0])) ?>
+        <?= __('Current balance: {0}', $this->silver($balance)) ?>
     </div>
 
     <div class="card ranking-card">
@@ -86,10 +86,10 @@ $balance = (int)round($member->bank_account->balance ?? 0);
                         ?>
                         <tr>
                             <td><span class="badge badge-light"><?= $typeLabel ?></span></td>
-                            <td class="font-weight-bold"><?= $this->Number->format($transaction->amount, ['places' => 0]) ?></td>
-                            <td><?= $this->Number->format($transaction->fee, ['places' => 0]) ?></td>
+                            <td class="font-weight-bold"><?= $this->silver($transaction->amount) ?></td>
+                            <td><?= $this->silver($transaction->fee) ?></td>
                             <td class="font-weight-bold" style="color: <?= $netEffect > 0 ? 'var(--success)' : ($netEffect < 0 ? 'var(--danger)' : 'inherit') ?>;">
-                                <?= ($netEffect > 0 ? '+' : '') . $this->Number->format($netEffect, ['places' => 0]) ?>
+                                <?= ($netEffect > 0 ? '+' : '') . $this->silver($netEffect) ?>
                             </td>
                             <td>
                                 <?php if ($transaction->status === 'approved'): ?>

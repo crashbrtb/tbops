@@ -26,7 +26,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted font-weight-bold text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;"><?= __('Total Silver in Bank') ?></div>
-                        <div class="font-weight-bold" style="font-size: 1.8rem; color: var(--accent);"><?= $this->Number->format($totalSilver, ['places' => 0]) ?> $</div>
+                        <div class="font-weight-bold" style="font-size: 1.8rem; color: var(--accent);"><?= $this->silver($totalSilver) ?></div>
                     </div>
                     <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
                         <i class="fas fa-coins"></i>
@@ -39,7 +39,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted font-weight-bold text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;"><?= __('Total Fees Collected') ?></div>
-                        <div class="font-weight-bold" style="font-size: 1.8rem; color: var(--success);"><?= $this->Number->format($totalFees, ['places' => 0]) ?> $</div>
+                        <div class="font-weight-bold" style="font-size: 1.8rem; color: var(--success);"><?= $this->silver($totalFees) ?></div>
                     </div>
                     <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--success-light); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
                         <i class="fas fa-receipt"></i>
@@ -74,7 +74,7 @@
                                 <?php endif; ?>
                             </td>
                             <td class="text-center font-weight-bold" style="color: <?= $balance > 0 ? 'var(--text-dark)' : 'var(--muted)' ?>;">
-                                <?= $this->Number->format($balance, ['places' => 0]) ?> $
+                                <?= $this->silver($balance) ?>
                             </td>
                             <td class="text-right">
                                 <?php if ($isAdmin): ?>

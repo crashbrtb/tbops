@@ -20,14 +20,14 @@ class AppViewTest extends TestCase
     {
         $this->assertSame('0', $this->view->gameNumber(0));
         $this->assertSame('500', $this->view->gameNumber(500));
-        $this->assertSame('1,00k', $this->view->gameNumber(1000));
-        $this->assertSame('1,20k', $this->view->gameNumber(1200));
-        $this->assertSame('1,23k', $this->view->gameNumber(1234));
-        $this->assertSame('12,3k', $this->view->gameNumber(12345));
-        $this->assertSame('100k', $this->view->gameNumber(100000));
-        $this->assertSame('100m', $this->view->gameNumber(100000000));
-        $this->assertSame('1,00m', $this->view->gameNumber(999900));
-        $this->assertSame('1,50b', $this->view->gameNumber(1500000000));
+        $this->assertSame('1K', $this->view->gameNumber(1000));
+        $this->assertSame('1,2K', $this->view->gameNumber(1200));
+        $this->assertSame('1,23K', $this->view->gameNumber(1234));
+        $this->assertSame('12,3K', $this->view->gameNumber(12345));
+        $this->assertSame('100K', $this->view->gameNumber(100000));
+        $this->assertSame('100M', $this->view->gameNumber(100000000));
+        $this->assertSame('1M', $this->view->gameNumber(999900));
+        $this->assertSame('1,5B', $this->view->gameNumber(1500000000));
     }
 }
 

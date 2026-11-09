@@ -81,20 +81,20 @@ msgid "⚠️ INSUFFICIENT BALANCE ⚠️"
 msgstr "⚠️ SOLDE INSUFFISANT ⚠️"
 
 #: ./src/Controller/BankController.php:305
-msgid "Available balance: {0} $"
-msgstr "Solde disponible : {0} $"
+msgid "Available balance: {0}"
+msgstr "Solde disponible : {0}"
 
 #: ./src/Controller/BankController.php:306
-msgid "Withdrawal amount: {0} $"
-msgstr "Montant du retrait : {0} $"
+msgid "Withdrawal amount: {0}"
+msgstr "Montant du retrait : {0}"
 
 #: ./src/Controller/BankController.php:307
-msgid "Fee: {0} $"
-msgstr "Frais : {0} $"
+msgid "Fee: {0}"
+msgstr "Frais : {0}"
 
 #: ./src/Controller/BankController.php:308
-msgid "Total required: {0} $"
-msgstr "Total nécessaire : {0} $"
+msgid "Total required: {0}"
+msgstr "Total nécessaire : {0}"
 
 #: ./src/Controller/BankController.php:309
 msgid "Please reduce the withdrawal amount."
@@ -1038,8 +1038,8 @@ msgid "Request a Silver deposit. Amounts represent millions of Silver ($)"
 msgstr "Demandez un dépôt d'Argent. Les montants représentent des millions d'Argent ($)"
 
 #: ./templates/Bank/deposit.php:35
-msgid "Flat deposit fee: {0} $ | Caravan fee: {1}%"
-msgstr "Frais fixes de dépôt : {0} $ | Frais de caravane : {1} %"
+msgid "Flat deposit fee: {0} | Caravan fee: {1}%"
+msgstr "Frais fixes de dépôt : {0} | Frais de caravane : {1} %"
 
 #: ./templates/Bank/deposit.php:40
 msgid "Deposit Details"
@@ -1141,8 +1141,8 @@ msgid "Values are saved in millions of Silver ($)"
 msgstr "Les valeurs sont enregistrées en millions d'Argent ($)"
 
 #: ./templates/Bank/history.php:24
-msgid "Current balance: {0} $"
-msgstr "Solde actuel : {0} $"
+msgid "Current balance: {0}"
+msgstr "Solde actuel : {0}"
 
 #: ./templates/Bank/history.php:29
 msgid "Transactions"
@@ -1261,8 +1261,8 @@ msgid "Refresh"
 msgstr "Rafraîchir"
 
 #: ./templates/Bank/statement.php:39
-msgid "Member: {0} | Current balance: {1} $"
-msgstr "Membre : {0} | Solde actuel : {1} $"
+msgid "Member: {0} | Current balance: {1}"
+msgstr "Membre : {0} | Solde actuel : {1}"
 
 #: ./templates/Bank/statement.php:44
 msgid "Statement Records"
@@ -1277,8 +1277,8 @@ msgid "Choose a source and destination member. All values represent millions of 
 msgstr "Choisissez un membre source et un membre destination. Toutes les valeurs représentent des millions d'Argent ($)"
 
 #: ./templates/Bank/transfer.php:33
-msgid "Transfer fee: {0} $ (charged in addition to the transferred amount)"
-msgstr "Frais de transfert : {0} $ (prélevés en plus du montant transféré)"
+msgid "Transfer fee: {0} (charged in addition to the transferred amount)"
+msgstr "Frais de transfert : {0} (prélevés en plus du montant transféré)"
 
 #: ./templates/Bank/transfer.php:38
 msgid "Your Available Source Balances"
@@ -1364,8 +1364,8 @@ msgid "Select a member and enter the Silver amount. All values represent million
 msgstr "Choisissez un membre et saisissez le montant en Argent. Toutes les valeurs représentent des millions d'Argent ($)"
 
 #: ./templates/Bank/withdraw.php:32
-msgid "Current withdrawal fee: {0} $"
-msgstr "Frais de retrait actuels : {0} $"
+msgid "Current withdrawal fee: {0}"
+msgstr "Frais de retrait actuels : {0}"
 
 #: ./templates/Bank/withdraw.php:38
 msgid "You do not have members available for withdrawals."
@@ -6098,3 +6098,1583 @@ msgstr "Évolution %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "Données du clan"
+
+msgid "Edit the catalogue entry of this tournament type"
+msgstr "Modifier l'entrée du catalogue de ce type de tournoi"
+
+msgid "By ranges of the goal reached"
+msgstr "Par tranches de l'objectif atteint"
+
+msgid "Add at least one range, or choose \"No fine\"."
+msgstr "Ajoutez au moins une tranche, ou choisissez « Pas d'amende »."
+
+msgid "At most {0} ranges."
+msgstr "Au plus {0} tranches."
+
+
+msgid "The range {0}% to {1}% is not valid: it must start below where it ends, between 0% and 100%."
+msgstr "La tranche de {0}% à {1}% n'est pas valide : elle doit commencer avant sa fin, entre 0% et 100%."
+
+
+msgid "The range {0}% to {1}% overlaps the one before it."
+msgstr "La tranche de {0}% à {1}% chevauche la précédente."
+
+msgid "{0}% to {1}% of the goal: {2}"
+msgstr "{0}% à {1}% de l'objectif : {2}"
+
+msgid "By the goal reached"
+msgstr "Par l'objectif atteint"
+
+msgid "By the share of the goal reached:"
+msgstr "Par la part de l'objectif atteinte :"
+
+msgid "Each range is a share of the goal the player reached and the fine for it. A range holds its start but not its end: with 0% to 10% and 10% to 50%, a player at exactly 10% falls in the second. A share no range holds is not fined; a player who reached the goal never is."
+msgstr "Chaque tranche est une part de l'objectif atteinte par le joueur et l'amende correspondante. Une tranche inclut son début mais pas sa fin : avec 0% à 10% et 10% à 50%, un joueur à exactement 10% tombe dans la seconde. Une part hors de toute tranche n'est pas sanctionnée ; un joueur qui a atteint l'objectif ne l'est jamais."
+
+msgid "From (%)"
+msgstr "De (%)"
+
+msgid "To (%)"
+msgstr "À (%)"
+
+msgid "Remove range"
+msgstr "Retirer la tranche"
+
+msgid "Add range"
+msgstr "Ajouter une tranche"
+
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "T9 s'applique quand toutes les troupes (gardes, spécialistes, monstres, ingénieurs) sont au niveau 9. G0 signifie que le niveau de garde n'a jamais été identifié (reçoit l'objectif le plus élevé)."
+
+msgid "All troops level 9 (T9)"
+msgstr "Toutes les troupes niveau 9 (T9)"
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "{0} autre(s) coffre(s) de ce type ont été enregistrés avec le même nom."
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "Le coffre de ce code est mis en évidence. Vérifiez que sa ligne indique le joueur donné par le jeu."
+
+msgid "New chest types"
+msgstr "Nouveaux types de coffre"
+
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "Le jeu a des coffres que ni le système ni le catalogue du jeu ne savent encore nommer. Saisissez le nom et la source puis enregistrez : tous les coffres de ce type sont enregistrés, chacun avec son joueur, et les suivants seront reconnus automatiquement."
+
+msgid "Picture"
+msgstr "Image"
+
+msgid "Chests waiting"
+msgstr "Coffres en attente"
+
+msgid "Name it"
+msgstr "Le nommer"
+
+msgid "Picture of the chest"
+msgstr "Image du coffre"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "Vérifiez : la première ligne de l'image doit être de {0}."
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "Pas d'image. Ne le nommez que si vous savez de quel coffre il s'agit."
+
+msgid "Code {0}"
+msgstr "Code {0}"
+
+msgid "Save and record the chests"
+msgstr "Enregistrer et comptabiliser les coffres"
+
+msgid "Cannot be identified"
+msgstr "Impossible à identifier"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "Marquer ces {0} coffre(s) comme non récupérables ? Ils ne compteront pour personne."
+
+msgid "Fill in the chest name and the source."
+msgstr "Indiquez le nom du coffre et la source."
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "{0} coffre(s) enregistré(s) comme « {1} »."
+
+msgid "Chest code"
+msgstr "Code du coffre"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "Cela nomme définitivement le code {0} : le(s) {1} autre(s) coffre(s) en attente et tous les futurs coffres de ce code prendront ce nom et cette source."
+
+msgid "Pending Tournaments"
+msgstr "Tournois en attente"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "Le jeu n'envoie qu'un numéro pour un tournoi. Lisez son nom sur l'image : ses classements ne sont pas envoyés tant qu'il n'en a pas, et la recherche ne remonte que jusqu'aux « Jours en arrière » du programme."
+
+msgid "The Journal page of this tournament"
+msgstr "La page du Journal de ce tournoi"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "La carte de ce tournoi est mise en évidence. Vérifiez que sa date est celle à côté de l'image et qu'il s'agit d'une carte de résultats."
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "Le programme n'a pas encore pu en prendre une image : il réessaiera à la prochaine recherche."
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "Ce nom sera utilisé pour tous les tournois de ce code à partir de maintenant."
+
+msgid "Save the name"
+msgstr "Enregistrer le nom"
+
+msgid "No tournament is waiting for a name."
+msgstr "Aucun tournoi n'attend de nom."
+
+msgid "Fill in the name of the tournament."
+msgstr "Indiquez le nom du tournoi."
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "Tournoi « {0} » nommé. Ses classements arrivent avec la prochaine recherche."
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "L'image doit être un PNG, JPEG, WebP ou GIF de {0} Ko au maximum."
+
+msgid "Source, alias or chest name..."
+msgstr "Source, alias ou nom du coffre..."
+
+msgid "Filter by source or chest name..."
+msgstr "Filtrer par source ou nom du coffre..."
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr "Classés par score, seuls les coffres qui ont un score sont listés ; classés par nombre collecté, tous le sont, car le score ne compte pas. Choisissez-en autant que vous voulez."
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "Les classements de « {0} » attendent désormais une vérification avant d'être publiés."
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "Les classements de « {0} » sont désormais publiés sans vérification, même s'il manque {1}."
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "Les classements de « {0} » sont désormais publiés sans vérification."
+
+msgid "The clan results were not accepted."
+msgstr "Les résultats du clan n'ont pas été acceptés."
+
+msgid "the name"
+msgstr "le nom"
+
+msgid "the description"
+msgstr "la description"
+
+msgid "the duration"
+msgstr "la durée"
+
+msgid "the image"
+msgstr "l'image"
+
+msgid "the goal"
+msgstr "l'objectif"
+
+msgid "the prizes"
+msgstr "les prix"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "Envoyez results sous forme de liste de 1 à {0} résultats du clan."
+
+msgid "This clan result is not valid."
+msgstr "Ce résultat du clan n'est pas valide."
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "L'id de l'entrée du Journal est manquant ou invalide."
+
+msgid "Item {0}"
+msgstr "Objet {0}"
+
+msgid "Not defined"
+msgstr "Non défini"
+
+msgid "Ranking {0}"
+msgstr "Classement {0}"
+
+msgid "Published without review"
+msgstr "Publié sans vérification"
+
+msgid "Clan Tournament History"
+msgstr "Historique des tournois du clan"
+
+msgid "In the game"
+msgstr "Dans le jeu"
+
+msgid "Display name"
+msgstr "Nom affiché"
+
+msgid "The game's name"
+msgstr "Le nom du jeu"
+
+msgid "By guard level"
+msgstr "Par niveau de garde"
+
+msgid "Required to receive a reward."
+msgstr "Requis pour recevoir une récompense."
+
+msgid "Not required to receive a reward."
+msgstr "Non requis pour recevoir une récompense."
+
+msgid "Prizes"
+msgstr "Prix"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "Répartis entre les joueurs de chaque nouvel événement, avec la quantité que le clan y a reçue :"
+
+msgid "minimum {0} point(s)"
+msgstr "minimum {0} point(s)"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "Ce que le clan a reçu dans ce tournoi, par place :"
+
+msgid "Last received"
+msgstr "Dernière réception"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "Le clan n'a encore reçu aucun prix dans ce tournoi, ou le collecteur n'a pas envoyé les résultats du clan."
+
+msgid "The clan in this tournament"
+msgstr "Le clan dans ce tournoi"
+
+msgid "Ended (UTC)"
+msgstr "Terminé (UTC)"
+
+msgid "Place"
+msgstr "Place"
+
+msgid "Clan points"
+msgstr "Points du clan"
+
+msgid "Received"
+msgstr "Reçu"
+
+msgid "Not in the top {0}"
+msgstr "Hors du top {0}"
+
+msgid "Nothing"
+msgstr "Rien"
+
+msgid "Publish events automatically"
+msgstr "Publier les événements automatiquement"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "Lorsque cette option est activée, dès que le collecteur envoie le classement d'un événement terminé de ce tournoi, les objectifs sont calculés et l'événement est publié aussitôt, sans vérification : la part de chaque joueur dans les prix est enregistrée. Un classement avec des joueurs que le site ne peut pas identifier attend toujours une vérification. Lorsqu'elle est désactivée, chaque classement attend comme brouillon sur la page de vérification."
+
+msgid "Publish this tournament's events without review"
+msgstr "Publier les événements de ce tournoi sans vérification"
+
+msgid "Missing: {0}."
+msgstr "Manquant : {0}."
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "Publier quand même les événements de ce tournoi sans vérification ?"
+
+msgid "Back to the tournament"
+msgstr "Retour au tournoi"
+
+msgid "Name in the game"
+msgstr "Nom dans le jeu"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "Lu dans le Journal du jeu. Il reste tel que le jeu le nomme, en anglais."
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "Le jeu ne l'a pas encore indiqué. Un nom saisi ici est conservé : le collecteur ne l'écrasera pas."
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "Le nom que le site affiche pour ce tournoi et ses nouveaux événements. Vide : le nom du jeu."
+
+msgid "Shown on every new event of this tournament."
+msgstr "Affichée sur chaque nouvel événement de ce tournoi."
+
+msgid "Clan prizes to split among the players"
+msgstr "Prix du clan à répartir entre les joueurs"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "Voici les prix que le clan a reçus dans ce tournoi. Cochez ceux à répartir entre les joueurs : chaque nouvel événement du tournoi reçoit une récompense par prix coché, avec la quantité que le clan y a reçue, répartie selon la règle choisie. Les récompenses ajoutées à la main à un événement sont conservées à côté."
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "Les tournois du jeu. Les noms et ids sont remplis par le collecteur ; ouvrez un tournoi pour définir le reste : nom affiché, description, durée, image, objectif, prix et publication."
+
+msgid "Tournament History"
+msgstr "Historique des tournois"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "La place du clan parmi les clans et ses points dans chaque tournoi du jeu, et ce que le clan a reçu"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "Aucun résultat du clan pour l'instant. Le collecteur les envoie avec les tournois qu'il lit dans le Journal."
+
+msgid "Best place"
+msgstr "Meilleure place"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "classé {0} fois sur {1}"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "Le clan n'a jamais figuré parmi les clans listés dans ce tournoi."
+
+msgid "Every tournament"
+msgstr "Tous les tournois"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "Rempli avec ce que le clan a reçu dans ce tournoi"
+
+msgid "Clan prize"
+msgstr "Prix du clan"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "L'événement #{0} « {1} » n'a pas été publié : le résultat du clan de ce tournoi n'est pas arrivé, ses prix n'ont donc pas pu être répartis. Vérifiez-le."
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "L'événement #{0} « {1} » n'a pas été publié : le clan n'y a pas reçu {2}, choisi pour être réparti entre les joueurs. Vérifiez-le."
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "Le résultat du clan de ce tournoi n'est pas arrivé : les prix du clan choisis dans le catalogue ne sont pas répartis dans cet événement."
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "Le clan n'a pas reçu {0} dans cet événement : choisi dans le catalogue pour être réparti, il n'est pas dans les récompenses."
+
+msgid "Member Performance"
+msgstr "Performance des membres"
+
+msgid "Performance"
+msgstr "Performance"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "Indicateurs d'atteinte des objectifs de coffres et d'événements, classement mensuel (+1 pt par objectif d'événement battu) et historique complet de chaque joueur."
+
+msgid "Event Goals Met"
+msgstr "Objectifs d'événements atteints"
+
+msgid "Chest Goals Met"
+msgstr "Objectifs de coffres atteints"
+
+msgid "Overall Goals Met"
+msgstr "Total des objectifs atteints"
+
+msgid "Monthly Leader"
+msgstr "Leader du mois"
+
+msgid "Event Goals Met per Tournament"
+msgstr "Objectifs atteints par tournoi / événement"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "Objectifs atteints par cycle de coffres"
+
+msgid "Player Performance Ranking"
+msgstr "Classement de performance des joueurs"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "Score : 1 point pour chaque événement dont l'objectif a été battu sur la période. Cliquez sur un joueur pour voir son historique complet d'événements et de coffres."
+
+msgid "Event Goals"
+msgstr "Objectifs d'événements"
+
+msgid "Chest Goals"
+msgstr "Objectifs de coffres"
+
+msgid "Total Met"
+msgstr "Total atteints"
+
+msgid "Success Rate"
+msgstr "Taux de réussite"
+
+msgid "Monthly Score"
+msgstr "Score du mois"
+
+msgid "Chest History"
+msgstr "Historique des coffres"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "Dans le système de score, chaque tournoi où le joueur atteint ou dépasse l'objectif rapporte +1 point à son score mensuel."
+
+msgid "Tournament / Event"
+msgstr "Tournoi / Événement"
+
+msgid "Goal Status"
+msgstr "Statut de l'objectif"
+
+msgid "View player history"
+msgstr "Voir l'historique du joueur"
+
+msgid "Last month (30 days)"
+msgstr "Dernier mois (30 jours)"
+
+msgid "Last 60 days"
+msgstr "60 derniers jours"
+
+msgid "Last 90 days"
+msgstr "90 derniers jours"
+
+msgid "All time"
+msgstr "Toute la période"
+
+msgid "success rate"
+msgstr "taux de réussite"
+
+msgid "global rate"
+msgstr "taux global"
+
+msgid "goals beaten"
+msgstr "objectifs battus"
+
+msgid "Recent cycles"
+msgstr "Cycles récents"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "Affichage des cycles terminés les plus récents"
+
+msgid "No events with standings found in this period."
+msgstr "Aucun événement avec classement trouvé sur cette période."
+
+msgid "No chest cycle summaries recorded."
+msgstr "Aucun résumé de cycle de coffres enregistré."
+
+msgid "No event records in this period."
+msgstr "Aucun enregistrement d'événement sur cette période."
+
+msgid "No chest cycle records in this period."
+msgstr "Aucun enregistrement de cycle de coffres sur cette période."
+
+msgid "Awaiting event goal beats"
+msgstr "En attente d'objectifs d'événements battus"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "Indicateurs d'atteinte des objectifs de coffres et d'événements, classement par taux de réussite et historique complet des joueurs."
+
+msgid "Top Performer"
+msgstr "Meilleure performance"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "Classé par taux de réussite (%). Seuls les membres actifs sont listés. Cliquez sur un joueur pour voir son historique complet d'événements et de coffres."
+
+msgid "No active members found."
+msgstr "Aucun membre actif trouvé."
+
+msgid "No active members ranked"
+msgstr "Aucun membre actif classé"
+
+msgid "Awaiting goal evaluations"
+msgstr "En attente d'évaluations d'objectifs"
+
+msgid "Member since"
+msgstr "Membre depuis"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "Non pris en compte (arrivé en cours d'événement)"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "Non pris en compte (arrivé en cours de cycle)"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "Les tournois avec objectifs actifs commencés après l'arrivée du joueur dans le clan sont évalués pour le taux de réussite. Ceux commencés avant son arrivée ou sans objectif sont signalés comme tels."
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "Les cycles hebdomadaires de coffres commencés après l'arrivée du joueur dans le clan sont évalués. Ceux commencés avant son arrivée ne sont pas pris en compte."
+
+msgid "History of {0}"
+msgstr "Historique de {0}"
+
+msgid "Ends {0} UTC"
+msgstr "Se termine {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "Commence {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "Points du clan : {0}"
+
+msgid "Clan place: #{0}"
+msgstr "Place du clan : #{0}"
+
+msgid "Clan place: 100+"
+msgstr "Place du clan : 100+"
+
+msgid "Goal: {0} points"
+msgstr "Objectif : {0} points"
+
+msgid "required for rewards"
+msgstr "requis pour les récompenses"
+
+msgid "Prizes split among the players"
+msgstr "Prix répartis entre les joueurs"
+
+msgid "Last prize split ({0})"
+msgstr "Dernier prix réparti ({0})"
+
+msgid "Rewards of each place"
+msgstr "Récompenses du clan"
+
+msgid "Clan rewards"
+msgstr "Récompenses du clan"
+
+msgid "Clan rewards and goals"
+msgstr "Récompenses et objectifs du clan"
+
+msgid "Tournaments"
+msgstr "Tournois"
+
+msgid "the clan's place now:"
+msgstr "place actuelle du clan :"
+
+msgid "#{0} to #{1}"
+msgstr "#{0} à #{1}"
+
+msgid "Best clans"
+msgstr "Meilleurs clans"
+
+msgid "Clan ranking"
+msgstr "Classement du clan"
+
+msgid "{0} player(s) with points"
+msgstr "{0} joueur(s) avec des points"
+
+msgid "History of these events"
+msgstr "Historique de ces événements"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "Dernière mise à jour le {0} UTC."
+
+msgid "Last updated on {0} UTC."
+msgstr "Dernière mise à jour le {0} UTC."
+
+msgid "Inactive"
+msgstr "Bientôt"
+
+msgid "Goals of each tournament"
+msgstr "Objectifs de chaque tournoi"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "Tous les événements de {0} déjà tenus, du plus récent au plus ancien"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "Envoyez tournaments sous forme de liste de {0} au maximum."
+
+msgid "This tournament is not valid."
+msgstr "Ce tournoi n'est pas valide."
+
+msgid "This image is not a valid PNG."
+msgstr "Cette image n'est pas un PNG valide."
+
+msgid "Target"
+msgstr "Objectif"
+
+msgid "Goals Met"
+msgstr "Objectifs atteints"
+
+msgid "Goal Met"
+msgstr "Objectif atteint"
+
+msgid "Not Met"
+msgstr "Non atteint"
+
+msgid "No Goal"
+msgstr "Pas d'objectif"
+
+msgid "Cycle"
+msgstr "Cycle"
+
+msgid "Waived"
+msgstr "Dispensée"
+
+msgid "Charged"
+msgstr "Prélevée"
+
+msgid "Refunded"
+msgstr "Remboursée"
+
+msgid "Fine"
+msgstr "Amende"
+
+msgid "Fines"
+msgstr "Amendes"
+
+msgid "Refund"
+msgstr "Rembourser"
+
+msgid "Waive"
+msgstr "Dispenser"
+
+msgid "Fine again"
+msgstr "Remettre l'amende"
+
+msgid "List again"
+msgstr "Relister"
+
+msgid "No fine"
+msgstr "Pas d'amende"
+
+msgid "Fixed amount"
+msgstr "Montant fixe"
+
+msgid "In proportion to what was missing"
+msgstr "Proportionnel à ce qui manquait"
+
+msgid "Fine for missing the goal"
+msgstr "Amende pour objectif manqué"
+
+msgid "When the result of an event of this tournament is published, every player who did not reach the goal is listed with the fine below, debited from their account in the clan bank once an administrator charges it. Players can be waived on the event page before charging."
+msgstr "Lorsque le résultat d'un événement de ce tournoi est publié, chaque joueur qui n'a pas atteint l'objectif est listé avec l'amende ci-dessous, débitée de son compte à la banque du clan quand un administrateur la prélève. Sur la page de l'événement, des joueurs peuvent être dispensés avant le prélèvement."
+
+msgid "Fixed: every player who missed the goal owes the amount. In proportion: the amount times the part of the goal that was missing; a player at 60% of the goal owes 40% of the amount."
+msgstr "Fixe : chaque joueur qui a manqué l'objectif doit le montant. Proportionnel : le montant multiplié par la part de l'objectif qui manquait ; un joueur à 60 % de l'objectif doit 40 % du montant."
+
+msgid "{0} for every player who misses the goal."
+msgstr "{0} pour chaque joueur qui manque l'objectif."
+
+msgid "Up to {0}, in proportion to what was missing of the goal."
+msgstr "Jusqu'à {0}, en proportion de ce qui manquait à l'objectif."
+
+msgid "Without a goal nobody is fined."
+msgstr "Sans objectif, personne n'est mis à l'amende."
+
+msgid "The fine must be a whole number."
+msgstr "L'amende doit être un nombre entier."
+
+msgid "Set the fine, or choose \"No fine\"."
+msgstr "Indiquez l'amende, ou choisissez « Pas d'amende »."
+
+msgid "Not a member of the clan bank"
+msgstr "Pas membre de la banque du clan"
+
+msgid "Debit the pending fines from the players' accounts in the clan bank? A balance may go below zero: the player pays it by depositing."
+msgstr "Débiter les amendes en attente des comptes des joueurs à la banque du clan ? Un solde peut passer sous zéro : le joueur le rembourse en déposant."
+
+msgid "The fine is collected as a bank fee: the balance may go below zero, the player pays it by depositing, and the amount stays with the clan."
+msgstr "L'amende est prélevée comme frais bancaires : le solde peut passer sous zéro, le joueur le rembourse en déposant, et le montant reste au clan."
+
+msgid "Tournament fine: {0} - {1} of {2} points ({3}%)"
+msgstr "Amende de tournoi : {0} - {1} sur {2} points ({3}%)"
+
+msgid "{0} fine(s) waiting to be charged."
+msgstr "{0} amende(s) en attente de prélèvement."
+
+msgid "{0} fine(s) charged, {1} in all."
+msgstr "{0} amende(s) prélevée(s), {1} au total."
+
+msgid "{0} player(s) are not members of the clan bank: their fines stay pending."
+msgstr "{0} joueur(s) ne sont pas membres de la banque du clan : leurs amendes restent en attente."
+
+msgid "{0} is fined again."
+msgstr "{0} est de nouveau mis à l'amende."
+
+msgid "{0} is waived."
+msgstr "{0} est dispensé."
+
+msgid "The fine of {0} was refunded."
+msgstr "L'amende de {0} a été remboursée."
+
+msgid "This tournament has no fine."
+msgstr "Ce tournoi n'a pas d'amende."
+
+msgid "Lists the pending fines again from the result and the tournament's current rule."
+msgstr "Relister les amendes en attente à partir du résultat et de la règle actuelle du tournoi."
+
+msgid "Charge {0} fine(s) ({1})"
+msgstr "Prélever {0} amende(s) ({1})"
+
+msgid "Set a fine on the tournament's page in the catalogue, then list the fines again."
+msgstr "Définissez une amende sur la page du tournoi dans le catalogue, puis relistez les amendes."
+
+msgid "Every player reached the goal: nobody is fined."
+msgstr "Tous les joueurs ont atteint l'objectif : personne n'est mis à l'amende."
+
+msgid "Give {0} back to {1}?"
+msgstr "Rendre {0} à {1} ?"
+
+msgid "Lost"
+msgstr "Perdue"
+
+msgid "Tournament Fines"
+msgstr "Amendes de tournois"
+
+msgid "Tournament fines"
+msgstr "Amendes de tournois"
+
+msgid "Every fine of the game tournaments, who still owes and what was given up"
+msgstr "Toutes les amendes des tournois du jeu, qui doit encore et ce qui a été abandonné"
+
+msgid "{0} fine(s)"
+msgstr "{0} amende(s)"
+
+msgid "Fines to pay, by player"
+msgstr "Amendes à payer, par joueur"
+
+msgid "Left the clan"
+msgstr "A quitté le clan"
+
+msgid "{0} out of the clan"
+msgstr "{0} hors du clan"
+
+msgid "Nobody owes a fine."
+msgstr "Personne ne doit d'amende."
+
+msgid "In the clan"
+msgstr "Dans le clan"
+
+msgid "Not charged yet"
+msgstr "Pas encore prélevée"
+
+msgid "Debt in the bank"
+msgstr "Dette à la banque"
+
+msgid "To pay"
+msgstr "À payer"
+
+msgid "Show their fines"
+msgstr "Afficher ses amendes"
+
+msgid "Not registered"
+msgstr "Non inscrit"
+
+msgid "Give up as lost"
+msgstr "Abandonner comme perdue"
+
+msgid "Give up the {0} {1} owes? The debt leaves their balance and the clan's fees."
+msgstr "Abandonner les {0} que doit {1} ? La dette sort de son solde et des frais du clan."
+
+msgid "Fine history"
+msgstr "Historique des amendes"
+
+msgid "Any status"
+msgstr "Tout statut"
+
+msgid "{0} given up"
+msgstr "{0} abandonné"
+
+msgid "No fine matches."
+msgstr "Aucune amende ne correspond."
+
+msgid "This player owes nothing."
+msgstr "Ce joueur ne doit rien."
+
+msgid "{0} of {1} given up as lost."
+msgstr "{0} de {1} abandonné comme perdu."
+
+msgid "{0} given up as lost"
+msgstr "{0} abandonné comme perdu"
+
+msgid "{0} paid, {1} given up"
+msgstr "{0} payé, {1} abandonné"
+
+msgid "To pay: {0}"
+msgstr "À payer : {0}"
+
+msgid "Nothing to pay"
+msgstr "Rien à payer"
+
+msgid "The ranges take whole numbers: percentages from 0 to 100, and the fine in millions of Silver."
+msgstr "Les tranches acceptent des nombres entiers : pourcentages de 0 à 100, et l'amende en millions d'Argent."
+
+msgid "Set the fine of the range {0}% to {1}%, at least 1 million Silver."
+msgstr "Définissez l'amende de la tranche de {0}% à {1}%, au moins 1 million d'Argent."
+
+msgid "The fine must be a whole number of millions of Silver."
+msgstr "L'amende doit être un nombre entier de millions d'Argent."
+
+msgid "The fine is Silver in whole millions, as in the clan bank: 1 is 1 million, 1000 is 1 billion. It is never less than 1 million."
+msgstr "L'amende est en Argent, en millions entiers, comme dans la banque du clan : 1 vaut 1 million, 1000 vaut 1 milliard. Elle n'est jamais inférieure à 1 million."
+
+msgid "Fine (millions of Silver)"
+msgstr "Amende (millions d'Argent)"
+
+msgid "Edit tournament"
+msgstr "Modifier le tournoi"
+
+msgid "Players without an identified level are evaluated by the highest goal."
+msgstr "Les joueurs sans niveau identifié sont évalués sur l'objectif le plus élevé."
+
+msgid "{0} Silver credit(s) waiting to be confirmed."
+msgstr "{0} crédit(s) d'Argent en attente de confirmation."
+
+msgid "{0} player(s) credited, {1} in all."
+msgstr "{0} joueur(s) crédité(s), {1} au total."
+
+msgid "{0} player(s) are not members of the clan bank: their Silver stays pending."
+msgstr "{0} joueur(s) ne sont pas membres de la banque du clan : leur Argent reste en attente."
+
+msgid "{0} will be credited again."
+msgstr "{0} sera de nouveau crédité."
+
+msgid "{0} will not be credited."
+msgstr "{0} ne sera pas crédité."
+
+msgid "The Silver credited to {0} was taken back."
+msgstr "L'Argent crédité à {0} a été repris."
+
+msgid "Guard level"
+msgstr "Niveau de garde"
+
+msgid "Reached (%)"
+msgstr "Atteint (%)"
+
+msgid "Goal met"
+msgstr "Objectif atteint"
+
+msgid "{0} (millions of Silver)"
+msgstr "{0} (millions d'Argent)"
+
+msgid "Fine status"
+msgstr "Statut de l'amende"
+
+msgid "Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions."
+msgstr "Chaque prix supplémentaire demande une quantité entière supérieure à zéro, et les objets un nom. L'Argent est en millions entiers."
+
+msgid "Not credited"
+msgstr "Non crédité"
+
+msgid "Credited"
+msgstr "Crédité"
+
+msgid "Reversed"
+msgstr "Repris"
+
+msgid "Silver"
+msgstr "Argent"
+
+msgid "Tournament prize: {0} - {1}"
+msgstr "Prix de tournoi : {0} - {1}"
+
+msgid "Silver prize"
+msgstr "Prix en Argent"
+
+msgid "Credited to the players' accounts in the clan bank once confirmed."
+msgstr "Crédité sur les comptes des joueurs à la banque du clan une fois confirmé."
+
+msgid "Lists the pending Silver again from the split of the rewards."
+msgstr "Relister l'Argent en attente à partir de la répartition des récompenses."
+
+msgid "Credit {0} player(s) ({1})"
+msgstr "Créditer {0} joueur(s) ({1})"
+
+msgid "Credit the pending Silver to the players' accounts in the clan bank?"
+msgstr "Créditer l'Argent en attente sur les comptes des joueurs à la banque du clan ?"
+
+msgid "Do not credit"
+msgstr "Ne pas créditer"
+
+msgid "Credit again"
+msgstr "Créditer de nouveau"
+
+msgid "Take back"
+msgstr "Reprendre"
+
+msgid "Take {0} back from {1}? Their balance may go below zero."
+msgstr "Reprendre {0} à {1} ? Son solde peut passer sous zéro."
+
+msgid "Silver in millions, credited to the players in the clan bank"
+msgstr "Argent en millions, crédité aux joueurs à la banque du clan"
+
+msgid "Silver (millions)"
+msgstr "Argent (millions)"
+
+msgid "Export CSV"
+msgstr "Exporter en CSV"
+
+msgid "Extra prizes: Silver and items"
+msgstr "Prix supplémentaires : Argent et objets"
+
+msgid "Prizes the clan gives besides the ones it receives, added to every new event of this tournament and split by the rule chosen. Add as many as you like."
+msgstr "Prix que le clan donne en plus de ceux qu'il reçoit, ajoutés à chaque nouvel événement de ce tournoi et répartis selon la règle choisie. Ajoutez-en autant que vous voulez."
+
+msgid "Silver is in whole millions, as in the clan bank (1000 is 1B): when the result is published, each player's share waits on the event page for an administrator to credit it to their account in the clan bank."
+msgstr "L'Argent est en millions entiers, comme dans la banque du clan (1000 vaut 1B) : quand le résultat est publié, la part de chaque joueur attend sur la page de l'événement qu'un administrateur la crédite sur son compte à la banque du clan."
+
+msgid "Item name"
+msgstr "Nom de l'objet"
+
+msgid "Remove prize"
+msgstr "Retirer le prix"
+
+msgid "Add prize"
+msgstr "Ajouter un prix"
+
+msgid "Given by the clan in every new event:"
+msgstr "Donnés par le clan à chaque nouvel événement :"
+
+msgid "{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "{0} : l'objectif doit être un nombre entier supérieur ou égal à 0, ou rester vide."
+
+msgid "The tournament ranking is invalid."
+msgstr "Le classement du tournoi n'est pas valide."
+
+msgid "Manually register a chest collection entry"
+msgstr "Enregistrer manuellement une collecte de coffre"
+
+msgid "Collection Record"
+msgstr "Enregistrement de collecte"
+
+msgid "Chest Name"
+msgstr "Nom du coffre"
+
+msgid "e.g. Chest of the Ancients"
+msgstr "ex. Coffre des Anciens"
+
+msgid "Player name"
+msgstr "Nom du joueur"
+
+msgid "Save Record"
+msgstr "Enregistrer"
+
+msgid "Missing Configuration"
+msgstr "Configuration manquante"
+
+msgid "Incomplete Configuration"
+msgstr "Configuration incomplète"
+
+msgid "A required system parameter is missing or has an invalid configuration"
+msgstr "Un paramètre système obligatoire est manquant ou mal configuré"
+
+msgid "System Configurations"
+msgstr "Configurations du système"
+
+msgid "Parameter missing: {0}"
+msgstr "Paramètre manquant : {0}"
+
+msgid "The parameter <strong>{0}</strong> is {1} in the <code>config</code> table, preventing score calculations."
+msgstr "Le paramètre <strong>{0}</strong> est {1} dans la table <code>config</code>, ce qui empêche le calcul des scores."
+
+msgid "If this is a fresh setup or update, execute the initial migration seed in your terminal:"
+msgstr "S'il s'agit d'une nouvelle installation ou d'une mise à jour, exécutez le seed de la migration initiale dans votre terminal :"
+
+msgid "Then review and configure parameters in {0}."
+msgstr "Vérifiez ensuite et configurez les paramètres dans {0}."
+
+msgid "Configurations"
+msgstr "Configurations"
+
+msgid "Modify individual chest record details and player attribution"
+msgstr "Modifier les détails de l'enregistrement du coffre et le joueur attribué"
+
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+msgid "History of all individual chest openings recorded by collectors"
+msgstr "Historique de toutes les ouvertures de coffres enregistrées par les collecteurs"
+
+msgid "Opened Chests Log"
+msgstr "Journal des coffres ouverts"
+
+msgid "Show:"
+msgstr "Afficher :"
+
+msgid "No collected chests recorded."
+msgstr "Aucun coffre collecté enregistré."
+
+msgid "Collected Chest: {0}"
+msgstr "Coffre collecté : {0}"
+
+msgid "Chest collection event details and player log"
+msgstr "Détails de la collecte du coffre et journal du joueur"
+
+msgid "Collection Event Details"
+msgstr "Détails de la collecte"
+
+msgid "Log ID"
+msgstr "ID de l'enregistrement"
+
+msgid "Back to List"
+msgstr "Retour à la liste"
+
+msgid "Add Configuration"
+msgstr "Ajouter une configuration"
+
+msgid "Create a new global configuration parameter and its default value"
+msgstr "Créer un nouveau paramètre global de configuration et sa valeur par défaut"
+
+msgid "List Configs"
+msgstr "Lister les configurations"
+
+msgid "New Parameter"
+msgstr "Nouveau paramètre"
+
+msgid "Parameter Key (Name)"
+msgstr "Clé du paramètre (nom)"
+
+msgid "e.g. system_feature_enabled"
+msgstr "ex. system_feature_enabled"
+
+msgid "Snake_case identifier used in code."
+msgstr "Identifiant en snake_case utilisé dans le code."
+
+msgid "Value (string or number)"
+msgstr "Valeur (texte ou nombre)"
+
+msgid "Description & Purpose"
+msgstr "Description et objectif"
+
+msgid "Explain what this configuration affects..."
+msgstr "Expliquez ce que cette configuration affecte..."
+
+msgid "Save Configuration"
+msgstr "Enregistrer la configuration"
+
+msgid "Edit Configuration"
+msgstr "Modifier la configuration"
+
+msgid "Update parameter value or documentation"
+msgstr "Mettre à jour la valeur ou la documentation du paramètre"
+
+msgid "Parameter Key"
+msgstr "Clé du paramètre"
+
+msgid "Parameter names are immutable identifiers used throughout the codebase."
+msgstr "Les noms des paramètres sont des identifiants fixes utilisés dans tout le code."
+
+msgid "Are you sure you want to delete parameter \"{0}\"?"
+msgstr "Voulez-vous vraiment supprimer le paramètre « {0} » ?"
+
+msgid "Parameter"
+msgstr "Paramètre"
+
+msgid "No configurations found."
+msgstr "Aucune configuration trouvée."
+
+msgid "Are you sure you want to delete parameter {0}?"
+msgstr "Voulez-vous vraiment supprimer le paramètre {0} ?"
+
+msgid "Global environment settings, feature toggles, and application variables"
+msgstr "Réglages globaux de l'environnement, interrupteurs de fonctionnalités et variables de l'application"
+
+msgid "Config: {0}"
+msgstr "Configuration : {0}"
+
+msgid "Configuration parameter details and values"
+msgstr "Détails et valeurs du paramètre de configuration"
+
+msgid "Current Value"
+msgstr "Valeur actuelle"
+
+msgid "Internal ID"
+msgstr "ID interne"
+
+msgid "Manually record an error log entry"
+msgstr "Enregistrer manuellement une erreur"
+
+msgid "Error Log"
+msgstr "Journal d'erreurs"
+
+msgid "Configure error record details."
+msgstr "Configurez les détails de l'erreur."
+
+msgid "Save Error"
+msgstr "Enregistrer l'erreur"
+
+msgid "Modify error record details"
+msgstr "Modifier les détails de l'erreur"
+
+msgid "Error # {0}"
+msgstr "Erreur n° {0}"
+
+msgid "System Errors"
+msgstr "Erreurs du système"
+
+msgid "Error logs and captured exception reports"
+msgstr "Journaux d'erreurs et rapports d'exceptions capturées"
+
+msgid "Recorded Errors"
+msgstr "Erreurs enregistrées"
+
+msgid "No errors logged."
+msgstr "Aucune erreur enregistrée."
+
+msgid "Error log record details"
+msgstr "Détails de l'enregistrement d'erreur"
+
+msgid "Error Details"
+msgstr "Détails de l'erreur"
+
+msgid "Error ID"
+msgstr "ID de l'erreur"
+
+msgid "The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody's points change."
+msgstr "Le résultat de cet événement est enregistré. Vous pouvez modifier ses récompenses et son objectif ici : ils sont appliqués de nouveau au classement enregistré, et les points de personne ne changent."
+
+msgid "Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future."
+msgstr "Les deux moments sont en UTC, la même horloge que le tableau des scores. Seuls les coffres collectés dans cette période comptent ; le début peut être dans le passé, mais la fin doit être dans le futur."
+
+msgid "Review and manually transcribe unopened or unread chests captured by collectors"
+msgstr "Examiner et transcrire manuellement les coffres non ouverts ou non lus capturés par les collecteurs"
+
+msgid "Status Filters"
+msgstr "Filtres de statut"
+
+msgid "Complete and record a chest the collector could not finish"
+msgstr "Compléter et enregistrer un coffre que le collecteur n'a pas pu terminer"
+
+msgid "Back to Queue"
+msgstr "Retour à la file"
+
+msgid "Register a new clan member, configure troop levels, and ranking participation"
+msgstr "Inscrire un nouveau membre du clan, configurer les niveaux des troupes et la participation aux classements"
+
+msgid "New Member Profile"
+msgstr "Nouveau profil de membre"
+
+msgid "Player Details"
+msgstr "Détails du joueur"
+
+msgid "Player in-game name"
+msgstr "Nom du joueur dans le jeu"
+
+msgid "Game Player ID"
+msgstr "ID du joueur dans le jeu"
+
+msgid "Optional. Matches the member to tournament rankings even if their name changes."
+msgstr "Facultatif. Associe le membre aux classements des tournois même s'il change de nom."
+
+msgid "Linked System User"
+msgstr "Utilisateur du système lié"
+
+msgid "None (Not linked to any login account)"
+msgstr "Aucun (non lié à un compte de connexion)"
+
+msgid "Associate this clan member with a web system login account."
+msgstr "Associer ce membre du clan à un compte de connexion du système."
+
+msgid "Troop Levels & Status"
+msgstr "Niveaux des troupes et statut"
+
+msgid "Member Status & Clan Policy"
+msgstr "Statut du membre et règles du clan"
+
+msgid "Active Member (currently in clan and active)"
+msgstr "Membre actif (dans le clan et actif)"
+
+msgid "Inactive members are hidden from common lists and ranking calculations."
+msgstr "Les membres inactifs sont masqués des listes courantes et des calculs de classement."
+
+msgid "Administrative Account"
+msgstr "Compte administratif"
+
+msgid "Takes part in tournament rankings but never receives tournament rewards or counts towards division points."
+msgstr "Participe aux classements des tournois, mais ne reçoit jamais de récompenses de tournoi et ne compte pas pour les points de division."
+
+msgid "Save Member"
+msgstr "Enregistrer le membre"
+
+msgid "Manage player profile, in-game identifier, troop levels, and ranking participation"
+msgstr "Gérer le profil du joueur, son identifiant dans le jeu, les niveaux des troupes et la participation aux classements"
+
+msgid "Receives Rewards"
+msgstr "Reçoit des récompenses"
+
+msgid "Matches the member to tournament rankings even if their name changes."
+msgstr "Associe le membre aux classements des tournois même s'il change de nom."
+
+msgid "Created:"
+msgstr "Créé :"
+
+msgid "Last Modified:"
+msgstr "Dernière modification :"
+
+msgid "Manage clan members roster, troop tiers, and tournament reward eligibility"
+msgstr "Gérer la liste des membres du clan, les niveaux des troupes et l'éligibilité aux récompenses de tournoi"
+
+msgid "Clan Members Roster"
+msgstr "Liste des membres du clan"
+
+msgid "Troops"
+msgstr "Troupes"
+
+msgid "Tournament Rewards"
+msgstr "Récompenses de tournoi"
+
+msgid "No clan members found."
+msgstr "Aucun membre du clan trouvé."
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "Voulez-vous vraiment supprimer {0} ?"
+
+msgid "Goals Missed"
+msgstr "Objectifs manqués"
+
+msgid "Success Rate (%)"
+msgstr "Taux de réussite (%)"
+
+msgid "events"
+msgstr "événements"
+
+msgid "cycles"
+msgstr "cycles"
+
+msgid "Events + Chests"
+msgstr "Événements + Coffres"
+
+msgid "Rank"
+msgstr "Rang"
+
+msgid "Percentage of goals met out of valid evaluated goals"
+msgstr "Pourcentage d'objectifs atteints parmi les objectifs valides évalués"
+
+msgid "1st Place"
+msgstr "1re place"
+
+msgid "Guards level"
+msgstr "Niveau des gardes"
+
+msgid "Administrative account"
+msgstr "Compte administratif"
+
+msgid "Joined clan after tournament started"
+msgstr "A rejoint le clan après le début du tournoi"
+
+msgid "Joined clan after cycle started"
+msgstr "A rejoint le clan après le début du cycle"
+
+msgid "Member: {0}"
+msgstr "Membre : {0}"
+
+msgid "Member profile, troop composition, and clan participation details"
+msgstr "Profil du membre, composition des troupes et participation au clan"
+
+msgid "Total Power"
+msgstr "Puissance totale"
+
+msgid "Clan Member # {0}"
+msgstr "Membre du clan n° {0}"
+
+msgid "Troop Composition"
+msgstr "Composition des troupes"
+
+msgid "Account & Clan Data"
+msgstr "Données du compte et du clan"
+
+msgid "Active Member"
+msgstr "Membre actif"
+
+msgid "Not assigned yet"
+msgstr "Pas encore attribué"
+
+msgid "Administrative Account (Excluded from tournament prize distribution)"
+msgstr "Compte administratif (exclu de la répartition des prix de tournoi)"
+
+msgid "Eligible for tournament rewards"
+msgstr "Éligible aux récompenses de tournoi"
+
+msgid "Not linked to any login account"
+msgstr "Non lié à un compte de connexion"
+
+msgid "Delete Member"
+msgstr "Supprimer le membre"
+
+msgid "Define a new authorization role and its permissions"
+msgstr "Définir un nouveau rôle d'autorisation et ses permissions"
+
+msgid "New Role Details"
+msgstr "Détails du nouveau rôle"
+
+msgid "Role Name"
+msgstr "Nom du rôle"
+
+msgid "e.g. manager"
+msgstr "ex. manager"
+
+msgid "Alias / Identifier"
+msgstr "Alias / identifiant"
+
+msgid "e.g. role_manager"
+msgstr "ex. role_manager"
+
+msgid "Describe what this role permits..."
+msgstr "Décrivez ce que ce rôle permet..."
+
+msgid "Assign Users"
+msgstr "Attribuer des utilisateurs"
+
+msgid "Hold Ctrl (or Cmd) to select multiple users."
+msgstr "Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs utilisateurs."
+
+msgid "Save Role"
+msgstr "Enregistrer le rôle"
+
+msgid "Modify role details, description, and assigned users"
+msgstr "Modifier les détails, la description et les utilisateurs du rôle"
+
+msgid "Assigned Users"
+msgstr "Utilisateurs attribués"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple users."
+msgstr "Maintenez Ctrl (ou Cmd) pour sélectionner ou désélectionner plusieurs utilisateurs."
+
+msgid "Created: {0}"
+msgstr "Créé : {0}"
+
+msgid "Modified: {0}"
+msgstr "Modifié : {0}"
+
+msgid "System Roles"
+msgstr "Rôles du système"
+
+msgid "Manage access permission levels and system role definitions"
+msgstr "Gérer les niveaux de permission d'accès et les rôles du système"
+
+msgid "Configured Roles"
+msgstr "Rôles configurés"
+
+msgid "No roles found."
+msgstr "Aucun rôle trouvé."
+
+msgid "Role: {0}"
+msgstr "Rôle : {0}"
+
+msgid "Role details and assigned system users"
+msgstr "Détails du rôle et utilisateurs attribués"
+
+msgid "Role Information"
+msgstr "Informations du rôle"
+
+msgid "Users Assigned to this Role"
+msgstr "Utilisateurs ayant ce rôle"
+
+msgid "No users currently assigned to this role."
+msgstr "Aucun utilisateur n'a ce rôle actuellement."
+
+msgid "View User"
+msgstr "Voir l'utilisateur"
+
+msgid "Assign Role to User"
+msgstr "Attribuer un rôle à l'utilisateur"
+
+msgid "Link a system user account to a specific role"
+msgstr "Lier un compte utilisateur du système à un rôle"
+
+msgid "List Assignments"
+msgstr "Lister les attributions"
+
+msgid "Assignment Details"
+msgstr "Détails de l'attribution"
+
+msgid "Save Assignment"
+msgstr "Enregistrer l'attribution"
+
+msgid "Edit Role Assignment"
+msgstr "Modifier l'attribution de rôle"
+
+msgid "Modify the user or role for this assignment"
+msgstr "Modifier l'utilisateur ou le rôle de cette attribution"
+
+msgid "Assignment # {0}"
+msgstr "Attribution n° {0}"
+
+msgid "User Role Assignments"
+msgstr "Attributions de rôles aux utilisateurs"
+
+msgid "Direct mappings between system user accounts and roles"
+msgstr "Liens directs entre comptes utilisateurs et rôles"
+
+msgid "Assign Role"
+msgstr "Attribuer un rôle"
+
+msgid "Role Assignments"
+msgstr "Attributions de rôles"
+
+msgid "No role assignments found."
+msgstr "Aucune attribution de rôle trouvée."
+
+msgid "Roles User # {0}"
+msgstr "Rôle utilisateur n° {0}"
+
+msgid "Role Assignment # {0}"
+msgstr "Attribution de rôle n° {0}"
+
+msgid "Direct user-to-role permission linkage"
+msgstr "Lien direct de permission entre utilisateur et rôle"
+
+msgid "Assignment Information"
+msgstr "Informations de l'attribution"
+
+msgid "Assignment ID"
+msgstr "ID de l'attribution"
+
+msgid "Register a new chest definition, point valuation, and monster categorization"
+msgstr "Enregistrer un nouveau coffre, sa valeur en points et sa classification de monstre"
+
+msgid "Chest Specification"
+msgstr "Spécification du coffre"
+
+msgid "Source Name"
+msgstr "Nom d'origine"
+
+msgid "e.g. Chest of the Serpent"
+msgstr "ex. Coffre du Serpent"
+
+msgid "The raw name of the chest as scanned by OCR or reported by the game."
+msgstr "Le nom brut du coffre, tel que lu par l'OCR ou indiqué par le jeu."
+
+msgid "Friendly Alias"
+msgstr "Alias"
+
+msgid "Optional friendly name for reports..."
+msgstr "Nom convivial facultatif pour les rapports..."
+
+msgid "Optional friendly name shown in reports instead of the raw source."
+msgstr "Nom convivial facultatif affiché dans les rapports à la place de la source brute."
+
+msgid "Score / Points"
+msgstr "Score / points"
+
+msgid "Points awarded for collecting this chest."
+msgstr "Points accordés pour la collecte de ce coffre."
+
+msgid "Epic Monster Classification"
+msgstr "Classification monstre épique"
+
+msgid "Epic Monster Chest (Drop from killing an Epic Monster)"
+msgstr "Coffre de monstre épique (obtenu en tuant un monstre épique)"
+
+msgid "Chests Quantity per Monster"
+msgstr "Coffres par monstre"
+
+msgid "If chest type is Epic Monster, inform how many chests are earned by killing one monster."
+msgstr "Si le coffre vient d'un monstre épique, indiquez combien de coffres rapporte un monstre tué."
+
+msgid "Save Chest"
+msgstr "Enregistrer le coffre"
+
+msgid "Modify chest configuration, scoring weight, and monster flags"
+msgstr "Modifier la configuration du coffre, son poids dans le score et ses indicateurs de monstre"
+
+msgid "Regular Chest"
+msgstr "Coffre normal"
+
+msgid "Catalogue of game chests, score values, and monster classifications"
+msgstr "Catalogue des coffres du jeu, valeurs de score et classifications de monstre"
+
+msgid "Goals & Weights"
+msgstr "Objectifs et poids"
+
+msgid "Filters & Search"
+msgstr "Filtres et recherche"
+
+msgid "Review unregistered chests found in collection records and promote them to Standard Chests"
+msgstr "Examiner les coffres non enregistrés trouvés dans les collectes et les promouvoir en coffres standard"
+
+msgid "Standard Chest: {0}"
+msgstr "Coffre standard : {0}"
+
+msgid "Standard chest specification, score value, and monster drop configuration"
+msgstr "Spécification du coffre standard, valeur de score et configuration du butin de monstre"
+
+msgid "Chest Attributes"
+msgstr "Attributs du coffre"
+
+msgid "Source (OCR / Game Name)"
+msgstr "Source (OCR / nom dans le jeu)"
+
+msgid "points"
+msgstr "points"
+
+msgid "Classification"
+msgstr "Classification"
+
+msgid "Epic Monster Chest"
+msgstr "Coffre de monstre épique"
+
+msgid "Optimize army formations, march capacities, leadership, and troop compositions"
+msgstr "Optimiser les formations de l'armée, la capacité de marche, le commandement et la composition des troupes"
+
+msgid "Create a new system user account and optionally link clan members"
+msgstr "Créer un nouveau compte utilisateur du système et lier éventuellement des membres du clan"
+
+msgid "Account Registration"
+msgstr "Création de compte"
+
+msgid "Account Details"
+msgstr "Détails du compte"
+
+msgid "User full name"
+msgstr "Nom complet de l'utilisateur"
+
+msgid "name@example.com"
+msgstr "nom@exemple.com"
+
+msgid "Enter a secure password"
+msgstr "Saisissez un mot de passe sûr"
+
+msgid "Status & Access"
+msgstr "Statut et accès"
+
+msgid "The user will be created with default role: <strong>user</strong>."
+msgstr "L'utilisateur sera créé avec le rôle par défaut : <strong>user</strong>."
+
+msgid "Linked Clan Members"
+msgstr "Membres du clan liés"
+
+msgid "Clan Members"
+msgstr "Membres du clan"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple members."
+msgstr "Maintenez Ctrl (ou Cmd) pour sélectionner ou désélectionner plusieurs membres."
+
+msgid "Save User"
+msgstr "Enregistrer l'utilisateur"
+
+msgid "Manage account details, permissions, and linked clan members"
+msgstr "Gérer les détails du compte, les permissions et les membres du clan liés"
+
+msgid "Leave blank to keep current password"
+msgstr "Laisser vide pour garder le mot de passe actuel"
+
+msgid "Leave blank if you do not want to change the password."
+msgstr "Laissez vide si vous ne voulez pas changer le mot de passe."
+
+msgid "Only administrators can change the status."
+msgstr "Seuls les administrateurs peuvent changer le statut."
+
+msgid "Roles & Clan Association"
+msgstr "Rôles et lien avec le clan"
+
+msgid "Select the permission level for this user in the system."
+msgstr "Choisissez le niveau de permission de cet utilisateur dans le système."
+
+msgid "Manage registered user accounts, permissions, and clan member associations"
+msgstr "Gérer les comptes utilisateurs, les permissions et les liens avec les membres du clan"
+
+msgid "System Users"
+msgstr "Utilisateurs du système"
+
+msgid "User: {0}"
+msgstr "Utilisateur : {0}"
+
+msgid "User profile, security permissions, and clan membership links"
+msgstr "Profil utilisateur, permissions de sécurité et liens avec les membres du clan"
+
+msgid "Account Status"
+msgstr "Statut du compte"
+
+msgid "Active (Access granted)"
+msgstr "Actif (accès accordé)"
+
+msgid "Pending Approval"
+msgstr "En attente d'approbation"
+
+msgid "Google Sign-In"
+msgstr "Connexion Google"
+
+msgid "Registered"
+msgstr "Inscrit"
+
+msgid "Last Updated"
+msgstr "Dernière mise à jour"
+
+msgid "Active in Clan"
+msgstr "Actif dans le clan"
+
+msgid "No clan members linked to this user."
+msgstr "Aucun membre du clan lié à cet utilisateur."
+
+msgid "View Member"
+msgstr "Voir le membre"
+
+msgid "Assigned Roles"
+msgstr "Rôles attribués"
+
+msgid "No roles assigned."
+msgstr "Aucun rôle attribué."
+
+msgid "View Role"
+msgstr "Voir le rôle"
