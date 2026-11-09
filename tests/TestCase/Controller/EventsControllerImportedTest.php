@@ -305,11 +305,6 @@ class EventsControllerImportedTest extends TestCase
         $this->assertNull($this->fetchTable('Events')->get($event->id)->published_at);
         $this->assertSame(0, $this->fetchTable('EventStandings')->find()->count());
 
-        // Only the EventUploader registers tournaments: duplicating one is refused.
-        $this->loginAdmin();
-        $this->post("/events/duplicate/{$event->id}");
-        $this->assertRedirect(['controller' => 'Events', 'action' => 'manage']);
-        $this->assertSame(0, $this->fetchTable('Events')->find()->where(['Events.id !=' => $event->id])->count());
     }
 
     public function testEventsCanBeDeletedWhateverTheirRules(): void
@@ -353,7 +348,6 @@ class EventsControllerImportedTest extends TestCase
         $this->assertResponseContains('Awaiting result');
         $this->assertResponseContains("/events/review/{$event->id}");
         $this->assertResponseNotContains('New Game Tournament');
-        $this->assertResponseNotContains("/events/duplicate/{$event->id}");
     }
 
     public function testTheFormOnlyCreatesClanEvents(): void

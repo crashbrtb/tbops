@@ -108,19 +108,15 @@ class GameTournamentsController extends AppController
 
         $tournament = $this->GameTournaments->find('withoutImage')->where(['GameTournaments.id' => $id])->firstOrFail();
         $section = (string)($this->request->getData('section') ?? $this->request->getQuery('section', ''));
+        if ($section === GameTournament::SECTION_DURATION || $section === GameTournament::SECTION_IMAGE) {
+            // The game's: not edited here.
+            return $this->redirect(['action' => 'view', $id]);
+        }
         if (!in_array($section, GameTournament::SECTIONS, true)) {
             $section = '';
         }
-        if ($section === GameTournament::SECTION_DURATION || $section === GameTournament::SECTION_IMAGE) {
-            return $this->redirect(['action' => 'view', $id]);
-        }
         $shows = fn (string $part): bool => $section === ''
-            ? !in_array($part, [
-                GameTournament::SECTION_PRIZES,
-                GameTournament::SECTION_DESCRIPTION,
-                GameTournament::SECTION_DURATION,
-                GameTournament::SECTION_IMAGE,
-            ], true)
+            ? !in_array($part, [GameTournament::SECTION_PRIZES, GameTournament::SECTION_DESCRIPTION, GameTournament::SECTION_FINE], true)
             : $section === $part;
         $prizes = $shows(GameTournament::SECTION_PRIZES) ? (new ClanResultService())->knownPrizes((int)$tournament->game_type) : [];
 
@@ -145,13 +141,33 @@ class GameTournamentsController extends AppController
                 // The default goal every new event of this tournament starts with.
                 $fields += EventGoal::marshal((array)$data['goal']);
             }
+            if ($shows(GameTournament::SECTION_FINE) && array_key_exists('fine_mode', $data)) {
+                $mode = (string)$data['fine_mode'];
+                $fields['fine_mode'] = $mode;
+                $amount = trim((string)($data['fine_amount'] ?? ''));
+                $fields['fine_amount'] = in_array($mode, [\App\Service\TournamentFineService::MODE_NONE, \App\Service\TournamentFineService::MODE_TIERS], true)
+                    || $amount === '' ? null : $amount;
+            }
             $tournament = $this->GameTournaments->patchEntity($tournament, $fields);
             if ((string)$tournament->name !== $nameBefore) {
                 // A name typed here is final: the mapper will not replace it.
                 $tournament->set('name_source', $tournament->name ? GameTournament::SOURCE_MANUAL : null, ['guard' => false]);
             }
+            if ($shows(GameTournament::SECTION_FINE) && array_key_exists('fine_mode', $data)) {
+                // The ranges are kept while another mode is chosen, to come back to them.
+                $tiers = \App\Service\TournamentFineService::marshalTiers((array)($data['fine_tiers'] ?? []));
+                $tournament->set('fine_tiers', $tiers === [] ? null : json_encode($tiers), ['guard' => false]);
+            }
             if ($shows(GameTournament::SECTION_PRIZES)) {
                 $tournament->set('prize_items', $this->postedPrizes((array)($data['prizes'] ?? []), $prizes), ['guard' => false]);
+                if (array_key_exists('extra_prizes', $data) || array_key_exists('extra_prizes_sent', $data)) {
+                    $extras = $this->postedExtras((array)($data['extra_prizes'] ?? []));
+                    if ($extras === false) {
+                        $tournament->setError('extra_prizes', [__('Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions.')]);
+                    } else {
+                        $tournament->set('extra_prizes', $extras, ['guard' => false]);
+                    }
+                }
             }
 
             if ($this->GameTournaments->save($tournament)) {
@@ -235,6 +251,44 @@ class GameTournamentsController extends AppController
         }
 
         return $selection === [] ? null : (string)json_encode($selection, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * The extra prizes as the form posts them: the rows left blank are dropped.
+     * Silver takes whole millions, as the bank does; an item needs a name.
+     *
+     * @param array<mixed> $posted Rows of silver, name, quantity, rule, min_points and remainder.
+     * @return string|false|null JSON, null when there is none, false when a row is not valid.
+     */
+    private function postedExtras(array $posted): string|false|null
+    {
+        $out = [];
+        foreach ($posted as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $silver = ($row['kind'] ?? '') === 'silver';
+            $name = mb_substr(trim((string)($row['name'] ?? '')), 0, 120);
+            $quantity = trim((string)($row['quantity'] ?? ''));
+            if ($quantity === '' && $name === '') {
+                continue;
+            }
+            if (!preg_match('/^\d{1,9}$/', $quantity) || (int)$quantity <= 0 || (!$silver && $name === '')) {
+                return false;
+            }
+            $rule = (string)($row['rule'] ?? '');
+            $remainder = (string)($row['remainder'] ?? '');
+            $out[] = [
+                'silver' => $silver,
+                'name' => $silver ? '' : $name,
+                'quantity' => min((int)$quantity, \App\Model\Table\EventRewardsTable::MAX_QUANTITY),
+                'rule' => in_array($rule, ClanResultService::PRIZE_RULES, true) ? $rule : EventReward::RULE_PROPORTIONAL,
+                'min_points' => max(0, (int)($row['min_points'] ?? 1)),
+                'remainder' => array_key_exists($remainder, EventReward::remainderOptions()) ? $remainder : EventReward::REMAINDER_TOP_RANKED,
+            ];
+        }
+
+        return $out === [] ? null : (string)json_encode($out, JSON_UNESCAPED_UNICODE);
     }
 
     /**

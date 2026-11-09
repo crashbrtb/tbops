@@ -133,6 +133,9 @@ if ($isAdmin):
                     <?= $this->Html->link(__('Tournament Catalogue'), ['controller' => 'GameTournaments', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                 </li>
                 <li>
+                    <?= $this->Html->link(__('Tournament Fines'), ['controller' => 'EventFines', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                </li>
+                <li>
                     <?php
                     try {
                         $pendingTournaments = \Cake\ORM\TableRegistry::getTableLocator()

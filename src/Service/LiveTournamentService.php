@@ -103,7 +103,10 @@ class LiveTournamentService
     }
 
     /**
-     * The catalogue's entries of the type take the game's icon and banner.
+     * The catalogue's entries of this tournament take the game's icon and banner.
+     *
+     * One type of the game can hold several tournaments (1015 is Gold Rush, Silver
+     * Rush, Power Points...), so only the entries named as this one take them.
      *
      * @param array<string, mixed> $row Checked tournament.
      * @return void
@@ -114,7 +117,65 @@ class LiveTournamentService
         if ($fields === []) {
             return;
         }
-        $this->fetchTable('GameTournaments')->updateAll($fields, ['game_type' => $row['game_type']]);
+        $ids = array_map(fn (GameTournament $e): int => (int)$e->id, $this->entriesOf((int)$row['game_type'], (string)$row['name'], (int)$row['variant']));
+        if ($row['state'] === LiveTournament::STATE_ACTIVE && $row['starts_at'] !== null && $row['ends_at'] !== null) {
+            // The game's own duration, in whole days (a 5-hour Gold Rush lasts 1).
+            $seconds = $row['ends_at']->getTimestamp() - $row['starts_at']->getTimestamp();
+            $fields['duration_days'] = max(1, min(\App\Model\Table\GameTournamentsTable::MAX_DURATION_DAYS, (int)round($seconds / 86400)));
+        }
+        if ($ids !== []) {
+            $this->fetchTable('GameTournaments')->updateAll($fields, ['id IN' => $ids]);
+        }
+    }
+
+    /**
+     * The catalogue's entries of a tournament: those of its type named as it is.
+     *
+     * The game's type is not enough: 1015 holds Gold Rush, Silver Rush, Dawn of the
+     * Season..., 1007 Doomsday and Arachne's Swarm, each with its own variant. An entry
+     * matches when its name is the tournament's or contains it ("Trials of Olympus
+     * tournament", "contributions of Omen Essence in the Dark Omens tournament").
+     * An entry made for the tournament's variant matches too. Without a name or a
+     * variant, every entry of the type.
+     *
+     * @param int $gameType Type.
+     * @param string $name The game's name of the tournament.
+     * @param int $variant The tournament's variant (0: unknown).
+     * @return list<\App\Model\Entity\GameTournament>
+     */
+    public function entriesOf(int $gameType, string $name = '', int $variant = 0): array
+    {
+        /** @var list<\App\Model\Entity\GameTournament> $entries */
+        $entries = $this->fetchTable('GameTournaments')->find('withoutImage')
+            ->where(['GameTournaments.game_type' => $gameType])
+            ->orderBy(['GameTournaments.ranking' => 'ASC'])
+            ->all()
+            ->toList();
+        if (self::nameKey($name) === '' && $variant <= 0) {
+            return $entries;
+        }
+
+        return array_values(array_filter(
+            $entries,
+            fn (GameTournament $e): bool => ($variant > 0 && (int)$e->variant === $variant) || $e->isNamed($name)
+        ));
+    }
+
+    /**
+     * A name reduced to its letters and digits, to compare names written apart
+     * ("Ragnarök" and "Ragnarók tournament", "Ancients’ Treasure" and "Ancients' Treasure").
+     *
+     * @param string $name Name.
+     * @return string
+     */
+    public static function nameKey(string $name): string
+    {
+        $name = (string)preg_replace('/\s+tournament$/iu', '', trim($name));
+        $ascii = function_exists('transliterator_transliterate')
+            ? (string)transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $name)
+            : mb_strtolower($name);
+
+        return (string)preg_replace('/[^a-z0-9]+/', '', strtolower($ascii));
     }
 
     /**
@@ -269,17 +330,19 @@ class LiveTournamentService
      * What the clan site says of a tournament type: the catalogue entry (goal and
      * prize policy) and the clan rewards of its latest published event.
      *
+     * Only the entries named as the tournament count (see entriesOf): a Gold Rush
+     * does not take the goal of the Silver Rush of the same type. `type_known` says
+     * whether the type has any entry at all.
+     *
      * @param int $gameType Type.
-     * @return array{tournament: \App\Model\Entity\GameTournament|null, last_event: \App\Model\Entity\Event|null}
+     * @param string $name The game's name of the tournament.
+     * @param int $variant The tournament's variant.
+     * @return array{tournament: \App\Model\Entity\GameTournament|null, last_event: \App\Model\Entity\Event|null, type_known: bool}
      */
-    public function siteInfo(int $gameType): array
+    public function siteInfo(int $gameType, string $name = '', int $variant = 0): array
     {
-        /** @var list<\App\Model\Entity\GameTournament> $entries */
-        $entries = $this->fetchTable('GameTournaments')->find('withoutImage')
-            ->where(['GameTournaments.game_type' => $gameType])
-            ->orderBy(['GameTournaments.ranking' => 'ASC'])
-            ->all()
-            ->toList();
+        $entries = $this->entriesOf($gameType, $name, $variant);
+        $typeKnown = $entries !== [] || $this->entriesOf($gameType) !== [];
         $tournament = null;
         foreach ($entries as $entry) {
             if ($tournament === null || (!EventGoal::fromEntity($tournament)->isActive() && EventGoal::fromEntity($entry)->isActive())
@@ -299,7 +362,9 @@ class LiveTournamentService
                 ->first();
         }
 
-        return ['tournament' => $tournament, 'last_event' => $lastEvent];
+        // The entry of the type under another name, for an administrator to reach.
+
+        return ['tournament' => $tournament, 'last_event' => $lastEvent, 'type_known' => $typeKnown];
     }
 
     /**

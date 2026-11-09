@@ -146,6 +146,15 @@ class PlayerCycleSummariesController extends AppController
         ];
 
         $this->set(compact('playerHistory', 'playerName', 'minimumChestScore', 'scoreColorsConfig'));
+
+        // The player's tournament fines and what is still to pay.
+        $fineService = new \App\Service\TournamentFineService();
+        $fines = $fineService->finesOfPlayer($playerName);
+        $member = $this->fetchTable('Members')->find()->select(['id'])->where(['player' => $playerName])->first();
+        $owing = $fineService->owingOf($member !== null ? 'm' . $member->id : 'p' . mb_strtolower($playerName));
+        $this->set('fines', $fines);
+        $this->set('fineOwing', $owing);
+        $this->set('isAdmin', $this->isAdmin());
     }
 
     public function cyclesHistory()

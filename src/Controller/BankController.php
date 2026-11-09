@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Utility\GameNumber;
 use App\Model\Table\BankAccountsTable;
 use App\Model\Table\BankApprovalLogsTable;
 use App\Model\Table\BankTransactionsTable;
@@ -302,10 +303,10 @@ class BankController extends AppController
 
                 if ($totalDeduction > $availableBalance) {
                     $this->Flash->error(__('⚠️ INSUFFICIENT BALANCE ⚠️') . "\n\n" . 
-                        __('Available balance: {0} $', (string)$availableBalance) . "\n" .
-                        __('Withdrawal amount: {0} $', (string)$amount) . "\n" .
-                        __('Fee: {0} $', (string)$withdrawFee) . "\n" .
-                        __('Total required: {0} $', (string)$totalDeduction) . "\n\n" .
+                        __('Available balance: {0}', GameNumber::silver($availableBalance)) . "\n" .
+                        __('Withdrawal amount: {0}', GameNumber::silver($amount)) . "\n" .
+                        __('Fee: {0}', GameNumber::silver($withdrawFee)) . "\n" .
+                        __('Total required: {0}', GameNumber::silver($totalDeduction)) . "\n\n" .
                         __('Please reduce the withdrawal amount.'));
                     return $this->redirect(['action' => 'withdraw']);
                 }

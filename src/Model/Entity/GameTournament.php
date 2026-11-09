@@ -15,12 +15,15 @@ use Cake\ORM\Entity;
  * @property string|null $name The game's own name, in English
  * @property string|null $display_name The name the clan shows, when not the game's
  * @property string|null $description
+ * @property string|null $fine_tiers JSON list of the fine ranges: {from, to, amount}
+ * @property string|null $extra_prizes JSON list of the prizes set by the clan: Silver or items
  * @property string|null $prize_items JSON list of the clan prizes split among the players
  * @property bool $auto_publish Publish a complete ranking without review
  * @property string|null $name_source
  * @property int|null $duration_days
  * @property string|null $image_mime
  * @property resource|string|null $image
+ * @property int $variant The variant of the type this entry was made for (0: any)
  * @property string|null $last_variant
  * @property \Cake\I18n\DateTime|null $first_seen_at
  * @property \Cake\I18n\DateTime|null $last_seen_at
@@ -47,9 +50,13 @@ class GameTournament extends Entity
     public const SECTION_IMAGE = 'image';
     public const SECTION_GOAL = 'goal';
     public const SECTION_PRIZES = 'prizes';
+    public const SECTION_FINE = 'fine';
+    /**
+     * What the clan edits. The duration and the image are the game's: the duration
+     * is read from its Tournaments window, the icon and banner from its CDN.
+     */
     public const SECTIONS = [
-        self::SECTION_NAME, self::SECTION_DESCRIPTION, self::SECTION_DURATION,
-        self::SECTION_IMAGE, self::SECTION_GOAL, self::SECTION_PRIZES,
+        self::SECTION_NAME, self::SECTION_DESCRIPTION, self::SECTION_GOAL, self::SECTION_PRIZES, self::SECTION_FINE,
     ];
 
     /**
@@ -62,11 +69,12 @@ class GameTournament extends Entity
         'name' => true,
         'display_name' => true,
         'description' => true,
-        'duration_days' => true,
         'goal_mode' => true,
         'goal_points' => true,
         'goal_by_guard' => true,
         'goal_required' => true,
+        'fine_mode' => true,
+        'fine_amount' => true,
     ];
 
     /**
@@ -85,6 +93,39 @@ class GameTournament extends Entity
     protected function _getHasImage(): bool
     {
         return !empty($this->image_mime) || !empty($this->get('game_icon'));
+    }
+
+    /**
+     * Whether this is the tournament of that name: its name or the one the clan gave
+     * it is the same, or contains it ("Trials of Olympus tournament").
+     *
+     * @param string $name Name.
+     * @return bool
+     */
+    public function isNamed(string $name): bool
+    {
+        $wanted = \App\Service\LiveTournamentService::nameKey($name);
+        if ($wanted === '') {
+            return false;
+        }
+        foreach ([$this->name, $this->display_name] as $candidate) {
+            $key = \App\Service\LiveTournamentService::nameKey((string)$candidate);
+            if ($key !== '' && ($key === $wanted || str_contains($key, $wanted))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The game's key of the tournament: `1007:14`, or only the type for an entry of any variant.
+     *
+     * @return string
+     */
+    public function gameKey(): string
+    {
+        return (string)$this->game_type . ((int)$this->variant > 0 ? ':' . (int)$this->variant : '');
     }
 
     /**
@@ -134,6 +175,60 @@ class GameTournament extends Entity
     }
 
     /**
+     * The fine ranges of the tiers mode, sorted by their start: from and to are
+     * shares of the goal reached, in percent.
+     *
+     * @return list<array{from: int, to: int, amount: int}>
+     */
+    public function fineTiers(): array
+    {
+        $decoded = json_decode((string)$this->get('fine_tiers'), true);
+        if (!is_array($decoded)) {
+            return [];
+        }
+        $out = [];
+        foreach ($decoded as $tier) {
+            if (is_array($tier) && isset($tier['from'], $tier['to'], $tier['amount'])) {
+                $out[] = ['from' => (int)$tier['from'], 'to' => (int)$tier['to'], 'amount' => (int)$tier['amount']];
+            }
+        }
+        usort($out, fn (array $a, array $b): int => [$a['from'], $a['to']] <=> [$b['from'], $b['to']]);
+
+        return $out;
+    }
+
+    /**
+     * The prizes the clan sets itself for every new event, beside the ones it
+     * receives: Silver (quantity in millions, credited in the clan bank) or any
+     * item, each with its amount and split rule.
+     *
+     * @return list<array{silver: bool, name: string, quantity: int, rule: string, min_points: int, remainder: string}>
+     */
+    public function extraPrizes(): array
+    {
+        $decoded = json_decode((string)$this->get('extra_prizes'), true);
+        if (!is_array($decoded)) {
+            return [];
+        }
+        $out = [];
+        foreach ($decoded as $prize) {
+            if (!is_array($prize) || (int)($prize['quantity'] ?? 0) <= 0) {
+                continue;
+            }
+            $out[] = [
+                'silver' => !empty($prize['silver']),
+                'name' => (string)($prize['name'] ?? ''),
+                'quantity' => (int)$prize['quantity'],
+                'rule' => (string)($prize['rule'] ?? EventReward::RULE_PROPORTIONAL),
+                'min_points' => max(0, (int)($prize['min_points'] ?? 1)),
+                'remainder' => (string)($prize['remainder'] ?? EventReward::REMAINDER_TOP_RANKED),
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
      * The clan prizes split among the players of every new event.
      *
      * @return list<array{item_id: int, name: string, rule: string, min_points: int, remainder: string}>
@@ -176,16 +271,10 @@ class GameTournament extends Entity
         if (trim((string)$this->get('description')) === '') {
             $missing[self::SECTION_DESCRIPTION] = __('the description');
         }
-        if (!$this->duration_days) {
-            $missing[self::SECTION_DURATION] = __('the duration');
-        }
-        if (!$this->has_image) {
-            $missing[self::SECTION_IMAGE] = __('the image');
-        }
         if (!EventGoal::fromEntity($this)->isActive()) {
             $missing[self::SECTION_GOAL] = __('the goal');
         }
-        if ($this->prizeSelection() === []) {
+        if ($this->prizeSelection() === [] && $this->extraPrizes() === []) {
             $missing[self::SECTION_PRIZES] = __('the prizes');
         }
 

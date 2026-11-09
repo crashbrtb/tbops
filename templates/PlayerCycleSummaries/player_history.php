@@ -150,4 +150,8 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
             </table>
         </div>
     </section>
+
+    <?php if (!empty($fines)): ?>
+        <?= $this->element('player_fines', ['fines' => $fines, 'owing' => $fineOwing ?? null, 'playerName' => $playerName, 'isAdmin' => $isAdmin ?? false]) ?>
+    <?php endif; ?>
 </div>

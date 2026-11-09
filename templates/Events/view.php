@@ -394,7 +394,7 @@ if ($identity !== null) {
                                 <?php endif; ?>
                                 <?php foreach ($rewards as $reward): ?>
                                     <?php $amount = (int)($row['amounts'][$reward->id] ?? 0); ?>
-                                    <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $this->Number->format($amount) ?></td>
+                                    <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $this->rewardAmount($reward, $amount) ?></td>
                                 <?php endforeach; ?>
                                 <td>
                                     <span class="event-highlight <?= $badgeClass ?>">

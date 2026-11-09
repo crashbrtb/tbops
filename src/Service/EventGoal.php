@@ -232,6 +232,23 @@ final class EventGoal
     }
 
     /**
+     * The levels to show a player: the ones of levelTable() whose goal is above
+     * zero, so a level left without a goal is not listed. G0 is left out too:
+     * it is not a level anyone sets, only the rule that a player whose level is
+     * unknown gets the highest goal, which the pages state in words.
+     *
+     * @return array<int, int>
+     */
+    public function shownLevels(): array
+    {
+        return array_filter(
+            $this->levelTable(),
+            fn (int $points, int $level): bool => $points > 0 && $level !== ChestGoalService::UNKNOWN_LEVEL,
+            ARRAY_FILTER_USE_BOTH
+        );
+    }
+
+    /**
      * @param mixed $raw Submitted value.
      * @return int|null
      */

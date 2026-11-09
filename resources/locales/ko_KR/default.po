@@ -81,20 +81,20 @@ msgid "⚠️ INSUFFICIENT BALANCE ⚠️"
 msgstr "⚠️ 잔액 부족 ⚠️"
 
 #: ./src/Controller/BankController.php:305
-msgid "Available balance: {0} $"
-msgstr "사용 가능 잔액: {0} $"
+msgid "Available balance: {0}"
+msgstr "사용 가능 잔액: {0}"
 
 #: ./src/Controller/BankController.php:306
-msgid "Withdrawal amount: {0} $"
-msgstr "출금액: {0} $"
+msgid "Withdrawal amount: {0}"
+msgstr "출금액: {0}"
 
 #: ./src/Controller/BankController.php:307
-msgid "Fee: {0} $"
-msgstr "수수료: {0} $"
+msgid "Fee: {0}"
+msgstr "수수료: {0}"
 
 #: ./src/Controller/BankController.php:308
-msgid "Total required: {0} $"
-msgstr "필요 총액: {0} $"
+msgid "Total required: {0}"
+msgstr "필요 총액: {0}"
 
 #: ./src/Controller/BankController.php:309
 msgid "Please reduce the withdrawal amount."
@@ -1038,8 +1038,8 @@ msgid "Request a Silver deposit. Amounts represent millions of Silver ($)"
 msgstr "은화 입금을 신청하세요. 금액은 백만 은화($) 단위입니다"
 
 #: ./templates/Bank/deposit.php:35
-msgid "Flat deposit fee: {0} $ | Caravan fee: {1}%"
-msgstr "고정 입금 수수료: {0} $ | 카라반 수수료: {1}%"
+msgid "Flat deposit fee: {0} | Caravan fee: {1}%"
+msgstr "고정 입금 수수료: {0} | 카라반 수수료: {1}%"
 
 #: ./templates/Bank/deposit.php:40
 msgid "Deposit Details"
@@ -1141,8 +1141,8 @@ msgid "Values are saved in millions of Silver ($)"
 msgstr "값은 백만 은화($) 단위로 저장됩니다"
 
 #: ./templates/Bank/history.php:24
-msgid "Current balance: {0} $"
-msgstr "현재 잔액: {0} $"
+msgid "Current balance: {0}"
+msgstr "현재 잔액: {0}"
 
 #: ./templates/Bank/history.php:29
 msgid "Transactions"
@@ -1261,8 +1261,8 @@ msgid "Refresh"
 msgstr "새로 고침"
 
 #: ./templates/Bank/statement.php:39
-msgid "Member: {0} | Current balance: {1} $"
-msgstr "멤버: {0} | 현재 잔액: {1} $"
+msgid "Member: {0} | Current balance: {1}"
+msgstr "멤버: {0} | 현재 잔액: {1}"
 
 #: ./templates/Bank/statement.php:44
 msgid "Statement Records"
@@ -1277,8 +1277,8 @@ msgid "Choose a source and destination member. All values represent millions of 
 msgstr "보내는 멤버와 받는 멤버를 고르세요. 모든 값은 백만 은화($) 단위입니다"
 
 #: ./templates/Bank/transfer.php:33
-msgid "Transfer fee: {0} $ (charged in addition to the transferred amount)"
-msgstr "송금 수수료: {0} $ (송금액과 별도로 부과됩니다)"
+msgid "Transfer fee: {0} (charged in addition to the transferred amount)"
+msgstr "송금 수수료: {0} (송금액과 별도로 부과됩니다)"
 
 #: ./templates/Bank/transfer.php:38
 msgid "Your Available Source Balances"
@@ -1364,8 +1364,8 @@ msgid "Select a member and enter the Silver amount. All values represent million
 msgstr "멤버를 고르고 은화 금액을 입력하세요. 모든 값은 백만 은화($) 단위입니다"
 
 #: ./templates/Bank/withdraw.php:32
-msgid "Current withdrawal fee: {0} $"
-msgstr "현재 출금 수수료: {0} $"
+msgid "Current withdrawal fee: {0}"
+msgstr "현재 출금 수수료: {0}"
 
 #: ./templates/Bank/withdraw.php:38
 msgid "You do not have members available for withdrawals."
@@ -6098,3 +6098,1583 @@ msgstr "변화 %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "클랜 데이터"
+
+msgid "Edit the catalogue entry of this tournament type"
+msgstr "이 토너먼트 유형의 카탈로그 항목 편집"
+
+msgid "By ranges of the goal reached"
+msgstr "목표 달성률 구간별"
+
+msgid "Add at least one range, or choose \"No fine\"."
+msgstr "구간을 하나 이상 추가하거나 \"벌금 없음\"을 선택하세요."
+
+msgid "At most {0} ranges."
+msgstr "최대 {0}개 구간까지 가능합니다."
+
+
+msgid "The range {0}% to {1}% is not valid: it must start below where it ends, between 0% and 100%."
+msgstr "{0}%~{1}% 구간이 올바르지 않습니다: 시작이 끝보다 작아야 하며 0%~100% 사이여야 합니다."
+
+
+msgid "The range {0}% to {1}% overlaps the one before it."
+msgstr "{0}%~{1}% 구간이 이전 구간과 겹칩니다."
+
+msgid "{0}% to {1}% of the goal: {2}"
+msgstr "목표의 {0}%~{1}%: {2}"
+
+msgid "By the goal reached"
+msgstr "목표 달성률별"
+
+msgid "By the share of the goal reached:"
+msgstr "목표 달성률별:"
+
+msgid "Each range is a share of the goal the player reached and the fine for it. A range holds its start but not its end: with 0% to 10% and 10% to 50%, a player at exactly 10% falls in the second. A share no range holds is not fined; a player who reached the goal never is."
+msgstr "각 구간은 플레이어가 달성한 목표의 비율과 그에 해당하는 벌금입니다. 구간은 시작값을 포함하고 끝값은 포함하지 않습니다: 0%~10%와 10%~50%가 있으면 정확히 10%인 플레이어는 두 번째 구간에 속합니다. 어느 구간에도 속하지 않는 비율은 벌금이 없으며, 목표를 달성한 플레이어도 벌금이 없습니다."
+
+msgid "From (%)"
+msgstr "시작 (%)"
+
+msgid "To (%)"
+msgstr "끝 (%)"
+
+msgid "Remove range"
+msgstr "구간 삭제"
+
+msgid "Add range"
+msgstr "구간 추가"
+
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "T9는 모든 병력(경비병, 전문가, 몬스터, 엔지니어)이 9레벨일 때 적용됩니다. G0은 경비병 레벨이 한 번도 확인되지 않았음을 뜻합니다(가장 높은 목표를 받습니다)."
+
+msgid "All troops level 9 (T9)"
+msgstr "모든 병력 9레벨 (T9)"
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "이 유형의 상자 {0}개가 같은 이름으로 더 기록되었습니다."
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "이 코드의 상자가 강조 표시되었습니다. 해당 줄에 게임이 알려준 플레이어가 표시되는지 확인하세요."
+
+msgid "New chest types"
+msgstr "새 상자 유형"
+
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "시스템도 게임 자체 카탈로그도 아직 이름을 붙이지 못한 상자가 있습니다. 이름과 출처를 입력하고 저장하세요. 해당 유형의 모든 상자가 각자의 플레이어로 기록되고, 다음부터는 자동으로 인식됩니다."
+
+msgid "Picture"
+msgstr "이미지"
+
+msgid "Chests waiting"
+msgstr "대기 중인 상자"
+
+msgid "Name it"
+msgstr "이름 붙이기"
+
+msgid "Picture of the chest"
+msgstr "상자 이미지"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "확인: 이미지의 맨 윗줄은 {0}의 것이어야 합니다."
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "이미지가 없습니다. 어떤 상자인지 알 때만 이름을 붙이세요."
+
+msgid "Code {0}"
+msgstr "코드 {0}"
+
+msgid "Save and record the chests"
+msgstr "저장하고 상자 기록"
+
+msgid "Cannot be identified"
+msgstr "식별 불가"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "이 상자 {0}개를 복구 불가로 표시할까요? 누구에게도 집계되지 않습니다."
+
+msgid "Fill in the chest name and the source."
+msgstr "상자 이름과 출처를 입력하세요."
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "상자 {0}개를 \"{1}\"(으)로 기록했습니다."
+
+msgid "Chest code"
+msgstr "상자 코드"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "코드 {0}의 이름이 확정됩니다: 대기 중인 다른 상자 {1}개와 이 코드의 향후 모든 상자가 이 이름과 출처를 갖게 됩니다."
+
+msgid "Pending Tournaments"
+msgstr "대기 중인 토너먼트"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "게임은 토너먼트에 번호만 보냅니다. 이미지에서 이름을 읽어 주세요. 이름이 생기기 전까지 순위는 전송되지 않으며, 검색은 업로더의 \"되돌아볼 일수\"까지만 거슬러 올라갑니다."
+
+msgid "The Journal page of this tournament"
+msgstr "이 토너먼트의 저널 페이지"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "이 토너먼트의 카드가 강조 표시되었습니다. 날짜가 이미지 옆의 날짜와 같고 결과 카드인지 확인하세요."
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "업로더가 아직 이미지를 찍지 못했습니다. 다음 검색에서 다시 시도합니다."
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "앞으로 이 코드의 모든 토너먼트에 이 이름이 사용됩니다."
+
+msgid "Save the name"
+msgstr "이름 저장"
+
+msgid "No tournament is waiting for a name."
+msgstr "이름을 기다리는 토너먼트가 없습니다."
+
+msgid "Fill in the name of the tournament."
+msgstr "토너먼트 이름을 입력하세요."
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "토너먼트 \"{0}\"의 이름을 정했습니다. 순위는 다음 검색 때 도착합니다."
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "이미지는 최대 {0} KB의 PNG, JPEG, WebP 또는 GIF여야 합니다."
+
+msgid "Source, alias or chest name..."
+msgstr "출처, 별칭 또는 상자 이름..."
+
+msgid "Filter by source or chest name..."
+msgstr "출처 또는 상자 이름으로 필터..."
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr "점수순이면 점수가 있는 상자만, 수집 개수순이면 점수가 중요하지 않으므로 모든 상자가 표시됩니다. 원하는 만큼 선택하세요."
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "\"{0}\"의 순위는 이제 게시 전에 검토를 기다립니다."
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "\"{0}\"의 순위는 이제 {1}이(가) 비어 있어도 검토 없이 게시됩니다."
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "\"{0}\"의 순위는 이제 검토 없이 게시됩니다."
+
+msgid "The clan results were not accepted."
+msgstr "클랜 결과가 수락되지 않았습니다."
+
+msgid "the name"
+msgstr "이름"
+
+msgid "the description"
+msgstr "설명"
+
+msgid "the duration"
+msgstr "기간"
+
+msgid "the image"
+msgstr "이미지"
+
+msgid "the goal"
+msgstr "목표"
+
+msgid "the prizes"
+msgstr "상품"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "results를 클랜 결과 1~{0}개의 목록으로 보내세요."
+
+msgid "This clan result is not valid."
+msgstr "이 클랜 결과가 올바르지 않습니다."
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "저널 항목 id가 없거나 올바르지 않습니다."
+
+msgid "Item {0}"
+msgstr "아이템 {0}"
+
+msgid "Not defined"
+msgstr "정의되지 않음"
+
+msgid "Ranking {0}"
+msgstr "순위 {0}"
+
+msgid "Published without review"
+msgstr "검토 없이 게시됨"
+
+msgid "Clan Tournament History"
+msgstr "클랜 토너먼트 기록"
+
+msgid "In the game"
+msgstr "게임 내"
+
+msgid "Display name"
+msgstr "표시 이름"
+
+msgid "The game's name"
+msgstr "게임 내 이름"
+
+msgid "By guard level"
+msgstr "경비병 레벨별"
+
+msgid "Required to receive a reward."
+msgstr "보상을 받으려면 필수입니다."
+
+msgid "Not required to receive a reward."
+msgstr "보상을 받는 데 필수가 아닙니다."
+
+msgid "Prizes"
+msgstr "상품"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "새 이벤트마다 클랜이 그 이벤트에서 받은 수량을 플레이어들에게 나눕니다:"
+
+msgid "minimum {0} point(s)"
+msgstr "최소 {0}포인트"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "이 토너먼트에서 클랜이 순위별로 받은 것:"
+
+msgid "Last received"
+msgstr "마지막 수령"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "클랜이 이 토너먼트에서 아직 상품을 받지 않았거나, 수집기가 클랜 결과를 보내지 않았습니다."
+
+msgid "The clan in this tournament"
+msgstr "이 토너먼트의 클랜"
+
+msgid "Ended (UTC)"
+msgstr "종료 (UTC)"
+
+msgid "Place"
+msgstr "순위"
+
+msgid "Clan points"
+msgstr "클랜 포인트"
+
+msgid "Received"
+msgstr "수령"
+
+msgid "Not in the top {0}"
+msgstr "상위 {0}위 밖"
+
+msgid "Nothing"
+msgstr "없음"
+
+msgid "Publish events automatically"
+msgstr "이벤트 자동 게시"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "켜져 있으면 수집기가 이 토너먼트의 종료된 이벤트 순위를 보내는 즉시 목표가 계산되고 이벤트가 검토 없이 바로 게시됩니다. 각 플레이어의 상품 몫이 기록됩니다. 사이트가 식별할 수 없는 플레이어가 있는 순위는 여전히 검토를 기다립니다. 꺼져 있으면 모든 순위가 검토 페이지에서 초안으로 대기합니다."
+
+msgid "Publish this tournament's events without review"
+msgstr "이 토너먼트의 이벤트를 검토 없이 게시"
+
+msgid "Missing: {0}."
+msgstr "누락: {0}."
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "그래도 이 토너먼트의 이벤트를 검토 없이 게시할까요?"
+
+msgid "Back to the tournament"
+msgstr "토너먼트로 돌아가기"
+
+msgid "Name in the game"
+msgstr "게임 내 이름"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "게임의 저널에서 읽어 옵니다. 게임에서 부르는 그대로 영어로 유지됩니다."
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "게임이 아직 이름을 알려주지 않았습니다. 여기에 입력한 이름은 유지되며 수집기가 덮어쓰지 않습니다."
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "사이트가 이 토너먼트와 새 이벤트에 표시하는 이름입니다. 비우면 게임 내 이름을 사용합니다."
+
+msgid "Shown on every new event of this tournament."
+msgstr "이 토너먼트의 모든 새 이벤트에 표시됩니다."
+
+msgid "Clan prizes to split among the players"
+msgstr "플레이어들에게 나눌 클랜 상품"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "클랜이 이 토너먼트에서 받은 상품입니다. 플레이어들에게 나눌 것을 체크하세요. 토너먼트의 새 이벤트마다 체크한 상품당 보상이 하나씩 생기며, 클랜이 받은 수량이 선택한 규칙에 따라 나뉩니다. 이벤트에 직접 추가한 보상은 그대로 유지됩니다."
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "게임의 토너먼트입니다. 이름과 id는 수집기가 채웁니다. 토너먼트를 열어 나머지를 설정하세요: 표시 이름, 설명, 기간, 이미지, 목표, 상품, 게시."
+
+msgid "Tournament History"
+msgstr "토너먼트 기록"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "게임의 각 토너먼트에서 클랜들 중 클랜의 순위와 포인트, 그리고 클랜이 받은 것"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "아직 클랜 결과가 없습니다. 수집기는 저널에서 읽은 토너먼트와 함께 보냅니다."
+
+msgid "Best place"
+msgstr "최고 순위"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "{1}회 중 {0}회 순위권"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "클랜은 이 토너먼트에 나열된 클랜에 한 번도 들지 못했습니다."
+
+msgid "Every tournament"
+msgstr "모든 토너먼트"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "클랜이 이 토너먼트에서 받은 것으로 채움"
+
+msgid "Clan prize"
+msgstr "클랜 상품"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "이벤트 #{0} \"{1}\"이(가) 게시되지 않았습니다: 이 토너먼트의 클랜 결과가 도착하지 않아 상품을 나눌 수 없었습니다. 검토하세요."
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "이벤트 #{0} \"{1}\"이(가) 게시되지 않았습니다: 플레이어들에게 나누도록 선택된 {2}을(를) 클랜이 받지 않았습니다. 검토하세요."
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "이 토너먼트의 클랜 결과가 도착하지 않았습니다: 카탈로그에서 선택한 클랜 상품이 이 이벤트에서 나뉘지 않습니다."
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "클랜이 이 이벤트에서 {0}을(를) 받지 않았습니다: 카탈로그에서 나누도록 선택되었지만 보상에 없습니다."
+
+msgid "Member Performance"
+msgstr "멤버 성과"
+
+msgid "Performance"
+msgstr "성과"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "상자와 이벤트의 목표 달성 지표, 월간 순위(이벤트 목표 달성마다 +1점), 각 플레이어의 전체 기록."
+
+msgid "Event Goals Met"
+msgstr "이벤트 목표 달성"
+
+msgid "Chest Goals Met"
+msgstr "상자 목표 달성"
+
+msgid "Overall Goals Met"
+msgstr "전체 목표 달성"
+
+msgid "Monthly Leader"
+msgstr "이달의 리더"
+
+msgid "Event Goals Met per Tournament"
+msgstr "토너먼트 / 이벤트별 목표 달성"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "상자 주기별 목표 달성"
+
+msgid "Player Performance Ranking"
+msgstr "플레이어 성과 순위"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "점수: 기간 내 목표를 달성한 이벤트마다 1점. 플레이어를 클릭하면 전체 이벤트 및 상자 기록을 볼 수 있습니다."
+
+msgid "Event Goals"
+msgstr "이벤트 목표"
+
+msgid "Chest Goals"
+msgstr "상자 목표"
+
+msgid "Total Met"
+msgstr "총 달성"
+
+msgid "Success Rate"
+msgstr "성공률"
+
+msgid "Monthly Score"
+msgstr "이달의 점수"
+
+msgid "Chest History"
+msgstr "상자 기록"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "점수 시스템에서는 플레이어가 목표에 도달하거나 넘은 토너먼트마다 월간 점수에 +1점이 더해집니다."
+
+msgid "Tournament / Event"
+msgstr "토너먼트 / 이벤트"
+
+msgid "Goal Status"
+msgstr "목표 상태"
+
+msgid "View player history"
+msgstr "플레이어 기록 보기"
+
+msgid "Last month (30 days)"
+msgstr "지난달 (30일)"
+
+msgid "Last 60 days"
+msgstr "최근 60일"
+
+msgid "Last 90 days"
+msgstr "최근 90일"
+
+msgid "All time"
+msgstr "전체 기간"
+
+msgid "success rate"
+msgstr "성공률"
+
+msgid "global rate"
+msgstr "전체 비율"
+
+msgid "goals beaten"
+msgstr "달성한 목표"
+
+msgid "Recent cycles"
+msgstr "최근 주기"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "가장 최근에 완료된 주기를 표시합니다"
+
+msgid "No events with standings found in this period."
+msgstr "이 기간에 순위가 있는 이벤트가 없습니다."
+
+msgid "No chest cycle summaries recorded."
+msgstr "기록된 상자 주기 요약이 없습니다."
+
+msgid "No event records in this period."
+msgstr "이 기간의 이벤트 기록이 없습니다."
+
+msgid "No chest cycle records in this period."
+msgstr "이 기간의 상자 주기 기록이 없습니다."
+
+msgid "Awaiting event goal beats"
+msgstr "이벤트 목표 달성 대기 중"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "상자와 이벤트의 목표 달성 지표, 성공률 순위, 플레이어의 전체 기록."
+
+msgid "Top Performer"
+msgstr "최고 성과자"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "성공률(%)순으로 정렬됩니다. 활성 멤버만 표시됩니다. 플레이어를 클릭하면 전체 이벤트 및 상자 기록을 볼 수 있습니다."
+
+msgid "No active members found."
+msgstr "활성 멤버가 없습니다."
+
+msgid "No active members ranked"
+msgstr "순위에 오른 활성 멤버가 없습니다"
+
+msgid "Awaiting goal evaluations"
+msgstr "목표 평가 대기 중"
+
+msgid "Member since"
+msgstr "가입일"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "제외됨 (이벤트 중간에 가입)"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "제외됨 (주기 중간에 가입)"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "플레이어가 클랜에 가입한 후 시작된 활성 목표 토너먼트가 성공률에 반영됩니다. 가입 전에 시작했거나 목표가 없는 토너먼트는 따로 표시됩니다."
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "플레이어가 클랜에 가입한 후 시작된 주간 상자 주기가 평가됩니다. 가입 전에 시작된 주기는 제외됩니다."
+
+msgid "History of {0}"
+msgstr "{0}의 기록"
+
+msgid "Ends {0} UTC"
+msgstr "종료 {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "시작 {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "클랜 포인트: {0}"
+
+msgid "Clan place: #{0}"
+msgstr "클랜 순위: #{0}"
+
+msgid "Clan place: 100+"
+msgstr "클랜 순위: 100+"
+
+msgid "Goal: {0} points"
+msgstr "목표: {0}포인트"
+
+msgid "required for rewards"
+msgstr "보상에 필수"
+
+msgid "Prizes split among the players"
+msgstr "플레이어들에게 나눈 상품"
+
+msgid "Last prize split ({0})"
+msgstr "마지막으로 나눈 상품 ({0})"
+
+msgid "Rewards of each place"
+msgstr "클랜 보상"
+
+msgid "Clan rewards"
+msgstr "클랜 보상"
+
+msgid "Clan rewards and goals"
+msgstr "클랜 보상과 목표"
+
+msgid "Tournaments"
+msgstr "토너먼트"
+
+msgid "the clan's place now:"
+msgstr "현재 클랜 순위:"
+
+msgid "#{0} to #{1}"
+msgstr "#{0}~#{1}"
+
+msgid "Best clans"
+msgstr "상위 클랜"
+
+msgid "Clan ranking"
+msgstr "클랜 순위"
+
+msgid "{0} player(s) with points"
+msgstr "포인트가 있는 플레이어 {0}명"
+
+msgid "History of these events"
+msgstr "이 이벤트들의 기록"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "마지막 업데이트 {0} UTC."
+
+msgid "Last updated on {0} UTC."
+msgstr "마지막 업데이트 {0} UTC."
+
+msgid "Inactive"
+msgstr "곧 공개"
+
+msgid "Goals of each tournament"
+msgstr "각 토너먼트의 목표"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "지금까지 열린 {0}의 모든 이벤트 (최신순)"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "tournaments를 최대 {0}개의 목록으로 보내세요."
+
+msgid "This tournament is not valid."
+msgstr "이 토너먼트가 올바르지 않습니다."
+
+msgid "This image is not a valid PNG."
+msgstr "이 이미지는 올바른 PNG가 아닙니다."
+
+msgid "Target"
+msgstr "목표"
+
+msgid "Goals Met"
+msgstr "목표 달성"
+
+msgid "Goal Met"
+msgstr "목표 달성"
+
+msgid "Not Met"
+msgstr "미달성"
+
+msgid "No Goal"
+msgstr "목표 없음"
+
+msgid "Cycle"
+msgstr "주기"
+
+msgid "Waived"
+msgstr "면제됨"
+
+msgid "Charged"
+msgstr "징수됨"
+
+msgid "Refunded"
+msgstr "환불됨"
+
+msgid "Fine"
+msgstr "벌금"
+
+msgid "Fines"
+msgstr "벌금"
+
+msgid "Refund"
+msgstr "환불"
+
+msgid "Waive"
+msgstr "면제"
+
+msgid "Fine again"
+msgstr "다시 벌금 부과"
+
+msgid "List again"
+msgstr "다시 목록 작성"
+
+msgid "No fine"
+msgstr "벌금 없음"
+
+msgid "Fixed amount"
+msgstr "고정 금액"
+
+msgid "In proportion to what was missing"
+msgstr "부족한 만큼 비례"
+
+msgid "Fine for missing the goal"
+msgstr "목표 미달 벌금"
+
+msgid "When the result of an event of this tournament is published, every player who did not reach the goal is listed with the fine below, debited from their account in the clan bank once an administrator charges it. Players can be waived on the event page before charging."
+msgstr "이 토너먼트의 이벤트 결과가 게시되면, 목표에 도달하지 못한 모든 플레이어가 아래 벌금과 함께 목록에 오르며, 관리자가 징수하면 클랜 은행 계좌에서 차감됩니다. 징수 전에 이벤트 페이지에서 플레이어를 면제할 수 있습니다."
+
+msgid "Fixed: every player who missed the goal owes the amount. In proportion: the amount times the part of the goal that was missing; a player at 60% of the goal owes 40% of the amount."
+msgstr "고정: 목표에 도달하지 못한 모든 플레이어가 금액을 냅니다. 비례: 금액 × 목표의 부족한 부분. 목표의 60%인 플레이어는 금액의 40%를 냅니다."
+
+msgid "{0} for every player who misses the goal."
+msgstr "목표에 도달하지 못한 플레이어마다 {0}."
+
+msgid "Up to {0}, in proportion to what was missing of the goal."
+msgstr "최대 {0}, 목표에서 부족한 만큼 비례."
+
+msgid "Without a goal nobody is fined."
+msgstr "목표가 없으면 아무도 벌금을 받지 않습니다."
+
+msgid "The fine must be a whole number."
+msgstr "벌금은 정수여야 합니다."
+
+msgid "Set the fine, or choose \"No fine\"."
+msgstr "벌금을 설정하거나 \"벌금 없음\"을 선택하세요."
+
+msgid "Not a member of the clan bank"
+msgstr "클랜 은행 멤버가 아님"
+
+msgid "Debit the pending fines from the players' accounts in the clan bank? A balance may go below zero: the player pays it by depositing."
+msgstr "대기 중인 벌금을 클랜 은행의 플레이어 계좌에서 차감할까요? 잔액이 마이너스가 될 수 있으며, 플레이어는 입금으로 갚습니다."
+
+msgid "The fine is collected as a bank fee: the balance may go below zero, the player pays it by depositing, and the amount stays with the clan."
+msgstr "벌금은 은행 수수료로 징수됩니다: 잔액이 마이너스가 될 수 있고, 플레이어는 입금으로 갚으며, 금액은 클랜에 남습니다."
+
+msgid "Tournament fine: {0} - {1} of {2} points ({3}%)"
+msgstr "토너먼트 벌금: {0} - {2}포인트 중 {1} ({3}%)"
+
+msgid "{0} fine(s) waiting to be charged."
+msgstr "징수 대기 중인 벌금 {0}건."
+
+msgid "{0} fine(s) charged, {1} in all."
+msgstr "벌금 {0}건 징수, 총 {1}."
+
+msgid "{0} player(s) are not members of the clan bank: their fines stay pending."
+msgstr "플레이어 {0}명은 클랜 은행 멤버가 아닙니다: 벌금은 대기 상태로 남습니다."
+
+msgid "{0} is fined again."
+msgstr "{0}에게 다시 벌금을 부과했습니다."
+
+msgid "{0} is waived."
+msgstr "{0}을(를) 면제했습니다."
+
+msgid "The fine of {0} was refunded."
+msgstr "{0}의 벌금을 환불했습니다."
+
+msgid "This tournament has no fine."
+msgstr "이 토너먼트에는 벌금이 없습니다."
+
+msgid "Lists the pending fines again from the result and the tournament's current rule."
+msgstr "결과와 토너먼트의 현재 규칙으로 대기 중인 벌금 목록을 다시 만듭니다."
+
+msgid "Charge {0} fine(s) ({1})"
+msgstr "벌금 {0}건 징수 ({1})"
+
+msgid "Set a fine on the tournament's page in the catalogue, then list the fines again."
+msgstr "카탈로그의 토너먼트 페이지에서 벌금을 설정한 다음 벌금 목록을 다시 만드세요."
+
+msgid "Every player reached the goal: nobody is fined."
+msgstr "모든 플레이어가 목표에 도달했습니다: 벌금이 없습니다."
+
+msgid "Give {0} back to {1}?"
+msgstr "{0}을(를) {1}에게 돌려줄까요?"
+
+msgid "Lost"
+msgstr "손실"
+
+msgid "Tournament Fines"
+msgstr "토너먼트 벌금"
+
+msgid "Tournament fines"
+msgstr "토너먼트 벌금"
+
+msgid "Every fine of the game tournaments, who still owes and what was given up"
+msgstr "게임 토너먼트의 모든 벌금, 아직 갚지 않은 사람과 손실 처리된 금액"
+
+msgid "{0} fine(s)"
+msgstr "벌금 {0}건"
+
+msgid "Fines to pay, by player"
+msgstr "플레이어별 납부할 벌금"
+
+msgid "Left the clan"
+msgstr "클랜 탈퇴"
+
+msgid "{0} out of the clan"
+msgstr "클랜 밖 {0}명"
+
+msgid "Nobody owes a fine."
+msgstr "벌금을 낼 사람이 없습니다."
+
+msgid "In the clan"
+msgstr "클랜 내"
+
+msgid "Not charged yet"
+msgstr "아직 징수되지 않음"
+
+msgid "Debt in the bank"
+msgstr "은행 부채"
+
+msgid "To pay"
+msgstr "납부할 금액"
+
+msgid "Show their fines"
+msgstr "벌금 보기"
+
+msgid "Not registered"
+msgstr "미등록"
+
+msgid "Give up as lost"
+msgstr "손실 처리"
+
+msgid "Give up the {0} {1} owes? The debt leaves their balance and the clan's fees."
+msgstr "{1}이(가) 갚아야 할 {0}을(를) 손실 처리할까요? 부채가 잔액과 클랜 수수료에서 빠집니다."
+
+msgid "Fine history"
+msgstr "벌금 기록"
+
+msgid "Any status"
+msgstr "모든 상태"
+
+msgid "{0} given up"
+msgstr "{0} 손실"
+
+msgid "No fine matches."
+msgstr "일치하는 벌금이 없습니다."
+
+msgid "This player owes nothing."
+msgstr "이 플레이어는 갚을 것이 없습니다."
+
+msgid "{0} of {1} given up as lost."
+msgstr "{1}의 {0}을(를) 손실 처리했습니다."
+
+msgid "{0} given up as lost"
+msgstr "{0} 손실 처리"
+
+msgid "{0} paid, {1} given up"
+msgstr "{0} 납부, {1} 손실"
+
+msgid "To pay: {0}"
+msgstr "납부할 금액: {0}"
+
+msgid "Nothing to pay"
+msgstr "납부할 금액 없음"
+
+msgid "The ranges take whole numbers: percentages from 0 to 100, and the fine in millions of Silver."
+msgstr "구간에는 정수를 입력하세요: 0~100 사이의 백분율과 백만 은화 단위의 벌금."
+
+msgid "Set the fine of the range {0}% to {1}%, at least 1 million Silver."
+msgstr "{0}%~{1}% 구간의 벌금을 설정하세요. 최소 100만 은화입니다."
+
+msgid "The fine must be a whole number of millions of Silver."
+msgstr "벌금은 백만 은화 단위의 정수여야 합니다."
+
+msgid "The fine is Silver in whole millions, as in the clan bank: 1 is 1 million, 1000 is 1 billion. It is never less than 1 million."
+msgstr "벌금은 클랜 은행과 같이 백만 단위의 은화입니다: 1은 100만, 1000은 10억입니다. 100만 미만이 되는 일은 없습니다."
+
+msgid "Fine (millions of Silver)"
+msgstr "벌금 (백만 은화)"
+
+msgid "Edit tournament"
+msgstr "토너먼트 편집"
+
+msgid "Players without an identified level are evaluated by the highest goal."
+msgstr "레벨이 확인되지 않은 플레이어는 가장 높은 목표로 평가됩니다."
+
+msgid "{0} Silver credit(s) waiting to be confirmed."
+msgstr "확인 대기 중인 은화 지급 {0}건."
+
+msgid "{0} player(s) credited, {1} in all."
+msgstr "플레이어 {0}명에게 지급, 총 {1}."
+
+msgid "{0} player(s) are not members of the clan bank: their Silver stays pending."
+msgstr "플레이어 {0}명은 클랜 은행 멤버가 아닙니다: 은화는 대기 상태로 남습니다."
+
+msgid "{0} will be credited again."
+msgstr "{0}에게 다시 지급됩니다."
+
+msgid "{0} will not be credited."
+msgstr "{0}에게 지급되지 않습니다."
+
+msgid "The Silver credited to {0} was taken back."
+msgstr "{0}에게 지급한 은화를 회수했습니다."
+
+msgid "Guard level"
+msgstr "경비병 레벨"
+
+msgid "Reached (%)"
+msgstr "달성률 (%)"
+
+msgid "Goal met"
+msgstr "목표 달성"
+
+msgid "{0} (millions of Silver)"
+msgstr "{0} (백만 은화)"
+
+msgid "Fine status"
+msgstr "벌금 상태"
+
+msgid "Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions."
+msgstr "추가 상품마다 0보다 큰 정수 수량이 필요하며, 아이템은 이름도 필요합니다. 은화는 백만 단위 정수입니다."
+
+msgid "Not credited"
+msgstr "미지급"
+
+msgid "Credited"
+msgstr "지급됨"
+
+msgid "Reversed"
+msgstr "회수됨"
+
+msgid "Silver"
+msgstr "은화"
+
+msgid "Tournament prize: {0} - {1}"
+msgstr "토너먼트 상품: {0} - {1}"
+
+msgid "Silver prize"
+msgstr "은화 상품"
+
+msgid "Credited to the players' accounts in the clan bank once confirmed."
+msgstr "확인 후 클랜 은행의 플레이어 계좌에 지급됩니다."
+
+msgid "Lists the pending Silver again from the split of the rewards."
+msgstr "보상 분배를 기준으로 대기 중인 은화 목록을 다시 만듭니다."
+
+msgid "Credit {0} player(s) ({1})"
+msgstr "플레이어 {0}명에게 지급 ({1})"
+
+msgid "Credit the pending Silver to the players' accounts in the clan bank?"
+msgstr "대기 중인 은화를 클랜 은행의 플레이어 계좌에 지급할까요?"
+
+msgid "Do not credit"
+msgstr "지급하지 않음"
+
+msgid "Credit again"
+msgstr "다시 지급"
+
+msgid "Take back"
+msgstr "회수"
+
+msgid "Take {0} back from {1}? Their balance may go below zero."
+msgstr "{1}에게서 {0}을(를) 회수할까요? 잔액이 마이너스가 될 수 있습니다."
+
+msgid "Silver in millions, credited to the players in the clan bank"
+msgstr "백만 단위 은화, 클랜 은행에서 플레이어에게 지급"
+
+msgid "Silver (millions)"
+msgstr "은화 (백만)"
+
+msgid "Export CSV"
+msgstr "CSV 내보내기"
+
+msgid "Extra prizes: Silver and items"
+msgstr "추가 상품: 은화와 아이템"
+
+msgid "Prizes the clan gives besides the ones it receives, added to every new event of this tournament and split by the rule chosen. Add as many as you like."
+msgstr "클랜이 받는 상품 외에 직접 주는 상품으로, 이 토너먼트의 모든 새 이벤트에 추가되고 선택한 규칙으로 나뉩니다. 원하는 만큼 추가하세요."
+
+msgid "Silver is in whole millions, as in the clan bank (1000 is 1B): when the result is published, each player's share waits on the event page for an administrator to credit it to their account in the clan bank."
+msgstr "은화는 클랜 은행과 같이 백만 단위 정수입니다(1000은 1B): 결과가 게시되면 각 플레이어의 몫은 이벤트 페이지에서 관리자가 클랜 은행 계좌에 지급할 때까지 대기합니다."
+
+msgid "Item name"
+msgstr "아이템 이름"
+
+msgid "Remove prize"
+msgstr "상품 삭제"
+
+msgid "Add prize"
+msgstr "상품 추가"
+
+msgid "Given by the clan in every new event:"
+msgstr "새 이벤트마다 클랜이 주는 것:"
+
+msgid "{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "{0}: 목표는 0 이상의 정수이거나 비워 두어야 합니다."
+
+msgid "The tournament ranking is invalid."
+msgstr "토너먼트 순위가 올바르지 않습니다."
+
+msgid "Manually register a chest collection entry"
+msgstr "상자 획득을 직접 등록"
+
+msgid "Collection Record"
+msgstr "획득 기록"
+
+msgid "Chest Name"
+msgstr "상자 이름"
+
+msgid "e.g. Chest of the Ancients"
+msgstr "예: 고대인의 상자"
+
+msgid "Player name"
+msgstr "플레이어 이름"
+
+msgid "Save Record"
+msgstr "기록 저장"
+
+msgid "Missing Configuration"
+msgstr "설정 없음"
+
+msgid "Incomplete Configuration"
+msgstr "설정 불완전"
+
+msgid "A required system parameter is missing or has an invalid configuration"
+msgstr "필수 시스템 매개변수가 없거나 설정이 올바르지 않습니다"
+
+msgid "System Configurations"
+msgstr "시스템 설정"
+
+msgid "Parameter missing: {0}"
+msgstr "매개변수 없음: {0}"
+
+msgid "The parameter <strong>{0}</strong> is {1} in the <code>config</code> table, preventing score calculations."
+msgstr "<code>config</code> 테이블에서 매개변수 <strong>{0}</strong>이(가) {1} 상태라 점수를 계산할 수 없습니다."
+
+msgid "If this is a fresh setup or update, execute the initial migration seed in your terminal:"
+msgstr "새로 설치하거나 업데이트한 경우 터미널에서 초기 마이그레이션 시드를 실행하세요:"
+
+msgid "Then review and configure parameters in {0}."
+msgstr "그다음 {0}에서 매개변수를 확인하고 설정하세요."
+
+msgid "Configurations"
+msgstr "설정"
+
+msgid "Modify individual chest record details and player attribution"
+msgstr "상자 기록의 세부 정보와 지정된 플레이어를 수정"
+
+msgid "Save Changes"
+msgstr "변경 사항 저장"
+
+msgid "History of all individual chest openings recorded by collectors"
+msgstr "수집기가 기록한 모든 상자 개봉 기록"
+
+msgid "Opened Chests Log"
+msgstr "개봉한 상자 기록"
+
+msgid "Show:"
+msgstr "표시:"
+
+msgid "No collected chests recorded."
+msgstr "기록된 획득 상자가 없습니다."
+
+msgid "Collected Chest: {0}"
+msgstr "획득한 상자: {0}"
+
+msgid "Chest collection event details and player log"
+msgstr "상자 획득 세부 정보와 플레이어 기록"
+
+msgid "Collection Event Details"
+msgstr "획득 세부 정보"
+
+msgid "Log ID"
+msgstr "기록 ID"
+
+msgid "Back to List"
+msgstr "목록으로 돌아가기"
+
+msgid "Add Configuration"
+msgstr "설정 추가"
+
+msgid "Create a new global configuration parameter and its default value"
+msgstr "새 전역 설정 매개변수와 기본값을 만듭니다"
+
+msgid "List Configs"
+msgstr "설정 목록"
+
+msgid "New Parameter"
+msgstr "새 매개변수"
+
+msgid "Parameter Key (Name)"
+msgstr "매개변수 키 (이름)"
+
+msgid "e.g. system_feature_enabled"
+msgstr "예: system_feature_enabled"
+
+msgid "Snake_case identifier used in code."
+msgstr "코드에서 쓰는 snake_case 식별자입니다."
+
+msgid "Value (string or number)"
+msgstr "값 (문자열 또는 숫자)"
+
+msgid "Description & Purpose"
+msgstr "설명 및 목적"
+
+msgid "Explain what this configuration affects..."
+msgstr "이 설정이 무엇에 영향을 주는지 설명하세요..."
+
+msgid "Save Configuration"
+msgstr "설정 저장"
+
+msgid "Edit Configuration"
+msgstr "설정 편집"
+
+msgid "Update parameter value or documentation"
+msgstr "매개변수 값이나 설명을 업데이트"
+
+msgid "Parameter Key"
+msgstr "매개변수 키"
+
+msgid "Parameter names are immutable identifiers used throughout the codebase."
+msgstr "매개변수 이름은 코드 전체에서 쓰이는 고정 식별자입니다."
+
+msgid "Are you sure you want to delete parameter \"{0}\"?"
+msgstr "매개변수 \"{0}\"을(를) 삭제할까요?"
+
+msgid "Parameter"
+msgstr "매개변수"
+
+msgid "No configurations found."
+msgstr "설정이 없습니다."
+
+msgid "Are you sure you want to delete parameter {0}?"
+msgstr "매개변수 {0}을(를) 삭제할까요?"
+
+msgid "Global environment settings, feature toggles, and application variables"
+msgstr "전역 환경 설정, 기능 전환 및 애플리케이션 변수"
+
+msgid "Config: {0}"
+msgstr "설정: {0}"
+
+msgid "Configuration parameter details and values"
+msgstr "설정 매개변수의 세부 정보와 값"
+
+msgid "Current Value"
+msgstr "현재 값"
+
+msgid "Internal ID"
+msgstr "내부 ID"
+
+msgid "Manually record an error log entry"
+msgstr "오류 기록을 직접 등록"
+
+msgid "Error Log"
+msgstr "오류 기록"
+
+msgid "Configure error record details."
+msgstr "오류 기록의 세부 정보를 설정하세요."
+
+msgid "Save Error"
+msgstr "오류 저장"
+
+msgid "Modify error record details"
+msgstr "오류 기록의 세부 정보를 수정"
+
+msgid "Error # {0}"
+msgstr "오류 #{0}"
+
+msgid "System Errors"
+msgstr "시스템 오류"
+
+msgid "Error logs and captured exception reports"
+msgstr "오류 기록과 포착된 예외 보고서"
+
+msgid "Recorded Errors"
+msgstr "기록된 오류"
+
+msgid "No errors logged."
+msgstr "기록된 오류가 없습니다."
+
+msgid "Error log record details"
+msgstr "오류 기록 세부 정보"
+
+msgid "Error Details"
+msgstr "오류 세부 정보"
+
+msgid "Error ID"
+msgstr "오류 ID"
+
+msgid "The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody's points change."
+msgstr "이 이벤트의 결과가 기록되었습니다. 여기서 보상과 목표를 바꿀 수 있습니다. 기록된 순위에 다시 적용되며 누구의 포인트도 바뀌지 않습니다."
+
+msgid "Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future."
+msgstr "두 시각 모두 점수판과 같은 UTC 기준입니다. 이 기간에 획득한 상자만 집계됩니다. 시작은 과거여도 되지만 종료는 미래여야 합니다."
+
+msgid "Review and manually transcribe unopened or unread chests captured by collectors"
+msgstr "수집기가 포착한 열지 않았거나 읽지 못한 상자를 검토하고 직접 옮겨 적습니다"
+
+msgid "Status Filters"
+msgstr "상태 필터"
+
+msgid "Complete and record a chest the collector could not finish"
+msgstr "수집기가 끝내지 못한 상자를 완성해 기록"
+
+msgid "Back to Queue"
+msgstr "대기열로 돌아가기"
+
+msgid "Register a new clan member, configure troop levels, and ranking participation"
+msgstr "새 클랜 멤버를 등록하고 병력 레벨과 순위 참여를 설정"
+
+msgid "New Member Profile"
+msgstr "새 멤버 프로필"
+
+msgid "Player Details"
+msgstr "플레이어 정보"
+
+msgid "Player in-game name"
+msgstr "게임 내 플레이어 이름"
+
+msgid "Game Player ID"
+msgstr "게임 플레이어 ID"
+
+msgid "Optional. Matches the member to tournament rankings even if their name changes."
+msgstr "선택 사항. 이름이 바뀌어도 멤버를 토너먼트 순위와 연결합니다."
+
+msgid "Linked System User"
+msgstr "연결된 시스템 사용자"
+
+msgid "None (Not linked to any login account)"
+msgstr "없음 (로그인 계정과 연결되지 않음)"
+
+msgid "Associate this clan member with a web system login account."
+msgstr "이 클랜 멤버를 시스템 로그인 계정과 연결합니다."
+
+msgid "Troop Levels & Status"
+msgstr "병력 레벨 및 상태"
+
+msgid "Member Status & Clan Policy"
+msgstr "멤버 상태 및 클랜 정책"
+
+msgid "Active Member (currently in clan and active)"
+msgstr "활성 멤버 (클랜에 있고 활동 중)"
+
+msgid "Inactive members are hidden from common lists and ranking calculations."
+msgstr "비활성 멤버는 일반 목록과 순위 계산에서 숨겨집니다."
+
+msgid "Administrative Account"
+msgstr "관리용 계정"
+
+msgid "Takes part in tournament rankings but never receives tournament rewards or counts towards division points."
+msgstr "토너먼트 순위에는 참여하지만 토너먼트 보상은 받지 않으며 디비전 포인트에도 반영되지 않습니다."
+
+msgid "Save Member"
+msgstr "멤버 저장"
+
+msgid "Manage player profile, in-game identifier, troop levels, and ranking participation"
+msgstr "플레이어 프로필, 게임 내 식별자, 병력 레벨, 순위 참여를 관리"
+
+msgid "Receives Rewards"
+msgstr "보상 수령"
+
+msgid "Matches the member to tournament rankings even if their name changes."
+msgstr "이름이 바뀌어도 멤버를 토너먼트 순위와 연결합니다."
+
+msgid "Created:"
+msgstr "생성:"
+
+msgid "Last Modified:"
+msgstr "마지막 수정:"
+
+msgid "Manage clan members roster, troop tiers, and tournament reward eligibility"
+msgstr "클랜 멤버 명단, 병력 등급, 토너먼트 보상 대상 여부를 관리"
+
+msgid "Clan Members Roster"
+msgstr "클랜 멤버 명단"
+
+msgid "Troops"
+msgstr "병력"
+
+msgid "Tournament Rewards"
+msgstr "토너먼트 보상"
+
+msgid "No clan members found."
+msgstr "클랜 멤버가 없습니다."
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "{0}을(를) 삭제할까요?"
+
+msgid "Goals Missed"
+msgstr "놓친 목표"
+
+msgid "Success Rate (%)"
+msgstr "성공률 (%)"
+
+msgid "events"
+msgstr "이벤트"
+
+msgid "cycles"
+msgstr "주기"
+
+msgid "Events + Chests"
+msgstr "이벤트 + 상자"
+
+msgid "Rank"
+msgstr "순위"
+
+msgid "Percentage of goals met out of valid evaluated goals"
+msgstr "평가된 유효 목표 중 달성한 목표의 비율"
+
+msgid "1st Place"
+msgstr "1위"
+
+msgid "Guards level"
+msgstr "경비병 레벨"
+
+msgid "Administrative account"
+msgstr "관리용 계정"
+
+msgid "Joined clan after tournament started"
+msgstr "토너먼트 시작 후 클랜 가입"
+
+msgid "Joined clan after cycle started"
+msgstr "주기 시작 후 클랜 가입"
+
+msgid "Member: {0}"
+msgstr "멤버: {0}"
+
+msgid "Member profile, troop composition, and clan participation details"
+msgstr "멤버 프로필, 병력 구성, 클랜 참여 정보"
+
+msgid "Total Power"
+msgstr "총 전투력"
+
+msgid "Clan Member # {0}"
+msgstr "클랜 멤버 #{0}"
+
+msgid "Troop Composition"
+msgstr "병력 구성"
+
+msgid "Account & Clan Data"
+msgstr "계정 및 클랜 정보"
+
+msgid "Active Member"
+msgstr "활성 멤버"
+
+msgid "Not assigned yet"
+msgstr "아직 지정되지 않음"
+
+msgid "Administrative Account (Excluded from tournament prize distribution)"
+msgstr "관리용 계정 (토너먼트 상품 분배에서 제외)"
+
+msgid "Eligible for tournament rewards"
+msgstr "토너먼트 보상 대상"
+
+msgid "Not linked to any login account"
+msgstr "로그인 계정과 연결되지 않음"
+
+msgid "Delete Member"
+msgstr "멤버 삭제"
+
+msgid "Define a new authorization role and its permissions"
+msgstr "새 권한 역할과 그 권한을 정의"
+
+msgid "New Role Details"
+msgstr "새 역할 정보"
+
+msgid "Role Name"
+msgstr "역할 이름"
+
+msgid "e.g. manager"
+msgstr "예: manager"
+
+msgid "Alias / Identifier"
+msgstr "별칭 / 식별자"
+
+msgid "e.g. role_manager"
+msgstr "예: role_manager"
+
+msgid "Describe what this role permits..."
+msgstr "이 역할이 허용하는 것을 설명하세요..."
+
+msgid "Assign Users"
+msgstr "사용자 지정"
+
+msgid "Hold Ctrl (or Cmd) to select multiple users."
+msgstr "Ctrl(또는 Cmd)을 누른 채 여러 사용자를 선택하세요."
+
+msgid "Save Role"
+msgstr "역할 저장"
+
+msgid "Modify role details, description, and assigned users"
+msgstr "역할 정보, 설명, 지정된 사용자를 수정"
+
+msgid "Assigned Users"
+msgstr "지정된 사용자"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple users."
+msgstr "Ctrl(또는 Cmd)을 누른 채 여러 사용자를 선택하거나 해제하세요."
+
+msgid "Created: {0}"
+msgstr "생성: {0}"
+
+msgid "Modified: {0}"
+msgstr "수정: {0}"
+
+msgid "System Roles"
+msgstr "시스템 역할"
+
+msgid "Manage access permission levels and system role definitions"
+msgstr "접근 권한 수준과 시스템 역할을 관리"
+
+msgid "Configured Roles"
+msgstr "설정된 역할"
+
+msgid "No roles found."
+msgstr "역할이 없습니다."
+
+msgid "Role: {0}"
+msgstr "역할: {0}"
+
+msgid "Role details and assigned system users"
+msgstr "역할 정보와 지정된 사용자"
+
+msgid "Role Information"
+msgstr "역할 정보"
+
+msgid "Users Assigned to this Role"
+msgstr "이 역할을 가진 사용자"
+
+msgid "No users currently assigned to this role."
+msgstr "현재 이 역할을 가진 사용자가 없습니다."
+
+msgid "View User"
+msgstr "사용자 보기"
+
+msgid "Assign Role to User"
+msgstr "사용자에게 역할 지정"
+
+msgid "Link a system user account to a specific role"
+msgstr "시스템 사용자 계정을 역할과 연결"
+
+msgid "List Assignments"
+msgstr "지정 목록"
+
+msgid "Assignment Details"
+msgstr "지정 정보"
+
+msgid "Save Assignment"
+msgstr "지정 저장"
+
+msgid "Edit Role Assignment"
+msgstr "역할 지정 편집"
+
+msgid "Modify the user or role for this assignment"
+msgstr "이 지정의 사용자나 역할을 수정"
+
+msgid "Assignment # {0}"
+msgstr "지정 #{0}"
+
+msgid "User Role Assignments"
+msgstr "사용자 역할 지정"
+
+msgid "Direct mappings between system user accounts and roles"
+msgstr "사용자 계정과 역할의 직접 연결"
+
+msgid "Assign Role"
+msgstr "역할 지정"
+
+msgid "Role Assignments"
+msgstr "역할 지정 목록"
+
+msgid "No role assignments found."
+msgstr "역할 지정이 없습니다."
+
+msgid "Roles User # {0}"
+msgstr "사용자 역할 #{0}"
+
+msgid "Role Assignment # {0}"
+msgstr "역할 지정 #{0}"
+
+msgid "Direct user-to-role permission linkage"
+msgstr "사용자와 역할 간의 직접 권한 연결"
+
+msgid "Assignment Information"
+msgstr "지정 정보"
+
+msgid "Assignment ID"
+msgstr "지정 ID"
+
+msgid "Register a new chest definition, point valuation, and monster categorization"
+msgstr "새 상자, 포인트 값, 몬스터 분류를 등록"
+
+msgid "Chest Specification"
+msgstr "상자 사양"
+
+msgid "Source Name"
+msgstr "출처 이름"
+
+msgid "e.g. Chest of the Serpent"
+msgstr "예: 뱀의 상자"
+
+msgid "The raw name of the chest as scanned by OCR or reported by the game."
+msgstr "OCR이 읽었거나 게임이 알려준 상자의 원래 이름입니다."
+
+msgid "Friendly Alias"
+msgstr "별칭"
+
+msgid "Optional friendly name for reports..."
+msgstr "보고서용 선택적 표시 이름..."
+
+msgid "Optional friendly name shown in reports instead of the raw source."
+msgstr "보고서에서 원래 출처 대신 표시되는 선택적 이름입니다."
+
+msgid "Score / Points"
+msgstr "점수 / 포인트"
+
+msgid "Points awarded for collecting this chest."
+msgstr "이 상자를 획득하면 받는 포인트입니다."
+
+msgid "Epic Monster Classification"
+msgstr "에픽 몬스터 분류"
+
+msgid "Epic Monster Chest (Drop from killing an Epic Monster)"
+msgstr "에픽 몬스터 상자 (에픽 몬스터를 처치하면 획득)"
+
+msgid "Chests Quantity per Monster"
+msgstr "몬스터당 상자 수"
+
+msgid "If chest type is Epic Monster, inform how many chests are earned by killing one monster."
+msgstr "에픽 몬스터 상자라면 몬스터 하나를 처치할 때 얻는 상자 수를 입력하세요."
+
+msgid "Save Chest"
+msgstr "상자 저장"
+
+msgid "Modify chest configuration, scoring weight, and monster flags"
+msgstr "상자 설정, 점수 가중치, 몬스터 표시를 수정"
+
+msgid "Regular Chest"
+msgstr "일반 상자"
+
+msgid "Catalogue of game chests, score values, and monster classifications"
+msgstr "게임 상자 카탈로그, 점수 값, 몬스터 분류"
+
+msgid "Goals & Weights"
+msgstr "목표 및 가중치"
+
+msgid "Filters & Search"
+msgstr "필터 및 검색"
+
+msgid "Review unregistered chests found in collection records and promote them to Standard Chests"
+msgstr "획득 기록에서 발견된 미등록 상자를 검토하고 표준 상자로 승격합니다"
+
+msgid "Standard Chest: {0}"
+msgstr "표준 상자: {0}"
+
+msgid "Standard chest specification, score value, and monster drop configuration"
+msgstr "표준 상자 사양, 점수 값, 몬스터 드롭 설정"
+
+msgid "Chest Attributes"
+msgstr "상자 속성"
+
+msgid "Source (OCR / Game Name)"
+msgstr "출처 (OCR / 게임 내 이름)"
+
+msgid "points"
+msgstr "포인트"
+
+msgid "Classification"
+msgstr "분류"
+
+msgid "Epic Monster Chest"
+msgstr "에픽 몬스터 상자"
+
+msgid "Optimize army formations, march capacities, leadership, and troop compositions"
+msgstr "군대 편성, 행군 용량, 통솔력, 병력 구성을 최적화"
+
+msgid "Create a new system user account and optionally link clan members"
+msgstr "새 시스템 사용자 계정을 만들고 필요하면 클랜 멤버를 연결"
+
+msgid "Account Registration"
+msgstr "계정 등록"
+
+msgid "Account Details"
+msgstr "계정 정보"
+
+msgid "User full name"
+msgstr "사용자 전체 이름"
+
+msgid "name@example.com"
+msgstr "name@example.com"
+
+msgid "Enter a secure password"
+msgstr "안전한 비밀번호를 입력하세요"
+
+msgid "Status & Access"
+msgstr "상태 및 접근"
+
+msgid "The user will be created with default role: <strong>user</strong>."
+msgstr "사용자는 기본 역할 <strong>user</strong>로 생성됩니다."
+
+msgid "Linked Clan Members"
+msgstr "연결된 클랜 멤버"
+
+msgid "Clan Members"
+msgstr "클랜 멤버"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple members."
+msgstr "Ctrl(또는 Cmd)을 누른 채 여러 멤버를 선택하거나 해제하세요."
+
+msgid "Save User"
+msgstr "사용자 저장"
+
+msgid "Manage account details, permissions, and linked clan members"
+msgstr "계정 정보, 권한, 연결된 클랜 멤버를 관리"
+
+msgid "Leave blank to keep current password"
+msgstr "현재 비밀번호를 유지하려면 비워 두세요"
+
+msgid "Leave blank if you do not want to change the password."
+msgstr "비밀번호를 바꾸지 않으려면 비워 두세요."
+
+msgid "Only administrators can change the status."
+msgstr "관리자만 상태를 바꿀 수 있습니다."
+
+msgid "Roles & Clan Association"
+msgstr "역할 및 클랜 연결"
+
+msgid "Select the permission level for this user in the system."
+msgstr "이 사용자의 시스템 권한 수준을 선택하세요."
+
+msgid "Manage registered user accounts, permissions, and clan member associations"
+msgstr "사용자 계정, 권한, 클랜 멤버 연결을 관리"
+
+msgid "System Users"
+msgstr "시스템 사용자"
+
+msgid "User: {0}"
+msgstr "사용자: {0}"
+
+msgid "User profile, security permissions, and clan membership links"
+msgstr "사용자 프로필, 보안 권한, 클랜 멤버 연결"
+
+msgid "Account Status"
+msgstr "계정 상태"
+
+msgid "Active (Access granted)"
+msgstr "활성 (접근 허용)"
+
+msgid "Pending Approval"
+msgstr "승인 대기"
+
+msgid "Google Sign-In"
+msgstr "Google 로그인"
+
+msgid "Registered"
+msgstr "등록일"
+
+msgid "Last Updated"
+msgstr "마지막 업데이트"
+
+msgid "Active in Clan"
+msgstr "클랜에서 활동 중"
+
+msgid "No clan members linked to this user."
+msgstr "이 사용자와 연결된 클랜 멤버가 없습니다."
+
+msgid "View Member"
+msgstr "멤버 보기"
+
+msgid "Assigned Roles"
+msgstr "지정된 역할"
+
+msgid "No roles assigned."
+msgstr "지정된 역할이 없습니다."
+
+msgid "View Role"
+msgstr "역할 보기"

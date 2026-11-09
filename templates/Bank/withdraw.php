@@ -29,7 +29,7 @@ foreach ($memberBalances as $balance) {
     </div>
 
     <div class="goal-pill">
-        <?= __('Current withdrawal fee: {0} $', $this->Number->format($withdrawFee, ['places' => 0])) ?>
+        <?= __('Current withdrawal fee: {0}', $this->silver($withdrawFee)) ?>
     </div>
 
     <?php if (!$hasMembers): ?>
@@ -58,7 +58,7 @@ foreach ($memberBalances as $balance) {
                         <tr>
                             <td class="text-left font-weight-bold"><?= h($memberName) ?></td>
                             <td class="text-center font-weight-bold" style="color: <?= $bal > 0 ? 'var(--text-dark)' : 'var(--danger)' ?>;">
-                                <?= $this->Number->format($bal, ['places' => 0]) ?> $
+                                <?= $this->silver($bal) ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

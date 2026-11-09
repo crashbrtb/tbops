@@ -81,20 +81,20 @@ msgid "⚠️ INSUFFICIENT BALANCE ⚠️"
 msgstr "⚠️ 余额不足 ⚠️"
 
 #: ./src/Controller/BankController.php:305
-msgid "Available balance: {0} $"
-msgstr "可用余额：{0} $"
+msgid "Available balance: {0}"
+msgstr "可用余额：{0}"
 
 #: ./src/Controller/BankController.php:306
-msgid "Withdrawal amount: {0} $"
-msgstr "取出金额：{0} $"
+msgid "Withdrawal amount: {0}"
+msgstr "取出金额：{0}"
 
 #: ./src/Controller/BankController.php:307
-msgid "Fee: {0} $"
-msgstr "手续费：{0} $"
+msgid "Fee: {0}"
+msgstr "手续费：{0}"
 
 #: ./src/Controller/BankController.php:308
-msgid "Total required: {0} $"
-msgstr "共需：{0} $"
+msgid "Total required: {0}"
+msgstr "共需：{0}"
 
 #: ./src/Controller/BankController.php:309
 msgid "Please reduce the withdrawal amount."
@@ -1038,8 +1038,8 @@ msgid "Request a Silver deposit. Amounts represent millions of Silver ($)"
 msgstr "申请存入银币。金额以百万银币（$）为单位"
 
 #: ./templates/Bank/deposit.php:35
-msgid "Flat deposit fee: {0} $ | Caravan fee: {1}%"
-msgstr "存入固定手续费：{0} $ | 商队手续费：{1}%"
+msgid "Flat deposit fee: {0} | Caravan fee: {1}%"
+msgstr "存入固定手续费：{0} | 商队手续费：{1}%"
 
 #: ./templates/Bank/deposit.php:40
 msgid "Deposit Details"
@@ -1141,8 +1141,8 @@ msgid "Values are saved in millions of Silver ($)"
 msgstr "数值以百万银币（$）为单位保存"
 
 #: ./templates/Bank/history.php:24
-msgid "Current balance: {0} $"
-msgstr "当前余额：{0} $"
+msgid "Current balance: {0}"
+msgstr "当前余额：{0}"
 
 #: ./templates/Bank/history.php:29
 msgid "Transactions"
@@ -1261,8 +1261,8 @@ msgid "Refresh"
 msgstr "刷新"
 
 #: ./templates/Bank/statement.php:39
-msgid "Member: {0} | Current balance: {1} $"
-msgstr "成员：{0} | 当前余额：{1} $"
+msgid "Member: {0} | Current balance: {1}"
+msgstr "成员：{0} | 当前余额：{1}"
 
 #: ./templates/Bank/statement.php:44
 msgid "Statement Records"
@@ -1277,8 +1277,8 @@ msgid "Choose a source and destination member. All values represent millions of 
 msgstr "请选择转出与转入的成员。所有数值以百万银币（$）为单位"
 
 #: ./templates/Bank/transfer.php:33
-msgid "Transfer fee: {0} $ (charged in addition to the transferred amount)"
-msgstr "转账手续费：{0} $（在转账金额之外另行收取）"
+msgid "Transfer fee: {0} (charged in addition to the transferred amount)"
+msgstr "转账手续费：{0}（在转账金额之外另行收取）"
 
 #: ./templates/Bank/transfer.php:38
 msgid "Your Available Source Balances"
@@ -1364,8 +1364,8 @@ msgid "Select a member and enter the Silver amount. All values represent million
 msgstr "请选择成员并输入银币金额。所有数值以百万银币（$）为单位"
 
 #: ./templates/Bank/withdraw.php:32
-msgid "Current withdrawal fee: {0} $"
-msgstr "当前取出手续费：{0} $"
+msgid "Current withdrawal fee: {0}"
+msgstr "当前取出手续费：{0}"
 
 #: ./templates/Bank/withdraw.php:38
 msgid "You do not have members available for withdrawals."
@@ -6098,3 +6098,1583 @@ msgstr "变化 %"
 #: ./templates/plugin/CakeLte/element/header/leftmenu.php
 msgid "Clan Data"
 msgstr "联盟数据"
+
+msgid "Edit the catalogue entry of this tournament type"
+msgstr "编辑此锦标赛类型的目录条目"
+
+msgid "By ranges of the goal reached"
+msgstr "按目标完成区间"
+
+msgid "Add at least one range, or choose \"No fine\"."
+msgstr "请至少添加一个区间，或选择“不罚款”。"
+
+msgid "At most {0} ranges."
+msgstr "最多 {0} 个区间。"
+
+
+msgid "The range {0}% to {1}% is not valid: it must start below where it ends, between 0% and 100%."
+msgstr "区间 {0}% 至 {1}% 无效：起点必须小于终点，且在 0% 到 100% 之间。"
+
+
+msgid "The range {0}% to {1}% overlaps the one before it."
+msgstr "区间 {0}% 至 {1}% 与前一个区间重叠。"
+
+msgid "{0}% to {1}% of the goal: {2}"
+msgstr "目标的 {0}% 至 {1}%：{2}"
+
+msgid "By the goal reached"
+msgstr "按目标完成度"
+
+msgid "By the share of the goal reached:"
+msgstr "按目标完成比例："
+
+msgid "Each range is a share of the goal the player reached and the fine for it. A range holds its start but not its end: with 0% to 10% and 10% to 50%, a player at exactly 10% falls in the second. A share no range holds is not fined; a player who reached the goal never is."
+msgstr "每个区间是玩家完成目标的比例及对应的罚款。区间包含起点但不包含终点：设置 0% 至 10% 和 10% 至 50% 时，正好 10% 的玩家属于第二个区间。不在任何区间内的比例不罚款；完成目标的玩家永远不罚款。"
+
+msgid "From (%)"
+msgstr "起始 (%)"
+
+msgid "To (%)"
+msgstr "结束 (%)"
+
+msgid "Remove range"
+msgstr "删除区间"
+
+msgid "Add range"
+msgstr "添加区间"
+
+msgid "T9 applies when all troops (guards, specialists, monsters, engineers) are level 9. G0 means the guard level was never identified (gets the highest goal)."
+msgstr "当所有部队（守卫、专家、怪物、工程师）均为 9 级时适用 T9。G0 表示从未识别出守卫等级（获得最高目标）。"
+
+msgid "All troops level 9 (T9)"
+msgstr "所有部队 9 级（T9）"
+
+msgid "{0} other chest(s) of this type were recorded with the same name."
+msgstr "另有 {0} 个此类宝箱以相同名称记录。"
+
+msgid "The chest of this code is outlined. Check that its line shows the player the game gave for it."
+msgstr "此代码的宝箱已高亮显示。请确认其所在行显示的是游戏给出的玩家。"
+
+msgid "New chest types"
+msgstr "新宝箱类型"
+
+msgid "The game has chests that neither the system nor the game's own catalogue can name yet. Type the name and the source and save: all the chests of that type are recorded, each with its own player, and the next ones are recognised on their own."
+msgstr "游戏中有一些宝箱，系统和游戏自身的目录都还无法命名。输入名称和来源后保存：该类型的所有宝箱都会被记录，各自归属其玩家，之后的宝箱将自动识别。"
+
+msgid "Picture"
+msgstr "图片"
+
+msgid "Chests waiting"
+msgstr "等待中的宝箱"
+
+msgid "Name it"
+msgstr "命名"
+
+msgid "Picture of the chest"
+msgstr "宝箱图片"
+
+msgid "Check: the top line of the picture must be from {0}."
+msgstr "请确认：图片最上面一行应来自 {0}。"
+
+msgid "No picture. Name it only if you know which chest it is."
+msgstr "没有图片。只有在确定是哪种宝箱时才命名。"
+
+msgid "Code {0}"
+msgstr "代码 {0}"
+
+msgid "Save and record the chests"
+msgstr "保存并记录宝箱"
+
+msgid "Cannot be identified"
+msgstr "无法识别"
+
+msgid "Mark these {0} chest(s) as not recoverable? They will not count for anyone."
+msgstr "将这 {0} 个宝箱标记为无法恢复？它们不会计入任何人。"
+
+msgid "Fill in the chest name and the source."
+msgstr "请填写宝箱名称和来源。"
+
+msgid "{0} chest(s) recorded as \"{1}\"."
+msgstr "已将 {0} 个宝箱记录为“{1}”。"
+
+msgid "Chest code"
+msgstr "宝箱代码"
+
+msgid "This names code {0} for good: the {1} other chest(s) waiting and every future chest of this code will take this name and source."
+msgstr "这将永久命名代码 {0}：另外 {1} 个等待中的宝箱以及此代码今后的所有宝箱都将使用此名称和来源。"
+
+msgid "Pending Tournaments"
+msgstr "待处理的锦标赛"
+
+msgid "The game only sends a number for a tournament. Read its name in the picture: its rankings are not sent until it has one, and the search only looks back as far as the uploader's \"Days to look back\"."
+msgstr "游戏只为锦标赛发送一个编号。请从图片中读出它的名称：在有名称之前不会发送其排名，且搜索只会回溯到上传程序的“回溯天数”。"
+
+msgid "The Journal page of this tournament"
+msgstr "此锦标赛的日志页面"
+
+msgid "The card of this tournament is outlined. Check that its date is the one beside the picture, and that it is a results card."
+msgstr "此锦标赛的卡片已高亮显示。请确认其日期与图片旁的日期一致，并且是结果卡片。"
+
+msgid "The uploader could not take a picture of it yet: it tries again on the next search."
+msgstr "上传程序尚未能截取图片：将在下次搜索时重试。"
+
+msgid "This name is used for every tournament of this code from now on."
+msgstr "从现在起，此代码的所有锦标赛都将使用此名称。"
+
+msgid "Save the name"
+msgstr "保存名称"
+
+msgid "No tournament is waiting for a name."
+msgstr "没有等待命名的锦标赛。"
+
+msgid "Fill in the name of the tournament."
+msgstr "请填写锦标赛名称。"
+
+msgid "Tournament \"{0}\" named. Its rankings arrive with the next search."
+msgstr "锦标赛“{0}”已命名。其排名将随下次搜索到达。"
+
+msgid "The picture must be a PNG, JPEG, WebP or GIF of at most {0} KB."
+msgstr "图片必须是不超过 {0} KB 的 PNG、JPEG、WebP 或 GIF。"
+
+msgid "Source, alias or chest name..."
+msgstr "来源、别名或宝箱名称..."
+
+msgid "Filter by source or chest name..."
+msgstr "按来源或宝箱名称筛选..."
+
+msgid "Ranked by score, only the chests that carry a score are listed; ranked by the number collected, every chest is, because the score does not matter. Choose as many as you like."
+msgstr "按分数排名时只列出有分数的宝箱；按收集数量排名时列出全部，因为分数无关紧要。可任意多选。"
+
+msgid "The rankings of \"{0}\" now wait for a review before they are published."
+msgstr "“{0}”的排名现在需审阅后才会发布。"
+
+msgid "The rankings of \"{0}\" are now published without review, with {1} not filled in."
+msgstr "“{0}”的排名现在无需审阅即可发布，尽管缺少{1}。"
+
+msgid "The rankings of \"{0}\" are now published without review."
+msgstr "“{0}”的排名现在无需审阅即可发布。"
+
+msgid "The clan results were not accepted."
+msgstr "联盟结果未被接受。"
+
+msgid "the name"
+msgstr "名称"
+
+msgid "the description"
+msgstr "描述"
+
+msgid "the duration"
+msgstr "时长"
+
+msgid "the image"
+msgstr "图片"
+
+msgid "the goal"
+msgstr "目标"
+
+msgid "the prizes"
+msgstr "奖品"
+
+msgid "Send results as a list of 1 to {0} clan results."
+msgstr "请以包含 1 到 {0} 个联盟结果的列表发送 results。"
+
+msgid "This clan result is not valid."
+msgstr "此联盟结果无效。"
+
+msgid "The Journal entry id is missing or invalid."
+msgstr "日志条目 id 缺失或无效。"
+
+msgid "Item {0}"
+msgstr "物品 {0}"
+
+msgid "Not defined"
+msgstr "未定义"
+
+msgid "Ranking {0}"
+msgstr "排名 {0}"
+
+msgid "Published without review"
+msgstr "无需审阅即发布"
+
+msgid "Clan Tournament History"
+msgstr "联盟锦标赛历史"
+
+msgid "In the game"
+msgstr "游戏中"
+
+msgid "Display name"
+msgstr "显示名称"
+
+msgid "The game's name"
+msgstr "游戏中的名称"
+
+msgid "By guard level"
+msgstr "按守卫等级"
+
+msgid "Required to receive a reward."
+msgstr "领取奖励的必要条件。"
+
+msgid "Not required to receive a reward."
+msgstr "不是领取奖励的必要条件。"
+
+msgid "Prizes"
+msgstr "奖品"
+
+msgid "Split among the players of every new event, with the amount the clan received in it:"
+msgstr "在每个新活动的玩家之间分配，数量为联盟在该活动中获得的数量："
+
+msgid "minimum {0} point(s)"
+msgstr "至少 {0} 积分"
+
+msgid "What the clan has received in this tournament, by place:"
+msgstr "联盟在此锦标赛中按名次获得的奖品："
+
+msgid "Last received"
+msgstr "最近获得"
+
+msgid "The clan has not received any prize in this tournament yet, or the collector has not sent the clan's results."
+msgstr "联盟尚未在此锦标赛中获得任何奖品，或采集器尚未发送联盟结果。"
+
+msgid "The clan in this tournament"
+msgstr "此锦标赛中的联盟"
+
+msgid "Ended (UTC)"
+msgstr "结束（UTC）"
+
+msgid "Place"
+msgstr "名次"
+
+msgid "Clan points"
+msgstr "联盟积分"
+
+msgid "Received"
+msgstr "已获得"
+
+msgid "Not in the top {0}"
+msgstr "未进入前 {0}"
+
+msgid "Nothing"
+msgstr "无"
+
+msgid "Publish events automatically"
+msgstr "自动发布活动"
+
+msgid "When this is on, as soon as the collector sends the ranking of a finished event of this tournament, the goals are worked out and the event is published at once, without review: every player's share of the prizes is recorded. A ranking with players the site cannot identify still waits for a review. When this is off, every ranking waits as a draft on the review page."
+msgstr "开启后，一旦采集器发送此锦标赛已结束活动的排名，就会计算目标并立即发布活动，无需审阅：每位玩家的奖品份额都会被记录。包含网站无法识别玩家的排名仍需等待审阅。关闭后，所有排名都会作为草稿在审阅页面等待。"
+
+msgid "Publish this tournament's events without review"
+msgstr "无需审阅即发布此锦标赛的活动"
+
+msgid "Missing: {0}."
+msgstr "缺少：{0}。"
+
+msgid "Publish the events of this tournament without review all the same?"
+msgstr "仍要无需审阅发布此锦标赛的活动吗？"
+
+msgid "Back to the tournament"
+msgstr "返回锦标赛"
+
+msgid "Name in the game"
+msgstr "游戏中的名称"
+
+msgid "Read from the game's Journal. It is kept as the game names it, in English."
+msgstr "从游戏日志中读取。保持游戏中的英文名称。"
+
+msgid "The game has not said it yet. A name typed here is kept: the collector will not overwrite it."
+msgstr "游戏尚未提供名称。在此输入的名称会被保留：采集器不会覆盖它。"
+
+msgid "The name the site shows for this tournament and its new events. Empty: the game's name."
+msgstr "网站为此锦标赛及其新活动显示的名称。留空：使用游戏中的名称。"
+
+msgid "Shown on every new event of this tournament."
+msgstr "显示在此锦标赛的每个新活动中。"
+
+msgid "Clan prizes to split among the players"
+msgstr "要在玩家之间分配的联盟奖品"
+
+msgid "These are the prizes the clan has received in this tournament. Tick the ones to split among the players: every new event of the tournament gets one reward per prize ticked, with the amount the clan received in it, split by the rule chosen. Rewards added by hand to an event are kept beside them."
+msgstr "这些是联盟在此锦标赛中获得的奖品。勾选要在玩家之间分配的奖品：锦标赛的每个新活动会为每个勾选的奖品生成一项奖励，数量为联盟在其中获得的数量，按所选规则分配。手动添加到活动的奖励会保留在旁边。"
+
+msgid "The game's tournaments. Names and ids are filled in by the collector; open a tournament to set the rest: display name, description, duration, image, goal, prizes and publishing."
+msgstr "游戏的锦标赛。名称和 id 由采集器填写；打开锦标赛以设置其余内容：显示名称、描述、时长、图片、目标、奖品和发布。"
+
+msgid "Tournament History"
+msgstr "锦标赛历史"
+
+msgid "The clan's place among the clans and its points in each of the game's tournaments, and what the clan received"
+msgstr "联盟在游戏每个锦标赛中的名次和积分，以及联盟获得的奖品"
+
+msgid "No clan result yet. The collector sends them with the tournaments it reads in the Journal."
+msgstr "暂无联盟结果。采集器会随其在日志中读取的锦标赛一起发送。"
+
+msgid "Best place"
+msgstr "最佳名次"
+
+msgid "{0} of {1} time(s) ranked"
+msgstr "{1} 次中 {0} 次上榜"
+
+msgid "The clan was never among the clans listed in this tournament."
+msgstr "联盟从未进入此锦标赛列出的联盟之中。"
+
+msgid "Every tournament"
+msgstr "所有锦标赛"
+
+msgid "Filled in with what the clan received in this tournament"
+msgstr "已用联盟在此锦标赛中获得的奖品填写"
+
+msgid "Clan prize"
+msgstr "联盟奖品"
+
+msgid "Event #{0} \"{1}\" was not published: the clan's result of this tournament has not arrived, so its prizes could not be split. Review it."
+msgstr "活动 #{0}“{1}”未发布：此锦标赛的联盟结果尚未到达，因此无法分配奖品。请审阅。"
+
+msgid "Event #{0} \"{1}\" was not published: the clan did not receive {2} in it, chosen to be split among the players. Review it."
+msgstr "活动 #{0}“{1}”未发布：联盟未在其中获得被选为在玩家之间分配的 {2}。请审阅。"
+
+msgid "The clan's result of this tournament has not arrived: the clan prizes chosen in the catalogue are not split in this event."
+msgstr "此锦标赛的联盟结果尚未到达：目录中选定的联盟奖品不会在此活动中分配。"
+
+msgid "The clan did not receive {0} in this event: chosen in the catalogue to be split, it is not in the rewards."
+msgstr "联盟未在此活动中获得 {0}：目录中已选为分配，但不在奖励中。"
+
+msgid "Member Performance"
+msgstr "成员表现"
+
+msgid "Performance"
+msgstr "表现"
+
+msgid "Goal achievement metrics for chests and events, monthly ranking (+1 pt per event goal beaten), and complete player histories."
+msgstr "宝箱和活动的目标达成指标、月度排名（每达成一个活动目标 +1 分）以及每位玩家的完整历史。"
+
+msgid "Event Goals Met"
+msgstr "已达成的活动目标"
+
+msgid "Chest Goals Met"
+msgstr "已达成的宝箱目标"
+
+msgid "Overall Goals Met"
+msgstr "已达成的目标总数"
+
+msgid "Monthly Leader"
+msgstr "本月领先者"
+
+msgid "Event Goals Met per Tournament"
+msgstr "按锦标赛 / 活动统计的目标达成"
+
+msgid "Chest Goals Met per Cycle"
+msgstr "按宝箱周期统计的目标达成"
+
+msgid "Player Performance Ranking"
+msgstr "玩家表现排名"
+
+msgid "Score formula: 1 point for each event whose goal was beaten in the period. Click on any player to inspect their full event & chest history."
+msgstr "计分：期间内每达成一个活动目标得 1 分。点击任意玩家查看其完整的活动和宝箱历史。"
+
+msgid "Event Goals"
+msgstr "活动目标"
+
+msgid "Chest Goals"
+msgstr "宝箱目标"
+
+msgid "Total Met"
+msgstr "达成总数"
+
+msgid "Success Rate"
+msgstr "成功率"
+
+msgid "Monthly Score"
+msgstr "本月得分"
+
+msgid "Chest History"
+msgstr "宝箱历史"
+
+msgid "In the scoring system, each tournament where the player reaches or exceeds the target awards +1 point to their monthly score."
+msgstr "在计分系统中，玩家每在一个锦标赛中达到或超过目标，月度得分 +1 分。"
+
+msgid "Tournament / Event"
+msgstr "锦标赛 / 活动"
+
+msgid "Goal Status"
+msgstr "目标状态"
+
+msgid "View player history"
+msgstr "查看玩家历史"
+
+msgid "Last month (30 days)"
+msgstr "上个月（30 天）"
+
+msgid "Last 60 days"
+msgstr "最近 60 天"
+
+msgid "Last 90 days"
+msgstr "最近 90 天"
+
+msgid "All time"
+msgstr "全部时间"
+
+msgid "success rate"
+msgstr "成功率"
+
+msgid "global rate"
+msgstr "整体比率"
+
+msgid "goals beaten"
+msgstr "达成的目标"
+
+msgid "Recent cycles"
+msgstr "最近周期"
+
+msgid "Displaying the most recent completed cycles"
+msgstr "显示最近完成的周期"
+
+msgid "No events with standings found in this period."
+msgstr "此期间未找到有排名的活动。"
+
+msgid "No chest cycle summaries recorded."
+msgstr "没有记录宝箱周期汇总。"
+
+msgid "No event records in this period."
+msgstr "此期间没有活动记录。"
+
+msgid "No chest cycle records in this period."
+msgstr "此期间没有宝箱周期记录。"
+
+msgid "Awaiting event goal beats"
+msgstr "等待活动目标达成"
+
+msgid "Goal achievement metrics for chests and events, ranking by success rate, and complete player histories."
+msgstr "宝箱和活动的目标达成指标、按成功率排名以及玩家的完整历史。"
+
+msgid "Top Performer"
+msgstr "最佳表现"
+
+msgid "Classified by success rate (aproveitamento %). Only active members are listed. Click on any player to inspect their full event & chest history."
+msgstr "按成功率（%）排序。仅列出活跃成员。点击任意玩家查看其完整的活动和宝箱历史。"
+
+msgid "No active members found."
+msgstr "未找到活跃成员。"
+
+msgid "No active members ranked"
+msgstr "没有活跃成员上榜"
+
+msgid "Awaiting goal evaluations"
+msgstr "等待目标评估"
+
+msgid "Member since"
+msgstr "入盟时间"
+
+msgid "Disregarded (joined mid-event)"
+msgstr "不计入（活动中途加入）"
+
+msgid "Disregarded (joined mid-cycle)"
+msgstr "不计入（周期中途加入）"
+
+msgid "Tournaments with active goals that started after the player joined the clan are evaluated for success rate. Tournaments that started before join date or with no goal are marked accordingly."
+msgstr "玩家加入联盟后开始且有有效目标的锦标赛会计入成功率。加入前开始或没有目标的锦标赛会相应标注。"
+
+msgid "Weekly chest cycles that started after the player joined the clan are evaluated. Cycles that started before joining are disregarded."
+msgstr "评估玩家加入联盟后开始的每周宝箱周期。加入前开始的周期不计入。"
+
+msgid "History of {0}"
+msgstr "{0} 的历史"
+
+msgid "Ends {0} UTC"
+msgstr "结束于 {0} UTC"
+
+msgid "Starts {0} UTC"
+msgstr "开始于 {0} UTC"
+
+msgid "Clan points: {0}"
+msgstr "联盟积分：{0}"
+
+msgid "Clan place: #{0}"
+msgstr "联盟名次：#{0}"
+
+msgid "Clan place: 100+"
+msgstr "联盟名次：100+"
+
+msgid "Goal: {0} points"
+msgstr "目标：{0} 积分"
+
+msgid "required for rewards"
+msgstr "领取奖励必需"
+
+msgid "Prizes split among the players"
+msgstr "已在玩家之间分配的奖品"
+
+msgid "Last prize split ({0})"
+msgstr "最近分配的奖品（{0}）"
+
+msgid "Rewards of each place"
+msgstr "联盟奖励"
+
+msgid "Clan rewards"
+msgstr "联盟奖励"
+
+msgid "Clan rewards and goals"
+msgstr "联盟奖励与目标"
+
+msgid "Tournaments"
+msgstr "锦标赛"
+
+msgid "the clan's place now:"
+msgstr "联盟当前名次："
+
+msgid "#{0} to #{1}"
+msgstr "#{0} 至 #{1}"
+
+msgid "Best clans"
+msgstr "最佳联盟"
+
+msgid "Clan ranking"
+msgstr "联盟排名"
+
+msgid "{0} player(s) with points"
+msgstr "{0} 名有积分的玩家"
+
+msgid "History of these events"
+msgstr "这些活动的历史"
+
+msgid "As the game showed them on {0} UTC."
+msgstr "最后更新于 {0} UTC。"
+
+msgid "Last updated on {0} UTC."
+msgstr "最后更新于 {0} UTC。"
+
+msgid "Inactive"
+msgstr "即将推出"
+
+msgid "Goals of each tournament"
+msgstr "每个锦标赛的目标"
+
+msgid "Every event of {0} that has been held, newest first"
+msgstr "{0} 已举办的所有活动，从新到旧"
+
+msgid "Send tournaments as a list of at most {0}."
+msgstr "请以最多 {0} 项的列表发送 tournaments。"
+
+msgid "This tournament is not valid."
+msgstr "此锦标赛无效。"
+
+msgid "This image is not a valid PNG."
+msgstr "此图片不是有效的 PNG。"
+
+msgid "Target"
+msgstr "目标"
+
+msgid "Goals Met"
+msgstr "已达成目标"
+
+msgid "Goal Met"
+msgstr "目标已达成"
+
+msgid "Not Met"
+msgstr "未达成"
+
+msgid "No Goal"
+msgstr "无目标"
+
+msgid "Cycle"
+msgstr "周期"
+
+msgid "Waived"
+msgstr "已免除"
+
+msgid "Charged"
+msgstr "已收取"
+
+msgid "Refunded"
+msgstr "已退还"
+
+msgid "Fine"
+msgstr "罚款"
+
+msgid "Fines"
+msgstr "罚款"
+
+msgid "Refund"
+msgstr "退还"
+
+msgid "Waive"
+msgstr "免除"
+
+msgid "Fine again"
+msgstr "再次罚款"
+
+msgid "List again"
+msgstr "重新列出"
+
+msgid "No fine"
+msgstr "不罚款"
+
+msgid "Fixed amount"
+msgstr "固定金额"
+
+msgid "In proportion to what was missing"
+msgstr "按缺少的比例"
+
+msgid "Fine for missing the goal"
+msgstr "未达目标的罚款"
+
+msgid "When the result of an event of this tournament is published, every player who did not reach the goal is listed with the fine below, debited from their account in the clan bank once an administrator charges it. Players can be waived on the event page before charging."
+msgstr "此锦标赛的活动结果发布后，每位未达到目标的玩家都会按下方罚款列出，管理员收取后从其联盟银行账户扣除。收取前可在活动页面免除玩家。"
+
+msgid "Fixed: every player who missed the goal owes the amount. In proportion: the amount times the part of the goal that was missing; a player at 60% of the goal owes 40% of the amount."
+msgstr "固定：每位未达到目标的玩家需支付该金额。按比例：金额乘以目标缺少的部分；达到目标 60% 的玩家需支付金额的 40%。"
+
+msgid "{0} for every player who misses the goal."
+msgstr "每位未达到目标的玩家 {0}。"
+
+msgid "Up to {0}, in proportion to what was missing of the goal."
+msgstr "最多 {0}，按距离目标缺少的比例计算。"
+
+msgid "Without a goal nobody is fined."
+msgstr "没有目标就没人会被罚款。"
+
+msgid "The fine must be a whole number."
+msgstr "罚款必须是整数。"
+
+msgid "Set the fine, or choose \"No fine\"."
+msgstr "请设置罚款，或选择“不罚款”。"
+
+msgid "Not a member of the clan bank"
+msgstr "不是联盟银行成员"
+
+msgid "Debit the pending fines from the players' accounts in the clan bank? A balance may go below zero: the player pays it by depositing."
+msgstr "从联盟银行的玩家账户中扣除待处理的罚款？余额可能变为负数：玩家通过存款还清。"
+
+msgid "The fine is collected as a bank fee: the balance may go below zero, the player pays it by depositing, and the amount stays with the clan."
+msgstr "罚款作为银行手续费收取：余额可能变为负数，玩家通过存款还清，金额归联盟所有。"
+
+msgid "Tournament fine: {0} - {1} of {2} points ({3}%)"
+msgstr "锦标赛罚款：{0} - {2} 积分中的 {1}（{3}%）"
+
+msgid "{0} fine(s) waiting to be charged."
+msgstr "{0} 笔罚款等待收取。"
+
+msgid "{0} fine(s) charged, {1} in all."
+msgstr "已收取 {0} 笔罚款，共 {1}。"
+
+msgid "{0} player(s) are not members of the clan bank: their fines stay pending."
+msgstr "{0} 名玩家不是联盟银行成员：其罚款仍为待处理。"
+
+msgid "{0} is fined again."
+msgstr "已再次对 {0} 罚款。"
+
+msgid "{0} is waived."
+msgstr "已免除 {0}。"
+
+msgid "The fine of {0} was refunded."
+msgstr "已退还 {0} 的罚款。"
+
+msgid "This tournament has no fine."
+msgstr "此锦标赛没有罚款。"
+
+msgid "Lists the pending fines again from the result and the tournament's current rule."
+msgstr "根据结果和锦标赛当前规则重新列出待处理的罚款。"
+
+msgid "Charge {0} fine(s) ({1})"
+msgstr "收取 {0} 笔罚款（{1}）"
+
+msgid "Set a fine on the tournament's page in the catalogue, then list the fines again."
+msgstr "请在目录中的锦标赛页面设置罚款，然后重新列出罚款。"
+
+msgid "Every player reached the goal: nobody is fined."
+msgstr "所有玩家都达到了目标：无人被罚款。"
+
+msgid "Give {0} back to {1}?"
+msgstr "将 {0} 退还给 {1}？"
+
+msgid "Lost"
+msgstr "已注销"
+
+msgid "Tournament Fines"
+msgstr "锦标赛罚款"
+
+msgid "Tournament fines"
+msgstr "锦标赛罚款"
+
+msgid "Every fine of the game tournaments, who still owes and what was given up"
+msgstr "游戏锦标赛的所有罚款、尚欠款的玩家以及已注销的金额"
+
+msgid "{0} fine(s)"
+msgstr "{0} 笔罚款"
+
+msgid "Fines to pay, by player"
+msgstr "待支付的罚款（按玩家）"
+
+msgid "Left the clan"
+msgstr "已离开联盟"
+
+msgid "{0} out of the clan"
+msgstr "{0} 人不在联盟"
+
+msgid "Nobody owes a fine."
+msgstr "没有人欠罚款。"
+
+msgid "In the clan"
+msgstr "在联盟中"
+
+msgid "Not charged yet"
+msgstr "尚未收取"
+
+msgid "Debt in the bank"
+msgstr "银行欠款"
+
+msgid "To pay"
+msgstr "待支付"
+
+msgid "Show their fines"
+msgstr "显示其罚款"
+
+msgid "Not registered"
+msgstr "未登记"
+
+msgid "Give up as lost"
+msgstr "注销为坏账"
+
+msgid "Give up the {0} {1} owes? The debt leaves their balance and the clan's fees."
+msgstr "注销 {1} 所欠的 {0}？欠款将从其余额和联盟手续费中移除。"
+
+msgid "Fine history"
+msgstr "罚款历史"
+
+msgid "Any status"
+msgstr "任意状态"
+
+msgid "{0} given up"
+msgstr "已注销 {0}"
+
+msgid "No fine matches."
+msgstr "没有匹配的罚款。"
+
+msgid "This player owes nothing."
+msgstr "此玩家没有欠款。"
+
+msgid "{0} of {1} given up as lost."
+msgstr "已将 {1} 的 {0} 注销为坏账。"
+
+msgid "{0} given up as lost"
+msgstr "{0} 已注销为坏账"
+
+msgid "{0} paid, {1} given up"
+msgstr "已付 {0}，注销 {1}"
+
+msgid "To pay: {0}"
+msgstr "待支付：{0}"
+
+msgid "Nothing to pay"
+msgstr "无需支付"
+
+msgid "The ranges take whole numbers: percentages from 0 to 100, and the fine in millions of Silver."
+msgstr "区间只接受整数：0 到 100 的百分比，以及以百万银币为单位的罚款。"
+
+msgid "Set the fine of the range {0}% to {1}%, at least 1 million Silver."
+msgstr "请设置区间 {0}% 至 {1}% 的罚款，至少 100 万银币。"
+
+msgid "The fine must be a whole number of millions of Silver."
+msgstr "罚款必须是以百万银币为单位的整数。"
+
+msgid "The fine is Silver in whole millions, as in the clan bank: 1 is 1 million, 1000 is 1 billion. It is never less than 1 million."
+msgstr "罚款以银币计，按整百万计算，与联盟银行一致：1 表示 100 万，1000 表示 10 亿。罚款绝不少于 100 万。"
+
+msgid "Fine (millions of Silver)"
+msgstr "罚款（百万银币）"
+
+msgid "Edit tournament"
+msgstr "编辑锦标赛"
+
+msgid "Players without an identified level are evaluated by the highest goal."
+msgstr "未识别等级的玩家按最高目标评估。"
+
+msgid "{0} Silver credit(s) waiting to be confirmed."
+msgstr "{0} 笔银币发放等待确认。"
+
+msgid "{0} player(s) credited, {1} in all."
+msgstr "已向 {0} 名玩家发放，共 {1}。"
+
+msgid "{0} player(s) are not members of the clan bank: their Silver stays pending."
+msgstr "{0} 名玩家不是联盟银行成员：其银币仍为待处理。"
+
+msgid "{0} will be credited again."
+msgstr "将再次向 {0} 发放。"
+
+msgid "{0} will not be credited."
+msgstr "不会向 {0} 发放。"
+
+msgid "The Silver credited to {0} was taken back."
+msgstr "已收回发放给 {0} 的银币。"
+
+msgid "Guard level"
+msgstr "守卫等级"
+
+msgid "Reached (%)"
+msgstr "完成度（%）"
+
+msgid "Goal met"
+msgstr "达成目标"
+
+msgid "{0} (millions of Silver)"
+msgstr "{0}（百万银币）"
+
+msgid "Fine status"
+msgstr "罚款状态"
+
+msgid "Each extra prize needs a whole amount above zero, and the items a name. Silver is in whole millions."
+msgstr "每个额外奖品都需要大于零的整数数量，物品还需要名称。银币以整百万计。"
+
+msgid "Not credited"
+msgstr "未发放"
+
+msgid "Credited"
+msgstr "已发放"
+
+msgid "Reversed"
+msgstr "已收回"
+
+msgid "Silver"
+msgstr "银币"
+
+msgid "Tournament prize: {0} - {1}"
+msgstr "锦标赛奖品：{0} - {1}"
+
+msgid "Silver prize"
+msgstr "银币奖品"
+
+msgid "Credited to the players' accounts in the clan bank once confirmed."
+msgstr "确认后发放到玩家的联盟银行账户。"
+
+msgid "Lists the pending Silver again from the split of the rewards."
+msgstr "根据奖励分配重新列出待处理的银币。"
+
+msgid "Credit {0} player(s) ({1})"
+msgstr "向 {0} 名玩家发放（{1}）"
+
+msgid "Credit the pending Silver to the players' accounts in the clan bank?"
+msgstr "将待处理的银币发放到玩家的联盟银行账户？"
+
+msgid "Do not credit"
+msgstr "不发放"
+
+msgid "Credit again"
+msgstr "再次发放"
+
+msgid "Take back"
+msgstr "收回"
+
+msgid "Take {0} back from {1}? Their balance may go below zero."
+msgstr "从 {1} 收回 {0}？其余额可能变为负数。"
+
+msgid "Silver in millions, credited to the players in the clan bank"
+msgstr "以百万计的银币，在联盟银行中发放给玩家"
+
+msgid "Silver (millions)"
+msgstr "银币（百万）"
+
+msgid "Export CSV"
+msgstr "导出 CSV"
+
+msgid "Extra prizes: Silver and items"
+msgstr "额外奖品：银币和物品"
+
+msgid "Prizes the clan gives besides the ones it receives, added to every new event of this tournament and split by the rule chosen. Add as many as you like."
+msgstr "联盟在所获奖品之外另行发放的奖品，会添加到此锦标赛的每个新活动中，并按所选规则分配。可任意添加。"
+
+msgid "Silver is in whole millions, as in the clan bank (1000 is 1B): when the result is published, each player's share waits on the event page for an administrator to credit it to their account in the clan bank."
+msgstr "银币以整百万计，与联盟银行一致（1000 即 1B）：结果发布后，每位玩家的份额会在活动页面等待，直到管理员将其发放到其联盟银行账户。"
+
+msgid "Item name"
+msgstr "物品名称"
+
+msgid "Remove prize"
+msgstr "删除奖品"
+
+msgid "Add prize"
+msgstr "添加奖品"
+
+msgid "Given by the clan in every new event:"
+msgstr "联盟在每个新活动中发放："
+
+msgid "{0}: the goal must be a whole number of 0 or more, or left blank."
+msgstr "{0}：目标必须是 0 或以上的整数，或留空。"
+
+msgid "The tournament ranking is invalid."
+msgstr "锦标赛排名无效。"
+
+msgid "Manually register a chest collection entry"
+msgstr "手动登记一次宝箱收集"
+
+msgid "Collection Record"
+msgstr "收集记录"
+
+msgid "Chest Name"
+msgstr "宝箱名称"
+
+msgid "e.g. Chest of the Ancients"
+msgstr "例如：远古宝箱"
+
+msgid "Player name"
+msgstr "玩家名称"
+
+msgid "Save Record"
+msgstr "保存记录"
+
+msgid "Missing Configuration"
+msgstr "缺少配置"
+
+msgid "Incomplete Configuration"
+msgstr "配置不完整"
+
+msgid "A required system parameter is missing or has an invalid configuration"
+msgstr "缺少必需的系统参数或其配置无效"
+
+msgid "System Configurations"
+msgstr "系统配置"
+
+msgid "Parameter missing: {0}"
+msgstr "缺少参数：{0}"
+
+msgid "The parameter <strong>{0}</strong> is {1} in the <code>config</code> table, preventing score calculations."
+msgstr "参数 <strong>{0}</strong> 在 <code>config</code> 表中为{1}，因此无法计算分数。"
+
+msgid "If this is a fresh setup or update, execute the initial migration seed in your terminal:"
+msgstr "如果是全新安装或升级，请在终端中运行初始迁移的种子数据："
+
+msgid "Then review and configure parameters in {0}."
+msgstr "然后在 {0} 中检查并配置参数。"
+
+msgid "Configurations"
+msgstr "配置"
+
+msgid "Modify individual chest record details and player attribution"
+msgstr "修改宝箱记录的详情和归属玩家"
+
+msgid "Save Changes"
+msgstr "保存更改"
+
+msgid "History of all individual chest openings recorded by collectors"
+msgstr "采集器记录的所有宝箱开启历史"
+
+msgid "Opened Chests Log"
+msgstr "已开启宝箱日志"
+
+msgid "Show:"
+msgstr "显示："
+
+msgid "No collected chests recorded."
+msgstr "没有已收集宝箱的记录。"
+
+msgid "Collected Chest: {0}"
+msgstr "已收集的宝箱：{0}"
+
+msgid "Chest collection event details and player log"
+msgstr "宝箱收集详情和玩家日志"
+
+msgid "Collection Event Details"
+msgstr "收集详情"
+
+msgid "Log ID"
+msgstr "日志 ID"
+
+msgid "Back to List"
+msgstr "返回列表"
+
+msgid "Add Configuration"
+msgstr "添加配置"
+
+msgid "Create a new global configuration parameter and its default value"
+msgstr "创建新的全局配置参数及其默认值"
+
+msgid "List Configs"
+msgstr "配置列表"
+
+msgid "New Parameter"
+msgstr "新参数"
+
+msgid "Parameter Key (Name)"
+msgstr "参数键（名称）"
+
+msgid "e.g. system_feature_enabled"
+msgstr "例如：system_feature_enabled"
+
+msgid "Snake_case identifier used in code."
+msgstr "代码中使用的 snake_case 标识符。"
+
+msgid "Value (string or number)"
+msgstr "值（文本或数字）"
+
+msgid "Description & Purpose"
+msgstr "描述和用途"
+
+msgid "Explain what this configuration affects..."
+msgstr "说明此配置会影响什么..."
+
+msgid "Save Configuration"
+msgstr "保存配置"
+
+msgid "Edit Configuration"
+msgstr "编辑配置"
+
+msgid "Update parameter value or documentation"
+msgstr "更新参数值或说明"
+
+msgid "Parameter Key"
+msgstr "参数键"
+
+msgid "Parameter names are immutable identifiers used throughout the codebase."
+msgstr "参数名称是整个代码中使用的固定标识符。"
+
+msgid "Are you sure you want to delete parameter \"{0}\"?"
+msgstr "确定要删除参数“{0}”吗？"
+
+msgid "Parameter"
+msgstr "参数"
+
+msgid "No configurations found."
+msgstr "未找到配置。"
+
+msgid "Are you sure you want to delete parameter {0}?"
+msgstr "确定要删除参数 {0} 吗？"
+
+msgid "Global environment settings, feature toggles, and application variables"
+msgstr "全局环境设置、功能开关和应用变量"
+
+msgid "Config: {0}"
+msgstr "配置：{0}"
+
+msgid "Configuration parameter details and values"
+msgstr "配置参数的详情和值"
+
+msgid "Current Value"
+msgstr "当前值"
+
+msgid "Internal ID"
+msgstr "内部 ID"
+
+msgid "Manually record an error log entry"
+msgstr "手动记录一条错误日志"
+
+msgid "Error Log"
+msgstr "错误日志"
+
+msgid "Configure error record details."
+msgstr "配置错误记录的详情。"
+
+msgid "Save Error"
+msgstr "保存错误"
+
+msgid "Modify error record details"
+msgstr "修改错误记录的详情"
+
+msgid "Error # {0}"
+msgstr "错误 #{0}"
+
+msgid "System Errors"
+msgstr "系统错误"
+
+msgid "Error logs and captured exception reports"
+msgstr "错误日志和捕获的异常报告"
+
+msgid "Recorded Errors"
+msgstr "已记录的错误"
+
+msgid "No errors logged."
+msgstr "没有记录的错误。"
+
+msgid "Error log record details"
+msgstr "错误记录详情"
+
+msgid "Error Details"
+msgstr "错误详情"
+
+msgid "Error ID"
+msgstr "错误 ID"
+
+msgid "The result of this event is recorded. You can change its rewards and its goal here: they are applied again to the recorded ranking, and nobody's points change."
+msgstr "此活动的结果已记录。可以在这里修改奖励和目标：它们会重新应用到已记录的排名，任何人的积分都不会改变。"
+
+msgid "Both moments are UTC, the same clock the scoreboard uses. Only chests collected inside this window count; the start may be in the past, but the end must be in the future."
+msgstr "两个时间都是 UTC，与计分板使用的时钟相同。只统计在此时间段内收集的宝箱；开始时间可以在过去，但结束时间必须在将来。"
+
+msgid "Review and manually transcribe unopened or unread chests captured by collectors"
+msgstr "审阅并手动录入采集器捕获的未开启或未识别的宝箱"
+
+msgid "Status Filters"
+msgstr "状态筛选"
+
+msgid "Complete and record a chest the collector could not finish"
+msgstr "补全并记录采集器未能完成的宝箱"
+
+msgid "Back to Queue"
+msgstr "返回队列"
+
+msgid "Register a new clan member, configure troop levels, and ranking participation"
+msgstr "登记新的联盟成员，设置部队等级和排名参与"
+
+msgid "New Member Profile"
+msgstr "新成员资料"
+
+msgid "Player Details"
+msgstr "玩家信息"
+
+msgid "Player in-game name"
+msgstr "玩家游戏内名称"
+
+msgid "Game Player ID"
+msgstr "游戏玩家 ID"
+
+msgid "Optional. Matches the member to tournament rankings even if their name changes."
+msgstr "可选。即使改名，也能将成员与锦标赛排名对应。"
+
+msgid "Linked System User"
+msgstr "关联的系统用户"
+
+msgid "None (Not linked to any login account)"
+msgstr "无（未关联任何登录账户）"
+
+msgid "Associate this clan member with a web system login account."
+msgstr "将此联盟成员与系统登录账户关联。"
+
+msgid "Troop Levels & Status"
+msgstr "部队等级和状态"
+
+msgid "Member Status & Clan Policy"
+msgstr "成员状态和联盟规则"
+
+msgid "Active Member (currently in clan and active)"
+msgstr "活跃成员（在联盟中且活跃）"
+
+msgid "Inactive members are hidden from common lists and ranking calculations."
+msgstr "非活跃成员不会出现在普通列表和排名计算中。"
+
+msgid "Administrative Account"
+msgstr "管理账户"
+
+msgid "Takes part in tournament rankings but never receives tournament rewards or counts towards division points."
+msgstr "参与锦标赛排名，但从不领取锦标赛奖励，也不计入分区积分。"
+
+msgid "Save Member"
+msgstr "保存成员"
+
+msgid "Manage player profile, in-game identifier, troop levels, and ranking participation"
+msgstr "管理玩家资料、游戏内标识、部队等级和排名参与"
+
+msgid "Receives Rewards"
+msgstr "领取奖励"
+
+msgid "Matches the member to tournament rankings even if their name changes."
+msgstr "即使改名，也能将成员与锦标赛排名对应。"
+
+msgid "Created:"
+msgstr "创建时间："
+
+msgid "Last Modified:"
+msgstr "最后修改："
+
+msgid "Manage clan members roster, troop tiers, and tournament reward eligibility"
+msgstr "管理联盟成员名册、部队等级和锦标赛奖励资格"
+
+msgid "Clan Members Roster"
+msgstr "联盟成员名册"
+
+msgid "Troops"
+msgstr "部队"
+
+msgid "Tournament Rewards"
+msgstr "锦标赛奖励"
+
+msgid "No clan members found."
+msgstr "未找到联盟成员。"
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "确定要删除 {0} 吗？"
+
+msgid "Goals Missed"
+msgstr "未达成的目标"
+
+msgid "Success Rate (%)"
+msgstr "成功率（%）"
+
+msgid "events"
+msgstr "活动"
+
+msgid "cycles"
+msgstr "周期"
+
+msgid "Events + Chests"
+msgstr "活动 + 宝箱"
+
+msgid "Rank"
+msgstr "排名"
+
+msgid "Percentage of goals met out of valid evaluated goals"
+msgstr "在有效评估的目标中达成目标的百分比"
+
+msgid "1st Place"
+msgstr "第 1 名"
+
+msgid "Guards level"
+msgstr "守卫等级"
+
+msgid "Administrative account"
+msgstr "管理账户"
+
+msgid "Joined clan after tournament started"
+msgstr "锦标赛开始后加入联盟"
+
+msgid "Joined clan after cycle started"
+msgstr "周期开始后加入联盟"
+
+msgid "Member: {0}"
+msgstr "成员：{0}"
+
+msgid "Member profile, troop composition, and clan participation details"
+msgstr "成员资料、部队构成和联盟参与情况"
+
+msgid "Total Power"
+msgstr "总战力"
+
+msgid "Clan Member # {0}"
+msgstr "联盟成员 #{0}"
+
+msgid "Troop Composition"
+msgstr "部队构成"
+
+msgid "Account & Clan Data"
+msgstr "账户和联盟信息"
+
+msgid "Active Member"
+msgstr "活跃成员"
+
+msgid "Not assigned yet"
+msgstr "尚未分配"
+
+msgid "Administrative Account (Excluded from tournament prize distribution)"
+msgstr "管理账户（不参与锦标赛奖品分配）"
+
+msgid "Eligible for tournament rewards"
+msgstr "可领取锦标赛奖励"
+
+msgid "Not linked to any login account"
+msgstr "未关联任何登录账户"
+
+msgid "Delete Member"
+msgstr "删除成员"
+
+msgid "Define a new authorization role and its permissions"
+msgstr "定义新的授权角色及其权限"
+
+msgid "New Role Details"
+msgstr "新角色信息"
+
+msgid "Role Name"
+msgstr "角色名称"
+
+msgid "e.g. manager"
+msgstr "例如：manager"
+
+msgid "Alias / Identifier"
+msgstr "别名 / 标识符"
+
+msgid "e.g. role_manager"
+msgstr "例如：role_manager"
+
+msgid "Describe what this role permits..."
+msgstr "描述此角色允许的操作..."
+
+msgid "Assign Users"
+msgstr "分配用户"
+
+msgid "Hold Ctrl (or Cmd) to select multiple users."
+msgstr "按住 Ctrl（或 Cmd）可选择多个用户。"
+
+msgid "Save Role"
+msgstr "保存角色"
+
+msgid "Modify role details, description, and assigned users"
+msgstr "修改角色信息、描述和已分配用户"
+
+msgid "Assigned Users"
+msgstr "已分配用户"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple users."
+msgstr "按住 Ctrl（或 Cmd）可选择或取消选择多个用户。"
+
+msgid "Created: {0}"
+msgstr "创建：{0}"
+
+msgid "Modified: {0}"
+msgstr "修改：{0}"
+
+msgid "System Roles"
+msgstr "系统角色"
+
+msgid "Manage access permission levels and system role definitions"
+msgstr "管理访问权限级别和系统角色"
+
+msgid "Configured Roles"
+msgstr "已配置的角色"
+
+msgid "No roles found."
+msgstr "未找到角色。"
+
+msgid "Role: {0}"
+msgstr "角色：{0}"
+
+msgid "Role details and assigned system users"
+msgstr "角色信息和已分配用户"
+
+msgid "Role Information"
+msgstr "角色信息"
+
+msgid "Users Assigned to this Role"
+msgstr "拥有此角色的用户"
+
+msgid "No users currently assigned to this role."
+msgstr "目前没有用户拥有此角色。"
+
+msgid "View User"
+msgstr "查看用户"
+
+msgid "Assign Role to User"
+msgstr "为用户分配角色"
+
+msgid "Link a system user account to a specific role"
+msgstr "将系统用户账户关联到某个角色"
+
+msgid "List Assignments"
+msgstr "分配列表"
+
+msgid "Assignment Details"
+msgstr "分配信息"
+
+msgid "Save Assignment"
+msgstr "保存分配"
+
+msgid "Edit Role Assignment"
+msgstr "编辑角色分配"
+
+msgid "Modify the user or role for this assignment"
+msgstr "修改此分配的用户或角色"
+
+msgid "Assignment # {0}"
+msgstr "分配 #{0}"
+
+msgid "User Role Assignments"
+msgstr "用户角色分配"
+
+msgid "Direct mappings between system user accounts and roles"
+msgstr "用户账户与角色之间的直接对应"
+
+msgid "Assign Role"
+msgstr "分配角色"
+
+msgid "Role Assignments"
+msgstr "角色分配"
+
+msgid "No role assignments found."
+msgstr "未找到角色分配。"
+
+msgid "Roles User # {0}"
+msgstr "用户角色 #{0}"
+
+msgid "Role Assignment # {0}"
+msgstr "角色分配 #{0}"
+
+msgid "Direct user-to-role permission linkage"
+msgstr "用户与角色之间的直接权限关联"
+
+msgid "Assignment Information"
+msgstr "分配信息"
+
+msgid "Assignment ID"
+msgstr "分配 ID"
+
+msgid "Register a new chest definition, point valuation, and monster categorization"
+msgstr "登记新的宝箱、积分值和怪物分类"
+
+msgid "Chest Specification"
+msgstr "宝箱规格"
+
+msgid "Source Name"
+msgstr "来源名称"
+
+msgid "e.g. Chest of the Serpent"
+msgstr "例如：毒蛇宝箱"
+
+msgid "The raw name of the chest as scanned by OCR or reported by the game."
+msgstr "宝箱的原始名称，即 OCR 识别或游戏报告的名称。"
+
+msgid "Friendly Alias"
+msgstr "别名"
+
+msgid "Optional friendly name for reports..."
+msgstr "报告中使用的可选友好名称..."
+
+msgid "Optional friendly name shown in reports instead of the raw source."
+msgstr "在报告中代替原始来源显示的可选友好名称。"
+
+msgid "Score / Points"
+msgstr "分数 / 积分"
+
+msgid "Points awarded for collecting this chest."
+msgstr "收集此宝箱获得的积分。"
+
+msgid "Epic Monster Classification"
+msgstr "史诗怪物分类"
+
+msgid "Epic Monster Chest (Drop from killing an Epic Monster)"
+msgstr "史诗怪物宝箱（击杀史诗怪物掉落）"
+
+msgid "Chests Quantity per Monster"
+msgstr "每只怪物的宝箱数"
+
+msgid "If chest type is Epic Monster, inform how many chests are earned by killing one monster."
+msgstr "如果是史诗怪物宝箱，请填写击杀一只怪物获得的宝箱数量。"
+
+msgid "Save Chest"
+msgstr "保存宝箱"
+
+msgid "Modify chest configuration, scoring weight, and monster flags"
+msgstr "修改宝箱配置、计分权重和怪物标记"
+
+msgid "Regular Chest"
+msgstr "普通宝箱"
+
+msgid "Catalogue of game chests, score values, and monster classifications"
+msgstr "游戏宝箱目录、积分值和怪物分类"
+
+msgid "Goals & Weights"
+msgstr "目标和权重"
+
+msgid "Filters & Search"
+msgstr "筛选和搜索"
+
+msgid "Review unregistered chests found in collection records and promote them to Standard Chests"
+msgstr "审阅收集记录中发现的未登记宝箱，并将其设为标准宝箱"
+
+msgid "Standard Chest: {0}"
+msgstr "标准宝箱：{0}"
+
+msgid "Standard chest specification, score value, and monster drop configuration"
+msgstr "标准宝箱规格、积分值和怪物掉落配置"
+
+msgid "Chest Attributes"
+msgstr "宝箱属性"
+
+msgid "Source (OCR / Game Name)"
+msgstr "来源（OCR / 游戏内名称）"
+
+msgid "points"
+msgstr "积分"
+
+msgid "Classification"
+msgstr "分类"
+
+msgid "Epic Monster Chest"
+msgstr "史诗怪物宝箱"
+
+msgid "Optimize army formations, march capacities, leadership, and troop compositions"
+msgstr "优化军队编队、行军容量、统率和部队构成"
+
+msgid "Create a new system user account and optionally link clan members"
+msgstr "创建新的系统用户账户，并可关联联盟成员"
+
+msgid "Account Registration"
+msgstr "账户注册"
+
+msgid "Account Details"
+msgstr "账户信息"
+
+msgid "User full name"
+msgstr "用户全名"
+
+msgid "name@example.com"
+msgstr "name@example.com"
+
+msgid "Enter a secure password"
+msgstr "输入安全的密码"
+
+msgid "Status & Access"
+msgstr "状态和访问"
+
+msgid "The user will be created with default role: <strong>user</strong>."
+msgstr "用户将以默认角色创建：<strong>user</strong>。"
+
+msgid "Linked Clan Members"
+msgstr "已关联的联盟成员"
+
+msgid "Clan Members"
+msgstr "联盟成员"
+
+msgid "Hold Ctrl (or Cmd) to select or deselect multiple members."
+msgstr "按住 Ctrl（或 Cmd）可选择或取消选择多个成员。"
+
+msgid "Save User"
+msgstr "保存用户"
+
+msgid "Manage account details, permissions, and linked clan members"
+msgstr "管理账户信息、权限和已关联的联盟成员"
+
+msgid "Leave blank to keep current password"
+msgstr "留空则保留当前密码"
+
+msgid "Leave blank if you do not want to change the password."
+msgstr "如果不想修改密码，请留空。"
+
+msgid "Only administrators can change the status."
+msgstr "只有管理员可以修改状态。"
+
+msgid "Roles & Clan Association"
+msgstr "角色和联盟关联"
+
+msgid "Select the permission level for this user in the system."
+msgstr "选择此用户在系统中的权限级别。"
+
+msgid "Manage registered user accounts, permissions, and clan member associations"
+msgstr "管理用户账户、权限和联盟成员关联"
+
+msgid "System Users"
+msgstr "系统用户"
+
+msgid "User: {0}"
+msgstr "用户：{0}"
+
+msgid "User profile, security permissions, and clan membership links"
+msgstr "用户资料、安全权限和联盟成员关联"
+
+msgid "Account Status"
+msgstr "账户状态"
+
+msgid "Active (Access granted)"
+msgstr "活跃（已授予访问）"
+
+msgid "Pending Approval"
+msgstr "等待审批"
+
+msgid "Google Sign-In"
+msgstr "Google 登录"
+
+msgid "Registered"
+msgstr "注册时间"
+
+msgid "Last Updated"
+msgstr "最后更新"
+
+msgid "Active in Clan"
+msgstr "在联盟中活跃"
+
+msgid "No clan members linked to this user."
+msgstr "没有与此用户关联的联盟成员。"
+
+msgid "View Member"
+msgstr "查看成员"
+
+msgid "Assigned Roles"
+msgstr "已分配的角色"
+
+msgid "No roles assigned."
+msgstr "未分配角色。"
+
+msgid "View Role"
+msgstr "查看角色"

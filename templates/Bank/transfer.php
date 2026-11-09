@@ -30,7 +30,7 @@ foreach ($memberBalances as $balance) {
     </div>
 
     <div class="goal-pill">
-        <?= __('Transfer fee: {0} $ (charged in addition to the transferred amount)', $this->Number->format($transferFee, ['places' => 0])) ?>
+        <?= __('Transfer fee: {0} (charged in addition to the transferred amount)', $this->silver($transferFee)) ?>
     </div>
 
     <div class="card ranking-card mb-4">
@@ -56,7 +56,7 @@ foreach ($memberBalances as $balance) {
                             <tr>
                                 <td class="text-left font-weight-bold"><?= h($memberName) ?></td>
                                 <td class="text-center font-weight-bold" style="color: <?= $bal > 0 ? 'var(--text-dark)' : 'var(--danger)' ?>;">
-                                    <?= $this->Number->format($bal, ['places' => 0]) ?> $
+                                    <?= $this->silver($bal) ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -92,9 +92,9 @@ foreach ($memberBalances as $balance) {
                 <ul class="list-group mb-3">
                     <li class="list-group-item d-flex justify-content-between"><span><?= __('From') ?>:</span> <strong><?= h($confirmationData['source']->player) ?></strong></li>
                     <li class="list-group-item d-flex justify-content-between"><span><?= __('To') ?>:</span> <strong><?= h($confirmationData['destination']->player) ?></strong></li>
-                    <li class="list-group-item d-flex justify-content-between"><span><?= __('Amount') ?>:</span> <strong><?= $this->Number->format($confirmationData['amount'], ['places' => 0]) ?> $</strong></li>
-                    <li class="list-group-item d-flex justify-content-between"><span><?= __('Fee') ?>:</span> <strong><?= $this->Number->format($confirmationData['fee'], ['places' => 0]) ?> $</strong></li>
-                    <li class="list-group-item d-flex justify-content-between bg-light"><span><?= __('Total deduction') ?>:</span> <strong class="text-danger"><?= $this->Number->format($confirmationData['totalDeduction'], ['places' => 0]) ?> $</strong></li>
+                    <li class="list-group-item d-flex justify-content-between"><span><?= __('Amount') ?>:</span> <strong><?= $this->silver($confirmationData['amount']) ?></strong></li>
+                    <li class="list-group-item d-flex justify-content-between"><span><?= __('Fee') ?>:</span> <strong><?= $this->silver($confirmationData['fee']) ?></strong></li>
+                    <li class="list-group-item d-flex justify-content-between bg-light"><span><?= __('Total deduction') ?>:</span> <strong class="text-danger"><?= $this->silver($confirmationData['totalDeduction']) ?></strong></li>
                     <?php if (!empty($confirmationData['description'])): ?>
                         <li class="list-group-item"><span><?= __('Comment') ?>:</span> <em><?= h($confirmationData['description']) ?></em></li>
                     <?php endif; ?>

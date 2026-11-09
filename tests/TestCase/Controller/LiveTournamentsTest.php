@@ -203,7 +203,7 @@ class LiveTournamentsTest extends TestCase
         $this->assertResponseContains('/game-image/fangs_coin_72', 'not written by this test: served by the action');
         $this->assertResponseContains('Darkness Falls');
         $this->assertResponseContains('Goal: 5,000,000 points');
-        $this->assertResponseContains('Dragon Coins x900,000', 'the last prize split');
+        $this->assertResponseContains('Dragon Coins x900K', 'the last prize split');
         $this->assertResponseContains('Clan place: 100+');
         $this->assertResponseContains('events/history?tournament=1026');
 
@@ -211,5 +211,98 @@ class LiveTournamentsTest extends TestCase
         $this->get('/events/history?tournament=1026');
         $this->assertResponseOk();
         $this->assertResponseContains('Ragnarok do clã');
+    }
+
+    public function testTournamentsOfOneTypeKeepTheirOwnNamesImagesAndHistory(): void
+    {
+        // The catalogue knows type 1015 as Silver Rush; the game runs Gold Rush with it too.
+        $catalogue = $this->fetchTable('GameTournaments');
+        $entry = $catalogue->touchType(1015, '22');
+        $catalogue->offerName($entry, 'Silver Rush', GameTournament::SOURCE_JOURNAL);
+
+        $reading = $this->reading();
+        $reading['tournaments'] = [
+            [
+                'key' => '1015:30', 'game_type' => 1015, 'variant' => 30, 'run' => 600, 'state' => 'active',
+                'starts_at' => '2026-11-08T15:00:11Z', 'ends_at' => '2026-11-08T20:00:00Z', 'name' => 'Gold Rush',
+                'banner' => 'banner_gold_dragon', 'icon' => 'icon_event_gold_dragon',
+            ],
+            [
+                'key' => '1015:22', 'game_type' => 1015, 'variant' => 22, 'run' => 599, 'state' => 'upcoming',
+                'starts_at' => '2026-11-10T16:30:00Z', 'ends_at' => null, 'name' => 'Silver Rush',
+                'banner' => 'banner_silver_mountains_708x123', 'icon' => 'icon_silver_mountains_62',
+            ],
+            [
+                'key' => '1032:1', 'game_type' => 1032, 'variant' => 1, 'run' => 9, 'state' => 'upcoming',
+                'starts_at' => '2026-11-23T16:00:00Z', 'ends_at' => null, 'name' => 'Trials of Olympus',
+                'banner' => 'banner_multistage_main_708x123', 'icon' => 'widget_static_multistage_main',
+            ],
+        ];
+        $this->authorize();
+        $this->post('/api/v1/live-tournaments', json_encode($reading));
+        $this->assertResponseOk();
+
+        $saved = $catalogue->get($entry->id);
+        $this->assertSame('Silver Rush', $saved->get('name'), 'Gold Rush does not rename the entry');
+        $this->assertSame('banner_silver_mountains_708x123', $saved->get('game_banner'), 'only its own tournament gives it a banner');
+
+        $this->configRequest(['headers' => []]);
+        $this->get('/events/tournaments');
+        $this->assertResponseOk();
+        $body = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($body, 'live-tournament-name">Gold Rush<'));
+        $this->assertSame(1, substr_count($body, 'live-tournament-name">Silver Rush<'), 'not Silver Rush on the Gold Rush card');
+        $this->assertResponseContains('Trials of Olympus');
+        $this->assertResponseContains('events/history?tournament=1015&variant=30');
+        $this->assertResponseContains('events/history?tournament=1032&variant=1');
+        $this->assertSame('Silver Rush', $catalogue->get($entry->id)->get('name'), 'the page leaves it alone too');
+
+        $this->get('/events/history?tournament=1015&variant=30');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Gold Rush');
+    }
+
+    public function testEachTournamentOfATypeHasItsOwnCatalogueEntryToEdit(): void
+    {
+        $catalogue = $this->fetchTable('GameTournaments');
+        $doomsday = $catalogue->touchType(1007, '1');
+        $catalogue->offerName($doomsday, 'Doomsday', GameTournament::SOURCE_JOURNAL);
+        $ragnarok = $catalogue->touchType(1026, '1');
+        $catalogue->offerName($ragnarok, 'Ragnarök tournament', GameTournament::SOURCE_JOURNAL);
+
+        $reading = $this->reading();
+        $reading['tournaments'] = [
+            [
+                'key' => '1007:14', 'game_type' => 1007, 'variant' => 14, 'run' => 254, 'state' => 'active',
+                'starts_at' => '2026-11-08T17:00:31Z', 'ends_at' => '2026-11-09T17:00:00Z', 'name' => "Arachne's Swarm",
+                'banner' => 'map_insect_invasion_tournament_banner_708x123', 'icon' => 'map_insect_invasion_widget_62',
+            ],
+            [
+                'key' => '1026:2', 'game_type' => 1026, 'variant' => 2, 'run' => 57, 'state' => 'upcoming',
+                'starts_at' => '2026-11-29T17:00:00Z', 'ends_at' => null, 'name' => 'Ragnarök',
+                'banner' => 'banner_ragnarok_clan_event_708x123', 'icon' => 'map_ragnarok_widget_62',
+            ],
+        ];
+        $this->authorize();
+        $this->post('/api/v1/live-tournaments', json_encode($reading));
+        $this->assertResponseOk();
+
+        $this->configRequest(['headers' => []]);
+        $this->session(['Auth' => ['id' => 1, 'email' => 'admin@example.com', 'created' => new DateTime('2026-01-01')]]);
+        $this->get('/events/tournaments');
+        $this->assertResponseOk();
+
+        $arachne = $catalogue->find()->where(['game_type' => 1007, 'variant' => 14])->first();
+        $this->assertNotNull($arachne, "Arachne's Swarm gets its own entry beside Doomsday");
+        $this->assertSame("Arachne's Swarm", $arachne->get('name'));
+        $this->assertSame('Doomsday', $catalogue->get($doomsday->id)->get('name'));
+        $this->assertResponseContains('/game-tournaments/view/' . $arachne->id);
+        $this->assertResponseNotContains('/game-tournaments/view/' . $doomsday->id);
+        $this->assertSame(1, $catalogue->find()->where(['game_type' => 1026])->count(), 'Ragnarök under another variant is the same tournament');
+        $this->assertResponseContains('/game-tournaments/view/' . $ragnarok->id);
+
+        // Without a name, the Journal's tournament still finds its entry.
+        $this->assertSame($ragnarok->id, $catalogue->touchType(1026, '3')->id);
+        $this->assertSame('1007:14', $arachne->gameKey());
     }
 }

@@ -36,7 +36,7 @@
     </div>
 
     <div class="goal-pill">
-        <?= __('Member: {0} | Current balance: {1} $', h($member->player), $this->Number->format($balance, ['places' => 0])) ?>
+        <?= __('Member: {0} | Current balance: {1}', h($member->player), $this->silver($balance)) ?>
     </div>
 
     <div class="card ranking-card">
@@ -94,10 +94,10 @@
                         ?>
                         <tr>
                             <td><span class="badge badge-light"><?= h($label) ?></span></td>
-                            <td class="font-weight-bold"><?= $this->Number->format($transaction->amount, ['places' => 0]) ?></td>
-                            <td><?= $this->Number->format($transaction->fee, ['places' => 0]) ?></td>
+                            <td class="font-weight-bold"><?= $this->silver($transaction->amount) ?></td>
+                            <td><?= $this->silver($transaction->fee) ?></td>
                             <td class="font-weight-bold" style="color: <?= $netEffect > 0 ? 'var(--success)' : ($netEffect < 0 ? 'var(--danger)' : 'inherit') ?>;">
-                                <?= ($netEffect > 0 ? '+' : '') . $this->Number->format($netEffect, ['places' => 0]) ?>
+                                <?= ($netEffect > 0 ? '+' : '') . $this->silver($netEffect) ?>
                             </td>
                             <td>
                                 <?php if ($transaction->status === 'approved'): ?>

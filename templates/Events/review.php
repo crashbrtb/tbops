@@ -94,7 +94,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                     <?php foreach ($event->event_rewards as $reward): ?>
                         <?php $split = $preview['distribution']['rewards'][$reward->id] ?? null; ?>
                         <li>
-                            <strong><?= $reward->rule === EventReward::RULE_POSITION ? h($reward->summary()) : $fmt($reward->quantity) . ' &times; ' . h($reward->item_name) ?></strong>
+                            <strong><?= $reward->rule === EventReward::RULE_POSITION ? h($reward->summary()) : $this->rewardAmount($reward, (int)$reward->quantity) . ' &times; ' . h($reward->item_name) ?></strong>
                             <span class="text-muted">
                                 &middot; <?= h(EventReward::ruleOptions()[$reward->rule] ?? $reward->rule) ?>
                                 &middot; <?= __('min. {0} pts', $fmt($reward->min_points)) ?>
@@ -335,7 +335,7 @@ $fmt = fn ($n) => $this->Number->format((int)$n);
                                 <?php $split = $preview['distribution']['rewards'][$reward->id]; ?>
                                 <td class="review-amount">
                                     <strong><?= $fmt($split['distributed']) ?></strong>
-                                    <small class="d-block text-muted"><?= __('of {0}', $fmt($reward->quantity)) ?></small>
+                                    <small class="d-block text-muted"><?= __('of {0}', $this->rewardAmount($reward, (int)$reward->quantity)) ?></small>
                                 </td>
                             <?php endforeach; ?>
                         </tr>

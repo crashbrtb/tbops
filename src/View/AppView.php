@@ -15,6 +15,7 @@ declare(strict_types=1);
  */
 namespace App\View;
 
+use App\Utility\GameNumber;
 use Cake\View\View;
 use CakeLte\View\CakeLteTrait;
 
@@ -52,44 +53,41 @@ class AppView extends View
     }
 
     /**
-     * Formats a number using the game's 3-digit notation (e.g., 1200 -> 1,20k, 100000000 -> 100m).
+     * An amount of the clan bank (whole millions of Silver) in the game's
+     * notation: 1000 is 1B, 500 is 500M.
+     *
+     * @param int|float|string|null $millions Millions of Silver.
+     * @return string
+     */
+    public function silver($millions): string
+    {
+        return GameNumber::silver($millions);
+    }
+
+    /**
+     * What a player receives of a prize line: Silver (in millions) or items,
+     * both in the game's notation.
+     *
+     * @param \App\Model\Entity\EventReward|array<string, mixed> $reward Prize line.
+     * @param int|float|string|null $amount Amount.
+     * @return string
+     */
+    public function rewardAmount($reward, $amount): string
+    {
+        $silver = is_array($reward) ? !empty($reward['is_silver']) : (bool)$reward->get('is_silver');
+
+        return $silver ? GameNumber::silver($amount) : GameNumber::format($amount);
+    }
+
+    /**
+     * A number in the game's notation: at most 3 digits and a letter (1,2K,
+     * 12,3K, 100M, 10B), the same everywhere on the site.
      *
      * @param int|float|string|null $num
      * @return string
      */
     public function gameNumber($num): string
     {
-        if ($num === null || $num === '') {
-            return '0';
-        }
-        $n = (float)$num;
-        if ($n < 0) {
-            return '-' . $this->gameNumber(-$n);
-        }
-        if ($n < 1000) {
-            return (string)(int)$n;
-        }
-
-        $suffixes = ['', 'k', 'm', 'b', 't', 'q'];
-        $tier = (int)floor(log10($n) / 3);
-        if ($tier >= count($suffixes)) {
-            $tier = count($suffixes) - 1;
-        }
-
-        $scaled = $n / pow(10, $tier * 3);
-        if ($scaled >= 999.5 && $tier < count($suffixes) - 1) {
-            $tier++;
-            $scaled = $n / pow(10, $tier * 3);
-        }
-
-        if ($scaled < 9.995) {
-            $formatted = number_format($scaled, 2, ',', '');
-        } elseif ($scaled < 99.95) {
-            $formatted = number_format($scaled, 1, ',', '');
-        } else {
-            $formatted = number_format($scaled, 0, ',', '');
-        }
-
-        return $formatted . $suffixes[$tier];
+        return GameNumber::format($num);
     }
 }

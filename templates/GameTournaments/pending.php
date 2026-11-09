@@ -49,7 +49,7 @@ $this->assign('title', __('Pending Tournaments'));
                 <div class="col-md-4 p-3">
                     <dl class="mb-3">
                         <dt><?= __('Game id') ?></dt>
-                        <dd><?= h($tournament->game_type) ?></dd>
+                        <dd><?= h($tournament->gameKey()) ?></dd>
                         <?php if ($tournament->ranking): ?>
                             <dt><?= __('Ranking') ?></dt>
                             <dd><?= h($tournament->rankingLabel()) ?></dd>

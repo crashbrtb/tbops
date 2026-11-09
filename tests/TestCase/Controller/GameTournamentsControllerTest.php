@@ -75,7 +75,7 @@ class GameTournamentsControllerTest extends TestCase
         $this->assertResponseCode(403);
     }
 
-    public function testEditingNameDurationAndImage(): void
+    public function testTheNameIsEditedButTheDurationAndTheImageAreTheGames(): void
     {
         $catalogue = $this->fetchTable('GameTournaments');
         $entry = $catalogue->touchType(1024, '1');
@@ -99,34 +99,16 @@ class GameTournamentsControllerTest extends TestCase
         $saved = $catalogue->get($entry->id);
         $this->assertSame('Rise of the Ancients (event)', $saved->name);
         $this->assertSame(GameTournament::SOURCE_MANUAL, $saved->name_source);
-        $this->assertSame(3, $saved->duration_days);
-        $this->assertSame('image/png', $saved->image_mime);
+        $this->assertNull($saved->duration_days, 'the duration is the game\'s');
+        $this->assertNull($saved->image_mime, 'the image is the game\'s');
 
-        // The image is public: tournament pages show it to players.
-        $this->session([]);
-        $this->get("/game-tournaments/image/{$entry->id}");
-        $this->assertResponseOk();
-        $this->assertContentType('image/png');
-
+        // Their sections are not offered.
         $this->loginAdmin();
-        $this->post("/game-tournaments/edit/{$entry->id}", ['name' => 'Rise of the Ancients (event)', 'duration_days' => '3', 'remove_image' => '1']);
-        $this->assertNull($catalogue->get($entry->id)->image_mime);
-    }
-
-    public function testInvalidDurationOrImageIsRefused(): void
-    {
-        $catalogue = $this->fetchTable('GameTournaments');
-        $entry = $catalogue->touchType(1007);
-
+        $this->get("/game-tournaments/edit/{$entry->id}?section=duration");
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
         $this->loginAdmin();
-        $this->post("/game-tournaments/edit/{$entry->id}", ['name' => '', 'duration_days' => '0']);
-        $this->assertResponseOk();
-        $this->assertNull($catalogue->get($entry->id)->duration_days);
-
-        $this->loginAdmin();
-        $this->post("/game-tournaments/edit/{$entry->id}", ['name' => '', 'duration_days' => '2', 'image' => $this->upload('not an image')]);
-        $this->assertResponseOk();
-        $this->assertNull($catalogue->get($entry->id)->image_mime);
+        $this->get("/game-tournaments/edit/{$entry->id}?section=image");
+        $this->assertRedirect(['controller' => 'GameTournaments', 'action' => 'view', $entry->id]);
     }
 
     public function testTheReviewPageCorrectsWhenTheTournamentRan(): void
@@ -236,7 +218,9 @@ class GameTournamentsControllerTest extends TestCase
         $this->assertResponseContains('Not defined');
         $this->assertResponseContains('Olympus Elite Chest');
         $this->assertResponseContains('autoPublishSwitch');
-        $this->assertResponseContains('the description, the duration, the image, the goal, the prizes');
+        $this->assertResponseContains('the description, the goal, the prizes');
+        $this->assertResponseNotContains('section=duration');
+        $this->assertResponseNotContains('section=image');
         foreach (GameTournament::SECTIONS as $section) {
             $this->assertResponseContains("section={$section}");
         }

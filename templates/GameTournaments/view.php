@@ -96,7 +96,7 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
             <div>
                 <h1 class="score-title"><i class="fas fa-trophy text-primary"></i> <?= h($tournament->displayName()) ?></h1>
                 <p class="cycle-subtitle">
-                    <?= __('Game id {0}', $tournament->game_type) ?>
+                    <?= __('Game id {0}', $tournament->gameKey()) ?>
                     <?php if ($tournament->ranking !== ''): ?>
                         &middot; <?= h(__('Ranking {0}', $tournament->rankingLabel())) ?>
                     <?php endif; ?>
@@ -142,16 +142,6 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
             <?= trim((string)$tournament->description) !== '' ? nl2br(h($tournament->description)) : $notSet ?>
         </div>
 
-        <div class="tournament-card <?= $state(GameTournament::SECTION_DURATION) ?>">
-            <h3><?= __('Duration') ?><?= $icon(GameTournament::SECTION_DURATION) ?></h3>
-            <?= $tournament->duration_days ? h(__('{0} day(s)', $tournament->duration_days)) : $notSet ?>
-        </div>
-
-        <div class="tournament-card <?= $state(GameTournament::SECTION_IMAGE) ?>">
-            <h3><?= __('Image') ?><?= $icon(GameTournament::SECTION_IMAGE) ?></h3>
-            <?= $tournament->has_image ? '<img src="' . $imageUrl . '" alt="" class="tournament-thumb is-large">' : $notSet ?>
-        </div>
-
         <div class="tournament-card <?= $state(GameTournament::SECTION_GOAL) ?>">
             <?= $pencil(GameTournament::SECTION_GOAL) ?>
             <h3><?= __('Goal') ?><?= $icon(GameTournament::SECTION_GOAL) ?></h3>
@@ -159,9 +149,10 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
                 <?= $notSet ?>
             <?php elseif ($goal->isByGuard()): ?>
                 <?= __('By guard level') ?>:
-                <?php foreach ($goal->levelTable() as $level => $points): ?>
-                    <span class="badge badge-light">G<?= $level ?> <?= $this->Number->format($points) ?></span>
+                <?php foreach ($goal->shownLevels() as $level => $points): ?>
+                    <span class="badge badge-light"><?= \App\Service\EventGoal::levelLabel((int)$level) ?> <?= $this->Number->format($points) ?></span>
                 <?php endforeach; ?>
+                <div class="text-muted mt-1" style="font-size: .8rem;"><?= __('Players without an identified level are evaluated by the highest goal.') ?></div>
             <?php else: ?>
                 <?= __('{0} points for every player.', $this->Number->format($goal->points)) ?>
             <?php endif; ?>
@@ -169,6 +160,17 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
                 <div class="text-muted mt-1" style="font-size: .8rem;">
                     <?= $goal->isRequired() ? __('Required to receive a reward.') : __('Not required to receive a reward.') ?>
                 </div>
+            <?php endif; ?>
+        </div>
+
+        <?php $fineRule = \App\Service\TournamentFineService::ruleOf($tournament); ?>
+        <?php $fineMode = $fineRule[0]; ?>
+        <div class="tournament-card is-filled">
+            <?= $pencil(GameTournament::SECTION_FINE) ?>
+            <h3><?= __('Fine') ?></h3>
+            <?= $this->element('fine_rule', ['rule' => $fineRule]) ?>
+            <?php if ($fineMode !== \App\Service\TournamentFineService::MODE_NONE && !$goal->isActive()): ?>
+                <div class="text-warning mt-1" style="font-size: .8rem;"><?= __('Without a goal nobody is fined.') ?></div>
             <?php endif; ?>
         </div>
 
@@ -187,7 +189,25 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
                         </li>
                     <?php endforeach; ?>
                 </ul>
-            <?php else: ?>
+            <?php endif; ?>
+            <?php $extras = $tournament->extraPrizes(); ?>
+            <?php if ($extras !== []): ?>
+                <p class="mb-2"><?= __('Given by the clan in every new event:') ?></p>
+                <ul class="mb-2">
+                    <?php foreach ($extras as $prize): ?>
+                        <li>
+                            <?php if ($prize['silver']): ?>
+                                <i class="fas fa-coins text-warning"></i> <strong><?= h(__('Silver')) ?> <?= $this->silver($prize['quantity']) ?></strong>
+                            <?php else: ?>
+                                <strong><?= h($prize['name']) ?> x<?= $this->gameNumber($prize['quantity']) ?></strong>
+                            <?php endif; ?>
+                            &middot; <?= h(mb_strtolower($ruleLabels[$prize['rule']] ?? $prize['rule'])) ?>
+                            &middot; <?= h(__('minimum {0} point(s)', $this->Number->format($prize['min_points']))) ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            <?php if ($selection === [] && $extras === []): ?>
                 <p class="mb-2"><?= $notSet ?></p>
             <?php endif; ?>
             <?php if ($prizes !== []): ?>
@@ -209,9 +229,9 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
                                 <tr>
                                     <td><?= h($p['name'] ?: __('Item {0}', $p['item_id'])) ?></td>
                                     <?php foreach (array_keys($places) as $place): ?>
-                                        <td class="num"><?= isset($p['by_position'][$place]) ? $this->Number->format($p['by_position'][$place]) : '&ndash;' ?></td>
+                                        <td class="num"><?= isset($p['by_position'][$place]) ? $this->gameNumber($p['by_position'][$place]) : '&ndash;' ?></td>
                                     <?php endforeach; ?>
-                                    <td class="num"><?= $this->Number->format($p['last_amount']) ?></td>
+                                    <td class="num"><?= $this->gameNumber($p['last_amount']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -253,7 +273,7 @@ $state = fn (string $section): string => isset($missing[$section]) ? 'is-missing
                                 <td style="font-size: .85rem;">
                                     <?php $received = $result->rewardList(); ?>
                                     <?= $received === [] ? '<span class="text-muted">' . h(__('Nothing')) . '</span>' : h(implode(', ', array_map(
-                                        fn (array $r): string => $r['name'] . ' x' . $this->Number->format($r['amount']),
+                                        fn (array $r): string => $r['name'] . ' x' . $this->gameNumber($r['amount']),
                                         $received
                                     ))) ?>
                                 </td>

@@ -81,7 +81,7 @@ $sourceLabels = [
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <code><?= h($tournament->game_type) ?></code>
+                                    <code><?= h($tournament->gameKey()) ?></code>
                                     <?php if ($tournament->ranking !== ''): ?>
                                         <small class="d-block text-muted text-break" title="<?= h($tournament->ranking) ?>"><?= h($tournament->rankingLabel()) ?></small>
                                     <?php endif; ?>

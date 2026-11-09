@@ -62,6 +62,8 @@ foreach ((array)$event->event_rewards as $reward) {
             'errors' => array_values(Hash::flatten($reward->getErrors())),
             // Filled from what the clan received; it can still be changed or removed here.
             'clan_prize' => $reward->get('game_item_id') !== null,
+            // Credited to the players in the clan bank once the result is published.
+            'silver' => (bool)$reward->get('is_silver'),
         ];
     }
 }
@@ -105,6 +107,9 @@ $rewardLine = function (string $index, array $row) use ($ruleOptions, $remainder
     $html .= '<button type="button" class="btn btn-outline-danger btn-sm reward-remove" onclick="removeRewardLine(this)" title="' . h(__('Remove')) . '"><i class="fas fa-trash"></i></button>';
     if (!empty($row['clan_prize'])) {
         $html .= '<span class="badge badge-info reward-clan-prize" title="' . h(__('Filled in with what the clan received in this tournament')) . '"><i class="fas fa-flag mr-1"></i>' . h(__('Clan prize')) . '</span>';
+    }
+    if (!empty($row['silver'])) {
+        $html .= '<span class="badge badge-warning reward-clan-prize" title="' . h(__('Silver in millions, credited to the players in the clan bank')) . '"><i class="fas fa-coins mr-1"></i>' . h(__('Silver (millions)')) . '</span>';
     }
     if (!empty($row['errors'])) {
         $html .= '<span class="field-error reward-errors"><i class="fas fa-exclamation-circle mr-1"></i>' . h(implode(' ', $row['errors'])) . '</span>';

@@ -117,7 +117,7 @@ class TournamentCatalogService
         $catalogue->getConnection()->transactional(function () use ($catalogue, $clean, &$results): void {
             foreach ($clean as $item) {
                 $existed = $catalogue->exists(['game_type' => $item['type'], 'ranking' => $item['ranking']]);
-                $entry = $catalogue->touchType($item['type'], $item['variant'], $item['endedAt'], $item['ranking']);
+                $entry = $catalogue->touchType($item['type'], $item['variant'], $item['endedAt'], $item['ranking'], (string)$item['name']);
                 $renamed = $item['name'] !== ''
                     && $catalogue->offerName($entry, $item['name'], GameTournament::SOURCE_JOURNAL);
 

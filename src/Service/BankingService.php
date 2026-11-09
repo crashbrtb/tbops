@@ -59,16 +59,31 @@ class BankingService
     }
 
     /**
+     * Debita uma dívida do membro, como a multa de um torneio: o saldo pode ficar
+     * negativo, e o membro a quita depositando.
+     */
+    public function chargeDebt(int $memberId, int $amount): BankAccount
+    {
+        if ($amount < 0) {
+            throw new RuntimeException('Amount must be positive.');
+        }
+
+        return $this->updateBalance($memberId, -$amount, true);
+    }
+
+    /**
      * Atualiza o saldo de forma transacional.
      */
-    protected function updateBalance(int $memberId, int $delta): BankAccount
+    protected function updateBalance(int $memberId, int $delta, bool $allowNegative = false): BankAccount
     {
-        return $this->BankAccounts->getConnection()->transactional(function () use ($memberId, $delta) {
+        return $this->BankAccounts->getConnection()->transactional(function () use ($memberId, $delta, $allowNegative) {
             $account = $this->fetchAccountForUpdate($memberId);
             $currentBalance = (int)round((float)$account->balance);
             $newBalance = $currentBalance + $delta;
 
-            if ($newBalance < 0) {
+            // Only a debit can lack balance: a credit always goes in, so a member
+            // in debt (a tournament fine) pays it off in part or in whole.
+            if ($delta < 0 && $newBalance < 0 && !$allowNegative) {
                 throw new RuntimeException('Insufficient balance for this operation.');
             }
 

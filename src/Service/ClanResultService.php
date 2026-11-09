@@ -201,9 +201,10 @@ class ClanResultService
     }
 
     /**
-     * Fill the event's clan prize lines: one per prize its tournament splits,
-     * with what the clan received in it. Lines added by hand are left alone.
-     * A published event is not changed.
+     * Fill the event's prize lines from its tournament: one per clan prize it
+     * splits, with what the clan received in it, and one per extra prize the
+     * clan gives (Silver or items), which needs no clan result. Lines added by
+     * hand are left alone. A published event is not changed.
      *
      * @param \App\Model\Entity\Event $event Imported event.
      * @return int Prize lines written.
@@ -222,19 +223,33 @@ class ClanResultService
         }
 
         $rewards = $this->fetchTable('EventRewards');
-        $rewards->deleteAll(['event_id' => $event->id, 'game_item_id IS NOT' => null]);
+        $rewards->deleteAll(['event_id' => $event->id, 'OR' => ['game_item_id IS NOT' => null, 'from_catalogue' => true]]);
+
+        $written = 0;
+        foreach ($tournament->extraPrizes() as $i => $prize) {
+            $line = $rewards->newEntity([
+                'item_name' => mb_substr($prize['silver'] ? __('Silver') : $prize['name'], 0, 120),
+                'quantity' => min($prize['quantity'], \App\Model\Table\EventRewardsTable::MAX_QUANTITY),
+                'rule' => in_array($prize['rule'], self::PRIZE_RULES, true) ? $prize['rule'] : EventReward::RULE_PROPORTIONAL,
+                'min_points' => $prize['min_points'],
+                'remainder' => $prize['remainder'],
+                'sort' => 200 + $i,
+            ]);
+            $line->set(['event_id' => $event->id, 'is_silver' => $prize['silver'], 'from_catalogue' => true], ['guard' => false]);
+            $rewards->saveOrFail($line);
+            $written++;
+        }
 
         $selection = $tournament->prizeSelection();
         [$type] = GameTournamentsTable::parseKey($event->game_tournament_key);
         if ($selection === [] || $type === null) {
-            return 0;
+            return $written;
         }
         $result = $this->fetchTable('ClanTournamentResults')->forTournament($type, $event->ends_at);
         if ($result === null) {
-            return 0;
+            return $written;
         }
 
-        $written = 0;
         foreach ($selection as $i => $prize) {
             $amount = $result->amountOf($prize['item_id']);
             if ($amount <= 0) {

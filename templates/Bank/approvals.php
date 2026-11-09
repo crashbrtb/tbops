@@ -52,10 +52,10 @@
                             <td><span class="badge badge-light"><?= ucfirst($transaction->type) ?></span></td>
                             <td class="font-weight-bold"><?= h($transaction->member->player ?? __('Unknown')) ?></td>
                             <td><?= h($transaction->user->name ?? __('Unknown')) ?></td>
-                            <td class="font-weight-bold"><?= $this->Number->format($transaction->amount, ['places' => 0]) ?></td>
-                            <td><?= $this->Number->format($transaction->fee, ['places' => 0]) ?></td>
+                            <td class="font-weight-bold"><?= $this->silver($transaction->amount) ?></td>
+                            <td><?= $this->silver($transaction->fee) ?></td>
                             <td class="font-weight-bold" style="color: <?= $netEffect > 0 ? 'var(--success)' : 'var(--danger)' ?>;">
-                                <?= ($netEffect > 0 ? '+' : '') . $this->Number->format($netEffect, ['places' => 0]) ?>
+                                <?= ($netEffect > 0 ? '+' : '') . $this->silver($netEffect) ?>
                             </td>
                             <td><?= $transaction->created ? $transaction->created->i18nFormat('yyyy-MM-dd HH:mm') : '' ?></td>
                             <td><?= h($transaction->description ?? '-') ?></td>
