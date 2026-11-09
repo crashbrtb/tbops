@@ -126,10 +126,12 @@ $chartData = [
     }
     .ranking-table-wrap {
         width: 100%;
-        overflow-x: hidden;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     .ranking-table {
         width: 100%;
+        min-width: 760px;
         margin-bottom: 0;
         border-collapse: collapse;
     }
