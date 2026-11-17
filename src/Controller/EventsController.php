@@ -870,7 +870,9 @@ class EventsController extends AppController
 
         $result = (new EventImportService())->publishedResult($event);
         $isAdmin = $this->isAdmin();
-        if ($isAdmin) {
+        // Fines and Silver prizes move the clan bank, so bankers run them too.
+        $canManageBank = $this->canManageBank();
+        if ($canManageBank) {
             $fineService = new \App\Service\TournamentFineService();
             $this->set('fines', $fineService->finesOf($event));
             $this->set('fineRule', $fineService->ruleFor($event));
@@ -881,7 +883,7 @@ class EventsController extends AppController
             'sidebar' => ['enable' => false],
             'navbar' => ['enable' => true],
         ]);
-        $this->set(compact('event', 'result', 'isAdmin'));
+        $this->set(compact('event', 'result', 'isAdmin', 'canManageBank'));
 
         return $this->render('view_imported');
     }

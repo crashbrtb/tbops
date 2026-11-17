@@ -5688,8 +5688,8 @@ msgstr "{0} の手動ペナルティを削除しますか？"
 msgid "The manual penalty could not be added. Please, try again."
 msgstr "手動ペナルティを追加できませんでした。もう一度お試しください。"
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
-msgstr "プレイヤー「{0}」はメンバーにもこのサイクルの宝箱にも見つかりませんでした。"
+msgid "Player \"{0}\" is not an active member of the clan."
+msgstr "プレイヤー「{0}」はクランのアクティブなメンバーではありません。"
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."
 msgstr "この目標は設定で 0 になっているため、引き上げるものがありません。"
@@ -7678,3 +7678,7 @@ msgstr "ロールは割り当てられていません。"
 
 msgid "View Role"
 msgstr "ロールを見る"
+
+#: ./src/Controller/AppController.php
+msgid "Only administrators and bankers can do this."
+msgstr "この操作は管理者と銀行担当者のみが行えます。"

@@ -5695,7 +5695,7 @@ msgstr ""
 msgid "The manual penalty could not be added. Please, try again."
 msgstr ""
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
+msgid "Player \"{0}\" is not an active member of the clan."
 msgstr ""
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."

@@ -5688,8 +5688,8 @@ msgstr "{0} oyuncusunun manuel cezası kaldırılsın mı?"
 msgid "The manual penalty could not be added. Please, try again."
 msgstr "Manuel ceza eklenemedi. Lütfen tekrar deneyin."
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
-msgstr "\"{0}\" oyuncusu üyeler arasında da bu döngünün sandıklarında da bulunamadı."
+msgid "Player \"{0}\" is not an active member of the clan."
+msgstr "\"{0}\" oyuncusu klanın aktif bir üyesi değil."
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."
 msgstr "Bu hedef yapılandırmada 0, bu yüzden artırılacak bir şey yok."
@@ -7678,3 +7678,7 @@ msgstr "Atanmış rol yok."
 
 msgid "View Role"
 msgstr "Rolü gör"
+
+#: ./src/Controller/AppController.php
+msgid "Only administrators and bankers can do this."
+msgstr "Bunu yalnızca yöneticiler ve bankacılar yapabilir."

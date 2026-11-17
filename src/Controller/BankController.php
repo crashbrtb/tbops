@@ -91,14 +91,14 @@ class BankController extends AppController
         $feesTotal = $feeSumQuery->first()->get('total');
         $totalFees = (int)round((float)($feesTotal ?? 0));
 
-        $isAdmin = $this->isAdmin($userId);
+        $canManageBank = $this->canManageBank($userId);
 
         $this->set(compact(
             'members',
             'totalSilver',
             'totalFees',
             'userId',
-            'isAdmin'
+            'canManageBank'
         ));
     }
 
@@ -110,9 +110,9 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        // Only administrators can view history
-        if (!$this->isAdmin($userId)) {
-            throw new ForbiddenException(__('Only administrators can view transaction history.'));
+        // Only administrators and bankers can view history
+        if (!$this->canManageBank($userId)) {
+            throw new ForbiddenException(__('Only administrators and bankers can do this.'));
         }
 
         $member = $this->Members->find()
@@ -151,9 +151,9 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        $isAdmin = $this->isAdmin($userId);
+        $canManageBank = $this->canManageBank($userId);
         $ownMembers = $this->membersForUser($userId);
-        $allMembers = $isAdmin ? $this->membersForUser($userId, true) : $ownMembers;
+        $allMembers = $canManageBank ? $this->membersForUser($userId, true) : $ownMembers;
 
         if (empty($allMembers)) {
             $this->Flash->warning(__('You do not have members available for banking operations.'));
@@ -167,7 +167,7 @@ class BankController extends AppController
             $memberId = (int)($data['member_id'] ?? 0);
 
             try {
-                $member = $this->assertMemberOwnership($memberId, $userId, $isAdmin);
+                $member = $this->assertMemberOwnership($memberId, $userId, $canManageBank);
             } catch (ForbiddenException | RecordNotFoundException $exception) {
                 $this->Flash->error($exception->getMessage());
                 return $this->redirect(['action' => 'deposit']);
@@ -200,7 +200,7 @@ class BankController extends AppController
                     break;
                 }
 
-                $status = $isAdmin ? BankTransactionsTable::STATUS_APPROVED : BankTransactionsTable::STATUS_PENDING;
+                $status = $canManageBank ? BankTransactionsTable::STATUS_APPROVED : BankTransactionsTable::STATUS_PENDING;
 
                 $transaction = $this->BankTransactions->newEmptyEntity();
                 $transaction = $this->BankTransactions->patchEntity($transaction, [
@@ -224,7 +224,7 @@ class BankController extends AppController
                         }
                     }
 
-                    $message = $isAdmin
+                    $message = $canManageBank
                         ? __('Deposit completed successfully.')
                         : __('Deposit registered and waiting for administrator approval.');
                     $this->Flash->success($message);
@@ -251,7 +251,7 @@ class BankController extends AppController
         $this->set(compact(
             'ownMembers',
             'allMembers',
-            'isAdmin',
+            'canManageBank',
             'depositFee',
             'caravanFee'
         ));
@@ -265,9 +265,9 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        $isAdmin = $this->isAdmin($userId);
+        $canManageBank = $this->canManageBank($userId);
         $ownMembers = $this->membersForUser($userId);
-        $allMembers = $isAdmin ? $this->membersForUser($userId, true) : $ownMembers;
+        $allMembers = $canManageBank ? $this->membersForUser($userId, true) : $ownMembers;
         $withdrawFee = (int)$this->configValue('withdrawal_fee');
 
         $memberBalances = $this->loadMemberBalances($allMembers);
@@ -277,7 +277,7 @@ class BankController extends AppController
             $memberId = (int)($data['member_id'] ?? 0);
 
             try {
-                $member = $this->assertMemberOwnership($memberId, $userId, $isAdmin);
+                $member = $this->assertMemberOwnership($memberId, $userId, $canManageBank);
             } catch (ForbiddenException | RecordNotFoundException $exception) {
                 $this->Flash->error($exception->getMessage());
                 return $this->redirect(['action' => 'withdraw']);
@@ -311,7 +311,7 @@ class BankController extends AppController
                     return $this->redirect(['action' => 'withdraw']);
                 }
 
-                $status = $isAdmin ? BankTransactionsTable::STATUS_APPROVED : BankTransactionsTable::STATUS_PENDING;
+                $status = $canManageBank ? BankTransactionsTable::STATUS_APPROVED : BankTransactionsTable::STATUS_PENDING;
 
                 $transaction = $this->BankTransactions->newEmptyEntity();
                 $transaction = $this->BankTransactions->patchEntity($transaction, [
@@ -335,7 +335,7 @@ class BankController extends AppController
                         }
                     }
 
-                    $message = $isAdmin
+                    $message = $canManageBank
                         ? __('Withdrawal completed successfully.')
                         : __('Withdrawal registered and waiting for administrator approval.');
                     $this->Flash->success($message);
@@ -363,7 +363,7 @@ class BankController extends AppController
             'allMembers',
             'memberBalances',
             'withdrawFee',
-            'isAdmin'
+            'canManageBank'
         ));
     }
 
@@ -375,7 +375,7 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        $isAdmin = $this->isAdmin($userId);
+        $canManageBank = $this->canManageBank($userId);
         $sourceMembers = $this->membersForUser($userId);
 
         if (empty($sourceMembers)) {
@@ -397,7 +397,7 @@ class BankController extends AppController
             $description = trim((string)($data['description'] ?? ''));
 
             try {
-                $sourceMember = $this->assertMemberOwnership($sourceId, $userId, $isAdmin);
+                $sourceMember = $this->assertMemberOwnership($sourceId, $userId, $canManageBank);
             } catch (ForbiddenException | RecordNotFoundException $exception) {
                 $this->Flash->error($exception->getMessage());
                 return $this->redirect(['action' => 'transfer']);
@@ -503,7 +503,7 @@ class BankController extends AppController
         $memberId = (int)($this->request->getQuery('member_id') ?? array_key_first($members));
 
         try {
-            $member = $this->assertMemberOwnership($memberId, $userId, $this->isAdmin($userId));
+            $member = $this->assertMemberOwnership($memberId, $userId, $this->canManageBank($userId));
         } catch (ForbiddenException | RecordNotFoundException $exception) {
             $this->Flash->error($exception->getMessage());
             return $this->redirect(['action' => 'statement']);
@@ -530,12 +530,12 @@ class BankController extends AppController
         $this->set(compact('member', 'members', 'memberId', 'transactions', 'balance'));
     }
 
-    protected function membersForUser(int $userId, bool $allowAllForAdmins = false, bool $includeOrphanMembers = false): array
+    protected function membersForUser(int $userId, bool $allowAllForManagers = false, bool $includeOrphanMembers = false): array
     {
         $query = $this->Members->find('list', keyField: 'id', valueField: 'player')
             ->orderAsc('Members.player');
 
-        if (!$allowAllForAdmins || !$this->isAdmin($userId)) {
+        if (!$allowAllForManagers || !$this->canManageBank($userId)) {
             $conditions = ['Members.user_id' => $userId];
             if ($includeOrphanMembers) {
                 $conditions = [
@@ -551,14 +551,14 @@ class BankController extends AppController
         return $query->toArray();
     }
 
-    protected function assertMemberOwnership(int $memberId, int $userId, bool $isAdminAllowed = false)
+    protected function assertMemberOwnership(int $memberId, int $userId, bool $managerAllowed = false)
     {
         $member = $this->Members->get($memberId);
         if (!$member) {
             throw new NotFoundException(__('Member not found.'));
         }
 
-        if ($member->user_id !== $userId && !($isAdminAllowed && $this->isAdmin($userId))) {
+        if ($member->user_id !== $userId && !($managerAllowed && $this->canManageBank($userId))) {
             throw new ForbiddenException(__('You can only operate with your own members.'));
         }
 
@@ -616,8 +616,8 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        if (!$this->isAdmin($userId)) {
-            throw new ForbiddenException(__('Only administrators can access the banking approvals.'));
+        if (!$this->canManageBank($userId)) {
+            throw new ForbiddenException(__('Only administrators and bankers can do this.'));
         }
 
         $pendingTransactions = $this->BankTransactions->find()
@@ -647,8 +647,8 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        if (!$this->isAdmin($userId)) {
-            throw new ForbiddenException(__('Only administrators can approve transactions.'));
+        if (!$this->canManageBank($userId)) {
+            throw new ForbiddenException(__('Only administrators and bankers can do this.'));
         }
 
         $this->request->allowMethod(['post']);
@@ -707,8 +707,8 @@ class BankController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        if (!$this->isAdmin($userId)) {
-            throw new ForbiddenException(__('Only administrators can reject transactions.'));
+        if (!$this->canManageBank($userId)) {
+            throw new ForbiddenException(__('Only administrators and bankers can do this.'));
         }
 
         $this->request->allowMethod(['post']);

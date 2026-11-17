@@ -5688,8 +5688,8 @@ msgstr "要移除 {0} 的手动惩罚吗？"
 msgid "The manual penalty could not be added. Please, try again."
 msgstr "无法添加手动惩罚，请重试。"
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
-msgstr "在成员和本周期的宝箱中都找不到玩家“{0}”。"
+msgid "Player \"{0}\" is not an active member of the clan."
+msgstr "玩家“{0}”不是公会的活跃成员。"
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."
 msgstr "该目标在配置中为 0，没有可提高的内容。"
@@ -7678,3 +7678,7 @@ msgstr "未分配角色。"
 
 msgid "View Role"
 msgstr "查看角色"
+
+#: ./src/Controller/AppController.php
+msgid "Only administrators and bankers can do this."
+msgstr "只有管理员和银行管理员可以执行此操作。"

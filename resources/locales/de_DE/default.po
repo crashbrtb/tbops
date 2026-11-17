@@ -5688,8 +5688,8 @@ msgstr "Die manuelle Strafe von {0} entfernen?"
 msgid "The manual penalty could not be added. Please, try again."
 msgstr "Die manuelle Strafe konnte nicht hinzugefügt werden. Bitte versuche es erneut."
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
-msgstr "Der Spieler \"{0}\" wurde weder unter den Mitgliedern noch unter den Truhen dieses Zyklus gefunden."
+msgid "Player \"{0}\" is not an active member of the clan."
+msgstr "Der Spieler \"{0}\" ist kein aktives Mitglied des Clans."
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."
 msgstr "Dieses Ziel steht in der Konfiguration auf 0, es gibt also nichts zu erhöhen."
@@ -7678,3 +7678,7 @@ msgstr "Keine Rollen zugewiesen."
 
 msgid "View Role"
 msgstr "Rolle anzeigen"
+
+#: ./src/Controller/AppController.php
+msgid "Only administrators and bankers can do this."
+msgstr "Nur Administratoren und Bankiers können das tun."

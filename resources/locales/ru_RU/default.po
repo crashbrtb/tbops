@@ -5688,8 +5688,8 @@ msgstr "Удалить ручной штраф игрока {0}?"
 msgid "The manual penalty could not be added. Please, try again."
 msgstr "Не удалось добавить ручной штраф. Попробуйте ещё раз."
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
-msgstr "Игрок «{0}» не найден ни среди участников, ни среди сундуков этого цикла."
+msgid "Player \"{0}\" is not an active member of the clan."
+msgstr "Игрок «{0}» не является активным участником клана."
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."
 msgstr "Эта цель в настройках равна 0, повышать нечего."
@@ -7678,3 +7678,7 @@ msgstr "Роли не назначены."
 
 msgid "View Role"
 msgstr "Посмотреть роль"
+
+#: ./src/Controller/AppController.php
+msgid "Only administrators and bankers can do this."
+msgstr "Это могут делать только администраторы и банкиры."

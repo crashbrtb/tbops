@@ -4,7 +4,7 @@
  * @var array $allMembers
  * @var array $memberBalances
  * @var float $withdrawFee
- * @var bool $isAdmin
+ * @var bool $canManageBank
  */
 
 $hasMembers = !empty($allMembers);
@@ -140,7 +140,7 @@ foreach ($memberBalances as $balance) {
 
             <div class="alert alert-info mt-3 mb-4">
                 <i class="fas fa-info-circle mr-1"></i>
-                <?= $isAdmin
+                <?= $canManageBank
                     ? __('Administrator withdrawals are executed immediately.')
                     : __('Withdrawals stay pending until an administrator approves them.') ?>
             </div>
