@@ -5688,8 +5688,8 @@ msgstr "Rimuovere la penalità manuale di {0}?"
 msgid "The manual penalty could not be added. Please, try again."
 msgstr "Impossibile aggiungere la penalità manuale. Riprova."
 
-msgid "Player \"{0}\" was not found among the members or the chests of this cycle."
-msgstr "Il giocatore \"{0}\" non è stato trovato tra i membri né tra i forzieri di questo ciclo."
+msgid "Player \"{0}\" is not an active member of the clan."
+msgstr "Il giocatore \"{0}\" non è un membro attivo del clan."
 
 msgid "That goal is 0 in the configs, so there is nothing to raise."
 msgstr "Questo obiettivo è a 0 nella configurazione, quindi non c'è nulla da aumentare."
@@ -7678,3 +7678,7 @@ msgstr "Nessun ruolo assegnato."
 
 msgid "View Role"
 msgstr "Vedi ruolo"
+
+#: ./src/Controller/AppController.php
+msgid "Only administrators and bankers can do this."
+msgstr "Solo gli amministratori e i banchieri possono farlo."

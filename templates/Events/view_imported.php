@@ -7,6 +7,7 @@
  * @var \App\Model\Entity\Event $event
  * @var array $result
  * @var bool $isAdmin
+ * @var bool $canManageBank
  */
 
 use App\Model\Entity\EventAsset;
@@ -153,10 +154,10 @@ foreach ($rows as $row) {
         </div>
     </div>
 
-    <?php if ($isAdmin && isset($fines)): ?>
+    <?php if ($canManageBank && isset($fines)): ?>
         <?= $this->element('event_fines', ['event' => $event, 'fines' => $fines, 'fineRule' => $fineRule]) ?>
     <?php endif; ?>
-    <?php if ($isAdmin && !empty($payouts)): ?>
+    <?php if ($canManageBank && !empty($payouts)): ?>
         <?= $this->element('event_payouts', ['event' => $event, 'payouts' => $payouts]) ?>
     <?php endif; ?>
 

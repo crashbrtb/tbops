@@ -21,7 +21,7 @@ class EventFinesController extends AppController
      */
     public function index(): void
     {
-        $this->requireAdmin();
+        $this->requireBankManager();
         $service = new TournamentFineService();
         $filters = [
             'event_id' => (int)$this->request->getQuery('event_id'),
@@ -41,6 +41,8 @@ class EventFinesController extends AppController
         $this->set('totals', $service->totals());
         $this->set('owing', $service->owing());
         $this->set('statusOptions', \App\Model\Entity\EventFine::statusOptions());
+        // Bankers reach this page too; the catalogue is administration.
+        $this->set('isAdmin', $this->isAdmin());
     }
 
     /**
@@ -51,7 +53,7 @@ class EventFinesController extends AppController
     public function writeOff(): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         $key = (string)$this->request->getData('key');
         $service = new TournamentFineService();
         $owing = $service->owingOf($key);
@@ -74,7 +76,7 @@ class EventFinesController extends AppController
     public function propose(?string $eventId = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         $event = $this->event($eventId);
         $count = (new TournamentFineService())->propose($event);
         $this->Flash->success(__('{0} fine(s) waiting to be charged.', $count));
@@ -91,7 +93,7 @@ class EventFinesController extends AppController
     public function charge(?string $eventId = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         $event = $this->event($eventId);
         $done = (new TournamentFineService())->charge($event, (int)$this->currentUserId());
         $this->Flash->success(__('{0} fine(s) charged, {1} in all.', $done['charged'], \App\Utility\GameNumber::silver($done['total'])));
@@ -111,7 +113,7 @@ class EventFinesController extends AppController
     public function waive(?string $id = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         /** @var \App\Model\Entity\EventFine $fine */
         $fine = $this->fetchTable('EventFines')->get((int)$id);
         $undo = (bool)$this->request->getQuery('undo');
@@ -131,7 +133,7 @@ class EventFinesController extends AppController
     public function refund(?string $id = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         /** @var \App\Model\Entity\EventFine $fine */
         $fine = $this->fetchTable('EventFines')->get((int)$id);
         if ((new TournamentFineService())->refund($fine, (int)$this->currentUserId())) {

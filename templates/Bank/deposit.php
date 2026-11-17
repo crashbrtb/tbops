@@ -3,13 +3,13 @@
  * @var \App\View\AppView $this
  * @var array $ownMembers
  * @var array $allMembers
- * @var bool $isAdmin
+ * @var bool $canManageBank
  * @var float $depositFee
  * @var float $caravanFee
  */
 
 $selectOptions = $ownMembers;
-if ($isAdmin) {
+if ($canManageBank) {
     $otherMembers = array_diff_key($allMembers, $ownMembers);
     $selectOptions = [
         __('My members') => $ownMembers,
@@ -116,7 +116,7 @@ if ($isAdmin) {
 
             <div class="alert alert-info mt-3 mb-4">
                 <i class="fas fa-info-circle mr-1"></i>
-                <?= $isAdmin
+                <?= $canManageBank
                     ? __('Administrator deposits are approved instantly.')
                     : __('Deposits created by players stay pending until an administrator approves them.') ?>
             </div>

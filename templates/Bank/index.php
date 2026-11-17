@@ -4,7 +4,7 @@
  * @var \Cake\Collection\CollectionInterface|\App\Model\Entity\Member[] $members
  * @var float $totalSilver
  * @var float $totalFees
- * @var bool $isAdmin
+ * @var bool $canManageBank
  */
 ?>
 <div class="content-page-wrap">
@@ -67,7 +67,7 @@
                         <?php $balance = (int)round($member->bank_account->balance ?? 0); ?>
                         <tr>
                             <td class="text-left">
-                                <?php if ($isAdmin): ?>
+                                <?php if ($canManageBank): ?>
                                     <?= $this->Html->link(h($member->player), ['action' => 'history', $member->id], ['class' => 'player-link']) ?>
                                 <?php else: ?>
                                     <span class="font-weight-bold"><?= h($member->player) ?></span>
@@ -77,7 +77,7 @@
                                 <?= $this->silver($balance) ?>
                             </td>
                             <td class="text-right">
-                                <?php if ($isAdmin): ?>
+                                <?php if ($canManageBank): ?>
                                     <?= $this->Html->link('<i class="fas fa-history mr-1"></i> ' . __('View history'), ['action' => 'history', $member->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
                                 <?php else: ?>
                                     <span class="badge badge-light"><?= __('Member') ?></span>

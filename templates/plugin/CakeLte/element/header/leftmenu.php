@@ -87,6 +87,12 @@ $bankFunctionEnabled = $bankFunctionConfig && (int)$bankFunctionConfig->value ==
         <?= $this->Html->link(__('Withdraw'), ['controller' => 'Bank', 'action' => 'withdraw'], ['class' => 'dropdown-item']) ?>
         <?= $this->Html->link(__('Transfer'), ['controller' => 'Bank', 'action' => 'transfer'], ['class' => 'dropdown-item']) ?>
         <?= $this->Html->link(__('Statement'), ['controller' => 'Bank', 'action' => 'statement'], ['class' => 'dropdown-item']) ?>
+        <?php if (!empty($canManageBank)): ?>
+            <?php // Bankers have no Admin menu: what they run sits here. ?>
+            <div class="dropdown-divider"></div>
+            <?= $this->Html->link(__('Bank Approvals'), ['controller' => 'Bank', 'action' => 'approvals'], ['class' => 'dropdown-item']) ?>
+            <?= $this->Html->link(__('Tournament Fines'), ['controller' => 'EventFines', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+        <?php endif; ?>
     </div>
 </li>
 <?php endif; ?>

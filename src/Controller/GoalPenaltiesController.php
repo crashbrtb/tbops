@@ -130,7 +130,7 @@ class GoalPenaltiesController extends AppController
         $typed = trim((string)$this->request->getData('player_name'));
         $player = $this->knownPlayers($cycleStart, $service->settings()['cycle_days'])[mb_strtolower($typed)] ?? null;
         if ($player === null) {
-            $this->Flash->error(__('Player "{0}" was not found among the members or the chests of this cycle.', $typed));
+            $this->Flash->error(__('Player "{0}" is not an active member of the clan.', $typed));
 
             return $this->redirect($redirect);
         }
@@ -283,9 +283,9 @@ class GoalPenaltiesController extends AppController
     }
 
     /**
-     * Players a manual penalty can be given to: whoever has chests in the
-     * cycle or a summary since the previous one, plus the members. Chest
-     * spellings win, since penalties are matched to chest rows by name.
+     * Players a manual penalty can be given to: the active members. When a
+     * member has chests in the cycle, the chest spelling wins, since
+     * penalties are matched to chest rows by name.
      *
      * @param \Cake\I18n\FrozenTime $cycleStart Start of the cycle.
      * @param int $cycleDays Length of a cycle.
@@ -297,21 +297,23 @@ class GoalPenaltiesController extends AppController
         $summaries = $this->fetchTable('PlayerCycleSummaries');
         $cycleEnd = $cycleStart->addDays($cycleDays)->sub(new \DateInterval('PT1S'));
 
-        $players = [];
+        $chestSpelling = [];
         foreach (array_keys($summaries->scoresForDateRange($cycleStart, $cycleEnd)) as $player) {
-            $players[mb_strtolower((string)$player)] ??= (string)$player;
+            $chestSpelling[mb_strtolower((string)$player)] ??= (string)$player;
         }
-        $summarized = $summaries->find()
-            ->select(['player_name'])
-            ->distinct(['player_name'])
-            ->where(['cycle_start_date >=' => $cycleStart->subDays($cycleDays)->format('Y-m-d')])
-            ->all()
-            ->extract('player_name');
-        foreach ($summarized as $player) {
-            $players[mb_strtolower((string)$player)] ??= (string)$player;
-        }
-        foreach ($this->fetchTable('Members')->find()->select(['player'])->all() as $member) {
-            $players[mb_strtolower((string)$member->player)] ??= (string)$member->player;
+
+        $players = [];
+        $members = $this->fetchTable('Members')->find()
+            ->select(['player'])
+            ->where(['active' => 1])
+            ->all();
+        foreach ($members as $member) {
+            $name = trim((string)$member->player);
+            if ($name === '') {
+                continue;
+            }
+            $key = mb_strtolower($name);
+            $players[$key] ??= $chestSpelling[$key] ?? $name;
         }
 
         return $players;

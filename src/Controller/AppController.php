@@ -92,7 +92,9 @@ class AppController extends Controller
         // Count pending bank approvals for admin users
         $pendingApprovalsCount = 0;
         $userId = $this->currentUserId();
-        if ($userId && $this->isAdmin($userId)) {
+        $canManageBank = $userId !== null && $this->canManageBank($userId);
+        $this->set('canManageBank', $canManageBank);
+        if ($canManageBank) {
             $bankTransactions = TableRegistry::getTableLocator()->get('BankTransactions');
             $pendingApprovalsCount = $bankTransactions->find()
                 ->where([
@@ -166,6 +168,59 @@ class AppController extends Controller
             'user_id' => $userId,
             'role_id' => 1,
         ]);
+    }
+
+    /**
+     * Name of the role that runs the clan bank (seeded as role 3).
+     */
+    public const ROLE_BANKER = 'bankers';
+
+    /**
+     * Whether the user has the bankers role.
+     *
+     * Matched by the role's name, not its id, so an installation whose roles
+     * were created in another order still recognises it.
+     */
+    protected function isBanker(?int $userId = null): bool
+    {
+        $userId ??= $this->currentUserId();
+        if (!$userId) {
+            return false;
+        }
+
+        return TableRegistry::getTableLocator()->get('RolesUsers')->find()
+            ->innerJoinWith('Roles', fn ($q) => $q->where(['Roles.name' => self::ROLE_BANKER]))
+            ->where(['RolesUsers.user_id' => $userId])
+            ->count() > 0;
+    }
+
+    /**
+     * Whether the user runs the clan bank: approves deposits and withdrawals,
+     * operates every member's account, charges fines and credits Silver prizes.
+     *
+     * Administrators and bankers. A banker has nothing else of the
+     * administration: no configs (the bank fees included), no other menus.
+     */
+    protected function canManageBank(?int $userId = null): bool
+    {
+        return $this->isAdmin($userId) || $this->isBanker($userId);
+    }
+
+    /**
+     * Stops anyone who does not run the clan bank.
+     *
+     * @throws \Cake\Http\Exception\ForbiddenException
+     */
+    protected function requireBankManager(): void
+    {
+        $userId = $this->currentUserId();
+        if (!$userId) {
+            throw new ForbiddenException(__('You must be logged in to access this page.'));
+        }
+
+        if (!$this->canManageBank($userId)) {
+            throw new ForbiddenException(__('Only administrators and bankers can do this.'));
+        }
     }
 
     /**

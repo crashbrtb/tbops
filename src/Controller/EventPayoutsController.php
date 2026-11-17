@@ -24,7 +24,7 @@ class EventPayoutsController extends AppController
     public function propose(?string $eventId = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         $event = $this->event($eventId);
         $count = (new TournamentPayoutService())->propose($event);
         $this->Flash->success(__('{0} Silver credit(s) waiting to be confirmed.', $count));
@@ -41,7 +41,7 @@ class EventPayoutsController extends AppController
     public function credit(?string $eventId = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         $event = $this->event($eventId);
         $done = (new TournamentPayoutService())->credit($event, (int)$this->currentUserId());
         $this->Flash->success(__('{0} player(s) credited, {1} in all.', $done['credited'], GameNumber::silver($done['total'])));
@@ -61,7 +61,7 @@ class EventPayoutsController extends AppController
     public function waive(?string $id = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         /** @var \App\Model\Entity\EventPayout $payout */
         $payout = $this->fetchTable('EventPayouts')->get((int)$id);
         $undo = (bool)$this->request->getQuery('undo');
@@ -83,7 +83,7 @@ class EventPayoutsController extends AppController
     public function reverse(?string $id = null): Response
     {
         $this->request->allowMethod(['post']);
-        $this->requireAdmin();
+        $this->requireBankManager();
         /** @var \App\Model\Entity\EventPayout $payout */
         $payout = $this->fetchTable('EventPayouts')->get((int)$id);
         if ((new TournamentPayoutService())->reverse($payout, (int)$this->currentUserId())) {

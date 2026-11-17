@@ -34,6 +34,7 @@ $outside = array_values(array_filter($owing, fn (array $r): bool => !$r['in_clan
             <h1 class="score-title"><i class="fas fa-gavel text-danger mr-2"></i><?= __('Tournament Fines') ?></h1>
             <p class="cycle-subtitle"><?= __('Every fine of the game tournaments, who still owes and what was given up') ?></p>
         </div>
+        <?php if (!empty($isAdmin)): ?>
         <div class="toolbar-actions">
             <?= $this->Html->link(
                 '<i class="fas fa-trophy mr-1"></i>' . __('Tournament Catalogue'),
@@ -41,6 +42,7 @@ $outside = array_values(array_filter($owing, fn (array $r): bool => !$r['in_clan
                 ['class' => 'btn btn-outline-primary btn-sm', 'escape' => false]
             ) ?>
         </div>
+        <?php endif; ?>
     </div>
 
     <div class="row">

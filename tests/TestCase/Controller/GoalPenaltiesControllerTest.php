@@ -69,6 +69,26 @@ class GoalPenaltiesControllerTest extends TestCase
         $this->summary('Slacker', $older, 20000);
         $this->summary('Slacker', $this->previous, 1000);
         $this->summary('Rookie', $this->previous, 1000);
+
+        // Manual penalties go to active members only
+        $this->member('Slacker', true);
+        $this->member('Rookie', true);
+        $this->member('Gone Away', false);
+    }
+
+    private function member(string $player, bool $active): void
+    {
+        $this->fetchTable('Members')->getConnection()->insert('members', [
+            'player' => $player,
+            'power' => 1,
+            'guards' => 1,
+            'specialists' => 1,
+            'monsters' => 1,
+            'engineers' => 1,
+            'active' => $active ? 1 : 0,
+            'created_at' => '2026-01-01 00:00:00',
+            'modified_at' => '2026-01-01 00:00:00',
+        ]);
     }
 
     private function summary(string $player, string $start, int $total): void
@@ -216,6 +236,26 @@ class GoalPenaltiesControllerTest extends TestCase
 
         $this->assertFlashElement('flash/error');
         $this->assertSame(0, $this->fetchTable('ManualGoalPenalties')->find()->count());
+    }
+
+    public function testManualPenaltyRefusesAnInactiveMember(): void
+    {
+        $this->signIn(1);
+
+        $this->post('/goal-penalties/add-manual', ['player_name' => 'Gone Away', 'cycle' => '0', 'target' => 'total', 'percent' => '5', 'reason' => 'Rude']);
+
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $this->fetchTable('ManualGoalPenalties')->find()->count());
+    }
+
+    public function testManualPenaltyListOffersOnlyActiveMembers(): void
+    {
+        $this->signIn(1);
+
+        $this->get('/goal-penalties');
+
+        $this->assertResponseContains('<option value="Slacker">');
+        $this->assertResponseNotContains('<option value="Gone Away">');
     }
 
     public function testPageShowsTheReasonOfTheAutomaticPenalty(): void

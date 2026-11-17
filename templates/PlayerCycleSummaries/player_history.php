@@ -152,6 +152,6 @@ $scoreColor = function ($scoreValue, $targetValue) use ($transitionStart, $start
     </section>
 
     <?php if (!empty($fines)): ?>
-        <?= $this->element('player_fines', ['fines' => $fines, 'owing' => $fineOwing ?? null, 'playerName' => $playerName, 'isAdmin' => $isAdmin ?? false]) ?>
+        <?= $this->element('player_fines', ['fines' => $fines, 'owing' => $fineOwing ?? null, 'playerName' => $playerName, 'isAdmin' => $canManageBank ?? false]) ?>
     <?php endif; ?>
 </div>
