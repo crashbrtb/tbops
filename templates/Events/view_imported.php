@@ -41,6 +41,28 @@ foreach ($rows as $row) {
     $goalMet += $row['standing']->goal_met ? 1 : 0;
 }
 ?>
+<style>
+    #eventStandingsTable th[data-sort] {
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+    }
+    #eventStandingsTable th[data-sort]::after {
+        content: "0dc";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        margin-left: .35rem;
+        opacity: .35;
+    }
+    #eventStandingsTable th[data-dir="asc"]::after {
+        content: "0de";
+        opacity: .9;
+    }
+    #eventStandingsTable th[data-dir="desc"]::after {
+        content: "0dd";
+        opacity: .9;
+    }
+</style>
 <div class="content-page-wrap">
 
     <div class="score-toolbar">
@@ -179,15 +201,15 @@ foreach ($rows as $row) {
             <table class="event-table" id="eventStandingsTable">
                 <thead>
                     <tr>
-                        <th style="width: 80px;"><?= __('Position') ?></th>
-                        <th><?= __('Player') ?></th>
-                        <th style="width: 160px;"><?= __('Points') ?></th>
-                        <th style="width: 90px;"><?= __('Share') ?></th>
+                        <th style="width: 80px;" data-sort="num" data-first="asc" data-dir="asc"><?= __('Position') ?></th>
+                        <th data-sort="text" data-first="asc"><?= __('Player') ?></th>
+                        <th style="width: 160px;" data-sort="num"><?= __('Points') ?></th>
+                        <th style="width: 90px;" data-sort="num"><?= __('Share') ?></th>
                         <?php if ($showGoal): ?>
-                            <th style="width: 150px;"><?= __('Goal') ?></th>
+                            <th style="width: 150px;" data-sort="num"><?= __('Goal') ?></th>
                         <?php endif; ?>
                         <?php foreach ($rewards as $reward): ?>
-                            <th style="width: 130px;" title="<?= h($reward->summary()) ?>"><?= $reward->get('is_silver') ? '<i class="fas fa-coins text-warning mr-1"></i>' : '' ?><?= h($reward->item_name) ?></th>
+                            <th style="width: 130px;" data-sort="num" title="<?= h($reward->summary()) ?>"><?= $reward->get('is_silver') ? '<i class="fas fa-coins text-warning mr-1"></i>' : '' ?><?= h($reward->item_name) ?></th>
                         <?php endforeach; ?>
                     </tr>
                 </thead>
@@ -204,8 +226,8 @@ foreach ($rows as $row) {
                         };
                         ?>
                         <tr class="<?= $rowClass ?> <?= $standing->eligible ? '' : 'is-excluded' ?>" data-player="<?= h(mb_strtolower($standing->player)) ?>">
-                            <td><span class="event-position <?= $position <= 3 ? 'rank-' . $position : '' ?>"><?= $position ?></span></td>
-                            <td>
+                            <td data-value="<?= $position ?>"><span class="event-position <?= $position <= 3 ? 'rank-' . $position : '' ?>"><?= $position ?></span></td>
+                            <td data-value="<?= h(mb_strtolower($standing->player)) ?>">
                                 <?= h($standing->player) ?>
                                 <?php if (!$standing->eligible): ?>
                                     <span class="event-highlight" style="margin-left: 6px;">
@@ -213,10 +235,11 @@ foreach ($rows as $row) {
                                     </span>
                                 <?php endif; ?>
                             </td>
-                            <td class="event-points"><?= $fmt($standing->points) ?></td>
-                            <td><?= $standing->eligible ? $this->Number->format($standing->participation, ['places' => 2]) . '%' : '—' ?></td>
+                            <td class="event-points" data-value="<?= (int)$standing->points ?>"><?= $fmt($standing->points) ?></td>
+                            <td data-value="<?= $standing->eligible ? (float)$standing->participation : -1 ?>"><?= $standing->eligible ? $this->Number->format($standing->participation, ['places' => 2]) . '%' : '—' ?></td>
                             <?php if ($showGoal): ?>
-                                <td><?= $this->element('event_goal_cell', [
+                                <?php // Met first, then by how far the player got. ?>
+                                <td data-value="<?= ($standing->goal_met ? 1 : 0) . '.' . str_pad((string)max(0, (int)$standing->points), 15, '0', STR_PAD_LEFT) ?>"><?= $this->element('event_goal_cell', [
                                     'value' => $standing->goal,
                                     'met' => $standing->goal_met,
                                     'level' => (int)$standing->guard_level,
@@ -225,7 +248,7 @@ foreach ($rows as $row) {
                             <?php endif; ?>
                             <?php foreach ($rewards as $reward): ?>
                                 <?php $amount = $row['amounts'][$reward->id] ?? 0; ?>
-                                <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>"><?= $this->rewardAmount($reward, $amount) ?></td>
+                                <td class="review-amount <?= $amount > 0 ? '' : 'is-zero' ?>" data-value="<?= (float)$amount ?>"><?= $this->rewardAmount($reward, $amount) ?></td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
@@ -244,5 +267,35 @@ foreach ($rows as $row) {
             row.style.display = needle === '' || player.indexOf(needle) !== -1 ? '' : 'none';
         });
     }
+
+    // Sort the ranking by the header clicked; a second click reverses it.
+    (function () {
+        var table = document.getElementById('eventStandingsTable');
+        if (!table) {
+            return;
+        }
+        var heads = table.querySelectorAll('th[data-sort]');
+        heads.forEach(function (th) {
+            th.addEventListener('click', function () {
+                var col = th.cellIndex;
+                var numeric = th.dataset.sort === 'num';
+                var first = th.dataset.first || 'desc';
+                var dir = th.dataset.dir ? (th.dataset.dir === 'asc' ? 'desc' : 'asc') : first;
+                heads.forEach(function (o) { delete o.dataset.dir; });
+                th.dataset.dir = dir;
+                var body = table.tBodies[0];
+                Array.prototype.slice.call(body.rows).map(function (row, i) {
+                    return {row: row, i: i, v: row.cells[col] ? row.cells[col].dataset.value || '' : ''};
+                }).sort(function (a, b) {
+                    var r = numeric ? Number(a.v) - Number(b.v) : a.v.localeCompare(b.v);
+                    if (dir === 'desc') {
+                        r = -r;
+                    }
+                    // Ties keep the official order.
+                    return r !== 0 ? r : Number(a.row.cells[0].dataset.value) - Number(b.row.cells[0].dataset.value);
+                }).forEach(function (item) { body.appendChild(item.row); });
+            });
+        });
+    })();
 </script>
 <?php $this->end(); ?>
