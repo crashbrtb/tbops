@@ -81,6 +81,35 @@ if (count($manualTargets) > 1) {
 $reasonMaxLength = GoalPenaltyService::REASON_MAX_LENGTH;
 ?>
 
+<style>
+    /* The theme keeps every cell on one line, which pushes this table past the
+       screen once a reason is long. From tablets up the cells may wrap so it
+       fits; on phones it keeps one line per cell and scrolls sideways. */
+    @media (min-width: 768px) {
+        .manual-penalties-table th,
+        .manual-penalties-table td {
+            white-space: normal;
+            padding: 10px !important;
+        }
+        .manual-penalties-table .mp-reason {
+            min-width: 180px;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+        .manual-penalties-table .mp-nowrap {
+            white-space: nowrap;
+        }
+    }
+    @media (max-width: 767.98px) {
+        .manual-penalties-table .mp-reason {
+            white-space: normal;
+            min-width: 200px;
+            max-width: 260px;
+            overflow-wrap: anywhere;
+        }
+    }
+</style>
+
 <div class="content-page-wrap">
     <div class="score-toolbar">
         <div class="score-title-group">
@@ -265,13 +294,13 @@ $reasonMaxLength = GoalPenaltyService::REASON_MAX_LENGTH;
                 <?php if (!$manualPenalties): ?>
                     <p class="text-muted p-3 mb-0"><?= __('Nobody has a manual penalty in this cycle.') ?></p>
                 <?php else: ?>
-                    <table class="table table-hover mb-0">
+                    <table class="table table-hover mb-0 manual-penalties-table">
                         <thead>
                             <tr>
                                 <th><?= __('Player') ?></th>
                                 <th><?= __('Goal') ?></th>
                                 <th><?= __('This cycle (score / goal)') ?></th>
-                                <th><?= __('Reason') ?></th>
+                                <th class="mp-reason"><?= __('Reason') ?></th>
                                 <th><?= __('Added by') ?></th>
                                 <th class="text-right"><?= __('Actions') ?></th>
                             </tr>
@@ -293,12 +322,12 @@ $reasonMaxLength = GoalPenaltyService::REASON_MAX_LENGTH;
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </td>
-                                    <td class="align-middle"><?= h($manualPenalty->reason) ?></td>
+                                    <td class="align-middle mp-reason"><?= h($manualPenalty->reason) ?></td>
                                     <td class="align-middle">
                                         <?= h($manualPenalty->user->name ?? '—') ?>
-                                        <small class="d-block text-muted"><?= h($manualPenalty->created?->i18nFormat('dd/MM/yyyy HH:mm')) ?></small>
+                                        <small class="d-block text-muted mp-nowrap"><?= h($manualPenalty->created?->i18nFormat('dd/MM/yyyy HH:mm')) ?></small>
                                     </td>
-                                    <td class="align-middle text-right">
+                                    <td class="align-middle text-right mp-nowrap">
                                         <?= $this->Form->postLink(
                                             '<i class="fas fa-trash mr-1"></i> ' . __('Remove'),
                                             ['action' => 'removeManual', $manualPenalty->id],
