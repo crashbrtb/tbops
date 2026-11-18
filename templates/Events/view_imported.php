@@ -42,24 +42,24 @@ foreach ($rows as $row) {
 }
 ?>
 <style>
-    #eventStandingsTable th[data-sort] {
+    .js-sortable th[data-sort] {
         cursor: pointer;
         user-select: none;
         white-space: nowrap;
     }
-    #eventStandingsTable th[data-sort]::after {
-        content: "0dc";
+    .js-sortable th[data-sort]::after {
+        content: "\f0dc";
         font-family: "Font Awesome 5 Free";
         font-weight: 900;
         margin-left: .35rem;
         opacity: .35;
     }
-    #eventStandingsTable th[data-dir="asc"]::after {
-        content: "0de";
+    .js-sortable th[data-dir="asc"]::after {
+        content: "\f0de";
         opacity: .9;
     }
-    #eventStandingsTable th[data-dir="desc"]::after {
-        content: "0dd";
+    .js-sortable th[data-dir="desc"]::after {
+        content: "\f0dd";
         opacity: .9;
     }
 </style>
@@ -198,7 +198,7 @@ foreach ($rows as $row) {
         </div>
 
         <div class="event-table-wrap">
-            <table class="event-table" id="eventStandingsTable">
+            <table class="event-table js-sortable" id="eventStandingsTable">
                 <thead>
                     <tr>
                         <th style="width: 80px;" data-sort="num" data-first="asc" data-dir="asc"><?= __('Position') ?></th>
@@ -268,34 +268,33 @@ foreach ($rows as $row) {
         });
     }
 
-    // Sort the ranking by the header clicked; a second click reverses it.
-    (function () {
-        var table = document.getElementById('eventStandingsTable');
-        if (!table) {
+    // Sort a table by the header clicked; a second click reverses it. Ties keep
+    // the order the table came in (the official ranking, the list of fines).
+    document.querySelectorAll('table.js-sortable').forEach(function (table) {
+        var body = table.tBodies[0];
+        if (!body) {
             return;
         }
+        Array.prototype.forEach.call(body.rows, function (row, i) { row.dataset.index = i; });
         var heads = table.querySelectorAll('th[data-sort]');
         heads.forEach(function (th) {
             th.addEventListener('click', function () {
                 var col = th.cellIndex;
                 var numeric = th.dataset.sort === 'num';
-                var first = th.dataset.first || 'desc';
-                var dir = th.dataset.dir ? (th.dataset.dir === 'asc' ? 'desc' : 'asc') : first;
+                var dir = th.dataset.dir ? (th.dataset.dir === 'asc' ? 'desc' : 'asc') : (th.dataset.first || 'desc');
                 heads.forEach(function (o) { delete o.dataset.dir; });
                 th.dataset.dir = dir;
-                var body = table.tBodies[0];
-                Array.prototype.slice.call(body.rows).map(function (row, i) {
-                    return {row: row, i: i, v: row.cells[col] ? row.cells[col].dataset.value || '' : ''};
-                }).sort(function (a, b) {
-                    var r = numeric ? Number(a.v) - Number(b.v) : a.v.localeCompare(b.v);
+                Array.prototype.slice.call(body.rows).sort(function (a, b) {
+                    var x = a.cells[col] ? a.cells[col].dataset.value || '' : '';
+                    var y = b.cells[col] ? b.cells[col].dataset.value || '' : '';
+                    var r = numeric ? Number(x) - Number(y) : x.localeCompare(y);
                     if (dir === 'desc') {
                         r = -r;
                     }
-                    // Ties keep the official order.
-                    return r !== 0 ? r : Number(a.row.cells[0].dataset.value) - Number(b.row.cells[0].dataset.value);
-                }).forEach(function (item) { body.appendChild(item.row); });
+                    return r !== 0 ? r : Number(a.dataset.index) - Number(b.dataset.index);
+                }).forEach(function (row) { body.appendChild(row); });
             });
         });
-    })();
+    });
 </script>
 <?php $this->end(); ?>

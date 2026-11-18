@@ -64,25 +64,25 @@ $button = 'btn btn-outline-secondary btn-xs';
         </p>
     <?php else: ?>
         <div class="table-responsive">
-            <table class="table table-sm mb-0">
+            <table class="table table-sm mb-0 js-sortable">
                 <thead>
                     <tr>
-                        <th><?= __('Player') ?></th>
-                        <th class="text-right"><?= __('Points') ?></th>
-                        <th class="text-right"><?= __('Goal') ?></th>
-                        <th class="text-right"><?= __('Fine') ?></th>
-                        <th><?= __('Status') ?></th>
+                        <th data-sort="text" data-first="asc"><?= __('Player') ?></th>
+                        <th class="text-right" data-sort="num"><?= __('Points') ?></th>
+                        <th class="text-right" data-sort="num"><?= __('Goal') ?></th>
+                        <th class="text-right" data-sort="num"><?= __('Fine') ?></th>
+                        <th data-sort="text" data-first="asc"><?= __('Status') ?></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($fines as $fine): ?>
                         <tr>
-                            <td><?= h($fine->player) ?></td>
-                            <td class="text-right"><?= $this->Number->format($fine->points) ?> <small class="text-muted">(<?= $fine->reachedPercent() ?>%)</small></td>
-                            <td class="text-right"><?= $this->Number->format($fine->goal) ?></td>
-                            <td class="text-right font-weight-bold"><?= $this->silver($fine->amount) ?></td>
-                            <td>
+                            <td data-value="<?= h(mb_strtolower((string)$fine->player)) ?>"><?= h($fine->player) ?></td>
+                            <td class="text-right" data-value="<?= (int)$fine->points ?>"><?= $this->Number->format($fine->points) ?> <small class="text-muted">(<?= $fine->reachedPercent() ?>%)</small></td>
+                            <td class="text-right" data-value="<?= (int)$fine->goal ?>"><?= $this->Number->format($fine->goal) ?></td>
+                            <td class="text-right font-weight-bold" data-value="<?= (int)$fine->amount ?>"><?= $this->silver($fine->amount) ?></td>
+                            <td data-value="<?= h(mb_strtolower($statusLabels[$fine->status] ?? (string)$fine->status)) ?>">
                                 <span class="badge <?= $badges[$fine->status] ?? 'badge-light' ?>"><?= h($statusLabels[$fine->status] ?? $fine->status) ?></span>
                                 <?php if ($fine->note): ?>
                                     <small class="text-muted d-block"><?= h($fine->note) ?></small>
