@@ -269,7 +269,7 @@ $guardTooltip = function (string $player) use ($playerGuardLevels, $totalGoalFor
 };
 // $penaltyInfo: player => ['percent' => increase, 'reasons' => why (automatic and/or manual penalty)]
 $penaltyInfo = $penaltyInfo ?? [];
-$penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyInfo): string {
+$penaltyGoalText = function (string $player) use ($penaltyGoals): string {
     $parts = [];
     if (isset($penaltyGoals[$player]['total'])) {
         $parts[] = __('{0} chest points', $this->Number->format($penaltyGoals[$player]['total']));
@@ -277,14 +277,25 @@ $penaltyTooltip = function (string $player) use ($penaltyGoals, $penaltyInfo): s
     if (isset($penaltyGoals[$player]['epic'])) {
         $parts[] = __('{0} Epic chest points', $this->Number->format($penaltyGoals[$player]['epic']));
     }
-    $tooltip = __('Raised goal in this cycle: {0}', implode(' + ', $parts));
+
+    return __('Raised goal in this cycle: {0}', implode(' + ', $parts));
+};
+$penaltyTooltip = function (string $player) use ($penaltyGoalText, $penaltyInfo): string {
+    $tooltip = $penaltyGoalText($player);
     $reasons = $penaltyInfo[$player]['reasons'] ?? [];
 
     return $reasons ? $tooltip . ' — ' . implode(' · ', $reasons) : $tooltip;
 };
 $penaltyTooltipsData = [];
+// Shown in the popup opened by clicking the player's penalty badge
+$penaltyDetailsData = [];
 foreach (array_keys($penaltyGoals) as $penalizedPlayer) {
-    $penaltyTooltipsData[$penalizedPlayer] = $penaltyTooltip((string)$penalizedPlayer);
+    $penalizedPlayer = (string)$penalizedPlayer;
+    $penaltyTooltipsData[$penalizedPlayer] = $penaltyTooltip($penalizedPlayer);
+    $penaltyDetailsData[$penalizedPlayer] = [
+        'goal' => $penaltyGoalText($penalizedPlayer),
+        'reasons' => array_values($penaltyInfo[$penalizedPlayer]['reasons'] ?? []),
+    ];
 }
 // Player name linking to the history page, flagged when the player carries a raised goal
 $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip, $penaltyPercent, $penaltyInfo, $goalsByGuard, $playerGuardLevels, $guardTooltip): string {
@@ -306,7 +317,8 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
         $percent = isset($penaltyInfo[$player]['percent'])
             ? $this->Number->format((float)$penaltyInfo[$player]['percent'])
             : $penaltyPercent;
-        $badges .= '<span class="penalty-badge" title="' . h($penaltyTooltip($player)) . '">'
+        $badges .= '<span class="penalty-badge" role="button" tabindex="0" data-penalty-player="' . h($player) . '"'
+            . ' title="' . h($penaltyTooltip($player)) . '">'
             . '<i class="fas fa-arrow-up"></i> ' . h($percent) . '%</span>';
     }
     if ($badges !== '') {
@@ -656,7 +668,43 @@ $playerNameLink = function (string $player) use ($penaltyGoals, $penaltyTooltip,
         font-size: 0.72rem;
         font-weight: 700;
         line-height: 1.4;
-        cursor: help;
+        cursor: pointer;
+    }
+
+    .penalty-badge:hover,
+    .penalty-badge:focus-visible {
+        background: rgba(245, 158, 11, 0.28);
+        outline: none;
+    }
+
+    /* Popup with the reason of the penalty, opened by clicking the badge */
+    .penalty-popover {
+        position: absolute;
+        z-index: 1060;
+        max-width: min(320px, calc(100vw - 32px));
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: var(--surface, #fff);
+        border: 1px solid rgba(217, 119, 6, 0.45);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+        color: var(--text, #1f2937);
+        font-size: 0.82rem;
+        line-height: 1.4;
+    }
+
+    .penalty-popover-goal {
+        font-weight: 700;
+        color: #d97706;
+    }
+
+    .penalty-popover-label {
+        margin-top: 6px;
+        font-weight: 600;
+    }
+
+    .penalty-popover ul {
+        margin: 2px 0 0;
+        padding-left: 18px;
     }
 
     tr.penalized-row td:first-child {
@@ -1960,7 +2008,82 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// Penalty badge: clicking the +% opens a small popup with why the goal was raised
+var penaltyDetails = <?= json_encode((object)$penaltyDetailsData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+var penaltyPopover = null;
+var penaltyPopoverBadge = null;
+
+function closePenaltyPopover() {
+    if (penaltyPopover) {
+        penaltyPopover.remove();
+        penaltyPopover = null;
+    }
+    penaltyPopoverBadge = null;
+}
+
+function openPenaltyPopover(badge) {
+    var wasOpen = penaltyPopoverBadge === badge;
+    closePenaltyPopover();
+    if (wasOpen) return;
+
+    var info = penaltyDetails[badge.getAttribute('data-penalty-player')];
+    if (!info) return;
+
+    var html = '<div class="penalty-popover-goal"><i class="fas fa-arrow-up mr-1"></i>' + escapeHtml(info.goal) + '</div>';
+    if (info.reasons && info.reasons.length) {
+        html += '<div class="penalty-popover-label"><?= h(__('Reason')) ?>:</div><ul>';
+        for (var i = 0; i < info.reasons.length; i++) {
+            html += '<li>' + escapeHtml(info.reasons[i]) + '</li>';
+        }
+        html += '</ul>';
+    }
+
+    var pop = document.createElement('div');
+    pop.className = 'penalty-popover';
+    pop.setAttribute('role', 'tooltip');
+    pop.innerHTML = html;
+    document.body.appendChild(pop);
+
+    // Below the badge, kept inside the viewport (16px gutter)
+    var rect = badge.getBoundingClientRect();
+    var left = rect.left + window.scrollX;
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - pop.offsetWidth - 16;
+    pop.style.left = Math.max(window.scrollX + 16, Math.min(left, maxLeft)) + 'px';
+    pop.style.top = (rect.bottom + window.scrollY + 6) + 'px';
+
+    penaltyPopover = pop;
+    penaltyPopoverBadge = badge;
+}
+
+document.addEventListener('click', function (e) {
+    var badge = e.target.closest ? e.target.closest('.penalty-badge[data-penalty-player]') : null;
+    if (badge) {
+        e.preventDefault();
+        e.stopPropagation();
+        openPenaltyPopover(badge);
+        return;
+    }
+    if (penaltyPopover && !penaltyPopover.contains(e.target)) closePenaltyPopover();
+}, true);
+
+document.addEventListener('keydown', function (e) {
+    var badge = e.target.closest ? e.target.closest('.penalty-badge[data-penalty-player]') : null;
+    if (badge && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        openPenaltyPopover(badge);
+    }
+});
+
+window.addEventListener('resize', closePenaltyPopover);
+// Tables scroll sideways on mobile; the popup would be left behind, so it closes
+document.addEventListener('scroll', function (e) {
+    if (penaltyPopover && !penaltyPopover.contains(e.target)) closePenaltyPopover();
+}, true);
+
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') {
+        closePenaltyPopover();
+        closeModal();
+    }
 });
 </script>
